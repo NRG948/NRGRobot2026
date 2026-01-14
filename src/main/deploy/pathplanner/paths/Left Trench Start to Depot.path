@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.010339285714285,
+        "y": 7.43625
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.6540178571428568,
+        "y": 5.994767857142856
+      },
+      "isLocked": false,
+      "linkedName": "Left Trench Start"
+    },
+    {
+      "anchor": {
+        "x": 1.078785714285714,
+        "y": 5.929982142857143
+      },
+      "prevControl": {
+        "x": 0.07878571428571401,
+        "y": 5.929982142857143
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Depot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
