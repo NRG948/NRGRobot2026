@@ -7,6 +7,8 @@
  
 package frc.robot;
 
+import com.nrg948.dashboard.DashboardServer;
+import com.nrg948.dashboard.annotations.Dashboard;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -16,10 +18,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
+@Dashboard
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  private final AutoCloseable dashboardServer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -29,6 +33,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    dashboardServer = DashboardServer.start(this);
   }
 
   /**

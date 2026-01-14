@@ -7,6 +7,7 @@
  
 package frc.robot;
 
+import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -28,7 +29,7 @@ public class RobotContainer {
     CompetitionRobot2025;
   }
 
-  private final Swerve drivetrain = new Swerve();
+  @DashboardTab private final Swerve drivetrain = new Swerve();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController =
@@ -39,7 +40,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new DriveUsingController(drivetrain, driverController));
     // Configure the trigger bindings
     configureBindings();
-    drivetrain.addShuffleboardTab();
+    RobotContainerDashboardTabs.bind(this);
   }
 
   /**

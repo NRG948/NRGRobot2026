@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.parameters.SwerveDriveParameters;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -233,20 +232,6 @@ public class SwerveDrive extends RobotDriveBase {
   public void simulationPeriodic() {
     for (SwerveModule module : modules) {
       module.simulationPeriodic();
-    }
-  }
-
-  /**
-   * Adds the SwerveModule layouts to the shuffleboard tab.
-   *
-   * @param tab The suffleboard tab to add layouts
-   */
-  public void addShuffleboardLayouts(ShuffleboardTab tab) {
-    for (int i = 0; i < modules.length; i++) {
-      modules[i]
-          .addShuffleboardLayout(tab)
-          .withSize(3, 2)
-          .withPosition((i * 3) % 6, ((i / 2) * 2) % 4);
     }
   }
 }

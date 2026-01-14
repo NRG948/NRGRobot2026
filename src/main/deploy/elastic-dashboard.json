@@ -1,0 +1,175 @@
+{
+  "version" : 1.0,
+  "grid_size" : 128.0,
+  "tabs" : [ {
+    "name" : "drivetrain",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "Front Left",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "BOTTOM"
+        },
+        "children" : [ {
+          "title" : "Wheel Angle (deg)",
+          "type" : "Radial Gauge",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Angle (deg)",
+            "period" : 0.06,
+            "min_value" : -180.0,
+            "max_value" : 180.0,
+            "start_angle" : -180.0,
+            "end_angle" : 180.0,
+            "number_of_labels" : 0,
+            "wrap_value" : true,
+            "show_pointer" : true,
+            "show_ticks" : true
+          }
+        }, {
+          "title" : "Wheel Velocity (m/s)",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Velocity (m+s)",
+            "period" : 0.06
+          }
+        } ]
+      }, {
+        "title" : "Front Right",
+        "type" : "List Layout",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "BOTTOM"
+        },
+        "children" : [ {
+          "title" : "Wheel Angle (deg)",
+          "type" : "Radial Gauge",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Angle (deg)",
+            "period" : 0.06,
+            "min_value" : -180.0,
+            "max_value" : 180.0,
+            "start_angle" : -180.0,
+            "end_angle" : 180.0,
+            "number_of_labels" : 0,
+            "wrap_value" : true,
+            "show_pointer" : true,
+            "show_ticks" : true
+          }
+        }, {
+          "title" : "Wheel Velocity (m/s)",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Velocity (m+s)",
+            "period" : 0.06
+          }
+        } ]
+      }, {
+        "title" : "Back Left",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "BOTTOM"
+        },
+        "children" : [ {
+          "title" : "Wheel Angle (deg)",
+          "type" : "Radial Gauge",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Angle (deg)",
+            "period" : 0.06,
+            "min_value" : -180.0,
+            "max_value" : 180.0,
+            "start_angle" : -180.0,
+            "end_angle" : 180.0,
+            "number_of_labels" : 0,
+            "wrap_value" : true,
+            "show_pointer" : true,
+            "show_ticks" : true
+          }
+        }, {
+          "title" : "Wheel Velocity (m/s)",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Velocity (m+s)",
+            "period" : 0.06
+          }
+        } ]
+      }, {
+        "title" : "Back Right",
+        "type" : "List Layout",
+        "x" : 256.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "BOTTOM"
+        },
+        "children" : [ {
+          "title" : "Wheel Angle (deg)",
+          "type" : "Radial Gauge",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Angle (deg)",
+            "period" : 0.06,
+            "min_value" : -180.0,
+            "max_value" : 180.0,
+            "start_angle" : -180.0,
+            "end_angle" : 180.0,
+            "number_of_labels" : 0,
+            "wrap_value" : true,
+            "show_pointer" : true,
+            "show_ticks" : true
+          }
+        }, {
+          "title" : "Wheel Velocity (m/s)",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Velocity (m+s)",
+            "period" : 0.06
+          }
+        } ]
+      } ],
+      "containers" : [ ]
+    }
+  } ]
+}
