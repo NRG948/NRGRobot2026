@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.459660714285714,
+        "y": 4.083589285714286
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.038553571428571,
+        "y": 4.018803571428571
+      },
+      "isLocked": false,
+      "linkedName": "Hub Start"
+    },
+    {
+      "anchor": {
+        "x": 3.006160714285714,
+        "y": 4.018803571428571
+      },
+      "prevControl": {
+        "x": 3.2513058832084445,
+        "y": 3.9697745376440268
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Ideal Shooting Point"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
