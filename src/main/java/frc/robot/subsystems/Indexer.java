@@ -29,7 +29,6 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   private final double KS = 0;
   private final double KV = 0;
-
   private final PIDController pidController = new PIDController(1, 0, 0);
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(KS, KV);
 
