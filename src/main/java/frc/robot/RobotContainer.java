@@ -29,8 +29,9 @@ public class RobotContainer {
   @DashboardTab private final Autos autos = new Autos(subsystems);
 
   public enum RobotSelector {
-    PracticeRobot2025,
-    CompetitionRobot2025;
+    PracticeRobot2026,
+    CompetitionRobot2026,
+    AlphaBase2026;
   }
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
