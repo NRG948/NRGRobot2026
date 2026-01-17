@@ -2,6 +2,24 @@
   "version" : 1.0,
   "grid_size" : 128.0,
   "tabs" : [ {
+    "name" : "autos",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Routine",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/autos/Routine",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      } ]
+    }
+  }, {
     "name" : "drivetrain",
     "grid_layout" : {
       "layouts" : [ {
