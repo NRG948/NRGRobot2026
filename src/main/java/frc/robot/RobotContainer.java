@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveUsingController;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Subsystems;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,13 +25,12 @@ import frc.robot.subsystems.Swerve;
 public class RobotContainer {
 
   @DashboardTab private final Autos autos = new Autos(this);
+  private final Subsystems subsystems = new Subsystems();
 
   public enum RobotSelector {
     PracticeRobot2025,
     CompetitionRobot2025;
   }
-
-  @DashboardTab private final Swerve drivetrain = new Swerve();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController =
@@ -39,7 +38,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(new DriveUsingController(drivetrain, driverController));
+
+    subsystems.drivetrain.setDefaultCommand(
+        new DriveUsingController(subsystems.drivetrain, driverController));
     // Configure the trigger bindings
     configureBindings();
 
