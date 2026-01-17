@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.nrg948.autonomous.Autonomous;
@@ -20,6 +21,7 @@ import com.nrg948.autonomous.AutonomousCommandMethod;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -91,7 +93,64 @@ public final class Autos {
     return Commands.defer(() -> getPathPlannerAuto(name), requirements).withName(name);
   }
 
-  
+  /**
+   * Returns the PathPlanner auto command from the autosMap, creating one if it
+   * hasn't already been
+   * preloaded.
+   *
+   * @param name Name of the PathPlanner auto.
+   * @return The PathPlanner auto command.
+   */
+  private static Command getPathPlannerAuto(String name) {
+    Command autoCommand = autosMap.remove(name);
+    if (autoCommand == null) {
+      autoCommand = newPathPlannerAuto(name);
+    }
+    return autoCommand;
+  }
+
+  /**
+   * Preloads the specified PathPlanner command.
+   *
+   * @param auto The auto to preload.
+   */
+  public static void preloadAuto(Command auto) {
+    if (auto == null) {
+      return;
+    }
+
+    String autoName = auto.getName();
+    File autoFile = new File(AUTOS_DIR, autoName + AUTO_FILE_TYPE);
+
+    if (autoFile.exists()) {
+      Command autoCommand = newPathPlannerAuto(autoName);
+      autosMap.put(autoName, autoCommand);
+    }
+  }
+
+  /**
+   * Returns a {@link PathPlannnerAuto} instance for the given Pathplanner
+   * autonomous routine name.
+   */
+  private static Command newPathPlannerAuto(String name) {
+    PathPlannerAuto pathPlannerAuto = new PathPlannerAuto(name);
+    return pathPlannerAuto;
+  }
+
+  /**
+   * Returns a map of event names to commands for the given Pathplanner autonomous
+   * routine name.
+   *
+   * @param subsystems    Subsystems container.
+   * @param pathGroupName Name of the pathplanner autonomous routine.
+   * @return A map of event names to commands.
+   */
+  private static Map<String, Command> getPathplannerEventMap(
+      Subsystems subsystems, String pathGroupName) {
+
+    Map<String, Command> eventMaps = new HashMap<String, Command>();
+    return eventMaps;
+  }
 
   /** Gets selected autonomous routine. */
   public Command getAutonomous() {
