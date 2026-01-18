@@ -50,7 +50,7 @@ public final class Autos {
 
   /** Returns an autonomous command that does nothing. */
   @AutonomousCommandMethod(name = "None", isDefault = true)
-  public static Command none(Subsystems subsystem) {
+  public static Command none(Subsystems subsystems) {
     return Commands.none().withName("None");
   }
 
