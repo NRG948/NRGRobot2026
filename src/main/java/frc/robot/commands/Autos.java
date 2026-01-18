@@ -149,6 +149,7 @@ public final class Autos {
       Subsystems subsystems, String pathGroupName) {
 
     Map<String, Command> eventMaps = new HashMap<String, Command>();
+    // TODO: Populate eventMaps with commands for PathPlanner event markers for the given pathGroupName.
     return eventMaps;
   }
 
