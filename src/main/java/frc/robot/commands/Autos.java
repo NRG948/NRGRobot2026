@@ -66,7 +66,7 @@ public final class Autos {
   /**
    * Returns a collection of label-value pairs mapping autonomous routine names to
    * autonomous
-   * commands define using Pathplannner.
+   * commands defined using Pathplannner.
    */
   @AutonomousCommandGenerator
   public static Collection<LabelValue<String, Command>> generatePathPlannerAutos(
