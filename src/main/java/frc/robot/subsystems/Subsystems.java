@@ -77,7 +77,7 @@ public class Subsystems {
   /**
    * Creates a new optional subsystem.
    *
-   * @param <T> The of subsystem.
+   * @param <T> The type of subsystem.
    * @param subsystemClass The subsystem class.
    * @param enabled The preferences value indicating whether the subsystem is enabled.
    * @param initArgs The arguments to pass to the subsystem's constructor.
