@@ -4,16 +4,8 @@
  * Open Source Software; you can modify and/or share it under the terms of
  * the license file in the root directory of this project.
  */
-
+ 
 package frc.robot.commands;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import com.nrg948.autonomous.Autonomous;
 import com.nrg948.autonomous.AutonomousCommandGenerator;
@@ -22,25 +14,28 @@ import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystems;
 import io.arxila.javatuples.LabelValue;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * Autos class for Elastic Tab. This includes choosing autos and auto
- * visualization.
- */
+/** Autos class for Elastic Tab. This includes choosing autos and auto visualization. */
 @DashboardDefinition
 public final class Autos {
   private static final String AUTO_FILE_TYPE = ".auto";
 
-  private static final File AUTOS_DIR = new File(Filesystem.getDeployDirectory(), "pathplanner/autos");
+  private static final File AUTOS_DIR =
+      new File(Filesystem.getDeployDirectory(), "pathplanner/autos");
 
   private static final HashMap<String, Command> autosMap = new HashMap<String, Command>();
 
@@ -64,8 +59,7 @@ public final class Autos {
   }
 
   /**
-   * Returns a collection of label-value pairs mapping autonomous routine names to
-   * autonomous
+   * Returns a collection of label-value pairs mapping autonomous routine names to autonomous
    * commands defined using Pathplannner.
    */
   @AutonomousCommandGenerator
@@ -86,7 +80,7 @@ public final class Autos {
    * Returns the PathPlanner auto command.
    *
    * @param subsystems Subsystems container.
-   * @param name       Name of the PathPlanner auto.
+   * @param name Name of the PathPlanner auto.
    * @return The PathPlanner auto command.
    */
   public static Command generatePathPlannerAuto(Subsystems subsystems, String name) {
@@ -98,8 +92,7 @@ public final class Autos {
   }
 
   /**
-   * Returns the PathPlanner auto command from the autosMap, creating one if it
-   * hasn't already been
+   * Returns the PathPlanner auto command from the autosMap, creating one if it hasn't already been
    * preloaded.
    *
    * @param name Name of the PathPlanner auto.
@@ -133,18 +126,16 @@ public final class Autos {
   }
 
   /**
-   * Returns a {@link PathPlannerAuto} instance for the given Pathplanner
-   * autonomous routine name.
+   * Returns a {@link PathPlannerAuto} instance for the given Pathplanner autonomous routine name.
    */
   private static Command newPathPlannerAuto(String name) {
     return new PathPlannerAuto(name);
   }
 
   /**
-   * Returns a map of event names to commands for the given Pathplanner autonomous
-   * routine name.
+   * Returns a map of event names to commands for the given Pathplanner autonomous routine name.
    *
-   * @param subsystems    Subsystems container.
+   * @param subsystems Subsystems container.
    * @param pathGroupName Name of the pathplanner autonomous routine.
    * @return A map of event names to commands.
    */
@@ -152,7 +143,8 @@ public final class Autos {
       Subsystems subsystems, String pathGroupName) {
 
     Map<String, Command> eventMaps = new HashMap<String, Command>();
-    // TODO: Populate eventMaps with commands for PathPlanner event markers for the given pathGroupName.
+    // TODO: Populate eventMaps with commands for PathPlanner event markers for the given
+    // pathGroupName.
     return eventMaps;
   }
 

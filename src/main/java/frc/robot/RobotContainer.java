@@ -24,8 +24,9 @@ import frc.robot.subsystems.Subsystems;
  */
 public class RobotContainer {
 
-  @DashboardTab private final Autos autos = new Autos(this);
   private final Subsystems subsystems = new Subsystems();
+
+  @DashboardTab private final Autos autos = new Autos(subsystems);
 
   public enum RobotSelector {
     PracticeRobot2025,
