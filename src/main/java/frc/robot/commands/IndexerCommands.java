@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer;
 
 /** Add your docs here. */
-public class IndexerCommands {
-  public Command setIndexerSpeed(Indexer indexer, double indexerSpeed) {
+public final class IndexerCommands {
+  public static Command setIndexerSpeed(Indexer indexer, double indexerSpeed) {
     return Commands.runOnce(() -> indexer.setVelocity(indexerSpeed), indexer);
   }
 }

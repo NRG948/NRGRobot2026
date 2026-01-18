@@ -54,7 +54,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
     updateTelemetry();
 
     if (goalVelocity != 0) {
-      double feedforward = this.feedforward.calculate(currentVelocity, goalVelocity);
+      double feedforward = this.feedforward.calculate(goalVelocity);
       double feedback = pidController.calculate(currentVelocity, goalVelocity);
       double voltage = feedforward + feedback;
       indexerMotor.setVoltage(voltage);

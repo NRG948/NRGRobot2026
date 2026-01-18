@@ -127,7 +127,7 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
     updateTelemetry();
 
     if (goalVelocity != 0) {
-      double feedforward = feedForward.calculate(currentVelocity);
+      double feedforward = feedForward.calculate(goalVelocity);
       double feedback = pidController.calculate(currentVelocity, goalVelocity);
       double voltage = feedforward + feedback;
       motor.setVoltage(voltage);

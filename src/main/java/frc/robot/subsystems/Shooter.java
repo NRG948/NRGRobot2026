@@ -47,7 +47,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private final RelativeEncoder upperEncoder = upperMotor.getEncoder();
 
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(KS, KV);
-  private final PIDController pidController = new PIDController(1, 0, 0);
+  private final PIDController lowerPIDController = new PIDController(1, 0, 0);
+  private final PIDController upperPIDController = new PIDController(1, 0, 0);
 
   private double lowerGoalRPM = 0;
   private double upperGoalRPM = 0;
@@ -58,9 +59,6 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logUpperGoalRPM = new DoubleLogEntry(LOG, "/Shooter/upperGoalRPM");
   private DoubleLogEntry logLowerCurrentRPM = new DoubleLogEntry(LOG, "/Shooter/lowerCurrentRPM");
   private DoubleLogEntry logUpperCurrentRPM = new DoubleLogEntry(LOG, "/Shooter/upperCurrentRPM");
-  private DoubleLogEntry logFeedForward = new DoubleLogEntry(LOG, "/Shooter/feedforward");
-  private DoubleLogEntry logFeedBack = new DoubleLogEntry(LOG, "/Shooter/feedback");
-  private DoubleLogEntry logVoltage = new DoubleLogEntry(LOG, "/Shooter/voltage");
 
   /** Creates a new Intake. */
   public Shooter() {}
@@ -97,25 +95,19 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
     updateTelemetry();
     if (lowerGoalRPM != 0) {
       double feedforward = this.feedforward.calculate(lowerGoalRPM);
-      double feedback = pidController.calculate(lowerCurrentRPM, lowerGoalRPM);
+      double feedback = lowerPIDController.calculate(lowerCurrentRPM, lowerGoalRPM);
       double motorVoltage = feedforward + feedback;
       lowerMotor.setVoltage(motorVoltage);
 
-      logFeedForward.append(feedforward);
-      logFeedBack.append(feedback);
-      logVoltage.append(motorVoltage);
     } else {
       lowerMotor.setVoltage(0);
     }
     if (upperGoalRPM != 0) {
       double feedforward = this.feedforward.calculate(upperGoalRPM);
-      double feedback = pidController.calculate(upperCurrentRPM, upperGoalRPM);
+      double feedback = upperPIDController.calculate(upperCurrentRPM, upperGoalRPM);
       double motorVoltage = feedforward + feedback;
       upperMotor.setVoltage(motorVoltage);
 
-      logFeedForward.append(feedforward);
-      logFeedBack.append(feedback);
-      logVoltage.append(motorVoltage);
     } else {
       upperMotor.setVoltage(0);
     }

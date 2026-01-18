@@ -10,19 +10,41 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Subsystems;
 
-/** Add your docs here. */
-public class IntakeCommands {
+/** A utility class for controlling the intake. */
+public final class IntakeCommands {
 
-  public Command stowIntake(Intake intake) {
-    return Commands.none();
+  /**
+   * Returns Command that stows the intake.
+   *
+   * @param subsystems The subsystem container object.
+   */
+  public static Command stowIntake(Subsystems subsystems) {
+    Intake intake = subsystems.intake;
+    // TODO Flesh out full sequence when other subsystems are finished.
+    return Commands.runOnce(intake::disable, intake);
   }
 
-  public Command setIntakeSpeed(double intakeSpeed, Intake intake) {
-    return Commands.runOnce(() -> intake.setGoalVelocity(intakeSpeed), intake);
+  /**
+   * Returns Command that starts the intake.
+   *
+   * @param subsystems The subsystem container object.
+   */
+  public static Command intake(Subsystems subsystems) {
+    Intake intake = subsystems.intake;
+    // TODO Flesh out full sequence when other subsystems are finished.
+    return Commands.runOnce(intake::intake, intake);
   }
 
-  public Command setIntakeAngle(double intakeAngle, Intake intake) {
-    return Commands.none();
+  /**
+   * Returns Command that starts the outtake.
+   *
+   * @param subsystems The subsystem container object.
+   */
+  public static Command outtake(Subsystems subsystems) {
+    Intake intake = subsystems.intake;
+    // TODO Flesh out full sequence when other subsystems are finished.
+    return Commands.runOnce(intake::outtake, intake);
   }
 }
