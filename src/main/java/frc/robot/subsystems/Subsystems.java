@@ -141,8 +141,8 @@ public class Subsystems {
    */
   public void setIdleMode(MotorIdleMode idleMode) {
     for (Subsystem subsystem : all) {
-      if (subsystem instanceof ActiveSubsystem) {
-        ActiveSubsystem.class.cast(subsystem).setIdleMode(idleMode);
+      if (subsystem instanceof ActiveSubsystem activeSubsystem) {
+        activeSubsystem.setIdleMode(idleMode);
       }
     }
   }
