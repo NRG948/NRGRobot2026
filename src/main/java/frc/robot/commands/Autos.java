@@ -137,8 +137,7 @@ public final class Autos {
    * autonomous routine name.
    */
   private static Command newPathPlannerAuto(String name) {
-    PathPlannerAuto pathPlannerAuto = new PathPlannerAuto(name);
-    return pathPlannerAuto;
+    return new PathPlannerAuto(name);
   }
 
   /**
