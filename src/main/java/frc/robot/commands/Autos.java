@@ -129,7 +129,7 @@ public final class Autos {
   }
 
   /**
-   * Returns a {@link PathPlannnerAuto} instance for the given Pathplanner
+   * Returns a {@link PathPlannerAuto} instance for the given Pathplanner
    * autonomous routine name.
    */
   private static Command newPathPlannerAuto(String name) {
