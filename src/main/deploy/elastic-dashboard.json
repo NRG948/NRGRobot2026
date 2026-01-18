@@ -20,7 +20,7 @@
       } ]
     }
   }, {
-    "name" : "drivetrain",
+    "name" : "Swerve",
     "grid_layout" : {
       "layouts" : [ {
         "title" : "Front Left",
@@ -40,7 +40,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -59,7 +59,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Velocity (m+s)",
+            "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Velocity (m+s)",
             "period" : 0.06
           }
         } ]
@@ -81,7 +81,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -100,7 +100,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Velocity (m+s)",
+            "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Velocity (m+s)",
             "period" : 0.06
           }
         } ]
@@ -122,7 +122,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -141,7 +141,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Velocity (m+s)",
+            "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Velocity (m+s)",
             "period" : 0.06
           }
         } ]
@@ -163,7 +163,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -182,12 +182,133 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Velocity (m+s)",
+            "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Velocity (m+s)",
             "period" : 0.06
           }
         } ]
       } ],
-      "containers" : [ ]
+      "containers" : [ {
+        "title" : "Enable Rumble",
+        "type" : "Toggle Switch",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Enable Rumble",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Right Trigger Scalar",
+        "type" : "Number Slider",
+        "x" : 640.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Right Trigger Scalar",
+          "period" : 0.06,
+          "min_value" : 0.0,
+          "max_value" : 1.0,
+          "divisions" : 5,
+          "publish_all" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Intake",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Goal Velocity (m+s)",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -15.9593,
+          "max_value" : 15.9593,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Test Goal Velocity (m+s)",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Set Test Goal Velocity",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Set Test Goal Velocity",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "PID Controller",
+        "type" : "PID Controller",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/PID Controller",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06
+        }
+      } ]
     }
   } ]
 }

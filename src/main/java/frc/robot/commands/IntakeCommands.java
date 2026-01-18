@@ -19,7 +19,7 @@ public class IntakeCommands {
   }
 
   public Command setIntakeSpeed(double intakeSpeed, Intake intake) {
-    return Commands.runOnce(() -> intake.setRollerVelocity(intakeSpeed), intake);
+    return Commands.runOnce(() -> intake.setGoalVelocity(intakeSpeed), intake);
   }
 
   public Command setIntakeAngle(double intakeAngle, Intake intake) {

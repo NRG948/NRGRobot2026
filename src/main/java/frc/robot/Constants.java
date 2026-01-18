@@ -25,5 +25,9 @@ public final class Constants {
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.9);
+
+    public static final class CANID {
+      public static final int INTAKE_ID = 9;
+    }
   }
 }

@@ -11,9 +11,11 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
+import com.nrg948.dashboard.annotations.DashboardNumberSlider;
+import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.dashboard.model.LabelPosition;
-import com.nrg948.preferences.RobotPreferences;
-import com.nrg948.preferences.RobotPreferencesValue;
+import com.nrg948.preferences.BooleanPreference;
+import com.nrg948.preferences.DoublePreference;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -59,13 +61,20 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   private static final DataLog LOG = DataLogManager.getLog();
   private static final Rotation2d ROTATE_180_DEGREES = Rotation2d.fromDegrees(180);
 
-  @RobotPreferencesValue
-  public static RobotPreferences.BooleanValue ENABLE_DRIVE_TAB =
-      new RobotPreferences.BooleanValue("Drive", "Enable Tab", false);
+  @DashboardToggleSwitch(title = "Enable Rumble", column = 4, row = 0, width = 1, height = 1)
+  public static BooleanPreference ENABLE_RUMBLE =
+      new BooleanPreference("Drive", "Enable Rumble", true);
 
-  @RobotPreferencesValue
-  public static RobotPreferences.BooleanValue ENABLE_RUMBLE =
-      new RobotPreferences.BooleanValue("Drive", "Enable Rumble", true);
+  @DashboardNumberSlider(
+      title = "Right Trigger Scalar",
+      column = 5,
+      row = 0,
+      width = 2,
+      height = 1,
+      min = 0,
+      max = 1)
+  public static final DoublePreference RIGHT_TRIGGER_SCALAR =
+      new DoublePreference("Drive", "Right Trigger Scalar", 0.25);
 
   public static final SwerveDriveParameters PARAMETERS = SwerveDriveParameters.AlphaBase2026;
 

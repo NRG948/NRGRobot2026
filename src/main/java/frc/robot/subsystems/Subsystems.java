@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
-import com.nrg948.preferences.RobotPreferences;
+import com.nrg948.preferences.BooleanPreference;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,7 +23,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Subsystems {
-  @DashboardTab public final Swerve drivetrain = new Swerve();
+
+  @DashboardTab(title = "Swerve")
+  public final Swerve drivetrain = new Swerve();
+
+  @DashboardTab(title = "Intake")
+  public final Intake intake = new Intake();
 
   // TODO: Add Cameras (need AprilTag subsystem)
 
@@ -34,7 +39,7 @@ public class Subsystems {
 
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
-    var manipulators = new ArrayList<Subsystem>(Arrays.asList());
+    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake));
 
     // Add all non-manipulator subsystems to the `all` list.
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
@@ -62,6 +67,8 @@ public class Subsystems {
         (cmd) -> {
           cmd.getRequirements().stream().forEach((s) -> commandLogger.get(s.getName()).append(""));
         });
+
+    SubsystemsDashboardTabs.bind(this);
   }
 
   /** Returns an array of all subsystems. */
@@ -85,7 +92,7 @@ public class Subsystems {
    *     this method returns {@link Optional#empty}.
    */
   private static <T extends Subsystem> Optional<T> newOptionalSubsystem(
-      Class<T> subsystemClass, RobotPreferences.BooleanValue enabled, Object... initArgs) {
+      Class<T> subsystemClass, BooleanPreference enabled, Object... initArgs) {
     if (!enabled.getValue()) {
       return Optional.empty();
     }
