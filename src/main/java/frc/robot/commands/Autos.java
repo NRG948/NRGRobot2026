@@ -71,7 +71,11 @@ public final class Autos {
   @AutonomousCommandGenerator
   public static Collection<LabelValue<String, Command>> generatePathPlannerAutos(
       Subsystems subsystems) {
-    return Arrays.stream(AUTOS_DIR.listFiles((file, name) -> name.endsWith(AUTO_FILE_TYPE)))
+    File[] autoFiles = AUTOS_DIR.listFiles((file, name) -> name.endsWith(AUTO_FILE_TYPE));
+    if (autoFiles == null) {
+      return java.util.List.of();
+    }
+    return Arrays.stream(autoFiles)
         .map((file) -> file.getName().split("\\.")[0])
         .sorted()
         .map(name -> new LabelValue<>(name, generatePathPlannerAuto(subsystems, name)))
