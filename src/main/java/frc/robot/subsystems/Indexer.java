@@ -7,24 +7,27 @@
  
 package frc.robot.subsystems;
 
-import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorIdleMode.BRAKE;
-
-import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.RobotConstants.CANID;
+import frc.robot.parameters.MotorParameters;
+import frc.robot.util.MotorController;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
-import frc.robot.util.TalonFXAdapter;
 
 public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
-  private final MotorDirection motorDirection = CLOCKWISE_POSITIVE;
+  private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
 
-  private final TalonFXAdapter indexerMotor =
-      new TalonFXAdapter("/indexerMotor", new TalonFX(0, "rio"), motorDirection, BRAKE, 0);
+  private final MotorController indexerMotor =
+      MOTOR.newController(
+          "/indexerMotor",
+          CANID.INDEXER_ID,
+          MotorDirection.CLOCKWISE_POSITIVE,
+          MotorIdleMode.BRAKE,
+          0);
   private final RelativeEncoder indexEncoder = indexerMotor.getEncoder();
 
   private final double KS = 0;
