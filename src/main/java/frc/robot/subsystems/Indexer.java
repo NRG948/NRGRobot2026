@@ -37,7 +37,6 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   private double goalVelocity = 0;
   private double currentVelocity = 0;
-  private double voltage = 0;
 
   /** Creates a new Indexer. */
   public Indexer() {}

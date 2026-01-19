@@ -166,7 +166,6 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   private double rawOrientation; // The raw gyro orientation in radians.
   private double rawOrientationOffset; // The offset to the corrected orientation in radians.
   private Rotation2d orientation = Rotation2d.kZero;
-  private Pose2d lastVisionMeasurement = new Pose2d();
   private Supplier<Optional<Rotation2d>> targetOrientationSupplier = () -> Optional.empty();
   private double acceleration = 0;
 
@@ -247,7 +246,6 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   public void addVisionMeasurement(
       Pose2d visionMeasurment, double timestamp, Matrix<N3, N1> stdDevs) {
     odometry.addVisionMeasurement(visionMeasurment, timestamp, stdDevs);
-    lastVisionMeasurement = visionMeasurment;
   }
 
   /*
