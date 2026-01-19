@@ -60,7 +60,8 @@
           "height" : 128.0,
           "properties" : {
             "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -101,7 +102,8 @@
           "height" : 128.0,
           "properties" : {
             "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -142,7 +144,8 @@
           "height" : 128.0,
           "properties" : {
             "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -183,7 +186,8 @@
           "height" : 128.0,
           "properties" : {
             "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       } ],
@@ -228,7 +232,8 @@
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Intake/Goal Velocity (m+s)",
-          "period" : 0.06
+          "period" : 0.06,
+          "show_submit_button" : false
         }
       }, {
         "title" : "Current Velocity (m/s)",
@@ -258,7 +263,8 @@
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Intake/Test Goal Velocity (m+s)",
-          "period" : 0.06
+          "period" : 0.06,
+          "show_submit_button" : true
         }
       }, {
         "title" : "Set Test Goal Velocity",
@@ -306,7 +312,148 @@
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Shooter",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Lower PID",
+        "type" : "PID Controller",
+        "x" : 768.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower PID",
           "period" : 0.06
+        }
+      }, {
+        "title" : "Upper PID",
+        "type" : "PID Controller",
+        "x" : 1024.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper PID",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Lower Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Lower Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -5.9108,
+          "max_value" : 5.9108,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Upper Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Upper Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -4.4331,
+          "max_value" : 4.4331,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Lower Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Test Lower Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Test Upper Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 512.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Test Upper Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Velocities (m/s)",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Set Test Velocities (m+s)",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
         }
       } ]
     }
