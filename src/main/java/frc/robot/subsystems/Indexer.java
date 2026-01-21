@@ -97,7 +97,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardPIDController(title = "PID Controller", column = 4, row = 0, width = 2, height = 3)
   private final PIDControllerPreference pidController =
-      new PIDControllerPreference("Intake", "PID Controller", 1, 0, 0);
+      new PIDControllerPreference("Indexer", "PID Controller", 1, 0, 0);
 
   /** Creates a new Indexer. */
   public Indexer() {}
