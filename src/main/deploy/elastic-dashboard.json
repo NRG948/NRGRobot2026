@@ -457,5 +457,103 @@
         }
       } ]
     }
+  }, {
+    "name" : "Indexer",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Current Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -15.9593,
+          "max_value" : 15.9593,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Test Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Velocity",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Set Test Goal Velocity",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "PID Controller",
+        "type" : "PID Controller",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/PID Controller",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Current Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
+    }
   } ]
 }

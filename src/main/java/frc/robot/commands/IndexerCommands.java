@@ -10,10 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Subsystems;
 
 /** Add your docs here. */
 public final class IndexerCommands {
-  public static Command setIndexerSpeed(Indexer indexer, double indexerSpeed) {
-    return Commands.runOnce(() -> indexer.setVelocity(indexerSpeed), indexer);
+  public static Command feed(Subsystems subsystems) {
+    Indexer indexer = subsystems.indexer;
+    return Commands.runOnce(() -> indexer.feed(), indexer).withName("Feed");
   }
 }

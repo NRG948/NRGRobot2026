@@ -29,6 +29,9 @@ public class Subsystems {
   @DashboardTab(title = "Shooter")
   public final Shooter shooter = new Shooter();
 
+  @DashboardTab(title = "Indexer")
+  public final Indexer indexer = new Indexer();
+
   // TODO: Add Cameras (need AprilTag subsystem)
 
   private final Subsystem[] all;
@@ -38,7 +41,7 @@ public class Subsystems {
 
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
-    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter));
+    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer));
 
     // Add all non-manipulator subsystems to the `all` list.
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
