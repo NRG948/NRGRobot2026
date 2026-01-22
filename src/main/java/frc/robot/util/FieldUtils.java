@@ -7,7 +7,6 @@
  
 package frc.robot.util;
 
-import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
