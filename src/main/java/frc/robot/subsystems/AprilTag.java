@@ -7,7 +7,10 @@
  
 package frc.robot.subsystems;
 
+import com.nrg948.dashboard.annotations.DashboardBooleanBox;
+import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
+import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.cscore.HttpCamera;
@@ -27,16 +30,12 @@ import edu.wpi.first.util.datalog.StructArrayLogEntry;
 import edu.wpi.first.util.datalog.StructLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.EstimatedPoseTelemetry;
 import frc.robot.util.FieldUtils;
+import frc.robot.util.SelectedAprilTagTelemetry;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -142,6 +141,7 @@ public class AprilTag extends SubsystemBase {
   private final int streamPort;
   private final PhotonPoseEstimator estimator;
 
+  @DashboardComboBoxChooser(column = 0, row = 0, width = 2, title = "Selected April Tag")
   private final SendableChooser<Integer> aprilTagIdChooser = new SendableChooser<>();
 
   private final BooleanLogEntry hasTargetLogger;
@@ -152,12 +152,23 @@ public class AprilTag extends SubsystemBase {
 
   private int selectedAprilTag;
   private Pose3d selectedAprilTagPose = new Pose3d();
-  private double angleToSelectedTarget;
-  private double distanceToSelectedTarget;
+
+  @DashboardLayout(title = "Selected April Tag", column = 9, row = 0, width = 2, height = 5)
+  private SelectedAprilTagTelemetry selectedAprilTagTelemetry = new SelectedAprilTagTelemetry();
+
+  @DashboardLayout(title = "Estimated Pose", column = 0, row = 3, width = 2, height = 2)
+  private EstimatedPoseTelemetry estimatedPoseTelemetry = new EstimatedPoseTelemetry();
 
   private Optional<EstimatedRobotPose> globalEstimatedPose = Optional.empty();
+
   private Pose2d lastEstimatedPose = Pose2d.kZero;
+
   private Matrix<N3, N1> curStdDevs = SINGLE_TAG_STD_DEVS;
+
+  // TODO: DashboardCameraStream annotation doesn't work?
+  // @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width =
+  // 4, height = 4)
+  private VideoSource video;
 
   /**
    * Constructs a new AprilTagSubsystem instance.
@@ -190,6 +201,14 @@ public class AprilTag extends SubsystemBase {
     targetPoseArrayLogger =
         StructArrayLogEntry.create(
             LOG, String.format("/%s/Target Poses", cameraName), Pose2d.struct);
+
+    if (ENABLE_TAB.getValue()) {
+      video =
+          new HttpCamera(
+              String.format("photonvision_Port_%d_Output_MJPEG_Server", streamPort),
+              String.format("http://photonvision.local:%d/stream.mjpg", streamPort),
+              HttpCameraKind.kMJPGStreamer);
+    }
   }
 
   /**
@@ -302,7 +321,8 @@ public class AprilTag extends SubsystemBase {
           estimatedPoseLogger.append(lastEstimatedPose);
         });
 
-    // Update the result if present or if the last result is within the lifetime timeout period.
+    // Update the result if present or if the last result is within the lifetime
+    // timeout period.
     if (currentResult.isPresent()
         || this.result
             .map(r -> (Timer.getFPGATimestamp() - r.getTimestampSeconds()) < LAST_RESULT_TIMEOUT)
@@ -322,12 +342,24 @@ public class AprilTag extends SubsystemBase {
     if (ENABLE_TAB.getValue()) {
       selectedAprilTag = aprilTagIdChooser.getSelected().intValue();
       selectedAprilTagPose = FieldUtils.getAprilTagPose3d(selectedAprilTag);
+      selectedAprilTagTelemetry.selectedAprilTagPoseX = selectedAprilTagPose.getX();
+      selectedAprilTagTelemetry.selectedAprilTagPoseY = selectedAprilTagPose.getY();
+      selectedAprilTagTelemetry.selectedAprilTagPoseZ = selectedAprilTagPose.getZ();
+      selectedAprilTagTelemetry.selectedAprilTagRoll = selectedAprilTagPose.getRotation().getX();
+      selectedAprilTagTelemetry.selectedAprilTagPitch = selectedAprilTagPose.getRotation().getY();
+      selectedAprilTagTelemetry.selectedAprilTagYaw = selectedAprilTagPose.getRotation().getZ();
+
+      estimatedPoseTelemetry.lastEstimatedPoseX = lastEstimatedPose.getX();
+      estimatedPoseTelemetry.lastEstimatedPoseY = lastEstimatedPose.getY();
+      estimatedPoseTelemetry.lastEstimatedPoseYaw = lastEstimatedPose.getRotation().getDegrees();
 
       Optional<PhotonTrackedTarget> target = getTarget(selectedAprilTag);
       if (target.isPresent()) {
         var robotToTarget = robotToCamera.plus(target.get().getBestCameraToTarget());
-        distanceToSelectedTarget = Math.hypot(robotToTarget.getX(), robotToTarget.getY());
-        angleToSelectedTarget = Math.atan2(robotToTarget.getY(), robotToTarget.getX());
+        selectedAprilTagTelemetry.distanceToSelectedTarget =
+            Math.hypot(robotToTarget.getX(), robotToTarget.getY());
+        selectedAprilTagTelemetry.angleToSelectedTarget =
+            Math.atan2(robotToTarget.getY(), robotToTarget.getX());
       }
     }
   }
@@ -360,6 +392,7 @@ public class AprilTag extends SubsystemBase {
   }
 
   /** Returns whether one or more AprilTags are visible. */
+  @DashboardBooleanBox(column = 0, row = 1, width = 2, height = 2, title = "Has Targets")
   public boolean hasTargets() {
     return result.orElse(NO_RESULT).hasTargets();
   }
@@ -406,67 +439,5 @@ public class AprilTag extends SubsystemBase {
     }
     var bestCameraToTarget = robotToCamera.plus(target.get().getBestCameraToTarget());
     return Math.hypot(bestCameraToTarget.getX(), bestCameraToTarget.getY());
-  }
-
-  /** Adds the AprilTag tab to Shuffleboard if enabled. */
-  public void addShuffleboardTab() {
-    if (!ENABLE_TAB.getValue()) {
-      return;
-    }
-    VideoSource video =
-        new HttpCamera(
-            String.format("photonvision_Port_%d_Output_MJPEG_Server", streamPort),
-            String.format("http://photonvision.local:%d/stream.mjpg", streamPort),
-            HttpCameraKind.kMJPGStreamer);
-
-    ShuffleboardTab visionTab = Shuffleboard.getTab(getName());
-    ShuffleboardLayout targetLayout =
-        visionTab.getLayout("Target Info", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 5);
-    targetLayout.add("ID Selection", aprilTagIdChooser).withWidget(BuiltInWidgets.kComboBoxChooser);
-    targetLayout.addBoolean("Has Target", this::hasTargets).withWidget(BuiltInWidgets.kBooleanBox);
-    targetLayout
-        .addDouble("Distance", () -> distanceToSelectedTarget)
-        .withWidget(BuiltInWidgets.kTextView);
-    targetLayout
-        .addDouble("Angle", () -> Math.toDegrees(angleToSelectedTarget))
-        .withWidget(BuiltInWidgets.kTextView);
-
-    visionTab
-        .add("April Tag", video)
-        .withWidget(BuiltInWidgets.kCameraStream)
-        .withPosition(2, 0)
-        .withSize(4, 3);
-
-    ShuffleboardLayout aprilTagLayout =
-        visionTab
-            .getLayout("Target Position", BuiltInLayouts.kList)
-            .withPosition(6, 0)
-            .withSize(2, 4);
-    ShuffleboardLayout selectedLayout =
-        aprilTagLayout
-            .getLayout("Selected April Tag", BuiltInLayouts.kGrid)
-            .withProperties(Map.of("Number of Columns", 3, "Number of Rows", 2));
-    selectedLayout.addDouble("X", () -> selectedAprilTagPose.getX()).withPosition(0, 0);
-    selectedLayout.addDouble("Y", () -> selectedAprilTagPose.getY()).withPosition(1, 0);
-    selectedLayout.addDouble("Z", () -> selectedAprilTagPose.getZ()).withPosition(2, 0);
-    selectedLayout
-        .addDouble("Roll", () -> Math.toDegrees(selectedAprilTagPose.getRotation().getX()))
-        .withPosition(0, 1);
-    selectedLayout
-        .addDouble("Pitch", () -> Math.toDegrees(selectedAprilTagPose.getRotation().getY()))
-        .withPosition(1, 1);
-    selectedLayout
-        .addDouble("Yaw", () -> Math.toDegrees(selectedAprilTagPose.getRotation().getZ()))
-        .withPosition(2, 1);
-
-    ShuffleboardLayout estimatedLayout =
-        aprilTagLayout
-            .getLayout("Global Estimated Pose", BuiltInLayouts.kGrid)
-            .withProperties(Map.of("Number of columns", 3, "Number of rows", 1));
-    estimatedLayout.addDouble("X", () -> lastEstimatedPose.getX()).withPosition(0, 0);
-    estimatedLayout.addDouble("Y", () -> lastEstimatedPose.getY()).withPosition(1, 0);
-    estimatedLayout
-        .addDouble("Yaw", () -> lastEstimatedPose.getRotation().getDegrees())
-        .withPosition(2, 0);
   }
 }
