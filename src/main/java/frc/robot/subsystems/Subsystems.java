@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -33,6 +34,14 @@ public class Subsystems {
   public final Indexer indexer = new Indexer();
 
   // TODO: Add Cameras (need AprilTag subsystem)
+  // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
+  // TODO: Make cameras Optional
+  @DashboardTab(title = "Front Right Camera")
+  public final AprilTag frontRightCamera =
+      new AprilTag("FrontRightCamera", new Transform3d(), 8080);
+
+  @DashboardTab(title = "Front Left Camera")
+  public final AprilTag frontLeftCamera = new AprilTag("FrontLeftCamera", new Transform3d(), 8081);
 
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
