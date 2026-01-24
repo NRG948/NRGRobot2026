@@ -1,7 +1,10 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
+/*
+ * Copyright (c) 2026 Newport Robotics Group. All Rights Reserved.
+ *
+ * Open Source Software; you can modify and/or share it under the terms of
+ * the license file in the root directory of this project.
+ */
+ 
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
@@ -12,7 +15,6 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StructLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -25,7 +27,7 @@ public class AlignToPose extends Command {
   private static final double MAX_TRANSLATIONAL_POWER = 0.30;
   private static final double MAX_ROTATIONAL_POWER = 0.5;
 
-  // TODO: Change these to Robot 
+  // TODO: Change these to Robot
   public static double Px = 1;
   public static double Py = 1;
   public static double Pr = 0.02;
@@ -125,6 +127,6 @@ public class AlignToPose extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-     return xController.atSetpoint() && yController.atSetpoint() && rController.atSetpoint();
+    return xController.atSetpoint() && yController.atSetpoint() && rController.atSetpoint();
   }
 }
