@@ -25,5 +25,15 @@ public final class Constants {
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.9);
+
+    public static final class CANID {
+      public static final int INTAKE_ID = 9;
+      public static final int INTAKE_ARM_ID = 10;
+      public static final int SHOOTER_LOWER_1_ID = 11;
+      public static final int SHOOTER_LOWER_2_ID = 12;
+      public static final int SHOOTER_UPPER_1_ID = 13;
+      public static final int SHOOTER_UPPER_2_ID = 14;
+      public static final int INDEXER_ID = 15;
+    }
   }
 }

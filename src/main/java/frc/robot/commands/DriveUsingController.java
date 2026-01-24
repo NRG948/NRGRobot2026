@@ -7,8 +7,6 @@
  
 package frc.robot.commands;
 
-import com.nrg948.preferences.RobotPreferences;
-import com.nrg948.preferences.RobotPreferencesValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,10 +15,6 @@ import frc.robot.subsystems.Swerve;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class DriveUsingController extends Command {
-
-  @RobotPreferencesValue
-  public static final RobotPreferences.DoubleValue RIGHT_TRIGGER_SCALAR =
-      new RobotPreferences.DoubleValue("Drive", "Right Trigger Scalar", 0.25);
 
   private static final double RUMBLE_MIN_G = 1.0;
   private static final double RUMBLE_MAX_G = 8.0;
@@ -53,7 +47,7 @@ public class DriveUsingController extends Command {
     // The `powerScalar` linearly scales the robot's drive power from 1.0 (when the right trigger is
     // not pressed) down to RIGHT_TRIGGER_SCALAR (when the right trigger is fully depressed).
     double powerScalar =
-        (RIGHT_TRIGGER_SCALAR.getValue() - 1.0) * xboxController.getRightTriggerAxis() + 1.0;
+        (Swerve.RIGHT_TRIGGER_SCALAR.getValue() - 1.0) * xboxController.getRightTriggerAxis() + 1.0;
 
     // Applies deadbands to the x, y, and rotation joystick values and then multiplies all speeds by
     // the powerScalar, which allows finer driving control.
