@@ -55,7 +55,7 @@ public final class Autos {
    * @param container
    */
   public Autos(Subsystems subsystems) {
-    autoChooser = Autonomous.getChooser(subsystems, "frc.robot");
+    autoChooser = Autonomous.getChooser(subsystems);
   }
 
   /**

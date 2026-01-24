@@ -59,7 +59,6 @@ wpi.java.debugJni = false
 def includeDesktopSupport = true
 
 repositories {
-    mavenLocal()
     maven {
         url = uri("https://maven.pkg.github.com/NRG948/nrgcommon")
         credentials {
@@ -72,7 +71,7 @@ repositories {
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
-def NRGCommonVersion = "2026.2.2-SNAPSHOT"
+def NRGCommonVersion = "2026.2.3-SNAPSHOT"
 
 dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
