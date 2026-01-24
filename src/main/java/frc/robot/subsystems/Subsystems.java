@@ -41,7 +41,7 @@ public class Subsystems {
       new AprilTag("FrontRightCamera", new Transform3d(), 8080);
 
   @DashboardTab(title = "Front Left Camera")
-  public final AprilTag frontLeftCamera = new AprilTag("FrontLeftCamera", new Transform3d(), 8080);
+  public final AprilTag frontLeftCamera = new AprilTag("FrontLeftCamera", new Transform3d(), 8081);
 
   private final Subsystem[] all;
   private final Subsystem[] manipulators;

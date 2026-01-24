@@ -12,14 +12,14 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
- * AprilTag field layout selections for REEFSCAPE.
+ * AprilTag field layout selections for the official FRC fields supported by this robot code,
+ * including the 2025 REEFSCAPE and 2026 Rebuilt configurations.
  *
- * <p>The PROCESSOR AprilTag location varies depending on the field perimeter in use. See <a href=
- * "https://firstfrc.blob.core.windows.net/frc2025/Manual/TeamUpdates/TeamUpdate12.pdf">Team Update
- * 12</a> for more information.
+ * <p>Tag locations can vary depending on the field perimeter and specific game configuration in
+ * use. Refer to the official game manual and field drawings for the most up-to-date information.
  *
  * <p>This enum can be used with a {@link SendableChooser} or {@link RobotPreferences.EnumValue} to
- * select the field layout to match.
+ * select the field layout to match the installed field perimeter.
  */
 public enum AprilTagFieldParameters {
   /** The field layout using the welded perimeter. */
