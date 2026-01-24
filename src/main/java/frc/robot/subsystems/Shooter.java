@@ -41,16 +41,16 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final DataLog LOG = DataLogManager.getLog();
 
   private static final MotorParameters LOWER_MOTOR = MotorParameters.KrakenX44;
-  private static final double LOWER_GEAR_RATIO = 9.0; // TODO Finalize gear ratio
+  private static final double LOWER_GEAR_RATIO = 1.0; // TODO Finalize gear ratio
   private static final double LOWER_WHEEL_DIAMETER =
       Units.inchesToMeters(4); // TODO Finalize diameter
   private static final double LOWER_METERS_PER_REV =
       (LOWER_WHEEL_DIAMETER * Math.PI) / LOWER_GEAR_RATIO;
 
   private static final MotorParameters UPPER_MOTOR = MotorParameters.KrakenX44;
-  private static final double UPPER_GEAR_RATIO = 9.0; // TODO Finalize gear ratio
+  private static final double UPPER_GEAR_RATIO = 3.0; // TODO Finalize gear ratio
   private static final double UPPER_WHEEL_DIAMETER =
-      Units.metersToInches(3); // TODO Finalize diameter
+      Units.inchesToMeters(2); // TODO Finalize diameter
   private static final double UPPER_METERS_PER_REV =
       (UPPER_WHEEL_DIAMETER * Math.PI) / UPPER_GEAR_RATIO;
 
