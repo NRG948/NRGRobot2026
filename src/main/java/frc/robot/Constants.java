@@ -36,4 +36,13 @@ public final class Constants {
       public static final int INDEXER_ID = 15;
     }
   }
+
+  public static class VisionConstants {
+    // TODO: Change this for the hub/tower
+    /** The translational tolerance value for aligning. */
+    public static final double POSE_ALIGNMENT_TOLERANCE_XY = 0.02; // in m
+
+    /** The rotational tolerance value for aligning. */
+    public static final double POSE_ALIGNMENT_TOLERANCE_R = 1.0; // in deg
+  }
 }
