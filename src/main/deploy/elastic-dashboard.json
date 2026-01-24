@@ -726,6 +726,17 @@
           "sort_options" : false
         }
       }, {
+        "title" : "Camera Stream",
+        "type" : "Camera Stream",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 512.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Right Camera/Camera Stream",
+          "period" : 0.06
+        }
+      }, {
         "title" : "Has Targets",
         "type" : "Boolean Box",
         "x" : 0.0,
@@ -911,6 +922,17 @@
           "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag",
           "period" : 0.06,
           "sort_options" : false
+        }
+      }, {
+        "title" : "Camera Stream",
+        "type" : "Camera Stream",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 512.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Left Camera/Camera Stream",
+          "period" : 0.06
         }
       }, {
         "title" : "Has Targets",

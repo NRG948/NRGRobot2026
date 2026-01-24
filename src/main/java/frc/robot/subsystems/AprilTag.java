@@ -8,11 +8,11 @@
 package frc.robot.subsystems;
 
 import com.nrg948.dashboard.annotations.DashboardBooleanBox;
+import com.nrg948.dashboard.annotations.DashboardCameraStream;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
-import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
@@ -77,37 +77,8 @@ public class AprilTag extends SubsystemBase {
    */
 
   // TODO: Add parameters once ROBOT_TYPE is added
-  // public record VisionParameters(
-  // Optional<CameraParameters> frontRight, Optional<CameraParameters> frontLeft)
-  // {}
-
-  // public static final VisionParameters PRACTICE_VISION_PARAMS =
-  // new VisionParameters(Optional.empty(), Optional.empty());
-  // public static final VisionParameters COMPETITION_VISION_PARAMS =
-  // new VisionParameters(
-  // Optional.of(new CameraParameters("FrontRightCamera",
-  // ROBOT_TO_FRONT_RIGHT_CAMERA,
-  // 1182)),
-  // Optional.of(new CameraParameters("FrontLeftCamera",
-  // ROBOT_TO_FRONT_LEFT_CAMERA,
-  // 1184)));
-
-  // public static final VisionParameters PARAMETERS =
-  // RobotContainer.ROBOT_TYPE
-  // .select(
-  // Map.of(
-  // PracticeRobot2026, PRACTICE_VISION_PARAMS,
-  // CompetitionRobot2026, COMPETITION_VISION_PARAMS))
-  // .orElse(COMPETITION_VISION_PARAMS);
-
-  // TODO: fix once optional subsystems are added
-  // @RobotPreferencesValue(column = 0, row = 0)
-  // public static final RobotPreferences.BooleanValue ENABLED =
-  // new RobotPreferences.BooleanValue("AprilTag", "Enabled", true);
-
-  // TODO: revisit ENABLE_TAB implementation once nrgcommonlib updates
-  public static final BooleanPreference ENABLE_TAB =
-      new BooleanPreference("AprilTag", "Enable Tab", false);
+  public record VisionParameters(
+      Optional<CameraParameters> frontRight, Optional<CameraParameters> frontLeft) {}
 
   private enum PoseEstimationStrategy {
     AverageBestTargets(PoseStrategy.AVERAGE_BEST_TARGETS),
@@ -164,7 +135,7 @@ public class AprilTag extends SubsystemBase {
 
   private Matrix<N3, N1> curStdDevs = SINGLE_TAG_STD_DEVS;
 
-  // @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width = 4, height = 4)
+  @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width = 4, height = 4)
   private VideoSource video;
 
   /**
@@ -174,12 +145,12 @@ public class AprilTag extends SubsystemBase {
    * @param robotToCamera The transform from the robot to the camera.
    * @param streamPort The port for the camera stream.
    */
-  public AprilTag(String cameraName, Transform3d robotToCamera, Integer streamPort) {
+  public AprilTag(String cameraName, Transform3d robotToCamera, int streamPort) {
     setName(cameraName);
     this.camera = new PhotonCamera(cameraName);
     this.robotToCamera = robotToCamera;
     this.cameraToRobot = robotToCamera.inverse();
-    this.streamPort = streamPort.intValue();
+    this.streamPort = streamPort;
 
     estimator =
         new PhotonPoseEstimator(
@@ -198,14 +169,11 @@ public class AprilTag extends SubsystemBase {
     targetPoseArrayLogger =
         StructArrayLogEntry.create(
             LOG, String.format("/%s/Target Poses", cameraName), Pose2d.struct);
-
-    if (ENABLE_TAB.getValue()) {
-      video =
-          new HttpCamera(
-              String.format("photonvision_Port_%d_Output_MJPEG_Server", streamPort),
-              String.format("http://photonvision.local:%d/stream.mjpg", streamPort),
-              HttpCameraKind.kMJPGStreamer);
-    }
+    video =
+        new HttpCamera(
+            String.format("photonvision_Port_%d_Output_MJPEG_Server", streamPort),
+            String.format("http://photonvision.local:%d/stream.mjpg", streamPort),
+            HttpCameraKind.kMJPGStreamer);
   }
 
   /**
@@ -336,28 +304,26 @@ public class AprilTag extends SubsystemBase {
 
     hasTargetLogger.update(hasTargets());
 
-    if (ENABLE_TAB.getValue()) {
-      selectedAprilTag = aprilTagIdChooser.getSelected().intValue();
-      selectedAprilTagPose = FieldUtils.getAprilTagPose3d(selectedAprilTag);
-      selectedAprilTagTelemetry.selectedAprilTagPoseX = selectedAprilTagPose.getX();
-      selectedAprilTagTelemetry.selectedAprilTagPoseY = selectedAprilTagPose.getY();
-      selectedAprilTagTelemetry.selectedAprilTagPoseZ = selectedAprilTagPose.getZ();
-      selectedAprilTagTelemetry.selectedAprilTagRoll = selectedAprilTagPose.getRotation().getX();
-      selectedAprilTagTelemetry.selectedAprilTagPitch = selectedAprilTagPose.getRotation().getY();
-      selectedAprilTagTelemetry.selectedAprilTagYaw = selectedAprilTagPose.getRotation().getZ();
+    selectedAprilTag = aprilTagIdChooser.getSelected().intValue();
+    selectedAprilTagPose = FieldUtils.getAprilTagPose3d(selectedAprilTag);
+    selectedAprilTagTelemetry.selectedAprilTagPoseX = selectedAprilTagPose.getX();
+    selectedAprilTagTelemetry.selectedAprilTagPoseY = selectedAprilTagPose.getY();
+    selectedAprilTagTelemetry.selectedAprilTagPoseZ = selectedAprilTagPose.getZ();
+    selectedAprilTagTelemetry.selectedAprilTagRoll = selectedAprilTagPose.getRotation().getX();
+    selectedAprilTagTelemetry.selectedAprilTagPitch = selectedAprilTagPose.getRotation().getY();
+    selectedAprilTagTelemetry.selectedAprilTagYaw = selectedAprilTagPose.getRotation().getZ();
 
-      estimatedPoseTelemetry.lastEstimatedPoseX = lastEstimatedPose.getX();
-      estimatedPoseTelemetry.lastEstimatedPoseY = lastEstimatedPose.getY();
-      estimatedPoseTelemetry.lastEstimatedPoseYaw = lastEstimatedPose.getRotation().getDegrees();
+    estimatedPoseTelemetry.lastEstimatedPoseX = lastEstimatedPose.getX();
+    estimatedPoseTelemetry.lastEstimatedPoseY = lastEstimatedPose.getY();
+    estimatedPoseTelemetry.lastEstimatedPoseYaw = lastEstimatedPose.getRotation().getDegrees();
 
-      Optional<PhotonTrackedTarget> target = getTarget(selectedAprilTag);
-      if (target.isPresent()) {
-        var robotToTarget = robotToCamera.plus(target.get().getBestCameraToTarget());
-        selectedAprilTagTelemetry.distanceToSelectedTarget =
-            Math.hypot(robotToTarget.getX(), robotToTarget.getY());
-        selectedAprilTagTelemetry.angleToSelectedTarget =
-            Math.atan2(robotToTarget.getY(), robotToTarget.getX());
-      }
+    Optional<PhotonTrackedTarget> target = getTarget(selectedAprilTag);
+    if (target.isPresent()) {
+      var robotToTarget = robotToCamera.plus(target.get().getBestCameraToTarget());
+      selectedAprilTagTelemetry.distanceToSelectedTarget =
+          Math.hypot(robotToTarget.getX(), robotToTarget.getY());
+      selectedAprilTagTelemetry.angleToSelectedTarget =
+          Math.atan2(robotToTarget.getY(), robotToTarget.getX());
     }
   }
 

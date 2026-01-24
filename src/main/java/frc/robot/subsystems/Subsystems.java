@@ -38,10 +38,10 @@ public class Subsystems {
   // TODO: Make cameras Optional
   @DashboardTab(title = "Front Right Camera")
   public final AprilTag frontRightCamera =
-      new AprilTag("FrontRightCamera", new Transform3d(), 1111);
+      new AprilTag("FrontRightCamera", new Transform3d(), 8080);
 
   @DashboardTab(title = "Front Left Camera")
-  public final AprilTag frontLeftCamera = new AprilTag("FrontLeftCamera", new Transform3d(), 1111);
+  public final AprilTag frontLeftCamera = new AprilTag("FrontLeftCamera", new Transform3d(), 8080);
 
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
