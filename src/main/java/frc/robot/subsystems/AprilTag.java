@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Newport Robotics Group. All Rights Reserved.
+ * Copyright (c) 2026 Newport Robotics Group. All Rights Reserved.
  *
  * Open Source Software; you can modify and/or share it under the terms of
  * the license file in the root directory of this project.
@@ -11,6 +11,7 @@ import com.nrg948.dashboard.annotations.DashboardBooleanBox;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
+import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.cscore.HttpCamera;
@@ -32,9 +33,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.EstimatedPoseTelemetry;
 import frc.robot.util.FieldUtils;
-import frc.robot.util.SelectedAprilTagTelemetry;
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
@@ -165,9 +164,7 @@ public class AprilTag extends SubsystemBase {
 
   private Matrix<N3, N1> curStdDevs = SINGLE_TAG_STD_DEVS;
 
-  // TODO: DashboardCameraStream annotation doesn't work?
-  // @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width =
-  // 4, height = 4)
+  // @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width = 4, height = 4)
   private VideoSource video;
 
   /**
@@ -439,5 +436,44 @@ public class AprilTag extends SubsystemBase {
     }
     var bestCameraToTarget = robotToCamera.plus(target.get().getBestCameraToTarget());
     return Math.hypot(bestCameraToTarget.getX(), bestCameraToTarget.getY());
+  }
+
+  @DashboardDefinition
+  public class SelectedAprilTagTelemetry {
+    @DashboardTextDisplay(column = 0, row = 0, title = "X")
+    public double selectedAprilTagPoseX;
+
+    @DashboardTextDisplay(column = 1, row = 0, title = "Y")
+    public double selectedAprilTagPoseY;
+
+    @DashboardTextDisplay(column = 2, row = 0, title = "Z")
+    public double selectedAprilTagPoseZ;
+
+    @DashboardTextDisplay(column = 0, row = 1, title = "Roll")
+    public double selectedAprilTagRoll;
+
+    @DashboardTextDisplay(column = 1, row = 1, title = "Pitch")
+    public double selectedAprilTagPitch;
+
+    @DashboardTextDisplay(column = 2, row = 1, title = "Yaw")
+    public double selectedAprilTagYaw;
+
+    @DashboardTextDisplay(column = 0, row = 2, title = "Angle to Target")
+    public double angleToSelectedTarget;
+
+    @DashboardTextDisplay(column = 1, row = 2, title = "Distance to Target")
+    public double distanceToSelectedTarget;
+  }
+
+  @DashboardDefinition
+  public class EstimatedPoseTelemetry {
+    @DashboardTextDisplay(column = 0, row = 0, title = "X")
+    public double lastEstimatedPoseX;
+
+    @DashboardTextDisplay(column = 1, row = 0, title = "Y")
+    public double lastEstimatedPoseY;
+
+    @DashboardTextDisplay(column = 2, row = 0, title = "Yaw")
+    public double lastEstimatedPoseYaw;
   }
 }
