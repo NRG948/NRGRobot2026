@@ -33,6 +33,8 @@ public class Subsystems {
   @DashboardTab(title = "Indexer")
   public final Indexer indexer = new Indexer();
 
+  public final StatusLED statusLEDs = new StatusLED();
+
   // TODO: Add Cameras (need AprilTag subsystem)
   // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
   // TODO: Make cameras Optional
