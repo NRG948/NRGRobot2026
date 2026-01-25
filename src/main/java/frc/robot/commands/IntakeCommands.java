@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
 
 /** A utility class for controlling the intake. */
@@ -22,8 +23,16 @@ public final class IntakeCommands {
    */
   public static Command stowIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
+    IntakeArm intakeArm = subsystems.intakeArm;
     // TODO Flesh out full sequence when other subsystems are finished.
-    return Commands.runOnce(intake::disable, intake);
+    return Commands.parallel(
+        Commands.runOnce(intake::disable, intake),
+        Commands.runOnce(() -> intakeArm.setGoalAngle(intakeArm.getStowAngle()), intakeArm));
+  }
+
+  public static Command setIntakeArmAngle(double angle, Subsystems subsystems) {
+    IntakeArm intakeArm = subsystems.intakeArm;
+    return Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm);
   }
 
   /**
