@@ -24,7 +24,6 @@ import java.util.function.BooleanSupplier;
 
 /** A namespace for LED command factory methods. */
 public final class LEDCommands {
-  private static final double BLINK_DURATION = 1.0;
 
   /**
    * Returns a command that sets the color of the status LEDs.
@@ -111,12 +110,13 @@ public final class LEDCommands {
   }
 
   /**
-   * Returns a command that either sets the climbing phase of the robot. When the robot is in the
+   * Returns a command that sets the climbing phase LEDs of the robot. When the robot is in the
    * process of climbing, the LEDs will blink rainbow cycle. When fully climbed, the LEDs will
    * display solid rainbow cycle.
    *
-   * @param isClimbing The status LED subsystem.
-   * @param isClimbed The color to set.
+   * @param subsystems The subsystems container providing access to the status LEDs.
+   * @param isClimbing A supplier that returns true while the robot is actively climbing.
+   * @param isClimbed A supplier that returns true once the robot has finished climbing.
    */
   public static Command setClimbModeLED(
       Subsystems subsystems, BooleanSupplier isClimbing, BooleanSupplier isClimbed) {
@@ -152,7 +152,6 @@ public final class LEDCommands {
    * Returns a command that turns the status LEDs red while a condition is true.
    *
    * @param subsystems The subsystems.
-   * @param condition The condition for the command to run.
    * @return A command that turns the status LEDs red.
    */
   public static Command indicateErrorWithSolid(Subsystems subsystems) {

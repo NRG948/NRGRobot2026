@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.parameters.Colors;
 import frc.robot.subsystems.LEDSubsystem;
 
-/** A command to blink the status LEDs a specified color. */
+/** A command to blink the status LEDs to two different alternating colors. */
 public final class AlternateColor extends Command {
   // Using 0.2 results in the LEDs to end up as no color
   private static final double BLINK_TIME = 0.19;
@@ -25,7 +25,7 @@ public final class AlternateColor extends Command {
 
   /** Creates a new AlternateColor. */
   public AlternateColor(LEDSubsystem led, Colors colorOne, Colors colorTwo) {
-    setName(String.format("BlinkColor(%s)", colorOne.name(), colorTwo.name()));
+    setName(String.format("BlinkColor(%s,%s)", colorOne.name(), colorTwo.name()));
 
     this.led = led;
     this.colorOne = colorOne;

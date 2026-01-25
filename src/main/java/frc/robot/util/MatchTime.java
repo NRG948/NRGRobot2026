@@ -59,14 +59,14 @@ public class MatchTime {
       return false;
     }
     double time = DriverStation.getMatchTime();
-    return (time <= PRE_FIRST_SHIFT_START_TIME && time >= FIRST_SHIFT_START_TIME - 1.0)
-        || (time <= PRE_SECOND_SHIFT_START_TIME && time >= SECOND_SHIFT_START_TIME - 1.0)
-        || (time <= PRE_THIRD_SHIFT_START_TIME && time >= THIRD_SHIFT_START_TIME - 1.0)
-        || (time <= PRE_FOURTH_SHIFT_START_TIME && time >= FOURTH_SHIFT_START_TIME - 1.0);
+    return (time <= PRE_FIRST_SHIFT_START_TIME && time > FIRST_SHIFT_START_TIME + 1.0)
+        || (time <= PRE_SECOND_SHIFT_START_TIME && time > SECOND_SHIFT_START_TIME + 1.0)
+        || (time <= PRE_THIRD_SHIFT_START_TIME && time > THIRD_SHIFT_START_TIME + 1.0)
+        || (time <= PRE_FOURTH_SHIFT_START_TIME && time > FOURTH_SHIFT_START_TIME + 1.0);
   }
 
   /*
-   * Special method of isNearShiftChange speciaized for the last second before shift change.
+   * Special method of isNearShiftChange specialized for the last second before shift change.
    */
   public static boolean isNearShiftChangeFinalSecond() {
     if (!isTeleop()) {
