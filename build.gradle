@@ -71,7 +71,7 @@ repositories {
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
-def NRGCommonVersion = "2026.2.1-SNAPSHOT"
+def NRGCommonVersion = "2026.2.2-SNAPSHOT"
 
 dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()

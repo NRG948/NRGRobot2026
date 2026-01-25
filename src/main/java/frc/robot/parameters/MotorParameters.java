@@ -7,6 +7,7 @@
  
 package frc.robot.parameters;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -130,7 +131,11 @@ public enum MotorParameters {
       case KrakenX44:
       case KrakenX60:
         return new TalonFXAdapter(
-            logPrefix, new TalonFX(deviceID, "rio"), direction, idleMode, distancePerRotation);
+            logPrefix,
+            new TalonFX(deviceID, CANBus.roboRIO()),
+            direction,
+            idleMode,
+            distancePerRotation);
 
       case NeoV1_1:
       case NeoVortexMax:

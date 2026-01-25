@@ -7,6 +7,7 @@
  
 package frc.robot.util;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.units.measure.Angle;
@@ -17,7 +18,7 @@ public final class Pigeon2Gyro implements Gyro {
   private final StatusSignal<Angle> angle;
 
   public Pigeon2Gyro(int canID) {
-    pigeon = new Pigeon2(canID, "rio");
+    pigeon = new Pigeon2(canID, CANBus.roboRIO());
     angle = pigeon.getYaw();
   }
 

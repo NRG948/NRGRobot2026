@@ -192,6 +192,11 @@ public class SwerveModule {
     wheelAngleVelocityLog.append(wheelAngleVelocity);
   }
 
+  /** Returns the name of the module. */
+  public String getName() {
+    return name;
+  }
+
   /**
    * Sets the desired state for the module.
    *

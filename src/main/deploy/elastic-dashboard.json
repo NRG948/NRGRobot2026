@@ -20,7 +20,7 @@
       } ]
     }
   }, {
-    "name" : "drivetrain",
+    "name" : "Swerve",
     "grid_layout" : {
       "layouts" : [ {
         "title" : "Front Left",
@@ -40,7 +40,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -59,8 +59,9 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -81,7 +82,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -100,8 +101,9 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -122,7 +124,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -141,8 +143,9 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -163,7 +166,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -182,12 +185,375 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       } ],
-      "containers" : [ ]
+      "containers" : [ {
+        "title" : "Enable Rumble",
+        "type" : "Toggle Switch",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Enable Rumble",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Right Trigger Scalar",
+        "type" : "Number Slider",
+        "x" : 640.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Right Trigger Scalar",
+          "period" : 0.06,
+          "min_value" : 0.0,
+          "max_value" : 1.0,
+          "divisions" : 5,
+          "publish_all" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Intake",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -15.9593,
+          "max_value" : 15.9593,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Test Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Velocity",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Set Test Goal Velocity",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "PID Controller",
+        "type" : "PID Controller",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/PID Controller",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Shooter",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Lower PID",
+        "type" : "PID Controller",
+        "x" : 768.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower PID",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Upper PID",
+        "type" : "PID Controller",
+        "x" : 1024.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper PID",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Lower Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Lower Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -5.9108,
+          "max_value" : 5.9108,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Upper Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Upper Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -4.4331,
+          "max_value" : 4.4331,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Lower Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Test Lower Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Test Upper Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 512.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Test Upper Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Velocities (m/s)",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Set Test Velocities (m+s)",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      } ]
+    }
+  }, {
+    "name" : "Indexer",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Current Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -15.9593,
+          "max_value" : 15.9593,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Test Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Velocity",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Set Test Goal Velocity",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "PID Controller",
+        "type" : "PID Controller",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/PID Controller",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Current Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
     }
   } ]
 }
