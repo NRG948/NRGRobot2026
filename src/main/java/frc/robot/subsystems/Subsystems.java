@@ -32,6 +32,8 @@ public class Subsystems {
   @DashboardTab(title = "Indexer")
   public final Indexer indexer = new Indexer();
 
+  public final StatusLED statusLEDs = new StatusLED();
+
   // TODO: Add Cameras (need AprilTag subsystem)
 
   private final Subsystem[] all;

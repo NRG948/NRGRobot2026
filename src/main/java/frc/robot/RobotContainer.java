@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveUsingController;
+import frc.robot.commands.LEDCommands;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.util.MatchTime;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -61,6 +63,14 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    new Trigger(MatchTime::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
+    new Trigger(MatchTime::isNearShiftChangeExcludingFinalSecond)
+        .whileTrue(LEDCommands.setTransitionModeLED(subsystems));
+    new Trigger(MatchTime::isNearShiftChangeFinalSecond)
+        .whileTrue(LEDCommands.setLastSecondTransitionModeLED(subsystems));
+    new Trigger(MatchTime::isNearEndgame)
+        .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
+    new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
   }
 
   /**
