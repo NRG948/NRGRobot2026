@@ -18,6 +18,8 @@ import frc.robot.RobotPreferences;
 /** Helper methods related to the 2026 FRC Rebuilt field. */
 @DashboardDefinition
 public final class FieldUtils {
+  private static final int RED_HUB_APRILTAG = 10;
+  private static final int BLUE_HUB_APRILTAG = 26;
 
   private static AprilTagFieldLayout FIELD_LAYOUT =
       RobotPreferences.FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
@@ -45,5 +47,19 @@ public final class FieldUtils {
   /** Returns the {@link Pose2d} of the specified April Tag ID. */
   public static Pose2d getAprilTagPose2d(int tagId) {
     return getAprilTagPose3d(tagId).toPose2d();
+  }
+
+  private static int getHubAprilTagID() {
+      if (isRedAlliance()) {
+          return RED_HUB_APRILTAG;
+      }
+      return BLUE_HUB_APRILTAG;
+  }
+
+  /**
+   * {@return Pose2d of allicance-side hub's center April tag}
+   */
+  public static Pose2d getHubAprilTag() {
+      return getAprilTagPose2d(getHubAprilTagID());
   }
 }
