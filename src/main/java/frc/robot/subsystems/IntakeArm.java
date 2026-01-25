@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
 import com.ctre.phoenix6.CANBus;
@@ -27,7 +26,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
@@ -35,7 +33,7 @@ import frc.robot.util.TalonFXAdapter;
 public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private final double TOLERANCE = 0; // TODO: Add tolerance in radians
-  private final double RADIANS_PER_ROTATIONS = 0; // TODO: Calculate radians per rotations
+  private final double RADIANS_PER_ROTATIONS = 1; // TODO: Calculate radians per rotations
   private final double ERROR_MARGIN = 0; // TODO: Add error margin in radians
   private final double ERROR_TIME = 1;
   private final double GEAR_RATIO = 0; // TODO: Find gear ratio
@@ -82,7 +80,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     motionMagicConfigs.MotionMagicAcceleration = 0;
 
     TalonFXConfigurator configurator =
-        new TalonFXConfigurator(new DeviceIdentifier(INTAKE_ID, "KrakenX60", CANBus.roboRIO()));
+        new TalonFXConfigurator(new DeviceIdentifier(INTAKE_ARM_ID, "KrakenX60", CANBus.roboRIO()));
     configurator.apply(slot0Configs);
   }
 
@@ -153,6 +151,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void disable() {
     enabled = false;
+    motor.disable();
   }
 
   @Override
@@ -163,7 +162,6 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setIdleMode'");
+    motor.setIdleMode(idleMode);
   }
 }
