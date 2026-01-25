@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6197033898305087,
-        "y": 7.135197740112995
+        "x": 3.6453248587570624,
+        "y": 4.982994350282485
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.364251412429379,
-        "y": 7.698870056497174
+        "x": 3.1841384180790966,
+        "y": 4.854887005649719
       },
       "isLocked": false,
-      "linkedName": "Left Trench Start"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.39803507646553826,
-        "y": 6.909510668552762
+        "x": 2.6973305084745767,
+        "y": 4.713968926553673
       },
       "prevControl": {
-        "x": 1.3075972233581936,
-        "y": 7.370697109230727
+        "x": 3.145706214689266,
+        "y": 4.778022598870057
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Depot"
+      "linkedName": "Left Scoring Point"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -17.764853300697496
   },
   "reversed": false,
   "folder": null,

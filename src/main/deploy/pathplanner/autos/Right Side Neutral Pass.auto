@@ -19,13 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Neutral Zone Start"
+            "pathName": "Right Scoring Point to Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Zone Cross"
+            "pathName": "Right Neutral Cross"
           }
         }
       ]

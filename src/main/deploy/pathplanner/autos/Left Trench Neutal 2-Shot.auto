@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Trench Start to Right Scoring Point"
+            "pathName": "Left Trench Start to Left Scoring Point"
           }
         },
         {
@@ -19,19 +19,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Neutral Zone Start"
+            "pathName": "Left Scoring Point to Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Zone Start to Right Neutral Zone End"
+            "pathName": "Left Neutral Start to Left Neutral End"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Zone End to Right Scoring Point"
+            "pathName": "Left Neutral End to (Trench) Left Scoring Point"
           }
         },
         {

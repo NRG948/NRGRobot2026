@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 7.667895480227958,
-        "y": 6.8
+        "y": 6.8021186440677965
       },
       "prevControl": null,
       "nextControl": {
         "x": 7.667895480227958,
-        "y": 5.799999999999999
+        "y": 5.802118644067796
       },
       "isLocked": false,
-      "linkedName": "Left Neutral Zone Start"
+      "linkedName": "Left Neutral Start"
     },
     {
       "anchor": {

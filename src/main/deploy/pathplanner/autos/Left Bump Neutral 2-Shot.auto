@@ -7,25 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Bump Start to Left Depot"
+            "pathName": "Left Hub Start to Left Scoring Point"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Depot to Right Depot"
+            "pathName": "Left Scoring Point to Left Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Depot to Left Scoring Point"
+            "pathName": "Left Neutral Start to Left Neutral End"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Scoring Point to Left Tower"
+            "pathName": "Left Neutral End to (Bump) Left Scoring Point"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]
