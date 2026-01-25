@@ -51,7 +51,9 @@ public class MatchTime {
         || (time <= PRE_FOURTH_SHIFT_START_TIME && time >= FOURTH_SHIFT_START_TIME);
   }
 
-  /** Special method of isNearShiftChange but excluding the final second. */
+  /*
+   * Special method of isNearShiftChange specialized for last 5 seconds before shift change but excluding the final second.
+   */
   public static boolean isNearShiftChangeExcludingFinalSecond() {
     if (!isTeleop()) {
       return false;
@@ -63,6 +65,9 @@ public class MatchTime {
         || (time <= PRE_FOURTH_SHIFT_START_TIME && time >= FOURTH_SHIFT_START_TIME - 1.0);
   }
 
+  /*
+   * Special method of isNearShiftChange speciaized for the last second before shift change.
+   */
   public static boolean isNearShiftChangeFinalSecond() {
     if (!isTeleop()) {
       return false;
@@ -74,6 +79,9 @@ public class MatchTime {
         || (time <= FOURTH_SHIFT_START_TIME + 1.0 && time >= FOURTH_SHIFT_START_TIME);
   }
 
+  /*
+   * Returns a boolean to indicate if match time is 5 seconds or less before endgame.
+   */
   public static boolean isNearEndgame() {
     if (!isTeleop()) {
       return false;
@@ -82,6 +90,9 @@ public class MatchTime {
     return (time <= 35.0 && time >= 30.0);
   }
 
+  /*
+   * Returns a boolean to indicate if match is in endgame mode.
+   */
   public static boolean isEndgame() {
     if (!isTeleop()) {
       return false;

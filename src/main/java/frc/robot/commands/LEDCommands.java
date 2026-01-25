@@ -37,11 +37,18 @@ public final class LEDCommands {
         .withName(String.format("SetColor(%s)", color.name()));
   }
 
+  /*
+   * Returns a command that sets the autonomous LEDs to Flame Cycle.
+   *
+   */
   public static Command autoLEDs(Subsystems subsystems) {
     StatusLED leds = subsystems.statusLEDs;
     return new FlameCycle(leds);
   }
 
+  /*
+   * Returns a command that sets the last 5 seconds of transitioning between different shifts to blinking pink.
+   */
   public static Command setTransitionModeLED(Subsystems subsystems) {
 
     StatusLED leds = subsystems.statusLEDs;
@@ -50,6 +57,9 @@ public final class LEDCommands {
         .withName("Transition LED for last 5 seconds excluding the final second shift change.");
   }
 
+  /*
+   * Returns a command that sets the last second of transitioning between different shifts to solid red.
+   */
   public static Command setLastSecondTransitionModeLED(Subsystems subsystems) {
 
     StatusLED leds = subsystems.statusLEDs;
@@ -59,6 +69,13 @@ public final class LEDCommands {
         .withName("Transitional LED for last second shift change.");
   }
 
+  /**
+   * Returns a command that either flashes yellow for active mode and blinks red and blue for
+   * inactive mode during shifts excluding shifting to endgame.
+   *
+   * @param isActive A BooleanSupplier for whether the robot is in active or inactive.
+   * @return A command that sets the color of the status LED.
+   */
   public static Command setModeLED(Subsystems subsystems, BooleanSupplier isActive) {
     StatusLED leds = subsystems.statusLEDs;
 
@@ -69,6 +86,9 @@ public final class LEDCommands {
         .withName("Mode LEDs");
   }
 
+  /*
+   * Returns a command that sets the last 5 seconds of transitioning to endgame to blinking black and white.
+   */
   public static Command transitionToEndgameModeLED(Subsystems subsystems) {
     StatusLED statusLEDs = subsystems.statusLEDs;
 
@@ -77,6 +97,9 @@ public final class LEDCommands {
         .withName("LED for Transitioning to Endgame");
   }
 
+  /*
+   * Returns a command that sets endgame lights to solid blue.
+   */
   public static Command endgameLED(Subsystems subsystems) {
     StatusLED statusLEDs = subsystems.statusLEDs;
 
@@ -86,6 +109,14 @@ public final class LEDCommands {
         .withName("Endgame LEDs");
   }
 
+  /**
+   * Returns a command that either sets the climbing phase of the robot. When the robot is in the
+   * process of climbing, the LEDs will blink rainbow cycle. When fully climbed, the LEDs will
+   * display solid rainbow cycle.
+   *
+   * @param isClimbing The status LED subsystem.
+   * @param isClimbed The color to set.
+   */
   public static Command setClimbModeLED(
       Subsystems subsystems, BooleanSupplier isClimbing, BooleanSupplier isClimbed) {
     StatusLED statusLEDs = subsystems.statusLEDs;

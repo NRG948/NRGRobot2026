@@ -23,7 +23,7 @@ public final class AlternateColor extends Command {
   private final Timer blinkTimer = new Timer();
   private boolean isOn;
 
-  /** Creates a new BlinkColor. */
+  /** Creates a new AlternateColor. */
   public AlternateColor(LEDSubsystem led, Colors colorOne, Colors colorTwo) {
     setName(String.format("BlinkColor(%s)", colorOne.name(), colorTwo.name()));
 
