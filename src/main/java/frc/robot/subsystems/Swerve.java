@@ -11,11 +11,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
-import com.nrg948.dashboard.annotations.DashboardNumberSlider;
-import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.dashboard.model.LabelPosition;
-import com.nrg948.preferences.BooleanPreference;
-import com.nrg948.preferences.DoublePreference;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -44,6 +40,8 @@ import edu.wpi.first.util.datalog.StructLogEntry;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotPreferences;
+import frc.robot.RobotSelector;
 import frc.robot.drive.SwerveDrive;
 import frc.robot.drive.SwerveModule;
 import frc.robot.parameters.SwerveAngleEncoder;
@@ -53,6 +51,7 @@ import frc.robot.util.Gyro;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -61,22 +60,13 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   private static final DataLog LOG = DataLogManager.getLog();
   private static final Rotation2d ROTATE_180_DEGREES = Rotation2d.fromDegrees(180);
 
-  @DashboardToggleSwitch(title = "Enable Rumble", column = 4, row = 0, width = 1, height = 1)
-  public static BooleanPreference ENABLE_RUMBLE =
-      new BooleanPreference("Drive", "Enable Rumble", true);
-
-  @DashboardNumberSlider(
-      title = "Right Trigger Scalar",
-      column = 5,
-      row = 0,
-      width = 2,
-      height = 1,
-      min = 0,
-      max = 1)
-  public static final DoublePreference RIGHT_TRIGGER_SCALAR =
-      new DoublePreference("Drive", "Right Trigger Scalar", 0.25);
-
-  public static final SwerveDriveParameters PARAMETERS = SwerveDriveParameters.AlphaBase2026;
+  public static final SwerveDriveParameters PARAMETERS =
+      RobotPreferences.ROBOT_TYPE.selectOrDefault(
+          Map.of(
+              RobotSelector.PracticeRobot2026, SwerveDriveParameters.PracticeBase2026,
+              RobotSelector.CompetitionRobot2026, SwerveDriveParameters.CompetitionBase2026,
+              RobotSelector.AlphaRobot2026, SwerveDriveParameters.AlphaBase2026),
+          SwerveDriveParameters.CompetitionBase2026);
 
   public static final double ROTATIONAL_KP = 1.0;
   public static final double DRIVE_KP = 1.0;

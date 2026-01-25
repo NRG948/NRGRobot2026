@@ -24,15 +24,13 @@ import frc.robot.subsystems.Subsystems;
  */
 public class RobotContainer {
 
+  @DashboardTab(title = "Preferences")
+  private final RobotPreferences preferences = new RobotPreferences();
+
   private final Subsystems subsystems = new Subsystems();
 
-  @DashboardTab private final Autos autos = new Autos(subsystems);
-
-  public enum RobotSelector {
-    PracticeRobot2026,
-    CompetitionRobot2026,
-    AlphaBase2026;
-  }
+  @DashboardTab(title = "Autonomous")
+  private final Autos autos = new Autos(subsystems);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController =

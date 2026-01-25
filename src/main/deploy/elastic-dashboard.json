@@ -2,7 +2,51 @@
   "version" : 1.0,
   "grid_size" : 128.0,
   "tabs" : [ {
-    "name" : "autos",
+    "name" : "Preferences",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Robot Selector",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Robot Selector",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Enable Rumble",
+        "type" : "Toggle Switch",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Enable Rumble",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Right Trigger Scalar",
+        "type" : "Number Slider",
+        "x" : 384.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Right Trigger Scalar",
+          "period" : 0.06,
+          "min_value" : 0.0,
+          "max_value" : 1.0,
+          "divisions" : 5,
+          "publish_all" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Autonomous",
     "grid_layout" : {
       "layouts" : [ ],
       "containers" : [ {
@@ -13,7 +57,7 @@
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/autos/Routine",
+          "topic" : "/SmartDashboard/Autonomous/Routine",
           "period" : 0.06,
           "sort_options" : false
         }
@@ -191,33 +235,7 @@
           }
         } ]
       } ],
-      "containers" : [ {
-        "title" : "Enable Rumble",
-        "type" : "Toggle Switch",
-        "x" : 512.0,
-        "y" : 0.0,
-        "width" : 128.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Swerve/Enable Rumble",
-          "period" : 0.06
-        }
-      }, {
-        "title" : "Right Trigger Scalar",
-        "type" : "Number Slider",
-        "x" : 640.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Swerve/Right Trigger Scalar",
-          "period" : 0.06,
-          "min_value" : 0.0,
-          "max_value" : 1.0,
-          "divisions" : 5,
-          "publish_all" : false
-        }
-      } ]
+      "containers" : [ ]
     }
   }, {
     "name" : "Intake",
