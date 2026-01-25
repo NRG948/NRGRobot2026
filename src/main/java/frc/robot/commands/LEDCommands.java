@@ -12,6 +12,7 @@ import static frc.robot.parameters.Colors.BLUE;
 import static frc.robot.parameters.Colors.RED;
 import static frc.robot.parameters.Colors.WHITE;
 import static frc.robot.parameters.Colors.YELLOW;
+import static frc.robot.parameters.Colors.GREEN;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -125,6 +126,16 @@ public final class LEDCommands {
             new RainbowCycle(statusLEDs), new BlinkingRainbowCycle(statusLEDs), isClimbed)
         .onlyWhile(() -> isClimbed.getAsBoolean() || isClimbing.getAsBoolean())
         .withName("ClimbOverrideLEDs");
+  }
+
+  /*
+   * Returns a command that sets LEDs to solid color green if the robot is aligned to the hub.
+   */
+  public static Command alignedLED(Subsystems subsystems, boolean isAligned) {
+    StatusLED statusLED = subsystems.statusLEDs;
+
+    return Commands.either(setColor(statusLED, GREEN), Commands.idle(statusLED), () -> isAligned);
+
   }
 
   /**
