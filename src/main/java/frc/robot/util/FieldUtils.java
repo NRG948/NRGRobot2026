@@ -1,8 +1,14 @@
+/*
+ * Copyright (c) 2026 Newport Robotics Group. All Rights Reserved.
+ *
+ * Open Source Software; you can modify and/or share it under the terms of
+ * the license file in the root directory of this project.
+ */
+ 
 package frc.robot.util;
 
 import com.nrg948.preferences.RobotPreferences;
 import com.nrg948.preferences.RobotPreferencesValue;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -10,12 +16,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.parameters.AprilTagFieldParameters;
 
-
 public final class FieldUtils {
-    private static final int RED_HUB_APRILTAG = 10;
-    private static final int BLUE_HUB_APRILTAG = 26;
+  private static final int RED_HUB_APRILTAG = 10;
+  private static final int BLUE_HUB_APRILTAG = 26;
 
-    @RobotPreferencesValue
+  @RobotPreferencesValue
   public static RobotPreferences.EnumValue<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
       new RobotPreferences.EnumValue<AprilTagFieldParameters>(
           "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
@@ -23,8 +28,7 @@ public final class FieldUtils {
   private static AprilTagFieldLayout FIELD_LAYOUT =
       FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
 
-    
-    public static boolean isRedAlliance() {
+  public static boolean isRedAlliance() {
     var alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
     return alliance == Alliance.Red;
   }
@@ -39,21 +43,21 @@ public final class FieldUtils {
     return getAprilTagPose3d(tagId).toPose2d();
   }
 
-    private static int getHubAprilTagID() {
-        if (isRedAlliance()) {
-            return RED_HUB_APRILTAG;
-        }
-        return BLUE_HUB_APRILTAG;
+  private static int getHubAprilTagID() {
+    if (isRedAlliance()) {
+      return RED_HUB_APRILTAG;
     }
-    /**
-     * 
-     * @return Pose2d of allicance-side hub's center April tag
-     */
-    public static Pose2d getHubAprilTag() {
-        return getAprilTagPose2d(getHubAprilTagID());
-    }
+    return BLUE_HUB_APRILTAG;
+  }
 
-    public static AprilTagFieldLayout getFieldLayout() {
+  /**
+   * @return Pose2d of allicance-side hub's center April tag
+   */
+  public static Pose2d getHubAprilTag() {
+    return getAprilTagPose2d(getHubAprilTagID());
+  }
+
+  public static AprilTagFieldLayout getFieldLayout() {
     return FIELD_LAYOUT;
   }
 }
