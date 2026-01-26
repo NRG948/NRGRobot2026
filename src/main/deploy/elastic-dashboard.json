@@ -340,6 +340,30 @@
     "grid_layout" : {
       "layouts" : [ ],
       "containers" : [ {
+        "title" : "Lower Max Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Max Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Upper Max Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Max Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
         "title" : "Lower PID",
         "type" : "PID Controller",
         "x" : 768.0,
@@ -383,8 +407,8 @@
         "properties" : {
           "topic" : "/SmartDashboard/Shooter/Lower Velocity (m+s)",
           "period" : 0.06,
-          "min_value" : -5.9108,
-          "max_value" : 5.9108,
+          "min_value" : -41.270725699090676,
+          "max_value" : 41.270725699090676,
           "start_angle" : -140.0,
           "end_angle" : 140.0,
           "number_of_labels" : 8,
@@ -414,8 +438,8 @@
         "properties" : {
           "topic" : "/SmartDashboard/Shooter/Upper Velocity (m+s)",
           "period" : 0.06,
-          "min_value" : -4.4331,
-          "max_value" : 4.4331,
+          "min_value" : -7.979645340118073,
+          "max_value" : 7.979645340118073,
           "start_angle" : -140.0,
           "end_angle" : 140.0,
           "number_of_labels" : 8,
