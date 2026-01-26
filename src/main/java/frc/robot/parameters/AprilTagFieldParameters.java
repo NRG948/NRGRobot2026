@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  */
 public enum AprilTagFieldParameters {
 
-
   /** The field layout using the welded perimeter. */
   k2026RebuiltWelded(AprilTagFields.k2026RebuiltWelded),
 

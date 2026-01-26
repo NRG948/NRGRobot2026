@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
-import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -45,7 +44,13 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
 
-  private final TalonFXAdapter motor = new TalonFXAdapter("/IntakeArm/Motor", new TalonFX(INTAKE_ARM_ID), CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATIONS);
+  private final TalonFXAdapter motor =
+      new TalonFXAdapter(
+          "/IntakeArm/Motor",
+          new TalonFX(INTAKE_ARM_ID),
+          CLOCKWISE_POSITIVE,
+          BRAKE,
+          RADIANS_PER_ROTATIONS);
 
   private final RelativeEncoder encoder = motor.getEncoder();
 

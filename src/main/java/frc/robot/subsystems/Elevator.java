@@ -7,11 +7,10 @@
  
 package frc.robot.subsystems;
 
-import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -25,27 +24,25 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.MotorIdleMode;
-import frc.robot.util.TalonFXAdapter;
 import frc.robot.util.RelativeEncoder;
-
+import frc.robot.util.TalonFXAdapter;
 
 public class Elevator extends SubsystemBase implements ActiveSubsystem {
 
   private final MotorDirection motorDirection = CLOCKWISE_POSITIVE;
-   
 
-   // TODO: put actual values
-    private static final double GEAR_RATIO = PARAMETERS.getGearRatio();
+  // TODO: put actual values
+  private static final double GEAR_RATIO = PARAMETERS.getGearRatio();
   private static final double SPROCKET_DIAMETER = 0.05; // meters
   private static final double MASS = PARAMETERS.getMass(); // kilograms
-  private static final double POSITION_ERROR_MARGIN = 0.05; 
+  private static final double POSITION_ERROR_MARGIN = 0.05;
   private static final double METERS_PER_REVOLUTION = (SPROCKET_DIAMETER * Math.PI) / GEAR_RATIO;
 
   // TODO: Change placeholder values
   private final TalonFXAdapter mainMotor =
       new TalonFXAdapter(
           "/Elevator", new TalonFX(1, "rio"), motorDirection, MotorIdleMode.BRAKE, 0);
-  
+
   private final RelativeEncoder encoder = mainMotor.getEncoder();
 
   private boolean isSeekingGoal;
@@ -67,12 +64,11 @@ public class Elevator extends SubsystemBase implements ActiveSubsystem {
       mechanismRoot2d.append(new MechanismLigament2d("Elevator", 0, 90));
   private static final double POSITION_ERROR_TIME = 2.0; // seconds
 
-
   private final Timer stuckTimer = new Timer();
 
   // Trapezoid profile values
 
-  //TODO: replace default values
+  // TODO: replace default values
   private static final double MAX_SPEED =
       (MOTOR_PARAMS.freeSpeedRadPerSec / (2 * Math.PI)) * METERS_PER_REVOLUTION; // m/s
   private static final double MAX_ACCELERATION =
@@ -120,9 +116,9 @@ public class Elevator extends SubsystemBase implements ActiveSubsystem {
     checkError();
 
     elevatorMech2d.setLength(currentState.position);
-}
+  }
 
-private void checkError() {
+  private void checkError() {
     if (MathUtil.isNear(goalState.position, currentState.position, POSITION_ERROR_MARGIN)) {
       stuckTimer.stop();
       stuckTimer.reset();
