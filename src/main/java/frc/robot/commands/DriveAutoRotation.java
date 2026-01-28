@@ -8,9 +8,11 @@
 package frc.robot.commands;
 
 import com.nrg948.dashboard.annotations.DashboardPIDController;
+import com.nrg948.preferences.PIDControllerPreference;
 import com.nrg948.preferences.ProfiledPIDControllerPreference;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.FieldUtils;
@@ -18,10 +20,9 @@ import frc.robot.util.FieldUtils;
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class DriveAutoRotation extends DriveUsingController {
 
-  private Pose2d hubAprilTag = FieldUtils.getHubAprilTag();
-  private Pose2d hubLocation =
-      new Pose2d(hubAprilTag.getMeasureX(), hubAprilTag.getMeasureY(), Rotation2d.kZero);
 
+  private static Translation2d hubLocation = FieldUtils.getHubLocation();
+  
   public DriveAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
   }
@@ -30,24 +31,31 @@ public class DriveAutoRotation extends DriveUsingController {
   @DashboardPIDController(title = "Auto Rotation PID", column = 6, row = 0, width = 2, height = 3)
   private final ProfiledPIDControllerPreference rotationPIDController =
       new ProfiledPIDControllerPreference(
-          "Shooter", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
+          "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    
+  }
+
 
   /**
    * @return Radians of angle difference from bot to hub
    */
   private double getRotationtoHub() {
     Rotation2d angleDiff =
-        drivetrain.getPosition().getTranslation().minus(hubLocation.getTranslation()).getAngle();
+        drivetrain.getPosition().getTranslation().minus(hubLocation).getAngle();
     double angleDiffRad = angleDiff.getRadians();
     return angleDiffRad;
   }
 
   @Override
-  private double calculateRotationSpeed(PIDControllerPreference controller) {
+  protected double calculateRotationSpeed() {
+    return calculateRotationSpeed(rotationPIDController);
+  }
+
+  private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
 
     double currentOrientation = drivetrain.getOrientation().getRotations();
 
@@ -55,9 +63,8 @@ public class DriveAutoRotation extends DriveUsingController {
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 
-    double rSpeed =
-        feedback
-            + (controller.getSetpoint().velocity / Swerve.getRotationalConstraints().maxVelocity);
+    //TODO: Find alternative to getSetpoint() for PID preference
+    double rSpeed = feedback; //feedback + (controller.getSetpoint().velocity / Swerve.getRotationalConstraints().maxVelocity);
     return rSpeed;
   }
 }
