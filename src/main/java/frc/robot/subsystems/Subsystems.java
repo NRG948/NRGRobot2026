@@ -13,10 +13,12 @@ import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotPreferences;
 import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Subsystems {
@@ -41,12 +43,23 @@ public class Subsystems {
   // TODO: Add Cameras (need AprilTag subsystem)
   // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
   // TODO: Make cameras Optional
-  @DashboardTab(title = "Front Right Camera")
-  public final AprilTag frontRightCamera =
-      new AprilTag("FrontRightCamera", new Transform3d(), 8080);
-
   @DashboardTab(title = "Front Left Camera")
-  public final AprilTag frontLeftCamera = new AprilTag("FrontLeftCamera", new Transform3d(), 8081);
+  public final Optional<AprilTag> frontLeftCamera =
+      SubsystemsUtil.newOptionalSubsystem(
+          AprilTag.class,
+          RobotPreferences.APRIL_TAG.ENABLE_FRONT_LEFT,
+          "FrontLeftCamera",
+          new Transform3d(),
+          8081);
+
+  @DashboardTab(title = "Front Right Camera")
+  public final Optional<AprilTag> frontRightCamera =
+      SubsystemsUtil.newOptionalSubsystem(
+          AprilTag.class,
+          RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
+          "FrontRightCamera",
+          new Transform3d(),
+          8080);
 
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
@@ -59,6 +72,9 @@ public class Subsystems {
 
     // Add all non-manipulator subsystems to the `all` list.
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
+
+    frontLeftCamera.ifPresent(all::add);
+    frontRightCamera.ifPresent(all::add);
 
     all.addAll(manipulators);
     this.all = all.toArray(Subsystem[]::new);
@@ -73,6 +89,7 @@ public class Subsystems {
                         new StringLogEntry(
                             DataLogManager.getLog(),
                             String.format("/%s/ActiveCommand", s.getName()))));
+
     CommandScheduler scheduler = CommandScheduler.getInstance();
     scheduler.onCommandInitialize(
         (cmd) -> {
