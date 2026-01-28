@@ -36,28 +36,6 @@
             "topic" : "/SmartDashboard/Preferences/April Tag/Enable Front Right",
             "period" : 0.06
           }
-        }, {
-          "title" : "Enable Back Left",
-          "type" : "Toggle Switch",
-          "x" : 0.0,
-          "y" : 0.0,
-          "width" : 128.0,
-          "height" : 128.0,
-          "properties" : {
-            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Back Left",
-            "period" : 0.06
-          }
-        }, {
-          "title" : "Enable Back Right",
-          "type" : "Toggle Switch",
-          "x" : 0.0,
-          "y" : 0.0,
-          "width" : 128.0,
-          "height" : 128.0,
-          "properties" : {
-            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Back Right",
-            "period" : 0.06
-          }
         } ]
       } ],
       "containers" : [ {

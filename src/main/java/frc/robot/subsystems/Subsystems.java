@@ -42,7 +42,7 @@ public class Subsystems {
 
   // TODO: Add Cameras (need AprilTag subsystem)
   // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
-  // TODO: Make cameras Optional
+
   @DashboardTab(title = "Front Left Camera")
   public final Optional<AprilTag> frontLeftCamera =
       SubsystemsUtil.newOptionalSubsystem(
