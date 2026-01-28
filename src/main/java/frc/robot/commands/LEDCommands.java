@@ -9,10 +9,10 @@ package frc.robot.commands;
 
 import static frc.robot.parameters.Colors.BLACK;
 import static frc.robot.parameters.Colors.BLUE;
+import static frc.robot.parameters.Colors.GREEN;
 import static frc.robot.parameters.Colors.RED;
 import static frc.robot.parameters.Colors.WHITE;
 import static frc.robot.parameters.Colors.YELLOW;
-import static frc.robot.parameters.Colors.GREEN;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -135,7 +135,6 @@ public final class LEDCommands {
     StatusLED statusLED = subsystems.statusLEDs;
 
     return Commands.either(setColor(statusLED, GREEN), Commands.idle(statusLED), () -> isAligned);
-
   }
 
   /**

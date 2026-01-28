@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
-import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -22,6 +21,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.nrg948.dashboard.annotations.DashboardDefinition;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,6 +30,7 @@ import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
 
+@DashboardDefinition
 public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private final double TOLERANCE = 0; // TODO: Add tolerance in radians
@@ -45,7 +46,13 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
 
-  private final TalonFXAdapter motor = new TalonFXAdapter("/IntakeArm/Motor", new TalonFX(INTAKE_ARM_ID), CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATIONS);
+  private final TalonFXAdapter motor =
+      new TalonFXAdapter(
+          "/IntakeArm/Motor",
+          new TalonFX(INTAKE_ARM_ID),
+          CLOCKWISE_POSITIVE,
+          BRAKE,
+          RADIANS_PER_ROTATIONS);
 
   private final RelativeEncoder encoder = motor.getEncoder();
 
