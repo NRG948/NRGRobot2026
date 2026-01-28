@@ -2,6 +2,73 @@
   "version" : 1.0,
   "grid_size" : 128.0,
   "tabs" : [ {
+    "name" : "Operator",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Intook",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Intook",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "ShooterCorrectRPM",
+        "type" : "Boolean Box",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/ShooterCorrectRPM",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Field",
+        "type" : "Field",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 512.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Field",
+          "period" : 0.06,
+          "field_game" : "Rebuilt",
+          "robot_width" : 0.85,
+          "robot_length" : 0.85,
+          "show_other_objects " : true,
+          "show_trajectories" : true,
+          "field_rotation" : 0.0,
+          "robot_color" : -65536,
+          "trajectory_color" : -1
+        }
+      }, {
+        "title" : "Auto Routine",
+        "type" : "ComboBox Chooser",
+        "x" : 1024.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Auto Routine",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      } ]
+    }
+  }, {
     "name" : "Preferences",
     "grid_layout" : {
       "layouts" : [ {
