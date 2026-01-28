@@ -37,7 +37,8 @@ public final class RobotOperator {
   private static final double maxSpeed = 5.0;
 
   /**
-   * Returns magnitude of speed, which is calculated by the hypotenuse of the horizontal and vertical components of velocity. 
+   * Returns magnitude of speed, which is calculated by the hypotenuse of the horizontal and
+   * vertical components of velocity.
    */
   @DashboardRadialGauge(
       title = "Speed (M/S)",

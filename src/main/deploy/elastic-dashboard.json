@@ -6,14 +6,14 @@
     "grid_layout" : {
       "layouts" : [ ],
       "containers" : [ {
-        "title" : "Velocity (M/S)",
+        "title" : "Speed (M/S)",
         "type" : "Radial Gauge",
         "x" : 640.0,
         "y" : 384.0,
         "width" : 256.0,
         "height" : 256.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Operator/Velocity (M+S)",
+          "topic" : "/SmartDashboard/Operator/Speed (M+S)",
           "period" : 0.06,
           "min_value" : 0.0,
           "max_value" : 5.0,
@@ -97,7 +97,7 @@
           "field_game" : "Rebuilt",
           "robot_width" : 0.85,
           "robot_length" : 0.85,
-          "show_other_objects " : true,
+          "show_other_objects" : true,
           "show_trajectories" : true,
           "field_rotation" : 0.0,
           "robot_color" : -65536,
