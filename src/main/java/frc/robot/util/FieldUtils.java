@@ -11,6 +11,8 @@ import com.nrg948.dashboard.annotations.DashboardDefinition;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.RobotPreferences;
@@ -19,7 +21,10 @@ import frc.robot.RobotPreferences;
 @DashboardDefinition
 public final class FieldUtils {
   private static final int RED_HUB_APRILTAG = 10;
-  private static final int BLUE_HUB_APRILTAG = 26;
+  private static final int BLUE_HUB_APRILTAG = 26;  
+
+  //distance (in meters) between the hub's middle april tag and the hub's center
+  private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47/2);
 
   private static AprilTagFieldLayout FIELD_LAYOUT =
       RobotPreferences.FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
@@ -61,5 +66,19 @@ public final class FieldUtils {
    */
   public static Pose2d getHubAprilTag() {
       return getAprilTagPose2d(getHubAprilTagID());
+  }
+
+  /**
+   * @return Translation2d of allicance-side hub's center April tag
+   */
+  private static Translation2d getHubAprilTagPosition() {
+    return getAprilTagPose2d(getHubAprilTagID()).getTranslation();
+  }
+
+  public static Translation2d getHubLocation() {
+    if (isRedAlliance()) {
+      return getHubAprilTagPosition().minus(new Translation2d(APRIL_TAG_TO_HUB, 0));
+    }
+    return getHubAprilTagPosition().plus(new Translation2d(APRIL_TAG_TO_HUB, 0));
   }
 }
