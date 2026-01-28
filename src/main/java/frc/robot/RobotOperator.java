@@ -12,6 +12,7 @@ import com.nrg948.dashboard.annotations.DashboardBooleanBox;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardField;
+import com.nrg948.dashboard.annotations.DashboardMatchTime;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.model.GameField;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import frc.robot.util.MatchTime;
 
 @DashboardDefinition
 public final class RobotOperator {
@@ -33,8 +35,8 @@ public final class RobotOperator {
     drive = subsystems.drivetrain;
   }
 
-  private static final double minSpeed = 0.0;
-  private static final double maxSpeed = 5.0;
+  private static final double MIN_SPEED = 0.0;
+  private static final double MAX_SPEED = 5.0;
 
   /**
    * Returns magnitude of speed, which is calculated by the hypotenuse of the horizontal and
@@ -42,12 +44,12 @@ public final class RobotOperator {
    */
   @DashboardRadialGauge(
       title = "Speed (M/S)",
-      column = 5,
-      row = 3,
+      column = 4,
+      row = 2,
       width = 2,
       height = 2,
-      min = minSpeed,
-      max = maxSpeed)
+      min = MIN_SPEED,
+      max = MAX_SPEED)
   private double velocity() {
     return Math.hypot(
         drive.getChassisSpeeds().vxMetersPerSecond, drive.getChassisSpeeds().vyMetersPerSecond);
@@ -66,7 +68,7 @@ public final class RobotOperator {
   }
 
   // TODO: Implement logic for if robot is aligned and state it here.
-  @DashboardBooleanBox(title = "Aligned", column = 5, row = 1, width = 2, height = 2)
+  @DashboardBooleanBox(title = "Aligned", column = 4, row = 0, width = 2, height = 2)
   private boolean isAligned = false;
 
   // TODO: Implement logic for correct RPM and state it here.
@@ -86,8 +88,8 @@ public final class RobotOperator {
   @DashboardComboBoxChooser(title = "Auto Routine", column = 0, row = 3, width = 2, height = 1)
   private final SendableChooser<Command> autoChooser;
 
-  /*@DashboardMatchTime(title = "Match Time", row = 1, column = 7, width = 3, height = 1)
+  @DashboardMatchTime(title = "Match Time", row = 0, column = 6, width = 3, height = 2)
   public static double getMatchTime() {
     return MatchTime.getMatchTime();
-  }*/
+  }
 }

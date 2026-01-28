@@ -8,8 +8,8 @@
       "containers" : [ {
         "title" : "Speed (M/S)",
         "type" : "Radial Gauge",
-        "x" : 640.0,
-        "y" : 384.0,
+        "x" : 512.0,
+        "y" : 256.0,
         "width" : 256.0,
         "height" : 256.0,
         "properties" : {
@@ -57,8 +57,8 @@
       }, {
         "title" : "Aligned",
         "type" : "Boolean Box",
-        "x" : 640.0,
-        "y" : 128.0,
+        "x" : 512.0,
+        "y" : 0.0,
         "width" : 256.0,
         "height" : 256.0,
         "properties" : {
@@ -114,6 +114,20 @@
           "topic" : "/SmartDashboard/Operator/Auto Routine",
           "period" : 0.06,
           "sort_options" : false
+        }
+      }, {
+        "title" : "Match Time",
+        "type" : "Match Time",
+        "x" : 768.0,
+        "y" : 0.0,
+        "width" : 384.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Match Time",
+          "period" : 0.06,
+          "time_display_mode" : "Minutes and Seconds",
+          "yellow_start_time" : 30,
+          "red_start_time" : 15
         }
       } ]
     }
