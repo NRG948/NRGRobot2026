@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double LOWER_METERS_PER_REV =
       (LOWER_WHEEL_DIAMETER * Math.PI) / LOWER_GEAR_RATIO;
 
-  private static final MotorParameters UPPER_MOTOR = MotorParameters.KrakenX60;
+  private static final MotorParameters UPPER_MOTOR = MotorParameters.KrakenX44;
   private static final double UPPER_GEAR_RATIO = 3.0;
   private static final double UPPER_WHEEL_DIAMETER = Units.inchesToMeters(3);
   private static final double UPPER_METERS_PER_REV =
