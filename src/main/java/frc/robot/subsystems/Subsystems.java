@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -44,21 +43,29 @@ public class Subsystems {
 
   @DashboardTab(title = "Front Left Camera")
   public final Optional<AprilTag> frontLeftCamera =
-      SubsystemsUtil.newOptionalSubsystem(
-          AprilTag.class,
-          RobotPreferences.APRIL_TAG.ENABLE_FRONT_LEFT,
-          "FrontLeftCamera",
-          new Transform3d(),
-          8081);
+      AprilTag.PARAMETERS
+          .frontLeft()
+          .flatMap(
+              (c) ->
+                  SubsystemsUtil.newOptionalSubsystem(
+                      AprilTag.class,
+                      RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
+                      c.cameraName(),
+                      c.robotToCamera(),
+                      c.streamPort()));
 
   @DashboardTab(title = "Front Right Camera")
   public final Optional<AprilTag> frontRightCamera =
-      SubsystemsUtil.newOptionalSubsystem(
-          AprilTag.class,
-          RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
-          "FrontRightCamera",
-          new Transform3d(),
-          8080);
+      AprilTag.PARAMETERS
+          .frontRight()
+          .flatMap(
+              (c) ->
+                  SubsystemsUtil.newOptionalSubsystem(
+                      AprilTag.class,
+                      RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
+                      c.cameraName(),
+                      c.robotToCamera(),
+                      c.streamPort()));
 
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
