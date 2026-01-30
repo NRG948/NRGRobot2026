@@ -40,7 +40,6 @@ public class Subsystems {
 
   public final StatusLED statusLEDs = new StatusLED();
 
-  // TODO: Add Cameras (need AprilTag subsystem)
   // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
 
   @DashboardTab(title = "Front Left Camera")
@@ -148,7 +147,20 @@ public class Subsystems {
   }
 
   /** Called to perform periodic actions. */
-  public void periodic() {}
+  public void periodic() {
+    frontRightCamera.ifPresent(this::updateEstimatedPose);
+    frontLeftCamera.ifPresent(this::updateEstimatedPose);
+  }
 
-  // TODO add updateEstimatedPose function (need AprilTag subystem first)
+  private void updateEstimatedPose(AprilTag camera) {
+    var visionEst = camera.getEstimatedGlobalPose();
+
+    visionEst.ifPresent(
+        (est) -> {
+          var estPose = est.estimatedPose.toPose2d();
+          var estStdDevs = camera.getEstimationStdDevs();
+
+          drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+        });
+  }
 }
