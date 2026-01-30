@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
@@ -33,8 +34,11 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotPreferences;
+import frc.robot.RobotSelector;
 import frc.robot.util.FieldUtils;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -54,11 +58,21 @@ public class AprilTag extends SubsystemBase {
   private static final double LAST_RESULT_TIMEOUT = 0.1;
 
   // TODO: measure ALL camera rotations and transforms for the 2026 robot.
-  private static final Rotation3d FRONT_RIGHT_CAMERA_ROTATION = new Rotation3d();
-  public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA = new Transform3d();
+  private static final Rotation3d FRONT_RIGHT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
+  public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA =
+      new Transform3d(new Translation3d(0, 0, 0), FRONT_RIGHT_CAMERA_ROTATION);
 
-  private static final Rotation3d FRONT_LEFT_CAMERA_ROTATION = new Rotation3d();
-  public static final Transform3d ROBOT_TO_FRONT_LEFT_CAMERA = new Transform3d();
+  private static final Rotation3d FRONT_LEFT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
+  public static final Transform3d ROBOT_TO_FRONT_LEFT_CAMERA =
+      new Transform3d(new Translation3d(0, 0, 0), FRONT_LEFT_CAMERA_ROTATION);
+
+  private static final Rotation3d BACK_LEFT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
+  public static final Transform3d ROBOT_TO_BACK_LEFT_CAMERA =
+      new Transform3d(new Translation3d(0, 0, 0), BACK_LEFT_CAMERA_ROTATION);
+
+  private static final Rotation3d BACK_RIGHT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
+  public static final Transform3d ROBOT_TO_BACK_RIGHT_CAMERA =
+      new Transform3d(new Translation3d(0, 0, 0), BACK_RIGHT_CAMERA_ROTATION);
 
   /**
    * A single camera's parameters.
@@ -75,10 +89,31 @@ public class AprilTag extends SubsystemBase {
    * @param frontRight The front right camera parameters.
    * @param frontLeft The front left camera parameters.
    */
-
-  // TODO: Add parameters once ROBOT_TYPE is added
   public record VisionParameters(
-      Optional<CameraParameters> frontRight, Optional<CameraParameters> frontLeft) {}
+      Optional<CameraParameters> frontRight,
+      Optional<CameraParameters> frontLeft,
+      Optional<CameraParameters> backRight,
+      Optional<CameraParameters> backLeft) {}
+
+  public static final VisionParameters PRACTICE_VISION_PARAMS =
+      new VisionParameters(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+  public static final VisionParameters COMPETITION_VISION_PARAMS =
+      new VisionParameters(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+  public static final VisionParameters ALPHA_VISION_PARAMS =
+      new VisionParameters(
+          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 8080)),
+          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 8081)),
+          Optional.empty(),
+          Optional.empty());
+
+  public static final VisionParameters PARAMETERS =
+      RobotPreferences.ROBOT_TYPE
+          .select(
+              Map.of(
+                  RobotSelector.PracticeRobot2026, PRACTICE_VISION_PARAMS,
+                  RobotSelector.CompetitionRobot2026, COMPETITION_VISION_PARAMS,
+                  RobotSelector.AlphaRobot2026, ALPHA_VISION_PARAMS))
+          .orElse(COMPETITION_VISION_PARAMS);
 
   private enum PoseEstimationStrategy {
     AverageBestTargets(PoseStrategy.AVERAGE_BEST_TARGETS),
