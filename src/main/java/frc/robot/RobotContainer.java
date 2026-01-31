@@ -14,9 +14,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveUsingController;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MatchTime;
+import frc.robot.commands.DriveCommands;
+import frc.robot.commands.IntakeCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +28,12 @@ import frc.robot.util.MatchTime;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController m_manipulatorController =
+      new CommandXboxController(OperatorConstants.MANIPULATOR_CONTROLLER_PORT);
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController m_driverController = 
+      new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   @DashboardTab(title = "Preferences")
   private final RobotPreferences preferences = new RobotPreferences();
@@ -34,15 +43,11 @@ public class RobotContainer {
   @DashboardTab(title = "Autonomous")
   private final Autos autos = new Autos(subsystems);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     subsystems.drivetrain.setDefaultCommand(
-        new DriveUsingController(subsystems.drivetrain, driverController));
+        new DriveUsingController(subsystems.drivetrain, m_driverController));
     // Configure the trigger bindings
     configureBindings();
 
@@ -61,6 +66,11 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    m_driverController.start().onTrue(frc.robot.commands.DriveCommands.resetOrientation(subsystems));
+
+    m_manipulatorController.rightBumper().onTrue(IntakeCommands.intake(subsystems));
+    m_manipulatorController.a().onTrue(IntakeCommands.outtake(subsystems));
+  
     new Trigger(MatchTime::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
     new Trigger(MatchTime::isNearShiftChangeExcludingFinalSecond)
         .whileTrue(LEDCommands.setTransitionModeLED(subsystems));
