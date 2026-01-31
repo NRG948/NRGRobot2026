@@ -130,6 +130,20 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
     logGoalVelocity.append(goalVelocity);
   }
 
+  /*
+   * Adds or subtracts velocity from upper goal. Mainly for controllers and for experiments in ShootingCommands.java.
+   */
+  public void addUpperGoalVelocities(double upperGoalVelocityAdditions) {
+    this.upperGoalVelocity += upperGoalVelocityAdditions;
+  }
+
+  /*
+   * Adds or subtracts velocity from lower goal. Mainly for controllers and for experiments in ShootingCommands.java.
+   */
+  public void addLowerGoalVelocities(double lowerGoalVelocityAdditions) {
+    this.lowerGoalVelocity += lowerGoalVelocityAdditions;
+  }
+
   @Override
   public void disable() {
     goalVelocity = 0;
