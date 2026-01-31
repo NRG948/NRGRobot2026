@@ -10,18 +10,27 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import frc.robot.util.FieldUtils;
 
 /** A utitility class for Drive related commands. */
 public final class DriveCommands {
+
+  public static final Rotation2d kPi = new Rotation2d(Math.PI);
+  public static Rotation2d k180deg = kPi;
+  public static final Rotation2d kZero = new Rotation2d();
+
   /**
    * Resets the orientation of the robot.
    *
    * @param drivetrain
    * @return A command that resets the orientation of the robot.
    */
-  public static Command resetOrientation(Swerve drivetrain) {
-    return Commands.runOnce(() -> drivetrain.resetOrientation(Rotation2d.kZero), drivetrain);
+  public static Command resetOrientation(Subsystems subsystems) {
+    Swerve drivetrain = subsystems.drivetrain;
+    return Commands.runOnce(() -> drivetrain.resetOrientation(FieldUtils.isRedAlliance() ? k180deg : kZero), drivetrain);
   }
 
   private DriveCommands() {
