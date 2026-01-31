@@ -33,6 +33,17 @@ public final class DriveCommands {
     return Commands.runOnce(() -> drivetrain.resetOrientation(FieldUtils.isRedAlliance() ? k180deg : kZero), drivetrain);
   }
 
+  /**
+   * Returns a command that interrupts all subsystems.
+   *
+   * @param subsystems The subsystems container.
+   * @return A command that interrupts all subsystems.
+   */
+  public static Command interruptAll(Subsystems subsystems) {
+    return Commands.runOnce(() -> subsystems.disableAll(), subsystems.getAll())
+        .withName("InterruptAll");
+  }
+
   private DriveCommands() {
     throw new UnsupportedOperationException("This is a utility class.");
   }
