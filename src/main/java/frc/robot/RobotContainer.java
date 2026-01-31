@@ -95,6 +95,7 @@ public class RobotContainer {
     m_manipulatorController
         .povRight()
         .onTrue(ShootingCommands.decreaseUpperShooterVelocityByPointTwo(subsystems));
+    m_manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
   }
 
   /**
