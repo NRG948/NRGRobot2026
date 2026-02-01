@@ -156,4 +156,11 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
   public double getCurrentVelocity() {
     return currentVelocity;
   }
+
+  /*
+   * Returns goal velocity. 
+   */
+  public double getGoalVelocity() {
+    return goalVelocity;
+  }
 }

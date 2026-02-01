@@ -53,13 +53,13 @@ public final class RobotOperator {
   // TODO: Determine correct minimum velocity for if robot is intaking.
   @DashboardBooleanBox(title = "Intaking", column = 0, row = 0, width = 1, height = 1)
   public boolean intaking() {
-    return Math.signum(intake.getCurrentVelocity()) > 0.0;
+    return Math.signum(intake.getGoalVelocity()) > 0.0;
   }
 
   // TODO: Determine correct minimum velocity for if robot is outtaking.
   @DashboardBooleanBox(title = "Outtaking", column = 1, row = 0, width = 1, height = 1)
   public boolean outtaking() {
-    return intake.getCurrentVelocity() < -1.0;
+    return Math.signum(intake.getGoalVelocity()) < 0.0;
   }
 
   // TODO: Implement logic for if robot is aligned and state it here.
