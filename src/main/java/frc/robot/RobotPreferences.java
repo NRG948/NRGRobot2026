@@ -30,6 +30,14 @@ public final class RobotPreferences {
     @DashboardToggleSwitch(title = "Enable Front Right")
     public final BooleanPreference ENABLE_FRONT_RIGHT =
         new BooleanPreference("AprilTag", "Enable Front Right", false);
+
+    @DashboardToggleSwitch(title = "Enable Back Left")
+    public final BooleanPreference ENABLE_BACK_LEFT =
+        new BooleanPreference("AprilTag", "Enable Back Left", false);
+
+    @DashboardToggleSwitch(title = "Enable Back Right")
+    public final BooleanPreference ENABLE_BACK_RIGHT =
+        new BooleanPreference("AprilTag", "Enable Back Right", false);
   }
 
   @DashboardLayout(title = "April Tag", column = 0, row = 2, width = 1, height = 3)

@@ -36,6 +36,28 @@
             "topic" : "/SmartDashboard/Preferences/April Tag/Enable Front Right",
             "period" : 0.06
           }
+        }, {
+          "title" : "Enable Back Left",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Back Left",
+            "period" : 0.06
+          }
+        }, {
+          "title" : "Enable Back Right",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Back Right",
+            "period" : 0.06
+          }
         } ]
       } ],
       "containers" : [ {
@@ -1036,6 +1058,402 @@
         "height" : 256.0,
         "properties" : {
           "topic" : "/SmartDashboard/Front Right Camera/Has Targets",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      } ]
+    }
+  }, {
+    "name" : "Back Left Camera",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "Selected April Tag",
+        "type" : "List Layout",
+        "x" : 1152.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 640.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Z",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Z",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Roll",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Roll",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Pitch",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Pitch",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Angle to Target",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Angle to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Distance to Target",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag/Distance to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      }, {
+        "title" : "Estimated Pose",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Estimated Pose/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Estimated Pose/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Left Camera/Estimated Pose/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      } ],
+      "containers" : [ {
+        "title" : "Selected April Tag",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Back Left Camera/Selected April Tag",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Camera Stream",
+        "type" : "Camera Stream",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 512.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Back Left Camera/Camera Stream",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Has Targets",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Back Left Camera/Has Targets",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      } ]
+    }
+  }, {
+    "name" : "Back Right Camera",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "Selected April Tag",
+        "type" : "List Layout",
+        "x" : 1152.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 640.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Z",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Z",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Roll",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Roll",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Pitch",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Pitch",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Angle to Target",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Angle to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Distance to Target",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag/Distance to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      }, {
+        "title" : "Estimated Pose",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Estimated Pose/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Estimated Pose/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Back Right Camera/Estimated Pose/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      } ],
+      "containers" : [ {
+        "title" : "Selected April Tag",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Back Right Camera/Selected April Tag",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Camera Stream",
+        "type" : "Camera Stream",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 512.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Back Right Camera/Camera Stream",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Has Targets",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Back Right Camera/Has Targets",
           "period" : 0.06,
           "true_color" : -16711936,
           "true_icon" : "None",

@@ -65,6 +65,32 @@ public class Subsystems {
                       c.robotToCamera(),
                       c.streamPort()));
 
+  @DashboardTab(title = "Back Left Camera")
+  public final Optional<AprilTag> backLeftCamera =
+      AprilTag.PARAMETERS
+          .backLeft()
+          .flatMap(
+              (c) ->
+                  SubsystemsUtil.newOptionalSubsystem(
+                      AprilTag.class,
+                      RobotPreferences.APRIL_TAG.ENABLE_BACK_LEFT,
+                      c.cameraName(),
+                      c.robotToCamera(),
+                      c.streamPort()));
+
+  @DashboardTab(title = "Back Right Camera")
+  public final Optional<AprilTag> backRightCamera =
+      AprilTag.PARAMETERS
+          .backRight()
+          .flatMap(
+              (c) ->
+                  SubsystemsUtil.newOptionalSubsystem(
+                      AprilTag.class,
+                      RobotPreferences.APRIL_TAG.ENABLE_BACK_RIGHT,
+                      c.cameraName(),
+                      c.robotToCamera(),
+                      c.streamPort()));
+
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
 
@@ -79,6 +105,8 @@ public class Subsystems {
 
     frontLeftCamera.ifPresent(all::add);
     frontRightCamera.ifPresent(all::add);
+    backLeftCamera.ifPresent(all::add);
+    backRightCamera.ifPresent(all::add);
 
     all.addAll(manipulators);
     this.all = all.toArray(Subsystem[]::new);
@@ -155,6 +183,8 @@ public class Subsystems {
   public void periodic() {
     frontRightCamera.ifPresent(this::updateEstimatedPose);
     frontLeftCamera.ifPresent(this::updateEstimatedPose);
+    backLeftCamera.ifPresent(this::updateEstimatedPose);
+    backRightCamera.ifPresent(this::updateEstimatedPose);
   }
 
   private void updateEstimatedPose(AprilTag camera) {
