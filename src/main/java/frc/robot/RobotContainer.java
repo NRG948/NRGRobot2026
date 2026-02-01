@@ -26,6 +26,9 @@ import frc.robot.util.MatchTime;
  */
 public class RobotContainer {
 
+  @DashboardTab(title = "Operator")
+  private final RobotOperator operator;
+
   @DashboardTab(title = "Preferences")
   private final RobotPreferences preferences = new RobotPreferences();
 
@@ -40,6 +43,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    operator = new RobotOperator(subsystems);
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
@@ -78,5 +82,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autos.getAutonomous();
+  }
+
+  public void periodic() {
+    operator.periodic();
   }
 }
