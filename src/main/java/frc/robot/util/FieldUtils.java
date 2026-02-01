@@ -18,6 +18,14 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.parameters.AprilTagFieldParameters;
 
 public final class FieldUtils {
+
+  public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
+      new EnumPreference<AprilTagFieldParameters>(
+          "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
+
+  private static AprilTagFieldLayout FIELD_LAYOUT =
+      FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
+
   private static final int RED_HUB_APRILTAG = 10;
   private static final int BLUE_HUB_APRILTAG = 26;
   private static final Translation2d HUB_POSITION;
@@ -28,13 +36,6 @@ public final class FieldUtils {
 
   // distance (in meters) between the hub's middle april tag and the hub's center
   private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47 / 2);
-
-  public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
-      new EnumPreference<AprilTagFieldParameters>(
-          "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
-
-  private static AprilTagFieldLayout FIELD_LAYOUT =
-      FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
 
   public static boolean isRedAlliance() {
     var alliance = DriverStation.getAlliance().orElse(Alliance.Blue);

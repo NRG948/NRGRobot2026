@@ -39,17 +39,6 @@
         } ]
       } ],
       "containers" : [ {
-        "title" : "Auto Rotation PID",
-        "type" : "PID Controller",
-        "x" : 8320.0,
-        "y" : 6528.0,
-        "width" : 256.0,
-        "height" : 384.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Preferences/Auto Rotation PID",
-          "period" : 0.06
-        }
-      }, {
         "title" : "Robot Selector",
         "type" : "ComboBox Chooser",
         "x" : 0.0,
