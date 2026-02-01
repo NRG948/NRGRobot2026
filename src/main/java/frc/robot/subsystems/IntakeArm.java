@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
+import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -21,9 +22,16 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
+import com.nrg948.dashboard.annotations.DashboardRadialGauge;
+import com.nrg948.dashboard.annotations.DashboardTextDisplay;
+import com.nrg948.dashboard.model.DataBinding;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorIdleMode;
@@ -33,18 +41,24 @@ import frc.robot.util.TalonFXAdapter;
 @DashboardDefinition
 public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
-  private final double TOLERANCE = 0; // TODO: Add tolerance in radians
-  private final double RADIANS_PER_ROTATIONS = 1; // TODO: Calculate radians per rotations
-  private final double ERROR_MARGIN = 0; // TODO: Add error margin in radians
-  private final double ERROR_TIME = 1;
-  private final double GEAR_RATIO = 0; // TODO: Find gear ratio
+  private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
+  private static final double TOLERANCE = 0; // TODO: Add tolerance in radians
+  private static final double ERROR_MARGIN = 0; // TODO: Add error margin in radians
+  private static final double ERROR_TIME = 1;
+  private static final double GEAR_RATIO = 50.0;
+  private static final double RADIANS_PER_ROTATION = (2 * Math.PI) / GEAR_RATIO;
+  private static final double MASS = Units.lbsToKilograms(5.5);
+  private static final double LENGTH = Units.inchesToMeters(10.94);
+  private static final double MAX_VELOCITY = RADIANS_PER_ROTATION * MOTOR.getFreeSpeedRPM();
+  private static final double MAX_ACCELERATION =
+      (MOTOR.getStallTorque() * GEAR_RATIO) / (MASS * LENGTH);
 
   // TODO: Find intake arm angles
-  private final double stowAngle = 0;
-  private final double minAngle = 0;
-  private final double maxAngle = 0;
-
-  private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
+  public static final double STOW_ANGLE = 90;
+  public static final double BUMP_ANGLE = 45;
+  public static final double EXTENDED_ANGLE = 0;
+  public static final double MIN_ANGLE = 0;
+  public static final double MAX_ANGLE = 90;
 
   private final TalonFXAdapter motor =
       new TalonFXAdapter(
@@ -52,7 +66,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
           new TalonFX(INTAKE_ARM_ID),
           CLOCKWISE_POSITIVE,
           BRAKE,
-          RADIANS_PER_ROTATIONS);
+          RADIANS_PER_ROTATION);
 
   private final RelativeEncoder encoder = motor.getEncoder();
 
@@ -61,6 +75,37 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private double currentVelocity = 0;
   private boolean enabled;
   private boolean hasError = false;
+
+  @DashboardTextDisplay(
+      title = "Test Goal Angle",
+      column = 2,
+      row = 0,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  private double testGoalAngle = 0;
+
+  @DashboardCommand(
+      title = "Set Test Goal Angle",
+      column = 2,
+      row = 1,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private Command setTestGoalAngleCommand =
+      Commands.runOnce(() -> setGoalAngle(Math.toRadians(testGoalAngle)), this)
+          .withName("Set Goal Angle");
+
+  @DashboardCommand(
+      title = "Disable",
+      column = 2,
+      row = 2,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private Command disableCommand =
+      Commands.runOnce(this::disable, this).ignoringDisable(true).withName("Disable");
 
   private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0);
 
@@ -73,9 +118,10 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     feedbackConfigs.SensorToMechanismRatio = GEAR_RATIO;
 
     Slot0Configs slot0Configs = talonFXConfigs.Slot0;
-    slot0Configs.kS = 0;
-    slot0Configs.kV = 0;
-    slot0Configs.kA = 0;
+    slot0Configs.kS = MOTOR.getKs();
+    slot0Configs.kV = RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_VELOCITY;
+    slot0Configs.kA =
+        RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
     slot0Configs.kG = 0.9;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Configs.kP = 120;
@@ -83,8 +129,8 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     slot0Configs.kD = 0;
 
     MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = 0;
-    motionMagicConfigs.MotionMagicAcceleration = 0;
+    motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION;
+    motionMagicConfigs.MotionMagicAcceleration = MAX_ACCELERATION / RADIANS_PER_ROTATION;
 
     TalonFXConfigurator configurator =
         new TalonFXConfigurator(new DeviceIdentifier(INTAKE_ARM_ID, "KrakenX60", CANBus.roboRIO()));
@@ -111,8 +157,8 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       }
     }
     hasError =
-        currentAngle > maxAngle + ERROR_MARGIN
-            || currentAngle < minAngle - ERROR_MARGIN
+        currentAngle > MAX_ANGLE + ERROR_MARGIN
+            || currentAngle < MIN_ANGLE - ERROR_MARGIN
             || stuckTimer.hasElapsed(ERROR_TIME);
   }
 
@@ -122,11 +168,38 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
    * @param angle angle in radians
    */
   public void setGoalAngle(double angle) {
-    angle = MathUtil.clamp(angle, minAngle, maxAngle);
+    angle = MathUtil.clamp(angle, MIN_ANGLE, MAX_ANGLE);
     goalAngle = angle;
     enabled = true;
 
-    motor.setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATIONS).withSlot(0));
+    motor.setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
+  }
+
+  @DashboardRadialGauge(
+      title = "Current Angle",
+      column = 0,
+      row = 0,
+      width = 2,
+      height = 2,
+      startAngle = -180,
+      endAngle = 180,
+      min = -180,
+      max = 180,
+      numberOfLabels = 0,
+      wrapValue = true)
+  public double getCurrentAngleDegrees() {
+    return Math.toDegrees(currentAngle);
+  }
+
+  @DashboardTextDisplay(
+      title = "Current Goal Angle",
+      column = 0,
+      row = 2,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_ONLY)
+  public double getGoalAngleDegrees() {
+    return Math.toDegrees(goalAngle);
   }
 
   /**
@@ -144,7 +217,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   public boolean isStowed() {
-    return atGoalAngle(this.stowAngle);
+    return atGoalAngle(this.STOW_ANGLE);
   }
 
   public boolean hasError() {
@@ -152,7 +225,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   public double getStowAngle() {
-    return stowAngle;
+    return STOW_ANGLE;
   }
 
   @Override

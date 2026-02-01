@@ -372,7 +372,76 @@
     "name" : "IntakeArm",
     "grid_layout" : {
       "layouts" : [ ],
-      "containers" : [ ]
+      "containers" : [ {
+        "title" : "Test Goal Angle",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Test Goal Angle",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Angle",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Set Test Goal Angle",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Current Angle",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Current Angle",
+          "period" : 0.06,
+          "min_value" : -180.0,
+          "max_value" : 180.0,
+          "start_angle" : -180.0,
+          "end_angle" : 180.0,
+          "number_of_labels" : 0,
+          "wrap_value" : true,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Current Goal Angle",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Current Goal Angle",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
     }
   }, {
     "name" : "Shooter",
