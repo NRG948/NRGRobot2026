@@ -26,26 +26,16 @@ public final class ShootingCommands {
 
   public static Command setShooterVelocityToSeven(Subsystems subsystems) {
     Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.setGoalVelocities(7.0, 7.0), shooter);
+    return Commands.runOnce(() -> shooter.setGoalVelocity(7.0), shooter);
   }
 
-  public static Command decreaseLowerShooterVelocityByPointTwo(Subsystems subsystems) {
+  public static Command decreaseShooterVelocityByPointTwo(Subsystems subsystems) {
     Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addLowerGoalVelocities(-0.2), shooter);
+    return Commands.runOnce(() -> shooter.addGoalVelocity(-0.2), shooter);
   }
 
-  public static Command decreaseUpperShooterVelocityByPointTwo(Subsystems subsystems) {
+  public static Command increaseShooterVelocityByPointTwo(Subsystems subsystems) {
     Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addLowerGoalVelocities(-0.2), shooter);
-  }
-
-  public static Command increaseLowerShooterVelocityByPointTwo(Subsystems subsystems) {
-    Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addLowerGoalVelocities(0.2), shooter);
-  }
-
-  public static Command increaseUpperShooterVelocityByPointTwo(Subsystems subsystems) {
-    Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addLowerGoalVelocities(0.2), shooter);
+    return Commands.runOnce(() -> shooter.addGoalVelocity(0.2), shooter);
   }
 }

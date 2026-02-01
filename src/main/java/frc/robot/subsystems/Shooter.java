@@ -22,6 +22,7 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.PIDControllerPreference;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -119,11 +120,20 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private Command disableCommand =
       Commands.runOnce(this::disable, this).ignoringDisable(true).withName("Disable");
 
+  private final InterpolatingDoubleTreeMap table = new InterpolatingDoubleTreeMap();
+
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
 
   /** Creates a new Shooter. */
   public Shooter() {}
+
+  /*
+   * Fetches power determined by distance to power interpolation table.
+   */
+  public double getPowerFromInterpolationTable(double distance) {
+    return table.get(distance);
+  }
 
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
@@ -133,15 +143,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   /*
    * Adds or subtracts velocity from upper goal. Mainly for controllers and for experiments in ShootingCommands.java.
    */
-  public void addUpperGoalVelocities(double upperGoalVelocityAdditions) {
-    this.upperGoalVelocity += upperGoalVelocityAdditions;
-  }
-
-  /*
-   * Adds or subtracts velocity from lower goal. Mainly for controllers and for experiments in ShootingCommands.java.
-   */
-  public void addLowerGoalVelocities(double lowerGoalVelocityAdditions) {
-    this.lowerGoalVelocity += lowerGoalVelocityAdditions;
+  public void addGoalVelocity(double goalVelocityAdditions) {
+    this.goalVelocity += goalVelocityAdditions;
   }
 
   @Override

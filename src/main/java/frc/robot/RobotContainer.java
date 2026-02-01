@@ -89,16 +89,10 @@ public class RobotContainer {
     // and decrease lower shooter velocities respectively.
     m_manipulatorController
         .povUp()
-        .onTrue(ShootingCommands.increaseUpperShooterVelocityByPointTwo(subsystems));
-    m_manipulatorController
-        .povLeft()
-        .onTrue(ShootingCommands.decreaseUpperShooterVelocityByPointTwo(subsystems));
+        .onTrue(ShootingCommands.increaseShooterVelocityByPointTwo(subsystems));
     m_manipulatorController
         .povDown()
-        .onTrue(ShootingCommands.increaseLowerShooterVelocityByPointTwo(subsystems));
-    m_manipulatorController
-        .povRight()
-        .onTrue(ShootingCommands.decreaseUpperShooterVelocityByPointTwo(subsystems));
+        .onTrue(ShootingCommands.decreaseShooterVelocityByPointTwo(subsystems));
     m_manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
   }
 

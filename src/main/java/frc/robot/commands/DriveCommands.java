@@ -14,11 +14,11 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.FieldUtils;
 
-/** A utitility class for Drive related commands. */
+/** A utility class for Drive related commands. */
 public final class DriveCommands {
 
   public static final Rotation2d kPi = new Rotation2d(Math.PI);
-  public static Rotation2d k180deg = kPi;
+  public static final Rotation2d k180deg = kPi;
   public static final Rotation2d kZero = new Rotation2d();
 
   /**
