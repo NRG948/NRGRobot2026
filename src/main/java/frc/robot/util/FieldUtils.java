@@ -8,24 +8,19 @@
 package frc.robot.util;
 
 import com.nrg948.dashboard.annotations.DashboardDefinition;
-import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.parameters.AprilTagFieldParameters;
+import frc.robot.RobotPreferences;
 
 /** Helper methods related to the 2026 FRC Rebuilt field. */
 @DashboardDefinition
 public final class FieldUtils {
 
-  public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
-      new EnumPreference<AprilTagFieldParameters>(
-          "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
-
   private static AprilTagFieldLayout FIELD_LAYOUT =
-      FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
+      RobotPreferences.FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
 
   private FieldUtils() {
     throw new UnsupportedOperationException("This is a utility class!");

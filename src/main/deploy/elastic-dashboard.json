@@ -8,7 +8,7 @@
         "title" : "April Tag",
         "type" : "List Layout",
         "x" : 0.0,
-        "y" : 128.0,
+        "y" : 256.0,
         "width" : 128.0,
         "height" : 384.0,
         "properties" : {
@@ -39,6 +39,18 @@
         } ]
       } ],
       "containers" : [ {
+        "title" : "Field Layout",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Field Layout",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
         "title" : "Robot Selector",
         "type" : "ComboBox Chooser",
         "x" : 0.0,

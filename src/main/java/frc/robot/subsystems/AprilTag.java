@@ -58,13 +58,15 @@ public class AprilTag extends SubsystemBase {
   private static final double LAST_RESULT_TIMEOUT = 0.1;
 
   // TODO: measure ALL camera rotations and transforms for the 2026 robot.
-  private static final Rotation3d FRONT_RIGHT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
+  private static final Rotation3d FRONT_RIGHT_CAMERA_ROTATION =
+      new Rotation3d(0, Math.toRadians(-22), Math.toRadians(16.8));
   public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA =
-      new Transform3d(new Translation3d(0, 0, 0), FRONT_RIGHT_CAMERA_ROTATION);
+      new Transform3d(new Translation3d(+0.088, -0.093, +0.362), FRONT_RIGHT_CAMERA_ROTATION);
 
-  private static final Rotation3d FRONT_LEFT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
+  private static final Rotation3d FRONT_LEFT_CAMERA_ROTATION =
+      new Rotation3d(0, Math.toRadians(-22), Math.toRadians(-16.8));
   public static final Transform3d ROBOT_TO_FRONT_LEFT_CAMERA =
-      new Transform3d(new Translation3d(0, 0, 0), FRONT_LEFT_CAMERA_ROTATION);
+      new Transform3d(new Translation3d(+0.239, +0.287, +0.191), FRONT_LEFT_CAMERA_ROTATION);
 
   private static final Rotation3d BACK_LEFT_CAMERA_ROTATION = new Rotation3d(0, 0, 0);
   public static final Transform3d ROBOT_TO_BACK_LEFT_CAMERA =
