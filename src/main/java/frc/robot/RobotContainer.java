@@ -13,8 +13,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
+import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MatchTime;
 
@@ -25,6 +28,12 @@ import frc.robot.util.MatchTime;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController m_manipulatorController =
+      new CommandXboxController(OperatorConstants.MANIPULATOR_CONTROLLER_PORT);
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   @DashboardTab(title = "Preferences")
   private final RobotPreferences preferences = new RobotPreferences();
@@ -34,15 +43,11 @@ public class RobotContainer {
   @DashboardTab(title = "Autonomous")
   private final Autos autos = new Autos(subsystems);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     subsystems.drivetrain.setDefaultCommand(
-        new DriveUsingController(subsystems.drivetrain, driverController));
+        new DriveUsingController(subsystems.drivetrain, m_driverController));
     // Configure the trigger bindings
     configureBindings();
 
@@ -61,6 +66,8 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    m_driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
+
     new Trigger(MatchTime::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
     new Trigger(MatchTime::isNearShiftChangeExcludingFinalSecond)
         .whileTrue(LEDCommands.setTransitionModeLED(subsystems));
@@ -69,6 +76,26 @@ public class RobotContainer {
     new Trigger(MatchTime::isNearEndgame)
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
+
+    m_manipulatorController.rightBumper().whileTrue(IntakeCommands.intake(subsystems));
+    m_manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
+
+    // Experimental, remove after shooter interpolation table is made and implemented. Up and left
+    // is increase and decrease upper shooter velocities respectively. Down and right is increase
+    // and decrease lower shooter velocities respectively.
+    m_manipulatorController
+        .povUp()
+        .onTrue(ShootingCommands.increaseUpperShooterVelocityByPointTwo(subsystems));
+    m_manipulatorController
+        .povLeft()
+        .onTrue(ShootingCommands.decreaseUpperShooterVelocityByPointTwo(subsystems));
+    m_manipulatorController
+        .povDown()
+        .onTrue(ShootingCommands.increaseLowerShooterVelocityByPointTwo(subsystems));
+    m_manipulatorController
+        .povRight()
+        .onTrue(ShootingCommands.decreaseUpperShooterVelocityByPointTwo(subsystems));
+    m_manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
   }
 
   /**
