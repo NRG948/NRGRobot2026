@@ -72,7 +72,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(KS, KV);
 
   @DashboardPIDController(title = "PID", column = 6, row = 0, width = 2, height = 3)
-  private final PIDControllerPreference PIDController =
+  private final PIDControllerPreference pidController =
       new PIDControllerPreference("Shooter", "PID Controller", 1, 0, 0);
 
   @DashboardTextDisplay(title = "Goal Velocity (m/s)", column = 0, row = 2, width = 2, height = 1)
@@ -153,7 +153,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
     updateTelemetry();
     if (goalVelocity != 0) {
       double feedforward = this.feedforward.calculate(goalVelocity);
-      double feedback = PIDController.calculate(currentVelocity, goalVelocity);
+      double feedback = pidController.calculate(currentVelocity, goalVelocity);
       double motorVoltage = feedforward + feedback;
       leftUpperMotor.setVoltage(motorVoltage);
 
