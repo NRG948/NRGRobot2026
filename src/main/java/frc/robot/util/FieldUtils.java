@@ -7,8 +7,7 @@
  
 package frc.robot.util;
 
-import com.nrg948.preferences.RobotPreferences;
-import com.nrg948.preferences.RobotPreferencesValue;
+import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -20,14 +19,18 @@ import frc.robot.parameters.AprilTagFieldParameters;
 
 public final class FieldUtils {
   private static final int RED_HUB_APRILTAG = 10;
-  private static final int BLUE_HUB_APRILTAG = 26;  
+  private static final int BLUE_HUB_APRILTAG = 26;
+  private static final Translation2d HUB_POSITION;
 
-  //distance (in meters) between the hub's middle april tag and the hub's center
-  private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47/2);
+  static {
+    HUB_POSITION = getHubAprilTagPosition();
+  }
 
-  @RobotPreferencesValue
-  public static RobotPreferences.EnumValue<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
-      new RobotPreferences.EnumValue<AprilTagFieldParameters>(
+  // distance (in meters) between the hub's middle april tag and the hub's center
+  private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47 / 2);
+
+  public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
+      new EnumPreference<AprilTagFieldParameters>(
           "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
 
   private static AprilTagFieldLayout FIELD_LAYOUT =
@@ -68,7 +71,6 @@ public final class FieldUtils {
     }
     return getHubAprilTagPosition().plus(new Translation2d(APRIL_TAG_TO_HUB, 0));
   }
-  
 
   public static AprilTagFieldLayout getFieldLayout() {
     return FIELD_LAYOUT;

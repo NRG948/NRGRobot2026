@@ -62,6 +62,7 @@ public class Subsystems {
           8080);
 
   private final Subsystem[] all;
+
   private final Subsystem[] manipulators;
 
   private Map<String, StringLogEntry> commandLogger;

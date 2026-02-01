@@ -11,10 +11,13 @@ import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardNumberSlider;
+import com.nrg948.dashboard.annotations.DashboardPIDController;
 import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
+import com.nrg948.preferences.ProfiledPIDControllerPreference;
+import frc.robot.subsystems.Swerve;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -36,6 +39,12 @@ public final class RobotPreferences {
 
   /** Creates a new instance of RobotPreferences. */
   public RobotPreferences() {}
+
+  // PID
+  @DashboardPIDController(title = "Auto Rotation PID", column = 65, row = 51, width = 2, height = 3)
+  public static final ProfiledPIDControllerPreference ROTATION_PID_CONTROLLER =
+      new ProfiledPIDControllerPreference(
+          "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
   /** Selects the type of robot. */
   @DashboardComboBoxChooser(title = "Robot Selector", column = 0, row = 0, width = 2, height = 1)
