@@ -191,11 +191,7 @@ public class AprilTag extends SubsystemBase {
     this.cameraToRobot = robotToCamera.inverse();
     this.streamPort = streamPort;
 
-    estimator =
-        new PhotonPoseEstimator(
-            FieldUtils.getFieldLayout(),
-            POSE_ESTIMATION_STRATEGY.getValue().getStrategy(),
-            robotToCamera);
+    estimator = new PhotonPoseEstimator(FieldUtils.getFieldLayout(), robotToCamera);
 
     for (int i = 1; i <= 22; i++) {
       aprilTagIdChooser.addOption(String.valueOf(i), i);
@@ -240,8 +236,6 @@ public class AprilTag extends SubsystemBase {
    */
   private void updateEstimationStdDevs(
       Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
-    estimator.setPrimaryStrategy(POSE_ESTIMATION_STRATEGY.getValue().getStrategy());
-
     if (estimatedPose.isEmpty()) {
       // No pose input. Default to single-tag std devs
       curStdDevs = SINGLE_TAG_STD_DEVS;
@@ -297,6 +291,32 @@ public class AprilTag extends SubsystemBase {
     return curStdDevs;
   }
 
+  /**
+   * Estimates the robot pose based on the selected robot pose estimation strategy.
+   *
+   * @param result Pipeline result from the camera.
+   * @return Estimated pose.
+   */
+  public Optional<EstimatedRobotPose> estimateRobotPose(PhotonPipelineResult result) {
+    switch (POSE_ESTIMATION_STRATEGY.getValue()) {
+      case AverageBestTargets:
+        return estimator.estimateAverageBestTargetsPose(result);
+      case ClosestToCameraHeight:
+        return estimator.estimateClosestToCameraHeightPose(result);
+      case LowestAmbiguity:
+        return estimator.estimateLowestAmbiguityPose(result);
+      case MultiTagPnpOnCoprocessor:
+        return estimator.estimateCoprocMultiTagPose(result);
+      case PnpDistanceTrigSolve:
+        return estimator.estimatePnpDistanceTrigSolvePose(result);
+      default:
+        System.out.println(
+            "ERROR: Unsupported pose estimation strategy: "
+                + POSE_ESTIMATION_STRATEGY.getValue().name());
+        return Optional.empty();
+    }
+  }
+
   @Override
   public void periodic() {
     // Process the latest vision results updating the estimated robot pose and
@@ -306,7 +326,8 @@ public class AprilTag extends SubsystemBase {
     List<PhotonPipelineResult> allUnreadResults = camera.getAllUnreadResults();
     for (var change : allUnreadResults) {
 
-      Optional<EstimatedRobotPose> visionEstTemp = estimator.update(change);
+      Optional<EstimatedRobotPose> visionEstTemp = estimateRobotPose(change);
+
       // Only update the vision estimate if it is not empty.
       // This way, we discard empty updates from the coprocessor
       // and ensure we are always receiving fresh data every control cycle.
