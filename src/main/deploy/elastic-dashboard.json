@@ -104,18 +104,6 @@
           "trajectory_color" : -1
         }
       }, {
-        "title" : "Auto Routine",
-        "type" : "ComboBox Chooser",
-        "x" : 0.0,
-        "y" : 384.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Auto Routine",
-          "period" : 0.06,
-          "sort_options" : false
-        }
-      }, {
         "title" : "Match Time",
         "type" : "Match Time",
         "x" : 768.0,

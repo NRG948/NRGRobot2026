@@ -7,17 +7,13 @@
  
 package frc.robot;
 
-import com.nrg948.autonomous.Autonomous;
 import com.nrg948.dashboard.annotations.DashboardBooleanBox;
-import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.model.GameField;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -26,11 +22,10 @@ import frc.robot.util.MatchTime;
 @DashboardDefinition
 public final class RobotOperator {
 
-  private Intake intake;
-  private static Swerve drive;
+  private final Intake intake;
+  private final Swerve drive;
 
   public RobotOperator(Subsystems subsystems) {
-    autoChooser = Autonomous.getChooser(subsystems, "frc.robot");
     intake = subsystems.intake;
     drive = subsystems.drivetrain;
   }
@@ -50,20 +45,20 @@ public final class RobotOperator {
       height = 2,
       min = MIN_SPEED,
       max = MAX_SPEED)
-  private double velocity() {
+  public double velocity() {
     return Math.hypot(
         drive.getChassisSpeeds().vxMetersPerSecond, drive.getChassisSpeeds().vyMetersPerSecond);
   }
 
   // TODO: Determine correct minimum velocity for if robot is intaking.
   @DashboardBooleanBox(title = "Intaking", column = 0, row = 0, width = 1, height = 1)
-  private boolean intaking() {
+  public boolean intaking() {
     return Math.signum(intake.getCurrentVelocity()) > 0.0;
   }
 
   // TODO: Determine correct minimum velocity for if robot is outtaking.
   @DashboardBooleanBox(title = "Outtaking", column = 1, row = 0, width = 1, height = 1)
-  private boolean outtaking() {
+  public boolean outtaking() {
     return intake.getCurrentVelocity() < -1.0;
   }
 
@@ -84,12 +79,12 @@ public final class RobotOperator {
       game = GameField.REBUILT)
   private Field2d field = new Field2d();
 
-  // TODO: Update pose every tick
-  @DashboardComboBoxChooser(title = "Auto Routine", column = 0, row = 3, width = 2, height = 1)
-  private final SendableChooser<Command> autoChooser;
-
   @DashboardMatchTime(title = "Match Time", row = 0, column = 6, width = 3, height = 2)
   public static double getMatchTime() {
     return MatchTime.getMatchTime();
+  }
+
+  public void periodic() {
+    field.setRobotPose(drive.getPosition());
   }
 }

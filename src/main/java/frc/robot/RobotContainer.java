@@ -83,4 +83,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autos.getAutonomous();
   }
+
+  public void periodic() {
+    operator.periodic();
+  }
 }
