@@ -38,7 +38,7 @@ public final class RobotPreferences {
   @DashboardComboBoxChooser(title = "Field Layout", column = 0, row = 1, width = 2, height = 1)
   public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
       new EnumPreference<AprilTagFieldParameters>(
-          "AprilTag", "Field Layout", AprilTagFieldParameters.k2025ReefscapeWelded);
+          "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
 
   /** Creates a new instance of RobotPreferences. */
   public RobotPreferences() {}

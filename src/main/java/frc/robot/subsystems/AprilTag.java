@@ -90,6 +90,8 @@ public class AprilTag extends SubsystemBase {
    *
    * @param frontRight The front right camera parameters.
    * @param frontLeft The front left camera parameters.
+   * @param backRight The back right camera parameters.
+   * @param backLeft The back left camera parameters.
    */
   public record VisionParameters(
       Optional<CameraParameters> frontRight,

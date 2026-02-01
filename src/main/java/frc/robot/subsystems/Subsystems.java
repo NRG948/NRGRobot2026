@@ -39,8 +39,6 @@ public class Subsystems {
 
   public final StatusLED statusLEDs = new StatusLED();
 
-  // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
-
   @DashboardTab(title = "Front Left Camera")
   public final Optional<AprilTag> frontLeftCamera =
       AprilTag.PARAMETERS
@@ -49,7 +47,7 @@ public class Subsystems {
               (c) ->
                   SubsystemsUtil.newOptionalSubsystem(
                       AprilTag.class,
-                      RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
+                      RobotPreferences.APRIL_TAG.ENABLE_FRONT_LEFT,
                       c.cameraName(),
                       c.robotToCamera(),
                       c.streamPort()));
