@@ -61,6 +61,11 @@ public class Subsystems {
           new Transform3d(),
           8080);
 
+  @DashboardTab(title = "Elevator")
+  //public final Elevator elevator = new Elevator();
+
+  // TODO: Add Cameras (need AprilTag subsystem)
+
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
 
@@ -68,7 +73,8 @@ public class Subsystems {
 
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
-    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
+    var manipulators =
+        new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
 
     // Add all non-manipulator subsystems to the `all` list.
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
