@@ -41,7 +41,7 @@ public class DriveAutoRotation extends DriveUsingController {
 
 
   /**
-   * @return Radians of angle difference from bot to hub
+   * {@return the angle from the center of the robot to the hub, in radians}
    */
   private double getRotationtoHub() {
     Rotation2d angleDiff =
