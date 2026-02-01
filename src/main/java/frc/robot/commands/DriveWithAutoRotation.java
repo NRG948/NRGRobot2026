@@ -17,11 +17,11 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.util.FieldUtils;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
-public class DriveAutoRotation extends DriveUsingController {
+public class DriveWithAutoRotation extends DriveUsingController {
 
-  private static Translation2d hubLocation = FieldUtils.getHubLocation();
+  private Translation2d hubLocation;
 
-  public DriveAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
+  public DriveWithAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
   }
 
@@ -29,11 +29,12 @@ public class DriveAutoRotation extends DriveUsingController {
   @Override
   public void initialize() {
     ROTATION_PID_CONTROLLER.reset(drivetrain.getOrientation().getRotations(), 0.0);
+    hubLocation = FieldUtils.getHubLocation();
   }
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
   private double getAngleToHub() {
-    Rotation2d angleDiff = drivetrain.getPosition().getTranslation().minus(hubLocation).getAngle();
+    Rotation2d angleDiff = hubLocation.minus(drivetrain.getPosition().getTranslation()).getAngle();
     double angleDiffRad = angleDiff.getRadians();
     return angleDiffRad;
   }
@@ -45,7 +46,7 @@ public class DriveAutoRotation extends DriveUsingController {
 
   private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
 
-    double currentOrientation = drivetrain.getOrientation().getRotations();
+    double currentOrientation = drivetrain.getOrientation().getRadians();
 
     double targetOrientation = getAngleToHub();
 

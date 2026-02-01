@@ -35,7 +35,7 @@ public final class FieldUtils {
   }
 
   // distance (in meters) between the hub's middle april tag and the hub's center
-  private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47 / 2);
+  private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47.0 / 2.0);
 
   public static boolean isRedAlliance() {
     var alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
