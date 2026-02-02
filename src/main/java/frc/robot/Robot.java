@@ -36,7 +36,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
 
-    dashboardServer = DashboardServer.start(this);
+    dashboardServer =
+        DashboardServer.start(this, RobotPreferences.DASHBOARD_MODE.getValue().toString());
   }
 
   /**
