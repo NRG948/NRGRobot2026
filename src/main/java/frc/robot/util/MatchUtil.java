@@ -9,6 +9,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 
 /** Utility class for match-related information and timing. */
 public final class MatchUtil {
@@ -34,6 +35,11 @@ public final class MatchUtil {
   /** {@return the current match time in seconds} */
   public static double getMatchTime() {
     return DriverStation.getMatchTime();
+  }
+
+  /** {@return true if the match is a competition or practice match, false otherwise} */
+  public static boolean isCompetition() {
+    return DriverStation.getMatchType() != MatchType.None;
   }
 
   /** {@return true if the robot is in teleoperated mode} */

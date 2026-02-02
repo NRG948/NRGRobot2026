@@ -48,10 +48,14 @@ public class RobotContainer {
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-  @DashboardTab(title = "Operator")
+  @DashboardTab(
+      title = "Operator",
+      modes = {"Competition", "Testing"})
   private final RobotOperator operator;
 
-  @DashboardTab(title = "Preferences")
+  @DashboardTab(
+      title = "Preferences",
+      modes = {"Competition", "Testing"})
   private final RobotPreferences preferences = new RobotPreferences();
 
   private final Subsystems subsystems = new Subsystems();

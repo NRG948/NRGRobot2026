@@ -7,6 +7,8 @@
  
 package frc.robot;
 
+import static frc.robot.RobotPreferences.DASHBOARD_MODE;
+
 import com.nrg948.dashboard.DashboardServer;
 import com.nrg948.dashboard.annotations.Dashboard;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -36,7 +38,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
 
-    dashboardServer = DashboardServer.start(this);
+    dashboardServer = DashboardServer.start(this, DASHBOARD_MODE.getValue().toString());
   }
 
   /**

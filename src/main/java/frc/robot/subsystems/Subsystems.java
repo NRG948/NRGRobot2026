@@ -22,27 +22,41 @@ import java.util.stream.Collectors;
 
 public final class Subsystems {
 
-  @DashboardTab(title = "Swerve")
+  @DashboardTab(
+      title = "Swerve",
+      modes = {"Testing"})
   public final Swerve drivetrain = new Swerve();
 
-  @DashboardTab(title = "Intake")
+  @DashboardTab(
+      title = "Intake",
+      modes = {"Testing"})
   public final Intake intake = new Intake();
 
-  @DashboardTab(title = "IntakeArm")
+  @DashboardTab(
+      title = "IntakeArm",
+      modes = {"Testing"})
   public final IntakeArm intakeArm = new IntakeArm();
 
-  @DashboardTab(title = "Shooter")
+  @DashboardTab(
+      title = "Shooter",
+      modes = {"Testing"})
   public final Shooter shooter = new Shooter();
 
-  @DashboardTab(title = "Indexer")
+  @DashboardTab(
+      title = "Indexer",
+      modes = {"Testing"})
   public final Indexer indexer = new Indexer();
 
-  @DashboardTab(title = "Hopper")
+  @DashboardTab(
+      title = "Hopper",
+      modes = {"Testing"})
   public final Hopper hopper = new Hopper();
 
   public final StatusLED statusLEDs = new StatusLED();
 
-  @DashboardTab(title = "Front Left Camera")
+  @DashboardTab(
+      title = "Front Left Camera",
+      modes = {"Testing"})
   public final Optional<AprilTag> frontLeftCamera =
       AprilTag.PARAMETERS
           .frontLeft()
@@ -56,7 +70,9 @@ public final class Subsystems {
                       c.cameraPublisherName(),
                       c.streamURL()));
 
-  @DashboardTab(title = "Front Right Camera")
+  @DashboardTab(
+      title = "Front Right Camera",
+      modes = {"Testing"})
   public final Optional<AprilTag> frontRightCamera =
       AprilTag.PARAMETERS
           .frontRight()
@@ -70,7 +86,9 @@ public final class Subsystems {
                       c.cameraPublisherName(),
                       c.streamURL()));
 
-  @DashboardTab(title = "Back Left Camera")
+  @DashboardTab(
+      title = "Back Left Camera",
+      modes = {"Testing"})
   public final Optional<AprilTag> backLeftCamera =
       AprilTag.PARAMETERS
           .backLeft()
@@ -84,7 +102,9 @@ public final class Subsystems {
                       c.cameraPublisherName(),
                       c.streamURL()));
 
-  @DashboardTab(title = "Back Right Camera")
+  @DashboardTab(
+      title = "Back Right Camera",
+      modes = {"Testing"})
   public final Optional<AprilTag> backRightCamera =
       AprilTag.PARAMETERS
           .backRight()

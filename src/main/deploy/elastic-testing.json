@@ -309,6 +309,18 @@
           "sort_options" : false
         }
       }, {
+        "title" : "Dashboard Mode",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Dashboard Mode",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
         "title" : "Auto Rotation PID",
         "type" : "PID Controller",
         "x" : 384.0,

@@ -19,6 +19,7 @@ import com.nrg948.preferences.EnumPreference;
 import com.nrg948.preferences.PIDControllerPreference;
 import frc.robot.parameters.AprilTagFieldParameters;
 import frc.robot.parameters.PoseEstimationStrategy;
+import frc.robot.util.DashboardMode;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -86,6 +87,10 @@ public final class RobotPreferences {
   @DashboardComboBoxChooser(title = "Robot Selector", column = 0, row = 0, width = 2, height = 1)
   public static final EnumPreference<RobotSelector> ROBOT_TYPE =
       new EnumPreference<>("Robot", "Robot Type", RobotSelector.CompetitionRobot2026);
+
+  @DashboardComboBoxChooser(title = "Dashboard Mode", column = 0, row = 1, width = 2, height = 1)
+  public static EnumPreference<DashboardMode> DASHBOARD_MODE =
+      new EnumPreference<DashboardMode>("Dashboard", "Dashboard Mode", DashboardMode.COMPETITION);
 
   /** Selects the auto-rotation PID controller gains. */
   @DashboardPIDController(title = "Auto Rotation PID", column = 3, row = 1, width = 2, height = 3)
