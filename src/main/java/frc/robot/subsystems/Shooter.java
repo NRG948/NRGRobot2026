@@ -46,6 +46,20 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
 
+  @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
+  private static final double MAX_VELOCITY =
+      SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0;
+
+  private static final double KS = SHOOTER_MOTOR.getKs();
+  private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
+
+  private static final InterpolatingDoubleTreeMap TABLE = new InterpolatingDoubleTreeMap();
+
+  static {
+    TABLE.put(0.0, 0.0); // TODO: Test & fill out table
+    TABLE.put(10.0, MAX_VELOCITY);
+  }
+
   private final MotorController leftUpperMotor =
       SHOOTER_MOTOR.newController(
           "/Shooter/Left Upper Motor",
@@ -60,13 +74,6 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       leftUpperMotor.createFollower(SHOOTER_LOWER_RIGHT_ID, true);
   private final MotorController leftLowerMotor =
       leftUpperMotor.createFollower(SHOOTER_LOWER_LEFT_ID, false);
-
-  @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
-  private static final double MAX_VELOCITY =
-      SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0;
-
-  private static final double KS = SHOOTER_MOTOR.getKs();
-  private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
@@ -120,8 +127,6 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private Command disableCommand =
       Commands.runOnce(this::disable, this).ignoringDisable(true).withName("Disable");
 
-  private final InterpolatingDoubleTreeMap table = new InterpolatingDoubleTreeMap();
-
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
 
@@ -132,7 +137,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
    * Fetches power determined by distance to power interpolation table.
    */
   public double getPowerFromInterpolationTable(double distance) {
-    return table.get(distance);
+    return TABLE.get(distance);
   }
 
   public void setGoalVelocity(double goalVelocity) {
