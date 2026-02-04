@@ -531,60 +531,37 @@
     "grid_layout" : {
       "layouts" : [ ],
       "containers" : [ {
-        "title" : "Lower Max Velocity (m/s)",
+        "title" : "Max Velocity (m/s)",
         "type" : "Text Display",
         "x" : 0.0,
         "y" : 384.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Lower Max Velocity (m+s)",
+          "topic" : "/SmartDashboard/Shooter/Max Velocity (m+s)",
           "period" : 0.06,
           "show_submit_button" : false
         }
       }, {
-        "title" : "Upper Max Velocity (m/s)",
-        "type" : "Text Display",
-        "x" : 256.0,
-        "y" : 384.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Upper Max Velocity (m+s)",
-          "period" : 0.06,
-          "show_submit_button" : false
-        }
-      }, {
-        "title" : "Lower PID",
+        "title" : "PID",
         "type" : "PID Controller",
         "x" : 768.0,
         "y" : 0.0,
         "width" : 256.0,
         "height" : 384.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Lower PID",
+          "topic" : "/SmartDashboard/Shooter/PID",
           "period" : 0.06
         }
       }, {
-        "title" : "Upper PID",
-        "type" : "PID Controller",
-        "x" : 1024.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 384.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Upper PID",
-          "period" : 0.06
-        }
-      }, {
-        "title" : "Lower Goal Velocity (m/s)",
+        "title" : "Goal Velocity (m/s)",
         "type" : "Text Display",
         "x" : 0.0,
         "y" : 256.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Lower Goal Velocity (m+s)",
+          "topic" : "/SmartDashboard/Shooter/Goal Velocity (m+s)",
           "period" : 0.06,
           "show_submit_button" : false
         }
@@ -608,57 +585,14 @@
           "show_ticks" : true
         }
       }, {
-        "title" : "Upper Goal Velocity (m/s)",
-        "type" : "Text Display",
-        "x" : 256.0,
-        "y" : 256.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Upper Goal Velocity (m+s)",
-          "period" : 0.06,
-          "show_submit_button" : false
-        }
-      }, {
-        "title" : "Upper Velocity (m/s)",
-        "type" : "Radial Gauge",
-        "x" : 256.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 256.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Upper Velocity (m+s)",
-          "period" : 0.06,
-          "min_value" : -7.979645340118073,
-          "max_value" : 7.979645340118073,
-          "start_angle" : -140.0,
-          "end_angle" : 140.0,
-          "number_of_labels" : 8,
-          "wrap_value" : false,
-          "show_pointer" : true,
-          "show_ticks" : true
-        }
-      }, {
-        "title" : "Test Lower Velocity (m/s)",
+        "title" : "Test Velocity (m/s)",
         "type" : "Text Display",
         "x" : 512.0,
         "y" : 0.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Test Lower Velocity (m+s)",
-          "period" : 0.06,
-          "show_submit_button" : true
-        }
-      }, {
-        "title" : "Test Upper Velocity (m/s)",
-        "type" : "Text Display",
-        "x" : 512.0,
-        "y" : 128.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Shooter/Test Upper Velocity (m+s)",
+          "topic" : "/SmartDashboard/Shooter/Test Velocity (m+s)",
           "period" : 0.06,
           "show_submit_button" : true
         }
