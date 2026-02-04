@@ -17,10 +17,6 @@ import frc.robot.util.FieldUtils;
 /** A utility class for Drive related commands. */
 public final class DriveCommands {
 
-  public static final Rotation2d kPi = new Rotation2d(Math.PI);
-  public static final Rotation2d k180deg = kPi;
-  public static final Rotation2d kZero = new Rotation2d();
-
   /**
    * Resets the orientation of the robot.
    *
@@ -30,7 +26,9 @@ public final class DriveCommands {
   public static Command resetOrientation(Subsystems subsystems) {
     Swerve drivetrain = subsystems.drivetrain;
     return Commands.runOnce(
-        () -> drivetrain.resetOrientation(FieldUtils.isRedAlliance() ? k180deg : kZero),
+        () ->
+            drivetrain.resetOrientation(
+                FieldUtils.isRedAlliance() ? Rotation2d.k180deg : Rotation2d.kZero),
         drivetrain);
   }
 
