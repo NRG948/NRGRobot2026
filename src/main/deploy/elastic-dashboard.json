@@ -191,6 +191,18 @@
           "sort_options" : false
         }
       }, {
+        "title" : "Pose Est. Strategy",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 640.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Pose Est. Strategy",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
         "title" : "Robot Selector",
         "type" : "ComboBox Chooser",
         "x" : 0.0,

@@ -13,7 +13,6 @@ import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
-import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.cscore.VideoSource;
@@ -105,8 +104,8 @@ public class AprilTag extends SubsystemBase {
       new VisionParameters(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
   public static final VisionParameters ALPHA_VISION_PARAMS =
       new VisionParameters(
-          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 8080)),
-          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 8081)),
+          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 1182)),
+          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 1184)),
           Optional.empty(),
           Optional.empty());
 
@@ -119,7 +118,7 @@ public class AprilTag extends SubsystemBase {
                   RobotSelector.AlphaRobot2026, ALPHA_VISION_PARAMS))
           .orElse(COMPETITION_VISION_PARAMS);
 
-  private enum PoseEstimationStrategy {
+  public enum PoseEstimationStrategy {
     AverageBestTargets(PoseStrategy.AVERAGE_BEST_TARGETS),
     ClosestToCameraHeight(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT),
     ClosestToLastPose(PoseStrategy.CLOSEST_TO_LAST_POSE),
@@ -139,10 +138,6 @@ public class AprilTag extends SubsystemBase {
       return strategy;
     }
   }
-
-  public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
-      new EnumPreference<PoseEstimationStrategy>(
-          "AprilTag", "Pose Est. Strategy", PoseEstimationStrategy.MultiTagPnpOnCoprocessor);
 
   private final PhotonCamera camera;
   private final Transform3d cameraToRobot;
@@ -193,7 +188,7 @@ public class AprilTag extends SubsystemBase {
 
     estimator = new PhotonPoseEstimator(FieldUtils.getFieldLayout(), robotToCamera);
 
-    for (int i = 1; i <= 22; i++) {
+    for (int i = 1; i <= 32; i++) {
       aprilTagIdChooser.addOption(String.valueOf(i), i);
     }
     aprilTagIdChooser.setDefaultOption("1", 1);
@@ -298,21 +293,25 @@ public class AprilTag extends SubsystemBase {
    * @return Estimated pose.
    */
   public Optional<EstimatedRobotPose> estimateRobotPose(PhotonPipelineResult result) {
-    switch (POSE_ESTIMATION_STRATEGY.getValue()) {
+    switch (RobotPreferences.POSE_ESTIMATION_STRATEGY.getValue()) {
       case AverageBestTargets:
         return estimator.estimateAverageBestTargetsPose(result);
       case ClosestToCameraHeight:
         return estimator.estimateClosestToCameraHeightPose(result);
+      case MultiTagPnpOnCoprocessor:
+        var res = estimator.estimateCoprocMultiTagPose(result);
+        if (res.isPresent()) {
+          return res;
+        }
+      // Fallthrough
       case LowestAmbiguity:
         return estimator.estimateLowestAmbiguityPose(result);
-      case MultiTagPnpOnCoprocessor:
-        return estimator.estimateCoprocMultiTagPose(result);
       case PnpDistanceTrigSolve:
         return estimator.estimatePnpDistanceTrigSolvePose(result);
       default:
         System.out.println(
             "ERROR: Unsupported pose estimation strategy: "
-                + POSE_ESTIMATION_STRATEGY.getValue().name());
+                + RobotPreferences.POSE_ESTIMATION_STRATEGY.getValue().name());
         return Optional.empty();
     }
   }
@@ -325,13 +324,14 @@ public class AprilTag extends SubsystemBase {
     Optional<PhotonPipelineResult> currentResult = Optional.empty();
     List<PhotonPipelineResult> allUnreadResults = camera.getAllUnreadResults();
     for (var change : allUnreadResults) {
-
+      System.out.println("AprilTag");
       Optional<EstimatedRobotPose> visionEstTemp = estimateRobotPose(change);
 
       // Only update the vision estimate if it is not empty.
       // This way, we discard empty updates from the coprocessor
       // and ensure we are always receiving fresh data every control cycle.
       if (visionEstTemp.isEmpty()) {
+        System.out.println("AprilTagNoEst.");
         continue;
       }
       visionEst = visionEstTemp;
@@ -343,6 +343,7 @@ public class AprilTag extends SubsystemBase {
     globalEstimatedPose.ifPresent(
         (e) -> {
           lastEstimatedPose = e.estimatedPose.toPose2d();
+          System.out.println(lastEstimatedPose);
           estimatedPoseLogger.append(lastEstimatedPose);
         });
 
