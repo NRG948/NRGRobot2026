@@ -42,23 +42,26 @@ import frc.robot.util.TalonFXAdapter;
 public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
-  private static final double TOLERANCE = 0; // TODO: Add tolerance in radians
-  private static final double ERROR_MARGIN = 0; // TODO: Add error margin in radians
+  private static final double TOLERANCE =
+      Units.degreesToRadians(0.5); // TODO: Add tolerance in radians
+  private static final double ERROR_MARGIN =
+      Units.degreesToRadians(5.0); // TODO: Add error margin in radians
   private static final double ERROR_TIME = 1;
   private static final double GEAR_RATIO = 50.0;
   private static final double RADIANS_PER_ROTATION = (2 * Math.PI) / GEAR_RATIO;
   private static final double MASS = Units.lbsToKilograms(5.5);
   private static final double LENGTH = Units.inchesToMeters(10.94);
-  private static final double MAX_VELOCITY = RADIANS_PER_ROTATION * MOTOR.getFreeSpeedRPM();
+  private static final double MAX_VELOCITY =
+      (RADIANS_PER_ROTATION * MOTOR.getFreeSpeedRPM()) / 60.0;
   private static final double MAX_ACCELERATION =
-      (MOTOR.getStallTorque() * GEAR_RATIO) / (MASS * LENGTH);
+      (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
   // TODO: Find intake arm angles
-  public static final double STOW_ANGLE = 90;
-  public static final double BUMP_ANGLE = 45;
-  public static final double EXTENDED_ANGLE = 0;
-  public static final double MIN_ANGLE = 0;
-  public static final double MAX_ANGLE = 90;
+  public static final double STOW_ANGLE = Units.degreesToRadians(90);
+  public static final double BUMP_ANGLE = Units.degreesToRadians(45);
+  public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
+  public static final double MIN_ANGLE = Units.degreesToRadians(0);
+  public static final double MAX_ANGLE = Units.degreesToRadians(90);
 
   private final TalonFXAdapter motor =
       new TalonFXAdapter(
@@ -217,7 +220,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   public boolean isStowed() {
-    return atGoalAngle(this.STOW_ANGLE);
+    return atGoalAngle(STOW_ANGLE);
   }
 
   public boolean hasError() {
