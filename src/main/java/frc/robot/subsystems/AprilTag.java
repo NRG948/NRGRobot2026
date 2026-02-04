@@ -324,14 +324,12 @@ public class AprilTag extends SubsystemBase {
     Optional<PhotonPipelineResult> currentResult = Optional.empty();
     List<PhotonPipelineResult> allUnreadResults = camera.getAllUnreadResults();
     for (var change : allUnreadResults) {
-      System.out.println("AprilTag");
       Optional<EstimatedRobotPose> visionEstTemp = estimateRobotPose(change);
 
       // Only update the vision estimate if it is not empty.
       // This way, we discard empty updates from the coprocessor
       // and ensure we are always receiving fresh data every control cycle.
       if (visionEstTemp.isEmpty()) {
-        System.out.println("AprilTagNoEst.");
         continue;
       }
       visionEst = visionEstTemp;
@@ -343,7 +341,6 @@ public class AprilTag extends SubsystemBase {
     globalEstimatedPose.ifPresent(
         (e) -> {
           lastEstimatedPose = e.estimatedPose.toPose2d();
-          System.out.println(lastEstimatedPose);
           estimatedPoseLogger.append(lastEstimatedPose);
         });
 
