@@ -20,7 +20,7 @@ public final class DriveCommands {
   /**
    * Resets the orientation of the robot.
    *
-   * @param drivetrain
+   * @param subsystems
    * @return A command that resets the orientation of the robot.
    */
   public static Command resetOrientation(Subsystems subsystems) {
