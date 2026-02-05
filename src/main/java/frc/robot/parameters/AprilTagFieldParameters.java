@@ -7,7 +7,6 @@
  
 package frc.robot.parameters;
 
-import com.nrg948.preferences.RobotPreferences;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
