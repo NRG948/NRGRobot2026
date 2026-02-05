@@ -33,15 +33,27 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotPreferences;
+import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
+import java.util.Map;
 
 @DashboardDefinition
 public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
-  private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
+  private static final MotorParameters MOTOR =
+      RobotPreferences.ROBOT_TYPE.selectOrDefault(
+          Map.of(
+              RobotSelector.AlphaRobot2026,
+              MotorParameters.NullMotor,
+              RobotSelector.CompetitionRobot2026,
+              MotorParameters.KrakenX60,
+              RobotSelector.PracticeRobot2026,
+              MotorParameters.KrakenX60),
+          MotorParameters.NullMotor);
   private static final double TOLERANCE =
       Units.degreesToRadians(0.5); // TODO: Add tolerance in radians
   private static final double ERROR_MARGIN =

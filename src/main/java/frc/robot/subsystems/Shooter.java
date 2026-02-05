@@ -31,17 +31,29 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants.CANID;
+import frc.robot.RobotPreferences;
+import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
+import java.util.Map;
 
 @DashboardDefinition
 public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private static final DataLog LOG = DataLogManager.getLog();
 
-  private static final MotorParameters SHOOTER_MOTOR = MotorParameters.KrakenX44;
+  private static final MotorParameters SHOOTER_MOTOR =
+      RobotPreferences.ROBOT_TYPE.selectOrDefault(
+          Map.of(
+              RobotSelector.AlphaRobot2026,
+              MotorParameters.NullMotor,
+              RobotSelector.CompetitionRobot2026,
+              MotorParameters.KrakenX44,
+              RobotSelector.PracticeRobot2026,
+              MotorParameters.KrakenX44),
+          MotorParameters.NullMotor);
   private static final double GEAR_RATIO = 1.0;
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
