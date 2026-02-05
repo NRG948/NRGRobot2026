@@ -11,6 +11,7 @@ import com.nrg948.dashboard.annotations.DashboardDefinition;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -75,8 +76,12 @@ public final class FieldUtils {
 
   public static Translation2d getHubLocation() {
     if (isRedAlliance()) {
-      return getHubAprilTagPosition().minus(new Translation2d(APRIL_TAG_TO_HUB, 0));
+      return getHubAprilTagPosition().plus(new Translation2d(-APRIL_TAG_TO_HUB, 0));
     }
     return getHubAprilTagPosition().plus(new Translation2d(APRIL_TAG_TO_HUB, 0));
+  }
+
+  public static Rotation2d getInitialOrientation() {
+    return isRedAlliance() ? Rotation2d.k180deg : Rotation2d.kZero;
   }
 }

@@ -11,6 +11,7 @@ import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 /** A gyro implementation based on the Pigeon 2. */
 public final class Pigeon2Gyro implements Gyro {
@@ -30,5 +31,15 @@ public final class Pigeon2Gyro implements Gyro {
   @Override
   public void reset() {
     pigeon.reset();
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    pigeon.initSendable(builder);
+  }
+
+  @Override
+  public void close() throws Exception {
+    pigeon.close();
   }
 }

@@ -7,7 +7,9 @@
  
 package frc.robot.util;
 
-public interface Gyro {
+import edu.wpi.first.util.sendable.Sendable;
+
+public interface Gyro extends Sendable, AutoCloseable {
   /** Returns the gyro angle in radians with positive values in the counter-clockwise direction. */
   double getAngle();
 

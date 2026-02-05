@@ -18,7 +18,7 @@ import frc.robot.util.FieldUtils;
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class DriveAutoRotation extends DriveUsingController {
 
-  private static Translation2d hubLocation = FieldUtils.getHubLocation();
+  private static Translation2d hubLocation;
 
   public DriveAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
@@ -32,11 +32,13 @@ public class DriveAutoRotation extends DriveUsingController {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    hubLocation = FieldUtils.getHubLocation();
+  }
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
   private double getRotationtoHub() {
-    Rotation2d angleDiff = drivetrain.getPosition().getTranslation().minus(hubLocation).getAngle();
+    Rotation2d angleDiff = hubLocation.minus(drivetrain.getPosition().getTranslation()).getAngle();
     double angleDiffRad = angleDiff.getRadians();
     return angleDiffRad;
   }

@@ -420,7 +420,19 @@
           }
         } ]
       } ],
-      "containers" : [ ]
+      "containers" : [ {
+        "title" : "Orientation",
+        "type" : "Gyro",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Orientation",
+          "period" : 0.06,
+          "counter_clockwise_positive" : true
+        }
+      } ]
     }
   }, {
     "name" : "Intake",
