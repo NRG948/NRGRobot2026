@@ -28,11 +28,11 @@ import frc.robot.util.MatchTime;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_manipulatorController =
+  
+  private final CommandXboxController manipulatorController =
       new CommandXboxController(OperatorConstants.MANIPULATOR_CONTROLLER_PORT);
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+
+  private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   @DashboardTab(title = "Operator")
@@ -51,7 +51,7 @@ public class RobotContainer {
     operator = new RobotOperator(subsystems);
 
     subsystems.drivetrain.setDefaultCommand(
-        new DriveUsingController(subsystems.drivetrain, m_driverController));
+        new DriveUsingController(subsystems.drivetrain, driverController));
     // Configure the trigger bindings
     configureBindings();
 
@@ -70,7 +70,7 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    m_driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
+    driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
     new Trigger(MatchTime::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
     new Trigger(MatchTime::isNearShiftChangeExcludingFinalSecond)
@@ -81,19 +81,19 @@ public class RobotContainer {
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
 
-    m_manipulatorController.rightBumper().whileTrue(IntakeCommands.intake(subsystems));
-    m_manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
+    manipulatorController.rightBumper().whileTrue(IntakeCommands.intake(subsystems));
+    manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
 
     // Experimental, remove after shooter interpolation table is made and implemented. Up and left
     // is increase and decrease upper shooter velocities respectively. Down and right is increase
     // and decrease lower shooter velocities respectively.
-    m_manipulatorController
+    manipulatorController
         .povUp()
         .onTrue(ShootingCommands.increaseShooterVelocityByPointTwo(subsystems));
-    m_manipulatorController
+    manipulatorController
         .povDown()
         .onTrue(ShootingCommands.decreaseShooterVelocityByPointTwo(subsystems));
-    m_manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
+    manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
   }
 
   /**

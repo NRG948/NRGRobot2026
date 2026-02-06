@@ -18,7 +18,7 @@ public final class ShootingCommands {
   // TODO: Implement method that fetches goal velocity for indexer.
   public static Command shoot(Subsystems subsystem) {
     Indexer indexer = subsystem.indexer;
-    return Commands.runOnce(() -> indexer.setGoalVelocity(1.0), indexer);
+    return Commands.runOnce(() -> indexer.setShootingVelocity(), indexer);
   }
 
   // For testing shooter speeds. After interpolation table is done and implemented, remove the

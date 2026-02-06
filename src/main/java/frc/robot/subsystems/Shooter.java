@@ -53,11 +53,12 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double KS = SHOOTER_MOTOR.getKs();
   private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
-  private static final InterpolatingDoubleTreeMap TABLE = new InterpolatingDoubleTreeMap();
+  //Maps distances from our alliance's hub into corresponding shooter velocities.
+  private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES = new InterpolatingDoubleTreeMap();
 
   static {
-    TABLE.put(0.0, 0.0); // TODO: Test & fill out table
-    TABLE.put(10.0, MAX_VELOCITY);
+    SHOOTER_VELOCITIES.put(0.0, 0.0); // TODO: Test & fill out table
+    SHOOTER_VELOCITIES.put(10.0, MAX_VELOCITY);
   }
 
   private final MotorController leftUpperMotor =
@@ -134,10 +135,10 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   public Shooter() {}
 
   /*
-   * Fetches power determined by distance to power interpolation table.
+   * Fetches shooter velocity determined by distance to power interpolation table.
    */
   public double getPowerFromInterpolationTable(double distance) {
-    return TABLE.get(distance);
+    return SHOOTER_VELOCITIES.get(distance);
   }
 
   public void setGoalVelocity(double goalVelocity) {
