@@ -13,6 +13,7 @@ import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
+import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.cscore.VideoSource;
@@ -35,6 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
+import frc.robot.parameters.PoseEstimationStrategy;
 import frc.robot.util.FieldUtils;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +44,6 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -118,26 +119,9 @@ public class AprilTag extends SubsystemBase {
                   RobotSelector.AlphaRobot2026, ALPHA_VISION_PARAMS))
           .orElse(COMPETITION_VISION_PARAMS);
 
-  public enum PoseEstimationStrategy {
-    AverageBestTargets(PoseStrategy.AVERAGE_BEST_TARGETS),
-    ClosestToCameraHeight(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT),
-    ClosestToLastPose(PoseStrategy.CLOSEST_TO_LAST_POSE),
-    ClosestToReferencePose(PoseStrategy.CLOSEST_TO_REFERENCE_POSE),
-    ConstrainedSolvePnp(PoseStrategy.CONSTRAINED_SOLVEPNP),
-    LowestAmbiguity(PoseStrategy.LOWEST_AMBIGUITY),
-    MultiTagPnpOnCoprocessor(PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR),
-    PnpDistanceTrigSolve(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
-
-    private final PoseStrategy strategy;
-
-    private PoseEstimationStrategy(PoseStrategy strategy) {
-      this.strategy = strategy;
-    }
-
-    public PoseStrategy getStrategy() {
-      return strategy;
-    }
-  }
+  public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
+      new EnumPreference<PoseEstimationStrategy>(
+          "AprilTag", "Pose Est. Strategy", PoseEstimationStrategy.MultiTagPnpOnCoprocessor);
 
   private final PhotonCamera camera;
   private final Transform3d cameraToRobot;

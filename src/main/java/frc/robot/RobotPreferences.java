@@ -16,7 +16,7 @@ import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
 import frc.robot.parameters.AprilTagFieldParameters;
-import frc.robot.subsystems.AprilTag;
+import frc.robot.parameters.PoseEstimationStrategy;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -55,11 +55,9 @@ public final class RobotPreferences {
       row = 5,
       width = 2,
       height = 1)
-  public static EnumPreference<AprilTag.PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
-      new EnumPreference<AprilTag.PoseEstimationStrategy>(
-          "AprilTag",
-          "Pose Est. Strategy",
-          AprilTag.PoseEstimationStrategy.MultiTagPnpOnCoprocessor);
+  public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
+      new EnumPreference<PoseEstimationStrategy>(
+          "AprilTag", "Pose Est. Strategy", PoseEstimationStrategy.MultiTagPnpOnCoprocessor);
 
   /** Creates a new instance of RobotPreferences. */
   public RobotPreferences() {}
