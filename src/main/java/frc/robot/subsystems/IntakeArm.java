@@ -57,11 +57,11 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
   // TODO: Find intake arm angles
-  public static final double STOW_ANGLE = Units.degreesToRadians(90);
+  public static final double STOW_ANGLE = Units.degreesToRadians(140);
   public static final double BUMP_ANGLE = Units.degreesToRadians(45);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
-  public static final double MAX_ANGLE = Units.degreesToRadians(90);
+  public static final double MAX_ANGLE = Units.degreesToRadians(140);
 
   private final TalonFXAdapter motor =
       new TalonFXAdapter(
@@ -138,6 +138,8 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     TalonFXConfigurator configurator =
         new TalonFXConfigurator(new DeviceIdentifier(INTAKE_ARM_ID, "KrakenX60", CANBus.roboRIO()));
     configurator.apply(slot0Configs);
+
+    encoder.setPosition(STOW_ANGLE);
   }
 
   public void updateTelemetry() {
