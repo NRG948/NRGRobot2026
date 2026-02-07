@@ -39,8 +39,8 @@ public enum SwerveDriveParameters {
    */
   PracticeBase2026(
       Units.lbsToKilograms(60.7),
-      0.578,
-      0.528,
+      0.603,
+      0.501,
       MK4I_L2_PLUS,
       NullMotor, // KrakenX60,
       NullMotor, // KrakenX44,
@@ -53,10 +53,12 @@ public enum SwerveDriveParameters {
    *
    * <p>TODO: Update these parameters when the real competition base is finished.
    */
+
+   //TODO: Verify wheel distances for competition base
   CompetitionBase2026(
       Units.lbsToKilograms(60.7),
-      0.578,
-      0.528,
+      0.603,
+      0.501,
       MK4I_L2_PLUS,
       KrakenX60,
       KrakenX44,
