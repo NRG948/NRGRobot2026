@@ -97,6 +97,7 @@ public class Subsystems {
   // TODO: Add Cameras (need AprilTag subsystem)
 
   private final Subsystem[] all;
+
   private final Subsystem[] manipulators;
 
   private Map<String, StringLogEntry> commandLogger;

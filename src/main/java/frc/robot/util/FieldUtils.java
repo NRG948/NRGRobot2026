@@ -28,6 +28,17 @@ public final class FieldUtils {
   private static AprilTagFieldLayout FIELD_LAYOUT =
       RobotPreferences.FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
 
+  private static final int RED_HUB_APRILTAG = 10;
+  private static final int BLUE_HUB_APRILTAG = 26;
+  private static final Translation2d HUB_POSITION;
+
+  static {
+    HUB_POSITION = getHubAprilTagPosition();
+  }
+
+  // distance (in meters) between the hub's middle april tag and the hub's center
+  private static final double APRIL_TAG_TO_HUB = Units.inchesToMeters(47.0 / 2.0);
+
   public static boolean isRedAlliance() {
     var alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
     return alliance == Alliance.Red;
