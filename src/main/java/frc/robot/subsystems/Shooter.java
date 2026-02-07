@@ -22,6 +22,7 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.PIDControllerPreference;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -57,6 +58,22 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
 
+  @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
+  private static final double MAX_VELOCITY =
+      SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0;
+
+  private static final double KS = SHOOTER_MOTOR.getKs();
+  private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
+
+  // Maps distances from our alliance's hub into corresponding shooter velocities.
+  private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES =
+      new InterpolatingDoubleTreeMap();
+
+  static {
+    SHOOTER_VELOCITIES.put(0.0, 0.0); // TODO: Test & fill out table
+    SHOOTER_VELOCITIES.put(10.0, MAX_VELOCITY);
+  }
+
   private final MotorController leftUpperMotor =
       SHOOTER_MOTOR.newController(
           "/Shooter/Left Upper Motor",
@@ -71,13 +88,6 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       leftUpperMotor.createFollower(SHOOTER_LOWER_RIGHT_ID, true);
   private final MotorController leftLowerMotor =
       leftUpperMotor.createFollower(SHOOTER_LOWER_LEFT_ID, false);
-
-  @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
-  private static final double MAX_VELOCITY =
-      SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0;
-
-  private static final double KS = SHOOTER_MOTOR.getKs();
-  private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
@@ -134,12 +144,25 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
 
-  /** Creates a new Shooter. */
+  /** Creates a new Shooter subsystem. */
   public Shooter() {}
+
+  /** Interpolates correct shooter velocity for a given distance from our Hub. */
+  public double getPowerFromInterpolationTable(double distance) {
+    return SHOOTER_VELOCITIES.get(distance);
+  }
 
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
     logGoalVelocity.append(goalVelocity);
+  }
+
+  /**
+   * Adds or subtracts velocity from upper goal. Mainly for controllers and for experiments in
+   * ShootingCommands.java.
+   */
+  public void addGoalVelocity(double goalVelocityDelta) {
+    this.goalVelocity += goalVelocityDelta;
   }
 
   @Override

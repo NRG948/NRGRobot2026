@@ -16,7 +16,10 @@ import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
+import com.nrg948.preferences.ProfiledPIDControllerPreference;
 import frc.robot.parameters.AprilTagFieldParameters;
+import frc.robot.parameters.PoseEstimationStrategy;
+import frc.robot.subsystems.Swerve;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -48,6 +51,16 @@ public final class RobotPreferences {
   public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
       new EnumPreference<AprilTagFieldParameters>(
           "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
+
+  @DashboardComboBoxChooser(
+      title = "Pose Est. Strategy",
+      column = 0,
+      row = 5,
+      width = 2,
+      height = 1)
+  public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
+      new EnumPreference<PoseEstimationStrategy>(
+          "AprilTag", "Pose Est. Strategy", PoseEstimationStrategy.MultiTagPnpOnCoprocessor);
 
   /** Creates a new instance of RobotPreferences. */
   public RobotPreferences() {}

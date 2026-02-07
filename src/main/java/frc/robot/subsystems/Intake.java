@@ -112,7 +112,7 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
   private final PIDControllerPreference pidController =
       new PIDControllerPreference("Intake", "PID Controller", 1, 0, 0);
 
-  /** Creates a new Intake. */
+  /** Creates a new Intake subsystem. */
   public Intake() {}
 
   public void setGoalVelocity(double goalVelocity) {
@@ -160,6 +160,7 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
     motor.setIdleMode(idleMode);
   }
 
+  /** Returns the intake's current velocity. */
   @DashboardTextDisplay(
       title = "Current Velocity (m/s)",
       column = 0,
@@ -170,9 +171,7 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
     return currentVelocity;
   }
 
-  /*
-   * Returns goal velocity.
-   */
+  /** Returns the intake's goal velocity. */
   public double getGoalVelocity() {
     return goalVelocity;
   }

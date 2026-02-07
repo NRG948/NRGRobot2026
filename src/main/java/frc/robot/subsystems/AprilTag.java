@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
+import frc.robot.parameters.PoseEstimationStrategy;
 import frc.robot.util.FieldUtils;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,6 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -105,8 +105,8 @@ public class AprilTag extends SubsystemBase {
       new VisionParameters(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
   public static final VisionParameters ALPHA_VISION_PARAMS =
       new VisionParameters(
-          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 8080)),
-          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 8081)),
+          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 1182)),
+          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 1184)),
           Optional.empty(),
           Optional.empty());
 
@@ -118,27 +118,6 @@ public class AprilTag extends SubsystemBase {
                   RobotSelector.CompetitionRobot2026, COMPETITION_VISION_PARAMS,
                   RobotSelector.AlphaRobot2026, ALPHA_VISION_PARAMS))
           .orElse(COMPETITION_VISION_PARAMS);
-
-  private enum PoseEstimationStrategy {
-    AverageBestTargets(PoseStrategy.AVERAGE_BEST_TARGETS),
-    ClosestToCameraHeight(PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT),
-    ClosestToLastPose(PoseStrategy.CLOSEST_TO_LAST_POSE),
-    ClosestToReferencePose(PoseStrategy.CLOSEST_TO_REFERENCE_POSE),
-    ConstrainedSolvePnp(PoseStrategy.CONSTRAINED_SOLVEPNP),
-    LowestAmbiguity(PoseStrategy.LOWEST_AMBIGUITY),
-    MultiTagPnpOnCoprocessor(PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR),
-    PnpDistanceTrigSolve(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
-
-    private final PoseStrategy strategy;
-
-    private PoseEstimationStrategy(PoseStrategy strategy) {
-      this.strategy = strategy;
-    }
-
-    public PoseStrategy getStrategy() {
-      return strategy;
-    }
-  }
 
   public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
       new EnumPreference<PoseEstimationStrategy>(
@@ -193,7 +172,7 @@ public class AprilTag extends SubsystemBase {
 
     estimator = new PhotonPoseEstimator(FieldUtils.getFieldLayout(), robotToCamera);
 
-    for (int i = 1; i <= 22; i++) {
+    for (int i = 1; i <= 32; i++) {
       aprilTagIdChooser.addOption(String.valueOf(i), i);
     }
     aprilTagIdChooser.setDefaultOption("1", 1);
@@ -298,21 +277,25 @@ public class AprilTag extends SubsystemBase {
    * @return Estimated pose.
    */
   public Optional<EstimatedRobotPose> estimateRobotPose(PhotonPipelineResult result) {
-    switch (POSE_ESTIMATION_STRATEGY.getValue()) {
+    switch (RobotPreferences.POSE_ESTIMATION_STRATEGY.getValue()) {
       case AverageBestTargets:
         return estimator.estimateAverageBestTargetsPose(result);
       case ClosestToCameraHeight:
         return estimator.estimateClosestToCameraHeightPose(result);
+      case MultiTagPnpOnCoprocessor:
+        var res = estimator.estimateCoprocMultiTagPose(result);
+        if (res.isPresent()) {
+          return res;
+        }
+      // Fallthrough
       case LowestAmbiguity:
         return estimator.estimateLowestAmbiguityPose(result);
-      case MultiTagPnpOnCoprocessor:
-        return estimator.estimateCoprocMultiTagPose(result);
       case PnpDistanceTrigSolve:
         return estimator.estimatePnpDistanceTrigSolvePose(result);
       default:
         System.out.println(
             "ERROR: Unsupported pose estimation strategy: "
-                + POSE_ESTIMATION_STRATEGY.getValue().name());
+                + RobotPreferences.POSE_ESTIMATION_STRATEGY.getValue().name());
         return Optional.empty();
     }
   }
@@ -325,7 +308,6 @@ public class AprilTag extends SubsystemBase {
     Optional<PhotonPipelineResult> currentResult = Optional.empty();
     List<PhotonPipelineResult> allUnreadResults = camera.getAllUnreadResults();
     for (var change : allUnreadResults) {
-
       Optional<EstimatedRobotPose> visionEstTemp = estimateRobotPose(change);
 
       // Only update the vision estimate if it is not empty.

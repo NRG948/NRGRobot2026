@@ -191,6 +191,18 @@
           "sort_options" : false
         }
       }, {
+        "title" : "Pose Est. Strategy",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 640.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Pose Est. Strategy",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
         "title" : "Robot Selector",
         "type" : "ComboBox Chooser",
         "x" : 0.0,
@@ -201,6 +213,17 @@
           "topic" : "/SmartDashboard/Preferences/Robot Selector",
           "period" : 0.06,
           "sort_options" : false
+        }
+      }, {
+        "title" : "Auto Rotation PID",
+        "type" : "PID Controller",
+        "x" : 640.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Auto Rotation PID",
+          "period" : 0.06
         }
       }, {
         "title" : "Enable Rumble",

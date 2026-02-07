@@ -7,20 +7,18 @@
  
 package frc.robot.parameters;
 
-import com.nrg948.preferences.RobotPreferences;
+import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
- * AprilTag field layout selections for REEFSCAPE.
+ * AprilTag field layout selections for REBUILT.
  *
- * <p>The PROCESSOR AprilTag location varies depending on the field perimeter in use. See <a
- * href="https://firstfrc.blob.core.windows.net/frc2025/Manual/TeamUpdates/TeamUpdate12.pdf">Team
- * Update 12</a> for more information.
+ * <p>The AprilTag location may vary depending on the field perimeter in use.
  *
- * <p>This enum can be used with a {@link SendableChooser} or {@link RobotPreferences.EnumValue} to
- * select the field layout to match.
+ * <p>This enum can be used with a {@link SendableChooser} or {@link EnumPreference} to select the
+ * field layout to match.
  */
 public enum AprilTagFieldParameters {
 

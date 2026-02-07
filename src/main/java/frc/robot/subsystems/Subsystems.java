@@ -91,9 +91,6 @@ public class Subsystems {
                       c.robotToCamera(),
                       c.streamPort()));
 
-  @DashboardTab(title = "Elevator")
-  public final Elevator elevator = new Elevator();
-
   // TODO: Add Cameras (need AprilTag subsystem)
 
   private final Subsystem[] all;
@@ -104,8 +101,7 @@ public class Subsystems {
 
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
-    var manipulators =
-        new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm, elevator));
+    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
 
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
 

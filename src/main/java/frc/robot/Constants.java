@@ -19,7 +19,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int DRIVER_CONTROLLER_PORT = 0;
+    public static final int MANIPULATOR_CONTROLLER_PORT = 1;
   }
 
   public static class RobotConstants {
@@ -37,9 +38,10 @@ public final class Constants {
     }
 
     public static final class CANID {
-      public static final int INTAKE_ID = 9;
-      public static final int INTAKE_ARM_ID = 10;
-      public static final int SHOOTER_LOWER_LEFT_ID = 13;
+      public static final int INTAKE_ID = 13;
+      public static final int INTAKE_ARM_ID = 12;
+      // TODO: verify shooter CAN IDS with Systems
+      public static final int SHOOTER_LOWER_LEFT_ID = 16;
       public static final int SHOOTER_LOWER_RIGHT_ID = 14;
       public static final int SHOOTER_UPPER_LEFT_ID = 11;
       public static final int SHOOTER_UPPER_RIGHT_ID = 12;
