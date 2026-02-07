@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double KS = SHOOTER_MOTOR.getKs();
   private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
-  //Maps distances from our alliance's hub into corresponding shooter velocities.
+  // Maps distances from our alliance's hub into corresponding shooter velocities.
   private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES = new InterpolatingDoubleTreeMap();
 
   static {
@@ -131,12 +131,10 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
 
-  /** Creates a new Shooter. */
+  /** Creates a new Shooter subsystem. */
   public Shooter() {}
 
-  /*
-   * Fetches shooter velocity determined by distance to power interpolation table.
-   */
+  /** Interpolates correct shooter velocity for a given distance from our Hub. */
   public double getPowerFromInterpolationTable(double distance) {
     return SHOOTER_VELOCITIES.get(distance);
   }
@@ -150,8 +148,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
    * Adds or subtracts velocity from upper goal. Mainly for controllers and for experiments in
    * ShootingCommands.java.
    */
-  public void addGoalVelocity(double goalVelocityAdditions) {
-    this.goalVelocity += goalVelocityAdditions;
+  public void addGoalVelocity(double goalVelocityDelta) {
+    this.goalVelocity += goalVelocityDelta;
   }
 
   @Override
