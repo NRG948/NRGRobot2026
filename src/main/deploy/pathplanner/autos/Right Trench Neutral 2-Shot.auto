@@ -25,19 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Start to Right Neutral Middle"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "Right Neutral Start to Right Neutral End"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Middle to Left Neutral Middle"
+            "pathName": "Right Neutral End to (Trench) Right Scoring Point"
           }
         },
         {

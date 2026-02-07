@@ -7,25 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Bump Start to Left Depot"
+            "pathName": "Right Trench Start to Outpost"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Depot to Right Depot"
+            "pathName": "Outpost to Right Scoring Point"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Depot to Left Scoring Point"
+            "pathName": "Right Scoring Point to (Trench) Right Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Scoring Point to Left Tower"
+            "pathName": "Right Neutral Start to Right Neutral End"
           }
         }
       ]

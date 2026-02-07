@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Trench Start to Right Scoring Point"
+            "pathName": "Right Bump Start to Right Scoring Point"
           }
         },
         {
@@ -19,13 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to (Trench) Right Neutral Start"
+            "pathName": "Right Scoring Point to Outpost"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Start to Right Neutral Middle"
+            "pathName": "Outpost to Right Scoring Point"
           }
         },
         {
@@ -37,13 +37,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Middle to Left Neutral Middle"
+            "pathName": "Right Scoring Point to (Bump) Right Neutral Start"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Shoot"
+            "pathName": "Right Neutral Start to Right Neutral End"
           }
         }
       ]

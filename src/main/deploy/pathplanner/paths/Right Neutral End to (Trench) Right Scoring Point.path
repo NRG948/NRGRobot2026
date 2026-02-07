@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.70632768361582,
-        "y": 1.25
+        "x": 7.706,
+        "y": 3.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.667895480225988,
-        "y": 2.151822033898305
+        "x": 7.719138418079096,
+        "y": 1.6906355932203394
       },
       "isLocked": false,
-      "linkedName": "Right Neutral Zone Start"
+      "linkedName": "Right Neutral End"
     },
     {
       "anchor": {
-        "x": 7.706,
-        "y": 6.7
+        "x": 4.388347457627119,
+        "y": 0.627344632768362
       },
       "prevControl": {
-        "x": 7.7447598870056495,
-        "y": 5.59771186440678
+        "x": 7.091412429378533,
+        "y": 0.652966101694916
+      },
+      "nextControl": {
+        "x": 3.469532304955015,
+        "y": 0.6186354844018018
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.9533928571428572,
+        "y": 2.0752321428571427
+      },
+      "prevControl": {
+        "x": 2.88949152542373,
+        "y": 0.6657768361581928
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Neutral Zone Cross"
+      "linkedName": "Right Scoring Point"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 33.95538259252424
   },
   "reversed": false,
   "folder": null,

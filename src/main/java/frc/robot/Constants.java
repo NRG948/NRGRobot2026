@@ -39,11 +39,15 @@ public final class Constants {
     public static final class CANID {
       public static final int INTAKE_ID = 9;
       public static final int INTAKE_ARM_ID = 10;
-      public static final int SHOOTER_LOWER_1_ID = 11;
-      public static final int SHOOTER_LOWER_2_ID = 12;
-      public static final int SHOOTER_UPPER_1_ID = 13;
-      public static final int SHOOTER_UPPER_2_ID = 14;
+      public static final int SHOOTER_LOWER_LEFT_ID = 13;
+      public static final int SHOOTER_LOWER_RIGHT_ID = 14;
+      public static final int SHOOTER_UPPER_LEFT_ID = 11;
+      public static final int SHOOTER_UPPER_RIGHT_ID = 12;
       public static final int INDEXER_ID = 15;
+    }
+
+    public static final class CAN {
+      public static final int LASER_CAN_ID = 0; // TODO: SET LASER CAN ID
     }
   }
 

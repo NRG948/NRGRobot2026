@@ -19,13 +19,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Scoring Point to Neutral Zone Start"
+            "pathName": "Left Scoring Point to (Trench) Left Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Neutral Zone Cross"
+            "pathName": "Left Neutral Start to Left Neutral Middle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Neutral Middle to Right Neutral Middle "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]

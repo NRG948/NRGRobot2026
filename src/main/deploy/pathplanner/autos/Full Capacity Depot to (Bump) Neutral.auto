@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Trench Start to Right Scoring Point"
+            "pathName": "Left Trench Start to Left Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Depot to Right Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Depot to Left Scoring Point"
           }
         },
         {
@@ -19,25 +31,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Neutral Zone Start"
+            "pathName": "Left Scoring Point to (Bump) Left Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Zone Start to Right Neutral Zone End"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Neutral Zone End to Right Scoring Point"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "Left Neutral Start to Left Neutral End"
           }
         }
       ]

@@ -37,13 +37,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Neutral Zone Start"
+            "pathName": "Right Scoring Point to (Trench) Right Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Zone Start to Right Neutral Zone End"
+            "pathName": "Right Neutral Start to Right Neutral End"
           }
         }
       ]
