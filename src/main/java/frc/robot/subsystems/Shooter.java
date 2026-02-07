@@ -54,7 +54,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
   // Maps distances from our alliance's hub into corresponding shooter velocities.
-  private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES = new InterpolatingDoubleTreeMap();
+  private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES =
+      new InterpolatingDoubleTreeMap();
 
   static {
     SHOOTER_VELOCITIES.put(0.0, 0.0); // TODO: Test & fill out table

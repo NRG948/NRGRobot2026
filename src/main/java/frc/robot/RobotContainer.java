@@ -28,7 +28,7 @@ import frc.robot.util.MatchTime;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  
+
   private final CommandXboxController manipulatorController =
       new CommandXboxController(OperatorConstants.MANIPULATOR_CONTROLLER_PORT);
 
