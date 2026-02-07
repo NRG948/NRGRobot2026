@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Trench Start to Left Scoring Point"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Scoring Point to Left Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Depot to Right Depot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Depot to Left Scoring Point"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Scoring Point to Left Tower"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

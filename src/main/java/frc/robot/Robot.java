@@ -23,6 +23,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+
+  @SuppressWarnings("unused")
   private final AutoCloseable dashboardServer;
 
   /**
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
     dashboardServer = DashboardServer.start(this);
   }
 

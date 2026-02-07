@@ -25,5 +25,34 @@ public final class Constants {
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.9);
+    public static final int LED_COUNT = 77; // TODO: determine LED count
+
+    public static class LEDSegment {
+      public static final int STATUS_FIRST_LED = 0;
+      public static final int STATUS_LED_COUNT = 56; // TODO: determine status LED count.
+    }
+
+    public static class PWMPort {
+      public static final int LED = 1;
+    }
+
+    public static final class CANID {
+      public static final int INTAKE_ID = 9;
+      public static final int INTAKE_ARM_ID = 10;
+      public static final int SHOOTER_LOWER_LEFT_ID = 13;
+      public static final int SHOOTER_LOWER_RIGHT_ID = 14;
+      public static final int SHOOTER_UPPER_LEFT_ID = 11;
+      public static final int SHOOTER_UPPER_RIGHT_ID = 12;
+      public static final int INDEXER_ID = 15;
+    }
+  }
+
+  public static class VisionConstants {
+    // TODO: Change this for the hub/tower
+    /** The translational tolerance value for aligning. */
+    public static final double POSE_ALIGNMENT_TOLERANCE_XY = 0.02; // in m
+
+    /** The rotational tolerance value for aligning. */
+    public static final double POSE_ALIGNMENT_TOLERANCE_R = 1.0; // in deg
   }
 }

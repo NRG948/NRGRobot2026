@@ -8,14 +8,17 @@
 package frc.robot.subsystems;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotPreferences;
 import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Subsystems {
@@ -26,29 +29,49 @@ public class Subsystems {
   @DashboardTab(title = "Intake")
   public final Intake intake = new Intake();
 
+  @DashboardTab(title = "IntakeArm")
+  public final IntakeArm intakeArm = new IntakeArm();
+
   @DashboardTab(title = "Shooter")
   public final Shooter shooter = new Shooter();
 
   @DashboardTab(title = "Indexer")
   public final Indexer indexer = new Indexer();
 
-  @DashboardTab(title = "Elevator")
-  public final Elevator elevator = new Elevator();
+  public final StatusLED statusLEDs = new StatusLED();
 
   // TODO: Add Cameras (need AprilTag subsystem)
+  // TODO: Add Robot to camera transforms, names, and ports when preferences is implemented
+
+  @DashboardTab(title = "Front Left Camera")
+  public final Optional<AprilTag> frontLeftCamera =
+      SubsystemsUtil.newOptionalSubsystem(
+          AprilTag.class,
+          RobotPreferences.APRIL_TAG.ENABLE_FRONT_LEFT,
+          "FrontLeftCamera",
+          new Transform3d(),
+          8081);
+
+  @DashboardTab(title = "Front Right Camera")
+  public final Optional<AprilTag> frontRightCamera =
+      SubsystemsUtil.newOptionalSubsystem(
+          AprilTag.class,
+          RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
+          "FrontRightCamera",
+          new Transform3d(),
+          8080);
 
   private final Subsystem[] all;
+
   private final Subsystem[] manipulators;
 
   private Map<String, StringLogEntry> commandLogger;
 
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
-    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, elevator));
+    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
 
-    // Add all non-manipulator subsystems to the `all` list.
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
-
     all.addAll(manipulators);
     this.all = all.toArray(Subsystem[]::new);
     this.manipulators = manipulators.toArray(Subsystem[]::new);
@@ -62,6 +85,7 @@ public class Subsystems {
                         new StringLogEntry(
                             DataLogManager.getLog(),
                             String.format("/%s/ActiveCommand", s.getName()))));
+
     CommandScheduler scheduler = CommandScheduler.getInstance();
     scheduler.onCommandInitialize(
         (cmd) -> {

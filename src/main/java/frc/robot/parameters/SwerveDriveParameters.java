@@ -9,6 +9,7 @@ package frc.robot.parameters;
 
 import static frc.robot.parameters.MotorParameters.KrakenX44;
 import static frc.robot.parameters.MotorParameters.KrakenX60;
+import static frc.robot.parameters.MotorParameters.NullMotor;
 import static frc.robot.parameters.SwerveModuleParameters.MK4I_L2_PLUS;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
@@ -31,7 +32,28 @@ import frc.robot.util.Pigeon2Gyro;
 
 /** An enum representing the properties for the swerve drive base of a specific robot instance. */
 public enum SwerveDriveParameters {
-  AlphaBase2026(
+  /**
+   * Parameters for the 2026 Practice Base robot.
+   *
+   * <p>TODO: Update these parameters when the real practice base is finished.
+   */
+  PracticeBase2026(
+      Units.lbsToKilograms(60.7),
+      0.578,
+      0.528,
+      MK4I_L2_PLUS,
+      NullMotor, // KrakenX60,
+      NullMotor, // KrakenX44,
+      new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
+      new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
+      new double[] {18.72, 299.88, 323.88, 350.68}, // CANCoder offsets
+      21),
+  /**
+   * Parameters for the 2026 Competition Base robot.
+   *
+   * <p>TODO: Update these parameters when the real competition base is finished.
+   */
+  CompetitionBase2026(
       Units.lbsToKilograms(60.7),
       0.578,
       0.528,
@@ -41,7 +63,18 @@ public enum SwerveDriveParameters {
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
       new double[] {18.72, 299.88, 323.88, 350.68}, // CANCoder offsets
-      true,
+      21),
+  /** Parameters for the 2026 Alpha Base robot. */
+  AlphaBase2026(
+      Units.lbsToKilograms(60.7),
+      0.578,
+      0.528,
+      MK4I_L2_PLUS,
+      KrakenX60,
+      KrakenX44,
+      new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
+      new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
+      new double[] {24.00, -60.12, -36.39, -109.69},
       21);
 
   public static class Constants {
@@ -61,7 +94,6 @@ public enum SwerveDriveParameters {
   private final int[] motorIds;
   private final int[] angleEncoderIds;
   private final double[] angleOffset;
-  private final boolean usesPigeon;
   private final int pigeonID;
 
   private final double maxDriveSpeed;
@@ -121,7 +153,6 @@ public enum SwerveDriveParameters {
    *     encoders in the order front left, front right, back left, back right.
    * @param driveFeedforward The drive feedforward constants.
    * @param steeringFeedforward The steering feedforward constants.
-   * @param usesPigeon Whether the robot uses a Pigeon 2 or NavX MXP for its gyro.
    * @param pigeonID The CAN ID for the Pigeon 2 gyro if present.
    */
   private SwerveDriveParameters(
@@ -136,7 +167,6 @@ public enum SwerveDriveParameters {
       double[] angleOffset,
       FeedforwardConstants driveFeedForward,
       FeedforwardConstants steeringFeedForward,
-      boolean usesPigeon,
       int pigeonID) {
     this.robotMass = robotMass;
     this.wheelDistanceX = wheelDistanceX;
@@ -149,7 +179,6 @@ public enum SwerveDriveParameters {
     this.angleOffset = angleOffset;
     this.driveFeedforward = driveFeedForward;
     this.steeringFeedforward = steeringFeedForward;
-    this.usesPigeon = usesPigeon;
     this.pigeonID = pigeonID;
 
     double scaleFactor = Constants.SCALE_FACTOR;
@@ -224,7 +253,6 @@ public enum SwerveDriveParameters {
    * @param angleOffset An array containing the zero point offsets for the swerve module angle
    *     encoders in the order front left, front right, back left, back right.
    * @param driveFeedforward The drive feedforward constants.
-   * @param usesPigeon Whether the robot uses a Pigeon 2 or NavX MXP for its gyro.
    * @param pigeonID The CAN ID for the Pigeon 2 gyro if present.
    */
   private SwerveDriveParameters(
@@ -238,7 +266,6 @@ public enum SwerveDriveParameters {
       int[] angleEncoderIds,
       double[] angleOffset,
       FeedforwardConstants driveFeedForward,
-      boolean usesPigeon,
       int pigeonID) {
     this(
         robotMass,
@@ -255,7 +282,6 @@ public enum SwerveDriveParameters {
             steeringMotor.getKs(),
             () -> swerveModule.calculateMaxSteeringSpeed(steeringMotor),
             () -> swerveModule.calculateMaxSteeringAcceleration(steeringMotor, robotMass)),
-        usesPigeon,
         pigeonID);
   }
 
@@ -295,7 +321,6 @@ public enum SwerveDriveParameters {
    *     the order front left, front right, back left, back right.
    * @param angleOffset An array containing the zero point offsets for the swerve module angle
    *     encoders in the order front left, front right, back left, back right.
-   * @param usesPigeon Whether the robot uses a Pigeon 2 or NavX MXP for its gyro.
    * @param pigeonID The CAN ID for the Pigeon 2 gyro if present.
    */
   private SwerveDriveParameters(
@@ -308,7 +333,6 @@ public enum SwerveDriveParameters {
       int[] motorIds,
       int[] angleEncoderIds,
       double[] angleOffset,
-      boolean usesPigeon,
       int pigeonID) {
     this(
         robotMass,
@@ -328,7 +352,6 @@ public enum SwerveDriveParameters {
             steeringMotor.getKs(),
             () -> swerveModule.calculateMaxSteeringSpeed(steeringMotor),
             () -> swerveModule.calculateMaxSteeringAcceleration(steeringMotor, robotMass)),
-        usesPigeon,
         pigeonID);
   }
 

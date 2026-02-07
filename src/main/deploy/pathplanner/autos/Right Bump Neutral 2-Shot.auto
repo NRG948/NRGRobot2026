@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Hub Start to Right Scoring Point"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Scoring Point to (Bump) Right Neutral Start"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Neutral Start to Right Neutral End"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Neutral End to (Bump) Right Scoring Point"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

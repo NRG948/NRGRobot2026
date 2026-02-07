@@ -7,8 +7,9 @@
  
 package frc.robot.commands;
 
-import com.nrg948.preferences.RobotPreferences;
-import com.nrg948.preferences.RobotPreferencesValue;
+import static frc.robot.RobotPreferences.ENABLE_RUMBLE;
+import static frc.robot.RobotPreferences.RIGHT_TRIGGER_SCALAR;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,17 +19,15 @@ import frc.robot.subsystems.Swerve;
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class DriveUsingController extends Command {
 
-  @RobotPreferencesValue
-  public static final RobotPreferences.DoubleValue RIGHT_TRIGGER_SCALAR =
-      new RobotPreferences.DoubleValue("Drive", "Right Trigger Scalar", 0.25);
-
   private static final double RUMBLE_MIN_G = 1.0;
   private static final double RUMBLE_MAX_G = 8.0;
 
   private static final double DEADBAND = 0.08;
 
-  private final Swerve drivetrain;
-  private final CommandXboxController xboxController;
+  protected final Swerve drivetrain;
+  protected final CommandXboxController xboxController;
+
+  private double powerScalar;
 
   /** Creates a command which allows a human to drive the robot using an Xbox controller. */
   public DriveUsingController(Swerve drivetrain, CommandXboxController xboxController) {
@@ -46,24 +45,22 @@ public class DriveUsingController extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rSpeed = -xboxController.getRightX();
     double xSpeed = -xboxController.getLeftY();
     double ySpeed = -xboxController.getLeftX();
 
     // The `powerScalar` linearly scales the robot's drive power from 1.0 (when the right trigger is
     // not pressed) down to RIGHT_TRIGGER_SCALAR (when the right trigger is fully depressed).
-    double powerScalar =
+    powerScalar =
         (RIGHT_TRIGGER_SCALAR.getValue() - 1.0) * xboxController.getRightTriggerAxis() + 1.0;
 
     // Applies deadbands to the x, y, and rotation joystick values and then multiplies all speeds by
     // the powerScalar, which allows finer driving control.
     xSpeed = MathUtil.applyDeadband(xSpeed, DEADBAND) * powerScalar;
     ySpeed = MathUtil.applyDeadband(ySpeed, DEADBAND) * powerScalar;
-    rSpeed = MathUtil.applyDeadband(rSpeed, DEADBAND) * powerScalar;
 
-    drivetrain.drive(xSpeed, ySpeed, rSpeed, true);
+    drivetrain.drive(xSpeed, ySpeed, calculateRotationSpeed(), true);
 
-    if (Swerve.ENABLE_RUMBLE.getValue()) {
+    if (ENABLE_RUMBLE.getValue()) {
       // Rumbles the driver controller based on a exponential scale based on acceleration between
       // min and max.
       double rumblePower =
@@ -82,5 +79,11 @@ public class DriveUsingController extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  protected double calculateRotationSpeed() {
+    double rSpeed = -xboxController.getRightX();
+    rSpeed = MathUtil.applyDeadband(rSpeed, DEADBAND) * powerScalar;
+    return rSpeed;
   }
 }

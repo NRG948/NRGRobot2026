@@ -9,12 +9,15 @@ package frc.robot;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Autos;
+import frc.robot.commands.DriveWithAutoRotation;
 import frc.robot.commands.DriveUsingController;
-import frc.robot.subsystems.Swerve;
+import frc.robot.commands.LEDCommands;
+import frc.robot.subsystems.Subsystems;
+import frc.robot.util.MatchTime;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,12 +27,13 @@ import frc.robot.subsystems.Swerve;
  */
 public class RobotContainer {
 
-  public enum RobotSelector {
-    PracticeRobot2025,
-    CompetitionRobot2025;
-  }
+  @DashboardTab(title = "Preferences")
+  private final RobotPreferences preferences = new RobotPreferences();
 
-  @DashboardTab private final Swerve drivetrain = new Swerve();
+  private final Subsystems subsystems = new Subsystems();
+
+  @DashboardTab(title = "Autonomous")
+  private final Autos autos = new Autos(subsystems);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController =
@@ -37,9 +41,12 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(new DriveUsingController(drivetrain, driverController));
+
+    subsystems.drivetrain.setDefaultCommand(
+        new DriveUsingController(subsystems.drivetrain, driverController));
     // Configure the trigger bindings
     configureBindings();
+
     RobotContainerDashboardTabs.bind(this);
   }
 
@@ -55,6 +62,16 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    new Trigger(MatchTime::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
+    new Trigger(MatchTime::isNearShiftChangeExcludingFinalSecond)
+        .whileTrue(LEDCommands.setTransitionModeLED(subsystems));
+    new Trigger(MatchTime::isNearShiftChangeFinalSecond)
+        .whileTrue(LEDCommands.setLastSecondTransitionModeLED(subsystems));
+    new Trigger(MatchTime::isNearEndgame)
+        .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
+    new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
+
+    driverController.a().whileTrue(new DriveWithAutoRotation(subsystems.drivetrain, driverController));
   }
 
   /**
@@ -63,6 +80,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Commands.none();
+    return autos.getAutonomous();
   }
 }

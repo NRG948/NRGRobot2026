@@ -170,6 +170,7 @@ out/
 
 # Simulation GUI and other tools window save file
 networktables.json
+networktables.json.bck
 simgui.json
 *-window.json
 simgui-ds.json
@@ -186,3 +187,6 @@ compile_commands.json
 
 # Eclipse generated file for annotation processors
 .factorypath
+
+# OutlineViewer configuration
+outlineviewer.json

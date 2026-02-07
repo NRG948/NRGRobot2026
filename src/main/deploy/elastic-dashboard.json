@@ -2,7 +2,102 @@
   "version" : 1.0,
   "grid_size" : 128.0,
   "tabs" : [ {
-    "name" : "drivetrain",
+    "name" : "Preferences",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "April Tag",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 128.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "Enable Front Left",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Front Left",
+            "period" : 0.06
+          }
+        }, {
+          "title" : "Enable Front Right",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Front Right",
+            "period" : 0.06
+          }
+        } ]
+      } ],
+      "containers" : [ {
+        "title" : "Robot Selector",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Robot Selector",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Enable Rumble",
+        "type" : "Toggle Switch",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Enable Rumble",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Right Trigger Scalar",
+        "type" : "Number Slider",
+        "x" : 384.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Right Trigger Scalar",
+          "period" : 0.06,
+          "min_value" : 0.0,
+          "max_value" : 1.0,
+          "divisions" : 5,
+          "publish_all" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Autonomous",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Routine",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Autonomous/Routine",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Swerve",
     "grid_layout" : {
       "layouts" : [ {
         "title" : "Front Left",
@@ -22,7 +117,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -41,8 +136,9 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Left/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Front Left/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -63,7 +159,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -82,8 +178,9 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Front Right/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Front Right/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -104,7 +201,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -123,8 +220,9 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Left/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Back Left/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       }, {
@@ -145,7 +243,7 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Angle (deg)",
+            "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Angle (deg)",
             "period" : 0.06,
             "min_value" : -180.0,
             "max_value" : 180.0,
@@ -164,12 +262,775 @@
           "width" : 128.0,
           "height" : 128.0,
           "properties" : {
-            "topic" : "/SmartDashboard/drivetrain/Back Right/Wheel Velocity (m+s)",
-            "period" : 0.06
+            "topic" : "/SmartDashboard/Swerve/Back Right/Wheel Velocity (m+s)",
+            "period" : 0.06,
+            "show_submit_button" : false
           }
         } ]
       } ],
       "containers" : [ ]
+    }
+  }, {
+    "name" : "Intake",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -15.9593,
+          "max_value" : 15.9593,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Test Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Velocity",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Set Test Goal Velocity",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "PID Controller",
+        "type" : "PID Controller",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/PID Controller",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Intake/Current Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "IntakeArm",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ ]
+    }
+  }, {
+    "name" : "Shooter",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Lower Max Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Max Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Upper Max Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Max Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Lower PID",
+        "type" : "PID Controller",
+        "x" : 768.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower PID",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Upper PID",
+        "type" : "PID Controller",
+        "x" : 1024.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper PID",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Lower Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Lower Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Lower Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -41.270725699090676,
+          "max_value" : 41.270725699090676,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Upper Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Upper Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Upper Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -7.979645340118073,
+          "max_value" : 7.979645340118073,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Lower Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Test Lower Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Test Upper Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 512.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Test Upper Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Velocities (m/s)",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Set Test Velocities (m+s)",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Shooter/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      } ]
+    }
+  }, {
+    "name" : "Indexer",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Current Velocity (m+s)",
+          "period" : 0.06,
+          "min_value" : -15.9593,
+          "max_value" : 15.9593,
+          "start_angle" : -140.0,
+          "end_angle" : 140.0,
+          "number_of_labels" : 8,
+          "wrap_value" : false,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Test Goal Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Test Goal Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Velocity",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Set Test Goal Velocity",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "PID Controller",
+        "type" : "PID Controller",
+        "x" : 512.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/PID Controller",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Current Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Indexer/Current Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      } ]
+    }
+  }, {
+    "name" : "Front Left Camera",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "Selected April Tag",
+        "type" : "List Layout",
+        "x" : 1152.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 640.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Z",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Z",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Roll",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Roll",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Pitch",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Pitch",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Angle to Target",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Angle to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Distance to Target",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag/Distance to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      }, {
+        "title" : "Estimated Pose",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Estimated Pose/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Estimated Pose/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Left Camera/Estimated Pose/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      } ],
+      "containers" : [ {
+        "title" : "Selected April Tag",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Left Camera/Selected April Tag",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Camera Stream",
+        "type" : "Camera Stream",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 512.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Left Camera/Camera Stream",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Has Targets",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Left Camera/Has Targets",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      } ]
+    }
+  }, {
+    "name" : "Front Right Camera",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "Selected April Tag",
+        "type" : "List Layout",
+        "x" : 1152.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 640.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Z",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Z",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Roll",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Roll",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Pitch",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Pitch",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 128.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Angle to Target",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Angle to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Distance to Target",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 256.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag/Distance to Target",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      }, {
+        "title" : "Estimated Pose",
+        "type" : "List Layout",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Estimated Pose/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Estimated Pose/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Yaw",
+          "type" : "Text Display",
+          "x" : 256.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Front Right Camera/Estimated Pose/Yaw",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        } ]
+      } ],
+      "containers" : [ {
+        "title" : "Selected April Tag",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Right Camera/Selected April Tag",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Camera Stream",
+        "type" : "Camera Stream",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 512.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Right Camera/Camera Stream",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Has Targets",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Front Right Camera/Has Targets",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      } ]
     }
   } ]
 }

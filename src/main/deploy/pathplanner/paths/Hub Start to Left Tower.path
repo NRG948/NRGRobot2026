@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.574636878438077,
+        "y": 4.033744036509909
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.324781582857478,
+        "y": 4.025239257245777
+      },
+      "isLocked": false,
+      "linkedName": "Hub Start"
+    },
+    {
+      "anchor": {
+        "x": 1.531553672316385,
+        "y": 4.2655932203389835
+      },
+      "prevControl": {
+        "x": 1.781552972345274,
+        "y": 4.2650016249827045
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Left Tower"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

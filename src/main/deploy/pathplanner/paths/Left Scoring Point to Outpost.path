@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.6973305084745767,
+        "y": 4.713968926553673
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.6845197740106808,
+        "y": 1.95966101694676
+      },
+      "isLocked": false,
+      "linkedName": "Left Scoring Point"
+    },
+    {
+      "anchor": {
+        "x": 0.41701977401129997,
+        "y": 0.665776836158193
+      },
+      "prevControl": {
+        "x": 1.915875706214071,
+        "y": 1.5881497175117318
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Outpost"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -17.764853300697496
+  },
+  "useDefaultConstraints": true
+}
