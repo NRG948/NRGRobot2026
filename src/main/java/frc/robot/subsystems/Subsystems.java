@@ -91,10 +91,7 @@ public class Subsystems {
                       c.robotToCamera(),
                       c.streamPort()));
 
-  // TODO: Add Cameras (need AprilTag subsystem)
-
   private final Subsystem[] all;
-
   private final Subsystem[] manipulators;
 
   private Map<String, StringLogEntry> commandLogger;

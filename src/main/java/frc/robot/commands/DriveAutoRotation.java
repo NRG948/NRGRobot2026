@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Newport Robotics Group. All Rights Reserved.
+ * Copyright (c) 2026 Newport Robotics Group. All Rights Reserved.
  *
  * Open Source Software; you can modify and/or share it under the terms of
  * the license file in the root directory of this project.
@@ -37,7 +37,7 @@ public class DriveAutoRotation extends DriveUsingController {
   }
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
-  private double getRotationtoHub() {
+  private double getAngleToHub() {
     Rotation2d angleDiff = hubLocation.minus(drivetrain.getPosition().getTranslation()).getAngle();
     double angleDiffRad = angleDiff.getRadians();
     return angleDiffRad;
@@ -50,9 +50,9 @@ public class DriveAutoRotation extends DriveUsingController {
 
   private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
 
-    double currentOrientation = drivetrain.getOrientation().getRotations();
+    double currentOrientation = drivetrain.getOrientation().getRadians();
 
-    double targetOrientation = getRotationtoHub();
+    double targetOrientation = getAngleToHub();
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 
