@@ -39,7 +39,7 @@ public final class Constants {
     public static final class CANID {
       public static final int INTAKE_ID = 13;
       public static final int INTAKE_ARM_ID = 12;
-      public static final int SHOOTER_LOWER_LEFT_ID = 1;
+      public static final int SHOOTER_LOWER_LEFT_ID = 16; // TODO: verify shooter CAN IDS with Systems
       public static final int SHOOTER_LOWER_RIGHT_ID = 14;
       public static final int SHOOTER_UPPER_LEFT_ID = 11;
       public static final int SHOOTER_UPPER_RIGHT_ID = 12;
