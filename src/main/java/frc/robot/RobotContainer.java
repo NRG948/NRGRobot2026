@@ -107,5 +107,6 @@ public class RobotContainer {
 
   public void periodic() {
     operator.periodic();
+    subsystems.periodic();
   }
 }
