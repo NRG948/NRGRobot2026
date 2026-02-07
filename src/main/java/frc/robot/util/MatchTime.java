@@ -20,6 +20,10 @@ public class MatchTime {
   private static final double PRE_FOURTH_SHIFT_START_TIME = 60.0;
   private static final double FOURTH_SHIFT_START_TIME = 55.0;
 
+  public static double getMatchTime() {
+    return DriverStation.getMatchTime();
+  }
+
   public static boolean isTeleop() {
     return DriverStation.isTeleop();
   }

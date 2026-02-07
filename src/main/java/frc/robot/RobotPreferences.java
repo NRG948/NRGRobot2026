@@ -16,8 +16,7 @@ import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
-import com.nrg948.preferences.ProfiledPIDControllerPreference;
-import frc.robot.subsystems.Swerve;
+import frc.robot.parameters.AprilTagFieldParameters;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -32,10 +31,23 @@ public final class RobotPreferences {
     @DashboardToggleSwitch(title = "Enable Front Right")
     public final BooleanPreference ENABLE_FRONT_RIGHT =
         new BooleanPreference("AprilTag", "Enable Front Right", false);
+
+    @DashboardToggleSwitch(title = "Enable Back Left")
+    public final BooleanPreference ENABLE_BACK_LEFT =
+        new BooleanPreference("AprilTag", "Enable Back Left", false);
+
+    @DashboardToggleSwitch(title = "Enable Back Right")
+    public final BooleanPreference ENABLE_BACK_RIGHT =
+        new BooleanPreference("AprilTag", "Enable Back Right", false);
   }
 
-  @DashboardLayout(title = "April Tag", column = 0, row = 1, width = 1, height = 3)
+  @DashboardLayout(title = "April Tag", column = 0, row = 2, width = 1, height = 3)
   public static final AprilTagPreferences APRIL_TAG = new AprilTagPreferences();
+
+  @DashboardComboBoxChooser(title = "Field Layout", column = 0, row = 1, width = 2, height = 1)
+  public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
+      new EnumPreference<AprilTagFieldParameters>(
+          "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
 
   /** Creates a new instance of RobotPreferences. */
   public RobotPreferences() {}

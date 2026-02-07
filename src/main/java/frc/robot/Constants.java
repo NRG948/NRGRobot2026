@@ -45,6 +45,10 @@ public final class Constants {
       public static final int SHOOTER_UPPER_RIGHT_ID = 12;
       public static final int INDEXER_ID = 15;
     }
+
+    public static final class CAN {
+      public static final int LASER_CAN_ID = 0; // TODO: SET LASER CAN ID
+    }
   }
 
   public static class VisionConstants {

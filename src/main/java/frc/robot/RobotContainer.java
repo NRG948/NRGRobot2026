@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.DriveWithAutoRotation;
+import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveUsingController;
 import frc.robot.commands.LEDCommands;
 import frc.robot.subsystems.Subsystems;
@@ -26,6 +26,9 @@ import frc.robot.util.MatchTime;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  @DashboardTab(title = "Operator")
+  private final RobotOperator operator;
 
   @DashboardTab(title = "Preferences")
   private final RobotPreferences preferences = new RobotPreferences();
@@ -41,6 +44,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    operator = new RobotOperator(subsystems);
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
@@ -71,7 +75,7 @@ public class RobotContainer {
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
 
-    driverController.a().whileTrue(new DriveWithAutoRotation(subsystems.drivetrain, driverController));
+    driverController.a().whileTrue(new DriveAutoRotation(subsystems.drivetrain, driverController));
   }
 
   /**
@@ -81,5 +85,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autos.getAutonomous();
+  }
+
+  public void periodic() {
+    operator.periodic();
   }
 }
