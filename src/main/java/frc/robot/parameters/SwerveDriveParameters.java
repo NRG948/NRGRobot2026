@@ -39,8 +39,8 @@ public enum SwerveDriveParameters {
    */
   PracticeBase2026(
       Units.lbsToKilograms(60.7),
-      0.603, // 0.578
-      0.501, // 0.528
+      0.603,
+      0.501,
       MK4I_L2_PLUS,
       NullMotor, // KrakenX60,
       NullMotor, // KrakenX44,
