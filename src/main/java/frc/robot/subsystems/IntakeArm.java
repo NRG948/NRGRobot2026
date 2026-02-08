@@ -12,16 +12,17 @@ import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
-import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
@@ -53,12 +54,12 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double TOLERANCE =
-      Units.degreesToRadians(0.5); // TODO: Add tolerance in radians
+      Units.degreesToRadians(1); // TODO: Add tolerance in radians
   private static final double ERROR_MARGIN =
       Units.degreesToRadians(5.0); // TODO: Add error margin in radians
   private static final double ERROR_TIME = 1;
   private static final double GEAR_RATIO = 50.0;
-  private static final double RADIANS_PER_ROTATION = (2 * Math.PI) / GEAR_RATIO;
+  private static final double RADIANS_PER_ROTATION = 2 * Math.PI;
   private static final double MASS = Units.lbsToKilograms(5.5);
   private static final double LENGTH = Units.inchesToMeters(10.94);
   private static final double MAX_VELOCITY =
@@ -67,19 +68,16 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
   // TODO: Find intake arm angles
-  public static final double STOW_ANGLE = Units.degreesToRadians(140);
+  public static final double STOW_ANGLE = Units.degreesToRadians(130);
   public static final double BUMP_ANGLE = Units.degreesToRadians(45);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
-  public static final double MAX_ANGLE = Units.degreesToRadians(140);
+  public static final double MAX_ANGLE = STOW_ANGLE;
 
+  private final TalonFX talonFX = new TalonFX(INTAKE_ARM_ID);
   private final TalonFXAdapter motor =
       new TalonFXAdapter(
-          "/IntakeArm/Motor",
-          new TalonFX(INTAKE_ARM_ID),
-          CLOCKWISE_POSITIVE,
-          BRAKE,
-          RADIANS_PER_ROTATION);
+          "/IntakeArm/Motor", talonFX, CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION);
 
   private final RelativeEncoder encoder = motor.getEncoder();
 
@@ -127,6 +125,10 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   /** Creates a new IntakeArm. */
   public IntakeArm() {
     TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
+    MotorOutputConfigs motorOutputConfigs = talonFXConfigs.MotorOutput;
+    motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+    motorOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+
     FeedbackConfigs feedbackConfigs = talonFXConfigs.Feedback;
     feedbackConfigs.SensorToMechanismRatio = GEAR_RATIO;
 
@@ -137,17 +139,15 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
         RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
     slot0Configs.kG = 0.9;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Configs.kP = 120;
+    slot0Configs.kP = 90; // TODO: probably increase to 120;
     slot0Configs.kI = 0;
     slot0Configs.kD = 0;
 
     MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION;
-    motionMagicConfigs.MotionMagicAcceleration = MAX_ACCELERATION / RADIANS_PER_ROTATION;
-
-    TalonFXConfigurator configurator =
-        new TalonFXConfigurator(new DeviceIdentifier(INTAKE_ARM_ID, "KrakenX60", CANBus.roboRIO()));
-    configurator.apply(slot0Configs);
+    motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION / 10;
+    motionMagicConfigs.MotionMagicAcceleration = MAX_ACCELERATION / RADIANS_PER_ROTATION / 30;
+    TalonFXConfigurator configurator = talonFX.getConfigurator();
+    configurator.apply(talonFXConfigs);
 
     encoder.setPosition(STOW_ANGLE);
   }
@@ -253,6 +253,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   public void periodic() {
     // This method will be called once per scheduler run
     updateTelemetry();
+    checkError();
   }
 
   @Override
