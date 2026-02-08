@@ -37,12 +37,9 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              RobotSelector.AlphaRobot2026,
-              MotorParameters.NullMotor,
-              RobotSelector.CompetitionRobot2026,
-              MotorParameters.KrakenX60,
-              RobotSelector.PracticeRobot2026,
-              MotorParameters.KrakenX60),
+              RobotSelector.AlphaRobot2026, MotorParameters.NullMotor,
+              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
+              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
   private static final double BAR_DIAMETER = Units.inchesToMeters(1);

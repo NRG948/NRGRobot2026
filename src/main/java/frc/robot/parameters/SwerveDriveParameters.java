@@ -54,7 +54,7 @@ public enum SwerveDriveParameters {
    * <p>TODO: Update these parameters when the real competition base is finished.
    */
 
-   //TODO: Verify wheel distances for competition base
+  // TODO: Verify wheel distances for competition base
   CompetitionBase2026(
       Units.lbsToKilograms(60.7),
       0.603,
