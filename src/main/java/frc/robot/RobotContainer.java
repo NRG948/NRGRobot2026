@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -49,6 +50,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    DriverStation.silenceJoystickConnectionWarning(true);
+
     operator = new RobotOperator(subsystems);
 
     subsystems.drivetrain.setDefaultCommand(
