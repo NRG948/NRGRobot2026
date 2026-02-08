@@ -9,7 +9,6 @@ package frc.robot.parameters;
 
 import static frc.robot.parameters.MotorParameters.KrakenX44;
 import static frc.robot.parameters.MotorParameters.KrakenX60;
-import static frc.robot.parameters.MotorParameters.NullMotor;
 import static frc.robot.parameters.SwerveModuleParameters.MK4I_L2_PLUS;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
@@ -42,11 +41,11 @@ public enum SwerveDriveParameters {
       0.603,
       0.501,
       MK4I_L2_PLUS,
-      NullMotor, // KrakenX60,
-      NullMotor, // KrakenX44,
+      KrakenX60,
+      KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {18.72, 299.88, 323.88, 350.68}, // CANCoder offsets
+      new double[] {-23.29, -57.74, 178.59, 77.70}, // CANCoder offsets
       21),
   /**
    * Parameters for the 2026 Competition Base robot.
