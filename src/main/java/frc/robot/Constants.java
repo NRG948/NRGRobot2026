@@ -60,8 +60,8 @@ public final class Constants {
 
   public static class LaserCANConstants {
     // TODO: SET LASER CAN ID
-    public static final int LEFT_LASER_CAN_ID = 0;
-    public static final int RIGHT_LASER_CAN_ID = 0;
+    public static final int LEFT_LASER_CAN_ID = 63;
+    public static final int RIGHT_LASER_CAN_ID = 62;
     // TODO: SET LASER CAN DISTANCE CORRECTION
     public static final double LEFT_DISTANCE_CORRECTION = 0;
     public static final double RIGHT_DISTANCE_CORRECTION = 0;

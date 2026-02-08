@@ -73,7 +73,7 @@ public class LaserCANSensor {
 
   /** Updates and logs the current sensors states. */
   public void updateTelemetry() {
-    distance = getDistance();
+    distance = getDistance(laserCAN);
 
     if (distance == NO_MEASURMENT) {
       hasValidMeasurement = false;

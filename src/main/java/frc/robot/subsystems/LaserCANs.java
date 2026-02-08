@@ -20,7 +20,7 @@ public class LaserCANs extends SubsystemBase {
   private double leftDistance = LaserCANSensor.NO_MEASURMENT;
   private double rightDistance = LaserCANSensor.NO_MEASURMENT;
 
-  /** Creates the LaserCANs subsytem made of 2 LaserCANs. */
+  /** Creates the LaserCANs subsystem made of 2 LaserCANs. */
   public LaserCANs() {
     leftLaserCAN =
         new LaserCANSensor(
@@ -42,11 +42,11 @@ public class LaserCANs extends SubsystemBase {
     rightDistance = rightLaserCAN.getDistance();
   }
 
-  private double getLeftDistance() {
+  public double getLeftDistance() {
     return leftDistance;
   }
 
-  private double getRightDistance() {
+  public double getRightDistance() {
     return rightDistance;
   }
 }
