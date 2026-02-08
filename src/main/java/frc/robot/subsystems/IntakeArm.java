@@ -139,7 +139,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
         RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
     slot0Configs.kG = 0.9;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Configs.kP = 120; // TODO: probably increase to 120;
+    slot0Configs.kP = 120;
     slot0Configs.kI = 0;
     slot0Configs.kD = 0;
 
