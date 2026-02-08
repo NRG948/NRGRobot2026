@@ -34,11 +34,12 @@ public class DriveAutoRotation extends DriveUsingController {
   @Override
   public void initialize() {
     hubLocation = FieldUtils.getHubLocation();
+    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
   private double getAngleToHub() {
-    Rotation2d angleDiff = hubLocation.minus(drivetrain.getPosition().getTranslation()).getAngle();
+    Rotation2d angleDiff = drivetrain.getPosition().getTranslation().minus(hubLocation).getAngle();
     double angleDiffRad = angleDiff.getRadians();
     return angleDiffRad;
   }
