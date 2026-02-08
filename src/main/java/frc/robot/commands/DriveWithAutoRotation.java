@@ -10,16 +10,11 @@ package frc.robot.commands;
 import static frc.robot.RobotPreferences.ROTATION_PID_CONTROLLER;
 
 import com.nrg948.preferences.ProfiledPIDControllerPreference;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Swerve;
-import frc.robot.util.FieldUtils;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class DriveWithAutoRotation extends DriveUsingController {
-
-  private Translation2d hubLocation;
 
   public DriveWithAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
@@ -29,14 +24,6 @@ public class DriveWithAutoRotation extends DriveUsingController {
   @Override
   public void initialize() {
     ROTATION_PID_CONTROLLER.reset(drivetrain.getOrientation().getRotations(), 0.0);
-    hubLocation = FieldUtils.getHubLocation();
-  }
-
-  /** {@return the angle from the center of the robot to the hub, in radians} */
-  private double getAngleToHub() {
-    Rotation2d angleDiff = hubLocation.minus(drivetrain.getPosition().getTranslation()).getAngle();
-    double angleDiffRad = angleDiff.getRadians();
-    return angleDiffRad;
   }
 
   @Override
@@ -48,7 +35,7 @@ public class DriveWithAutoRotation extends DriveUsingController {
 
     double currentOrientation = drivetrain.getOrientation().getRadians();
 
-    double targetOrientation = getAngleToHub();
+    double targetOrientation = drivetrain.getAngleToHub();
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 

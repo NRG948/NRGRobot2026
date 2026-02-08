@@ -12,6 +12,8 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardGyro;
 import com.nrg948.dashboard.annotations.DashboardLayout;
+import com.nrg948.dashboard.annotations.DashboardRadialGauge;
+import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.LabelPosition;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
@@ -48,6 +50,7 @@ import frc.robot.drive.SwerveModule;
 import frc.robot.parameters.SwerveAngleEncoder;
 import frc.robot.parameters.SwerveDriveParameters;
 import frc.robot.parameters.SwerveMotors;
+import frc.robot.util.FieldUtils;
 import frc.robot.util.Gyro;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
@@ -58,6 +61,30 @@ import java.util.function.Supplier;
 
 @DashboardDefinition
 public class Swerve extends SubsystemBase implements ActiveSubsystem {
+
+  @DashboardDefinition
+  public class EstimatedPose {
+    @DashboardTextDisplay(column = 0, row = 0, title = "X")
+    public double estimatedPoseX;
+
+    @DashboardTextDisplay(column = 1, row = 0, title = "Y")
+    public double estimatedPoseY;
+
+    @DashboardRadialGauge(
+        title = "Estimated Angle",
+        column = 3,
+        row = 0,
+        width = 2,
+        height = 2,
+        startAngle = -180,
+        endAngle = 180,
+        min = -180,
+        max = 180,
+        numberOfLabels = 0,
+        wrapValue = true)
+    public double estimatedRotation;
+  }
+
   private static final DataLog LOG = DataLogManager.getLog();
   private static final Rotation2d ROTATE_180_DEGREES = Rotation2d.fromDegrees(180);
 
@@ -99,6 +126,9 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
       PARAMETERS.getAngleEncoder(SwerveAngleEncoder.FrontRight);
   private final CANcoder backLeftAngle = PARAMETERS.getAngleEncoder(SwerveAngleEncoder.BackLeft);
   private final CANcoder backRightAngle = PARAMETERS.getAngleEncoder(SwerveAngleEncoder.BackRight);
+
+  @DashboardLayout(title = "Estimated Pose", column = 9, row = 0, width = 2, height = 5)
+  private EstimatedPose estimatedPose = new EstimatedPose();
 
   @DashboardLayout(
       title = "Front Left",
@@ -480,6 +510,20 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
         new Rotation3d(0.0, 0.0, robotPose2d.getRotation().getRadians()));
   }
 
+  /** {@return the angle from the center of the robot to the hub, in radians} */
+  @DashboardTextDisplay(
+      title = "Angle Difference To Hub",
+      column = 9,
+      row = 0,
+      width = 2,
+      height = 5)
+  public double getAngleToHub() {
+    Rotation2d angleDiff =
+        FieldUtils.getHubLocation().minus(getPosition().getTranslation()).getAngle();
+    double angleDiffRad = angleDiff.getRadians();
+    return angleDiffRad;
+  }
+
   /**
    * Returns the field orientation of the robot as a {@link Rotation2d} object.
    *
@@ -505,6 +549,11 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
     Pose2d robotPose = getPosition();
 
     poseLog.append(robotPose);
+
+    //
+    estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
+    estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
+    estimatedPose.estimatedRotation = odometry.getEstimatedPosition().getRotation().getDegrees();
   }
 
   public void setIdleMode(MotorIdleMode idleMode) {

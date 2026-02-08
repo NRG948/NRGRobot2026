@@ -190,3 +190,6 @@ compile_commands.json
 
 # OutlineViewer configuration
 outlineviewer.json
+
+# Glass configuration
+/.Glass
