@@ -28,9 +28,6 @@ public class LaserCANSensor {
   private LaserCan laserCAN;
   private String laserCANName;
 
-  private double distance = NO_MEASURMENT;
-  private boolean hasValidMeasurement = false;
-
   private DoubleLogEntry logDistance;
 
   /**
@@ -53,14 +50,6 @@ public class LaserCANSensor {
     }
   }
 
-  public boolean hasValidMeasurement() {
-    return hasValidMeasurement;
-  }
-
-  public double getDistance() {
-    return distance;
-  }
-
   private LaserCan createLaserCAN(int id, LaserCan.TimingBudget timingBudget)
       throws ConfigurationFailedException {
     LaserCan laserCAN = new LaserCan(id);
@@ -71,30 +60,16 @@ public class LaserCANSensor {
     return laserCAN;
   }
 
-  /** Updates and logs the current sensors states. */
-  public void updateTelemetry() {
-    distance = getDistance(laserCAN);
+  public double getDistance() {
 
-    if (distance == NO_MEASURMENT) {
-      hasValidMeasurement = false;
-    } else {
-      hasValidMeasurement = true;
-      distance += distanceCorrection;
+    Measurement measurement = laserCAN.getMeasurement();
+    double distance = NO_MEASURMENT;
+
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      distance = (measurement.distance_mm / 1000.0) + distanceCorrection;
     }
 
     logDistance.append(distance);
-  }
-
-  private double getDistance(LaserCan laserCan) {
-    if (laserCan == null) {
-      return NO_MEASURMENT;
-    }
-
-    Measurement measurement = laserCan.getMeasurement();
-    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-      return measurement.distance_mm / 1000.0;
-    } else {
-      return NO_MEASURMENT;
-    }
+    return distance;
   }
 }

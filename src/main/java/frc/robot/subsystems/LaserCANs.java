@@ -36,8 +36,6 @@ public class LaserCANs extends SubsystemBase {
 
   @Override
   public void periodic() {
-    leftLaserCAN.updateTelemetry();
-    rightLaserCAN.updateTelemetry();
     leftDistance = leftLaserCAN.getDistance();
     rightDistance = rightLaserCAN.getDistance();
   }
