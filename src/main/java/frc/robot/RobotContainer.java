@@ -18,6 +18,7 @@ import frc.robot.commands.DriveUsingController;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootingCommands;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MatchTime;
 
@@ -81,8 +82,23 @@ public class RobotContainer {
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
 
-    manipulatorController.rightBumper().whileTrue(IntakeCommands.intake(subsystems));
-    manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
+    manipulatorController
+        .rightBumper()
+        .whileTrue(IntakeCommands.intake(subsystems))
+        .onFalse(IntakeCommands.disableIntake(subsystems));
+    manipulatorController
+        .a()
+        .whileTrue(IntakeCommands.outtake(subsystems))
+        .onFalse(IntakeCommands.disableIntake(subsystems));
+    manipulatorController
+        .x()
+        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.STOW_ANGLE, subsystems));
+    manipulatorController
+        .y()
+        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems));
+    manipulatorController
+        .b()
+        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
 
     // Experimental, remove after shooter interpolation table is made and implemented. Up and left
     // is increase and decrease upper shooter velocities respectively. Down and right is increase
