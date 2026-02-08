@@ -594,14 +594,14 @@
           "show_ticks" : true
         }
       }, {
-        "title" : "Current Goal Angle",
+        "title" : "Goal Angle",
         "type" : "Text Display",
         "x" : 0.0,
         "y" : 256.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/IntakeArm/Current Goal Angle",
+          "topic" : "/SmartDashboard/IntakeArm/Goal Angle",
           "period" : 0.06,
           "show_submit_button" : false
         }
