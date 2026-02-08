@@ -511,17 +511,22 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   }
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
-  @DashboardTextDisplay(
-      title = "Angle Difference To Hub",
-      column = 9,
-      row = 0,
-      width = 2,
-      height = 5)
   public double getAngleToHub() {
     Rotation2d angleDiff =
         FieldUtils.getHubLocation().minus(getPosition().getTranslation()).getAngle();
     double angleDiffRad = angleDiff.getRadians();
     return angleDiffRad;
+  }
+
+  /** {@return the angle from the center of the robot to the hub, in degrees} */
+  @DashboardTextDisplay(
+      title = "Angle Difference To Hub",
+      column = 7,
+      row = 0,
+      width = 2,
+      height = 1)
+  public double getAngleToHubDegrees() {
+    return Math.toDegrees(getAngleToHub());
   }
 
   /**

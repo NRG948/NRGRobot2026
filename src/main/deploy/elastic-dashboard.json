@@ -512,10 +512,10 @@
       }, {
         "title" : "Angle Difference To Hub",
         "type" : "Text Display",
-        "x" : 1152.0,
+        "x" : 896.0,
         "y" : 0.0,
         "width" : 256.0,
-        "height" : 640.0,
+        "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Swerve/Angle Difference To Hub",
           "period" : 0.06,
