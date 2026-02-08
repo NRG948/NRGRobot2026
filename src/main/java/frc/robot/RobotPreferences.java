@@ -11,12 +11,15 @@ import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardNumberSlider;
+import com.nrg948.dashboard.annotations.DashboardPIDController;
 import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
+import com.nrg948.preferences.ProfiledPIDControllerPreference;
 import frc.robot.parameters.AprilTagFieldParameters;
 import frc.robot.parameters.PoseEstimationStrategy;
+import frc.robot.subsystems.Swerve;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -66,6 +69,12 @@ public final class RobotPreferences {
   @DashboardComboBoxChooser(title = "Robot Selector", column = 0, row = 0, width = 2, height = 1)
   public static final EnumPreference<RobotSelector> ROBOT_TYPE =
       new EnumPreference<>("Robot", "Robot Type", RobotSelector.CompetitionRobot2026);
+
+  // PID
+  @DashboardPIDController(title = "Auto Rotation PID", column = 5, row = 0, width = 2, height = 3)
+  public static final ProfiledPIDControllerPreference ROTATION_PID_CONTROLLER =
+      new ProfiledPIDControllerPreference(
+          "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
   /** Enables or disables rumble functionality on the driver's controller. */
   @DashboardToggleSwitch(title = "Enable Rumble", column = 2, row = 0, width = 1, height = 1)

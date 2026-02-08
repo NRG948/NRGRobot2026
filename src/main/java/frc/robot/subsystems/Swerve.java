@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
+import com.nrg948.dashboard.annotations.DashboardGyro;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.model.LabelPosition;
 import edu.wpi.first.math.MathUtil;
@@ -144,7 +145,15 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
     frontLeftModule, frontRightModule, backLeftModule, backRightModule
   };
 
+  @DashboardGyro(
+      title = "Orientation",
+      column = 4,
+      row = 0,
+      width = 2,
+      height = 2,
+      ccwPositive = true)
   private final Gyro gyro = PARAMETERS.getGyro();
+
   private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
   private final SwerveDriveKinematics kinematics = PARAMETERS.getKinematics();
