@@ -47,10 +47,6 @@ public final class Constants {
       public static final int SHOOTER_UPPER_RIGHT_ID = 12;
       public static final int INDEXER_ID = 15;
     }
-
-    public static final class CAN {
-      public static final int LASER_CAN_ID = 0; // TODO: SET LASER CAN ID
-    }
   }
 
   public static class VisionConstants {
@@ -60,5 +56,14 @@ public final class Constants {
 
     /** The rotational tolerance value for aligning. */
     public static final double POSE_ALIGNMENT_TOLERANCE_R = 1.0; // in deg
+  }
+
+  public static class LaserCANConstants {
+    // TODO: SET LASER CAN ID
+    public static final int LEFT_LASER_CAN_ID = 63;
+    public static final int RIGHT_LASER_CAN_ID = 62;
+    // TODO: SET LASER CAN DISTANCE CORRECTION
+    public static final double LEFT_DISTANCE_CORRECTION = 0;
+    public static final double RIGHT_DISTANCE_CORRECTION = 0;
   }
 }

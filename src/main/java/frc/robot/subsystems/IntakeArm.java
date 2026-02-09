@@ -54,7 +54,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double TOLERANCE =
-      Units.degreesToRadians(1); // TODO: Add tolerance in radians
+      Units.degreesToRadians(5); // TODO: Add tolerance in radians
   private static final double ERROR_MARGIN =
       Units.degreesToRadians(5.0); // TODO: Add error margin in radians
   private static final double ERROR_TIME = 1;
@@ -68,7 +68,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
   // TODO: Find intake arm angles
-  public static final double STOW_ANGLE = Units.degreesToRadians(130);
+  public static final double STOW_ANGLE = Units.degreesToRadians(140);
   public static final double BUMP_ANGLE = Units.degreesToRadians(45);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
@@ -139,7 +139,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
         RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
     slot0Configs.kG = 0.9;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Configs.kP = 90; // TODO: probably increase to 120;
+    slot0Configs.kP = 120;
     slot0Configs.kI = 0;
     slot0Configs.kD = 0;
 
@@ -207,7 +207,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   @DashboardTextDisplay(
-      title = "Current Goal Angle",
+      title = "Goal Angle",
       column = 0,
       row = 2,
       width = 2,

@@ -32,7 +32,15 @@ public final class IntakeCommands {
 
   public static Command setIntakeArmAngle(double angle, Subsystems subsystems) {
     IntakeArm intakeArm = subsystems.intakeArm;
-    return Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm);
+    return Commands.sequence(
+            Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm),
+            Commands.idle(intakeArm).until(intakeArm::atGoalAngle))
+        .finallyDo(
+            () -> {
+              if (angle == IntakeArm.STOW_ANGLE || angle == IntakeArm.EXTENDED_ANGLE) {
+                intakeArm.disable();
+              }
+            });
   }
 
   /**
@@ -44,6 +52,12 @@ public final class IntakeCommands {
     Intake intake = subsystems.intake;
     // TODO Flesh out full sequence when other subsystems are finished.
     return Commands.runOnce(intake::intake, intake);
+  }
+
+  public static Command disableIntake(Subsystems subsystems) {
+    Intake intake = subsystems.intake;
+    // TODO Flesh out full sequence when other subsystems are finished.
+    return Commands.runOnce(intake::disable, intake);
   }
 
   /**

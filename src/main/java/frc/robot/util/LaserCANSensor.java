@@ -5,7 +5,7 @@
  * the license file in the root directory of this project.
  */
  
-package frc.robot.subsystems;
+package frc.robot.util;
 
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
@@ -14,10 +14,9 @@ import au.grapplerobotics.interfaces.LaserCanInterface.TimingBudget;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RobotConstants.CAN;
 
-public class LaserCAN extends SubsystemBase {
+/** Creates a LaserCAN sensor. Make sure to call updateTelemetry() before calling getDistance(). */
+public class LaserCANSensor {
   private static final DataLog LOG = DataLogManager.getLog();
 
   /** A value indicating no measurement was available on the laserCAN distance sensor. */
@@ -29,36 +28,26 @@ public class LaserCAN extends SubsystemBase {
   private LaserCan laserCAN;
   private String laserCANName;
 
-  private double distance = NO_MEASURMENT;
-  private boolean hasValidMeasurement = false;
-
   private DoubleLogEntry logDistance;
 
-  /** Creates a new LaserCAN. */
-  public LaserCAN(String LaserCANName, double distanceCorrection) {
+  /**
+   * Creates a LaserCAN Sensor.
+   *
+   * @param CANID ID of the sensor.
+   * @param LaserCANName Name of the sensor.
+   * @param distanceCorrection Distance correction of the sensor.
+   */
+  public LaserCANSensor(int CANID, String LaserCANName, double distanceCorrection) {
     this.laserCANName = laserCANName;
     this.distanceCorrection = distanceCorrection;
     logDistance = new DoubleLogEntry(LOG, "/LaserCAN/" + LaserCANName + "/Distance");
 
     try {
-      laserCAN = createLaserCAN(CAN.LASER_CAN_ID, TimingBudget.TIMING_BUDGET_20MS);
+      laserCAN = createLaserCAN(CANID, TimingBudget.TIMING_BUDGET_20MS);
     } catch (ConfigurationFailedException e) {
       System.out.println("Configuration failed! " + e);
       e.printStackTrace();
     }
-  }
-
-  @Override
-  public void periodic() {
-    updateTelemetry();
-  }
-
-  public boolean hasValidMeasurement() {
-    return hasValidMeasurement;
-  }
-
-  public double getDistance() {
-    return distance;
   }
 
   private LaserCan createLaserCAN(int id, LaserCan.TimingBudget timingBudget)
@@ -71,30 +60,16 @@ public class LaserCAN extends SubsystemBase {
     return laserCAN;
   }
 
-  /** Updates and logs the current sensors states. */
-  private void updateTelemetry() {
-    distance = getDistance();
+  public double getDistance() {
 
-    if (distance == NO_MEASURMENT) {
-      hasValidMeasurement = false;
-    } else {
-      hasValidMeasurement = true;
-      distance += distanceCorrection;
+    Measurement measurement = laserCAN.getMeasurement();
+    double distance = NO_MEASURMENT;
+
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      distance = (measurement.distance_mm / 1000.0) + distanceCorrection;
     }
 
     logDistance.append(distance);
-  }
-
-  private double getDistance(LaserCan laserCan) {
-    if (laserCan == null) {
-      return NO_MEASURMENT;
-    }
-
-    Measurement measurement = laserCan.getMeasurement();
-    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-      return measurement.distance_mm / 1000.0;
-    } else {
-      return NO_MEASURMENT;
-    }
+    return distance;
   }
 }
