@@ -38,4 +38,17 @@ public final class ShootingCommands {
     Shooter shooter = subsystems.shooter;
     return Commands.runOnce(() -> shooter.addGoalVelocity(0.2), shooter);
   }
+ /**public static Command startShooter(Subsystems subsystems) {
+    Shooter shooter = subsystems.shooter;
+
+    Indexer indexer = subsystems.indexer;
+    return Commands.sequence(
+      shooter.setGoalVelocity(shooter.SHOOTING_VELOCITY),
+      Commands.idle(shooter).until(shooter::atGoalVelocity),
+      Commands.runOnce(indexer::feed, indexer),
+      Commands.idle(shooter);
+
+    );
+  }
+    **/
 }
