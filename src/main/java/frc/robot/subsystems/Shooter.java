@@ -106,7 +106,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       height = 2,
       min = -41.270725699090676,
       max = 41.270725699090676)
-  private double currentVelocity = 0;
+  public double currentVelocity = 0;
 
   @DashboardTextDisplay(
       title = "Test Velocity (m/s)",
@@ -148,6 +148,10 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   /** Interpolates correct shooter velocity for a given distance from our Hub. */
   public double getPowerFromInterpolationTable(double distance) {
     return SHOOTER_VELOCITIES.get(distance);
+  }
+
+  public double getCurrentVelocity() {
+    return currentVelocity;
   }
 
   public void setGoalVelocity(double goalVelocity) {

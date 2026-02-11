@@ -11,6 +11,8 @@ import static frc.robot.RobotPreferences.ROTATION_PID_CONTROLLER;
 
 import com.nrg948.preferences.ProfiledPIDControllerPreference;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
@@ -42,5 +44,21 @@ public class DriveWithAutoRotation extends DriveUsingController {
     // TODO: Find alternative to getSetpoint() for PID preference
     double rSpeed = feedback + controller.getSetpoint().velocity;
     return rSpeed;
+  }
+
+    /**
+     * Returns shooter offset angle
+     * @return
+     */
+    public double getShooterOffsetAngle(Subsystems subsystems) {
+      // radius of roller
+      double rollerRadius = 0.0508;
+      // velocity of robot
+      double robotVelocity = Math.sqrt(Math.pow(drivetrain.getChassisSpeeds().vxMetersPerSecond, 2) + Math.pow(drivetrain.getChassisSpeeds().vyMetersPerSecond, 2));
+      // velocity of ball
+      double ballVelocity = 0.5 * subsystems.shooter.getCurrentVelocity() * rollerRadius;
+      // shooter offset angle
+      double shooterOffsetAngle = Math.atan(robotVelocity/ballVelocity);
+      return shooterOffsetAngle;
   }
 }
