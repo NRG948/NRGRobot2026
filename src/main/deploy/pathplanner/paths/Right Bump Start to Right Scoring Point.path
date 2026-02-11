@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.851059322033899,
-        "y": 1.9468502824858764
+        "x": 2.952969671702978,
+        "y": 2.280450900609487
       },
       "isLocked": false,
       "linkedName": "Right Bump Start"
     },
     {
       "anchor": {
-        "x": 1.9533928571428572,
-        "y": 2.0752321428571427
+        "x": 2.043398145481197,
+        "y": 2.8035723483328945
       },
       "prevControl": {
-        "x": 2.4795480225988706,
-        "y": 1.9724717514124301
+        "x": 2.3968585831321487,
+        "y": 2.5585064448949013
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 25.130846747724867
   },
   "reversed": false,
   "folder": null,

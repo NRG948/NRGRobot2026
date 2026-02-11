@@ -13,7 +13,25 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Auto Align to Hub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooter"
           }
         },
         {
@@ -37,13 +55,25 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Start Shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooter"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Scoring Point to (Trench) Left Neutral Start"
+            "pathName": "Left Scoring Point to (Bump) Left Neutral Start"
           }
         },
         {
@@ -56,6 +86,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Neutral Zone",
   "choreoAuto": false
 }

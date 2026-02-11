@@ -15,9 +15,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import frc.robot.parameters.SwerveDriveParameters;
-import frc.robot.util.FieldUtils;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /** SwerveDrive implements swerve drive control. */
@@ -142,8 +144,9 @@ public class SwerveDrive extends RobotDriveBase {
       chassisSpeeds.omegaRadiansPerSecond = rSpeed;
       setChassisSpeeds(chassisSpeeds);
     } else {
+      Optional<Alliance> alliance = DriverStation.getAlliance();
 
-      if (FieldUtils.isRedAlliance()) {
+      if (alliance.isPresent() && alliance.get() == Alliance.Red) {
         xSpeed *= -1.0;
         ySpeed *= -1.0;
       }

@@ -8,21 +8,13 @@
 package frc.robot;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.DriveAutoRotation;
-import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
-import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.LEDCommands;
-import frc.robot.commands.ShootingCommands;
-import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
-import frc.robot.util.MatchTime;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,28 +24,22 @@ import frc.robot.util.MatchTime;
  */
 public class RobotContainer {
 
-  private final CommandXboxController manipulatorController =
-      new CommandXboxController(OperatorConstants.MANIPULATOR_CONTROLLER_PORT);
-
-  private final CommandXboxController driverController =
-      new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
-
-  @DashboardTab(title = "Operator")
-  private final RobotOperator operator;
-
-  @DashboardTab(title = "Preferences")
-  private final RobotPreferences preferences = new RobotPreferences();
-
   private final Subsystems subsystems = new Subsystems();
 
-  @DashboardTab(title = "Autonomous")
-  private final Autos autos = new Autos(subsystems);
+  @DashboardTab private final Autos autos = new Autos(subsystems);
+
+  public enum RobotSelector {
+    PracticeRobot2026,
+    CompetitionRobot2026,
+    AlphaBase2026;
+  }
+
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    DriverStation.silenceJoystickConnectionWarning(true);
-
-    operator = new RobotOperator(subsystems);
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
@@ -75,47 +61,6 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
-
-    new Trigger(MatchTime::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
-    new Trigger(MatchTime::isNearShiftChangeExcludingFinalSecond)
-        .whileTrue(LEDCommands.setTransitionModeLED(subsystems));
-    new Trigger(MatchTime::isNearShiftChangeFinalSecond)
-        .whileTrue(LEDCommands.setLastSecondTransitionModeLED(subsystems));
-    new Trigger(MatchTime::isNearEndgame)
-        .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
-    new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
-
-    driverController.a().whileTrue(new DriveAutoRotation(subsystems.drivetrain, driverController));
-
-    manipulatorController
-        .rightBumper()
-        .whileTrue(IntakeCommands.intake(subsystems))
-        .onFalse(IntakeCommands.disableIntake(subsystems));
-    manipulatorController
-        .a()
-        .whileTrue(IntakeCommands.outtake(subsystems))
-        .onFalse(IntakeCommands.disableIntake(subsystems));
-    manipulatorController
-        .x()
-        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.STOW_ANGLE, subsystems));
-    manipulatorController
-        .y()
-        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems));
-    manipulatorController
-        .b()
-        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
-
-    // Experimental, remove after shooter interpolation table is made and implemented. Up and left
-    // is increase and decrease upper shooter velocities respectively. Down and right is increase
-    // and decrease lower shooter velocities respectively.
-    manipulatorController
-        .povUp()
-        .onTrue(ShootingCommands.increaseShooterVelocityByPointTwo(subsystems));
-    manipulatorController
-        .povDown()
-        .onTrue(ShootingCommands.decreaseShooterVelocityByPointTwo(subsystems));
-    manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
   }
 
   /**
@@ -125,10 +70,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autos.getAutonomous();
-  }
-
-  public void periodic() {
-    operator.periodic();
-    subsystems.periodic();
   }
 }

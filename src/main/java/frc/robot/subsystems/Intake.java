@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
+import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
 import com.nrg948.dashboard.annotations.DashboardCommand;
@@ -24,35 +24,25 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotPreferences;
-import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
-import java.util.Map;
 
 @DashboardDefinition
 public class Intake extends SubsystemBase implements ActiveSubsystem {
 
-  private static final MotorParameters MOTOR =
-      RobotPreferences.ROBOT_TYPE.selectOrDefault(
-          Map.of(
-              RobotSelector.AlphaRobot2026, MotorParameters.NullMotor,
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
-              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
-          MotorParameters.NullMotor);
-
-  private static final double WHEEL_DIAMETER = Units.inchesToMeters(2);
+  private static final MotorParameters MOTOR = MotorParameters.KrakenX60;
+  private static final double WHEEL_DIAMETER = Units.inchesToMeters(3);
   private static final double GEAR_RATIO = 1;
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
-  private static final double INTAKE_VELOCITY = 7.0;
+  private static final double INTAKE_VELOCITY = 5.0;
   private static final double OUTTAKE_VELOCITY = -2.5;
 
   private final MotorController motor =
       MOTOR.newController(
-          "/Intake/Motor", INTAKE_ID, COUNTER_CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
+          "/Intake/Motor", INTAKE_ID, CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
 
   private final RelativeEncoder encoder = motor.getEncoder();
 
@@ -109,7 +99,7 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
   private final PIDControllerPreference pidController =
       new PIDControllerPreference("Intake", "PID Controller", 1, 0, 0);
 
-  /** Creates a new Intake subsystem. */
+  /** Creates a new Intake. */
   public Intake() {}
 
   public void setGoalVelocity(double goalVelocity) {
@@ -157,7 +147,6 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
     motor.setIdleMode(idleMode);
   }
 
-  /** Returns the intake's current velocity. */
   @DashboardTextDisplay(
       title = "Current Velocity (m/s)",
       column = 0,
@@ -166,10 +155,5 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
       height = 1)
   public double getCurrentVelocity() {
     return currentVelocity;
-  }
-
-  /** Returns the intake's goal velocity. */
-  public double getGoalVelocity() {
-    return goalVelocity;
   }
 }

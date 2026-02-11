@@ -31,41 +31,6 @@ import frc.robot.util.Pigeon2Gyro;
 
 /** An enum representing the properties for the swerve drive base of a specific robot instance. */
 public enum SwerveDriveParameters {
-  /**
-   * Parameters for the 2026 Practice Base robot.
-   *
-   * <p>TODO: Update these parameters when the real practice base is finished.
-   */
-  PracticeBase2026(
-      Units.lbsToKilograms(60.7),
-      0.603,
-      0.501,
-      MK4I_L2_PLUS,
-      KrakenX60,
-      KrakenX44,
-      new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
-      new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {157.76, 120.32, -1.67, -100.72}, // CANCoder offsets
-      21),
-  /**
-   * Parameters for the 2026 Competition Base robot.
-   *
-   * <p>TODO: Update these parameters when the real competition base is finished.
-   */
-
-  // TODO: Verify wheel distances for competition base
-  CompetitionBase2026(
-      Units.lbsToKilograms(60.7),
-      0.603,
-      0.501,
-      MK4I_L2_PLUS,
-      KrakenX60,
-      KrakenX44,
-      new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
-      new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {18.72, 299.88, 323.88, 350.68}, // CANCoder offsets
-      21),
-  /** Parameters for the 2026 Alpha Base robot. */
   AlphaBase2026(
       Units.lbsToKilograms(60.7),
       0.578,
@@ -75,7 +40,7 @@ public enum SwerveDriveParameters {
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {24.00, -60.12, -36.39, -109.69},
+      new double[] {18.72, 299.88, 323.88, 350.68}, // CANCoder offsets
       21);
 
   public static class Constants {

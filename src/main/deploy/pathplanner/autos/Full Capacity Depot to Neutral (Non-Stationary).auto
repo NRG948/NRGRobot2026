@@ -7,31 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Bump Start to Right Scoring Point"
+            "pathName": "Left Trench Start to Left Depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Outpost"
+            "pathName": "Left Depot to Right Depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Right Scoring Point"
+            "pathName": "Right Depot to Left Neutral Start (Shooting)"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Right Tower"
+            "pathName": "Left Neutral Start to Left Neutral End"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Neutral Zone",
   "choreoAuto": false
 }

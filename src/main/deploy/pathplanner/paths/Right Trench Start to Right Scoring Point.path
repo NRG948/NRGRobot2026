@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6332768361581924,
-        "y": 1.754689265536723
+        "x": 2.9584814438895903,
+        "y": 1.6674375000108057
       },
       "isLocked": false,
       "linkedName": "Right Trench Start"
     },
     {
       "anchor": {
-        "x": 1.9533928571428572,
-        "y": 2.0752321428571427
+        "x": 2.043398145481197,
+        "y": 2.8035723483328945
       },
       "prevControl": {
-        "x": 2.799816384180791,
-        "y": 1.5369067796610172
+        "x": 2.5239953365632757,
+        "y": 2.1590928319853195
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 25.130846747724867
   },
   "reversed": false,
   "folder": null,

@@ -16,15 +16,12 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.MotorIdleMode;
-import frc.robot.util.NullMotorAdapter;
 import frc.robot.util.SparkAdapter;
 import frc.robot.util.TalonFXAdapter;
 import org.ejml.simple.UnsupportedOperation;
 
 /** A enum representing the properties of a specific motor type. */
 public enum MotorParameters {
-  NullMotor(DCMotor.getBag(1)),
-
   /**
    * A VEX PRO <a href="https://www.vexrobotics.com/217-6515.html">Falcon 500</a> motor with
    * integrated Talon FX motor controller and encoders.
@@ -130,9 +127,6 @@ public enum MotorParameters {
       MotorIdleMode idleMode,
       double distancePerRotation) {
     switch (this) {
-      case NullMotor:
-        return new NullMotorAdapter();
-
       case Falcon500:
       case KrakenX44:
       case KrakenX60:

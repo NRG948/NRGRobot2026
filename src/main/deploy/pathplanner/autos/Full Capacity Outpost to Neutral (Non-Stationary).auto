@@ -13,19 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Right Scoring Point"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Scoring Point to (Trench) Right Neutral Start"
+            "pathName": "Outpost to Right Neutral Start (Shooting)"
           }
         },
         {
@@ -38,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Neutral Zone",
   "choreoAuto": false
 }

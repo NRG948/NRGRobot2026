@@ -11,7 +11,6 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -212,14 +211,5 @@ public final class TalonFXAdapter implements MotorController {
               "ERROR: Failed to apply motor output configs of TalonFX ID %d: %s (%s)",
               talonFX.getDeviceID(), status.getDescription(), status.getName()));
     }
-  }
-
-  /**
-   * Sets the MotionMagic voltage
-   *
-   * @param voltage
-   */
-  public void setControl(MotionMagicVoltage voltage) {
-    talonFX.setControl(voltage);
   }
 }

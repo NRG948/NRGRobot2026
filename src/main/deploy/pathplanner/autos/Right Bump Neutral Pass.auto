@@ -7,43 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Trench Start to Left Depot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Depot to Right Depot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Depot to Left Scoring Point"
+            "pathName": "Right Hub Start to Right Scoring Point"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Start Shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooter"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Scoring Point to (Bump) Left Neutral Start"
+            "pathName": "Right Scoring Point to (Bump) Right Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Neutral Start to Left Neutral End"
+            "pathName": "Right Neutral Cross"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Neutral Zone",
   "choreoAuto": false
 }

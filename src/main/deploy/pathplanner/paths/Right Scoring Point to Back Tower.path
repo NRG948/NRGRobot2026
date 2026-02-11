@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9533928571428572,
-        "y": 2.0752321428571427
+        "x": 2.043398145481197,
+        "y": 2.8035723483328945
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8910169491525428,
-        "y": 2.1518220338983047
+        "x": 0.9810222374908828,
+        "y": 2.8801622393740565
       },
       "isLocked": false,
       "linkedName": "Right Scoring Point"
@@ -67,7 +67,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 25.130846747724867
   },
   "useDefaultConstraints": true
 }

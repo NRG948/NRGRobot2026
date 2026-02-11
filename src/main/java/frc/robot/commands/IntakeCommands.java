@@ -10,7 +10,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
 
 /** A utility class for controlling the intake. */
@@ -23,24 +22,8 @@ public final class IntakeCommands {
    */
   public static Command stowIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
-    IntakeArm intakeArm = subsystems.intakeArm;
     // TODO Flesh out full sequence when other subsystems are finished.
-    return Commands.parallel(
-        Commands.runOnce(intake::disable, intake),
-        Commands.runOnce(() -> intakeArm.setGoalAngle(intakeArm.getStowAngle()), intakeArm));
-  }
-
-  public static Command setIntakeArmAngle(double angle, Subsystems subsystems) {
-    IntakeArm intakeArm = subsystems.intakeArm;
-    return Commands.sequence(
-            Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm),
-            Commands.idle(intakeArm).until(intakeArm::atGoalAngle))
-        .finallyDo(
-            () -> {
-              if (angle == IntakeArm.STOW_ANGLE || angle == IntakeArm.EXTENDED_ANGLE) {
-                intakeArm.disable();
-              }
-            });
+    return Commands.runOnce(intake::disable, intake);
   }
 
   /**
@@ -52,12 +35,6 @@ public final class IntakeCommands {
     Intake intake = subsystems.intake;
     // TODO Flesh out full sequence when other subsystems are finished.
     return Commands.runOnce(intake::intake, intake);
-  }
-
-  public static Command disableIntake(Subsystems subsystems) {
-    Intake intake = subsystems.intake;
-    // TODO Flesh out full sequence when other subsystems are finished.
-    return Commands.runOnce(intake::disable, intake);
   }
 
   /**
