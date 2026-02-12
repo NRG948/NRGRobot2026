@@ -40,7 +40,7 @@ public class DriveWithAutoRotation extends DriveUsingController {
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 
     // TODO: Find alternative to getSetpoint() for PID preference
-    double rSpeed = feedback + controller.getSetpoint().velocity;
+    double rSpeed = feedback;
     return rSpeed;
   }
 }
