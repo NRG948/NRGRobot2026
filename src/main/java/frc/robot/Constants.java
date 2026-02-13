@@ -41,11 +41,12 @@ public final class Constants {
       public static final int INTAKE_ID = 13;
       public static final int INTAKE_ARM_ID = 12;
       // TODO: verify shooter CAN IDS with Systems
-      public static final int SHOOTER_LOWER_LEFT_ID = 16;
-      public static final int SHOOTER_LOWER_RIGHT_ID = 14;
-      public static final int SHOOTER_UPPER_LEFT_ID = 11;
-      public static final int SHOOTER_UPPER_RIGHT_ID = 12;
-      public static final int INDEXER_ID = 15;
+      public static final int SHOOTER_INDEXER_ID = 14;
+      public static final int HOPPER_INDEXER_ID = 15;
+      public static final int SHOOTER_LOWER_RIGHT_ID = 16;
+      public static final int SHOOTER_UPPER_RIGHT_ID = 18;
+      public static final int SHOOTER_LOWER_LEFT_ID = 17;
+      public static final int SHOOTER_UPPER_LEFT_ID = 19;
     }
   }
 

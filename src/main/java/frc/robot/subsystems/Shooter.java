@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_RIGHT_ID;
+import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
@@ -30,7 +31,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RobotConstants.CANID;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
@@ -75,17 +75,17 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private final MotorController leftUpperMotor =
       SHOOTER_MOTOR.newController(
           "/Shooter/Left Upper Motor",
-          CANID.SHOOTER_UPPER_LEFT_ID,
+          SHOOTER_UPPER_LEFT_ID,
           CLOCKWISE_POSITIVE,
           COAST,
           METERS_PER_REV);
 
+  private final MotorController leftLowerMotor =
+      leftUpperMotor.createFollower(SHOOTER_LOWER_LEFT_ID, false);
   private final MotorController rightUpperMotor =
       leftUpperMotor.createFollower(SHOOTER_UPPER_RIGHT_ID, true);
   private final MotorController rightLowerMotor =
       leftUpperMotor.createFollower(SHOOTER_LOWER_RIGHT_ID, true);
-  private final MotorController leftLowerMotor =
-      leftUpperMotor.createFollower(SHOOTER_LOWER_LEFT_ID, false);
 
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
@@ -189,7 +189,6 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       double feedback = pidController.calculate(currentVelocity, goalVelocity);
       double motorVoltage = feedforward + feedback;
       leftUpperMotor.setVoltage(motorVoltage);
-
     } else {
       leftUpperMotor.setVoltage(0);
     }
@@ -199,8 +198,9 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
     currentVelocity = encoder.getVelocity();
     logCurrentVelocity.append(currentVelocity);
     leftUpperMotor.logTelemetry();
-    leftLowerMotor.logTelemetry();
-    rightLowerMotor.logTelemetry();
-    rightUpperMotor.logTelemetry();
+    // TODO: the three follower motors are not named for logging!
+    // leftLowerMotor.logTelemetry();
+    // rightLowerMotor.logTelemetry();
+    // rightUpperMotor.logTelemetry();
   }
 }

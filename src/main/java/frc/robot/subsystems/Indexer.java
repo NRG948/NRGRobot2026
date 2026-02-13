@@ -51,7 +51,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
   private final MotorController indexerMotor =
       MOTOR.newController(
           "/indexerMotor",
-          CANID.INDEXER_ID,
+          CANID.SHOOTER_INDEXER_ID,
           MotorDirection.CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
           0);
