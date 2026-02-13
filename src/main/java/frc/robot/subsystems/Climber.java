@@ -1,0 +1,362 @@
+/*
+ * Copyright (c) 2025 Newport Robotics Group. All Rights Reserved.
+ *
+ * Open Source Software; you can modify and/or share it under the terms of
+ * the license file in the root directory of this project.
+ */
+ 
+package frc.robot.subsystems;
+
+import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.parameters.MotorParameters.KrakenX60;
+import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
+import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
+
+import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.ExponentialProfile;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.RobotConstants;
+import frc.robot.util.MotorIdleMode;
+import frc.robot.util.RelativeEncoder;
+import frc.robot.util.TalonFXAdapter;
+import java.util.Map;
+import java.util.Set;
+
+public class Climber extends SubsystemBase implements ActiveSubsystem {
+
+  private static final DataLog LOG = DataLogManager.getLog();
+
+  private static final double GOAL_HEIGHT_TOLERANCE = 0.01; // meters
+  private static final double POSITION_ERROR_MARGIN = 0.05; // meters
+  private static final double POSITION_ERROR_TIME = 2.0; // seconds
+
+  // Physical parameters of the elevator
+  public static final double PRACTICE_BOT_GEAR_RATIO = 9.0 / 2;
+  public static final double COMPETITION_BOT_GEAR_RATIO = 9.0 / 2;
+  private static final double GEAR_RATIO = 1;
+  private static final double SPROCKET_DIAMETER = 0.05; // meters
+  private static final double MASS = 10; // TODO: Find Actual Mass (Kilograms)
+  private static final double METERS_PER_REVOLUTION = (SPROCKET_DIAMETER * Math.PI) / GEAR_RATIO;
+  private static final double MAX_HEIGHT = 10; // TODO: Find actual max height of elevator in meters
+  private static final double MIN_HEIGHT = 5; // TODO: Find actual min Height of elevator in meters
+  private static final double DISABLE_HEIGHT = MIN_HEIGHT + 0.01;
+  public static final double STOWED_HEIGHT_FOR_PID = (MIN_HEIGHT + DISABLE_HEIGHT) / 2;
+
+  // Trapezoid profile values
+  private static final DCMotor MOTOR_PARAMS = DCMotor.getKrakenX60(1);
+  private static final double MAX_SPEED =
+      (MOTOR_PARAMS.freeSpeedRadPerSec / (2 * Math.PI)) * METERS_PER_REVOLUTION; // m/s
+  private static final double MAX_ACCELERATION =
+      (MOTOR_PARAMS.stallTorqueNewtonMeters * GEAR_RATIO) / (SPROCKET_DIAMETER * MASS); // m/s^2
+  private static final ExponentialProfile.Constraints EXPONENTIAL_CONSTRAINTS =
+      ExponentialProfile.Constraints.fromCharacteristics(
+          MAX_BATTERY_VOLTAGE, MAX_SPEED / 2, MAX_ACCELERATION / 64);
+
+  // Feedforward constants
+  private static final double KS = KrakenX60.getKs();
+  private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_SPEED;
+  private static final double KA = (MAX_BATTERY_VOLTAGE - KS) / MAX_ACCELERATION;
+  private static final double KG = 9.81 * KA;
+
+  // feedback constants
+  public static final double KP = 40;
+
+  public static final double KI = 0; 
+
+  public static final double KD = 0;
+
+  private final TalonFXAdapter leftMotor =
+      new TalonFXAdapter(
+          "/Climber/leftMotor",
+          new TalonFX(RobotConstants.CANID.CLIMBER_ELEVATOR_LEFT_ID, "rio"),
+          CLOCKWISE_POSITIVE,
+          MotorIdleMode.BRAKE,
+          METERS_PER_REVOLUTION);
+
+ private final TalonFXAdapter rightMotor =
+      new TalonFXAdapter(
+          "/Climber/rightMotor",
+          new TalonFX(RobotConstants.CANID.CLIMBER_ELEVATOR_RIGHT_ID, "rio"),
+          COUNTER_CLOCKWISE_POSITIVE,
+          MotorIdleMode.BRAKE,
+          METERS_PER_REVOLUTION);
+
+  private final RelativeEncoder leftEncoder = leftMotor.getEncoder();
+  private final RelativeEncoder rightEncoder = rightMotor.getEncoder();
+
+  private ElevatorSim simElevator =
+      new ElevatorSim(MOTOR_PARAMS, GEAR_RATIO, MASS, SPROCKET_DIAMETER / 2, 0, 1, true, 0);
+
+  private final Mechanism2d mechanism2d = new Mechanism2d(0.5, 1.0);
+  private final MechanismRoot2d mechanismRoot2d = mechanism2d.getRoot("Elevator Root", 0, 0);
+  private final MechanismLigament2d elevatorMech2d =
+      mechanismRoot2d.append(new MechanismLigament2d("Elevator", 0, 90));
+
+  private final ElevatorFeedforward feedForward = new ElevatorFeedforward(KS, KG, KV, KA);
+  private final ExponentialProfile profile = new ExponentialProfile(EXPONENTIAL_CONSTRAINTS);
+  private final PIDController controller =
+      new PIDController(KP, KI, KD);
+  private final Timer stuckTimer = new Timer();
+
+  private boolean isSeekingGoal;
+  private boolean hasError;
+  private final ExponentialProfile.State currentState = new ExponentialProfile.State();
+  private final ExponentialProfile.State goalState = new ExponentialProfile.State();
+  private ExponentialProfile.State lastState = currentState;
+  private boolean atUpperLimit;
+  private boolean atLowerLimit;
+  private double currentVoltage;
+
+  //private ElevatorLevel currentElevatorLevel = ElevatorLevel.STOWED;
+
+  /** The offset below the goal height when it is safe to pivot the arm. */
+  private double armPivotHeightOffset = 0;
+
+  private Timer resetEncoderTimer = new Timer();
+
+  private BooleanLogEntry logIsSeekingGoal = new BooleanLogEntry(LOG, "/Elevator/isSeekingGoal");
+  private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Elevator/velocity");
+  private DoubleLogEntry logCurrentPosition = new DoubleLogEntry(LOG, "/Elevator/position");
+  private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Elevator/goalVelocity");
+  private DoubleLogEntry logGoalPosition = new DoubleLogEntry(LOG, "/Elevator/goalPosition");
+  private DoubleLogEntry logCurrentVoltage = new DoubleLogEntry(LOG, "/Elevator/voltage");
+  private DoubleLogEntry logFeedForward = new DoubleLogEntry(LOG, "/Elevator/FeedForward");
+  private DoubleLogEntry logPIDOutput = new DoubleLogEntry(LOG, "/Elevator/pidOutput");
+  private BooleanLogEntry logAtUpperLimit = new BooleanLogEntry(LOG, "/Elevator/atUpperLimit");
+  private BooleanLogEntry logAtLowerLimit = new BooleanLogEntry(LOG, "/Elevator/atLowerLimit");
+  private BooleanLogEntry logAtGoalHeight = new BooleanLogEntry(LOG, "/Elevator/atGoalHeight");
+  private DoubleLogEntry logDesiredPosition = new DoubleLogEntry(LOG, "/Elevator/desiredPosition");
+  private DoubleLogEntry logDesiredVelocity = new DoubleLogEntry(LOG, "/Elevator/desiredVelocity");
+
+  /** Creates a new Elevator. */
+  public Climber() {
+    updateTelemetry();
+    SmartDashboard.putData("Elevator Sim", mechanism2d);
+  }
+
+  @Override
+  public void disable() {
+    leftMotor.disable();
+    rightMotor.disable();
+    lastState = new ExponentialProfile.State();
+    isSeekingGoal = false;
+    logIsSeekingGoal.append(false);
+  }
+
+  /** Returns elevator height. */
+  public double getHeight() {
+    return this.currentState.position;
+  }
+
+  /**
+   * Sets elevator goal level.
+   *
+   * @param level the {@link ElevatorLevel} to seek to.
+   */
+  public void setGoalHeight(ElevatorLevel level) {
+    setGoalHeight(level.getElevatorHeight(), level.getArmOffset());
+    currentElevatorLevel = level;
+  }
+
+  public ElevatorLevel getCurrentElevatorLevel() {
+    return currentElevatorLevel;
+  }
+
+  /**
+   * Sets elevator goal height in meters.
+   *
+   * @param height the desired height of the elevator in meters.
+   * @param armOffset the delta below the desired {@code height} where the arm is allowed to pivot.
+   */
+  private void setGoalHeight(double height, double armOffset) {
+    isSeekingGoal = true;
+    goalState.position = height;
+    goalState.velocity = 0;
+    armPivotHeightOffset = armOffset;
+    lastState = currentState;
+
+    controller.setPID(KP.getValue(), KI.getValue(), KD.getValue());
+    controller.reset();
+
+    logIsSeekingGoal.append(true);
+    logGoalPosition.append(height);
+    logGoalVelocity.append(0);
+  }
+
+  /** Returns whether the elevator is at goal height. */
+  public boolean atGoalHeight() {
+    return MathUtil.isNear(goalState.position, getHeight(), GOAL_HEIGHT_TOLERANCE);
+  }
+
+  /** Returns whether the elevator is above the height where it is safe to tip the arm outward. */
+  public boolean isAboveSafeArmPivotHeight() {
+    return currentState.position >= goalState.position - armPivotHeightOffset;
+  }
+
+  /** Returns whether the elevator is seeking to the given {@link ElevatorLevel}. */
+  public boolean isSeekingLevel(ElevatorLevel level) {
+    return goalState.position == level.getElevatorHeight();
+  }
+
+  public boolean isSeekingAboveLevel(ElevatorLevel level) {
+    return goalState.position > level.getElevatorHeight();
+  }
+
+  private void updateTelemetry() {
+    if (RobotBase.isReal()) {
+      currentState.position = encoder.getPosition();
+      currentState.velocity = encoder.getVelocity();
+    } else {
+      currentState.position = simElevator.getPositionMeters();
+      currentState.velocity = simElevator.getVelocityMetersPerSecond();
+    }
+    currentState.position += MIN_HEIGHT;
+
+    atUpperLimit = currentState.position >= MAX_HEIGHT;
+    atLowerLimit = currentState.position <= DISABLE_HEIGHT;
+
+    checkError();
+
+    elevatorMech2d.setLength(currentState.position);
+    logCurrentPosition.append(currentState.position);
+    logCurrentVelocity.append(currentState.velocity);
+    logAtLowerLimit.append(atLowerLimit);
+    logAtUpperLimit.append(atUpperLimit);
+    logAtGoalHeight.append(atGoalHeight());
+    leftMotor.logTelemetry();
+  }
+
+  private void checkError() {
+    if (MathUtil.isNear(goalState.position, currentState.position, POSITION_ERROR_MARGIN)) {
+      stuckTimer.stop();
+      stuckTimer.reset();
+    } else {
+      if (!stuckTimer.isRunning()) {
+        stuckTimer.restart();
+      }
+    }
+    hasError = stuckTimer.hasElapsed(POSITION_ERROR_TIME);
+  }
+
+  public boolean hasError() {
+    return hasError;
+  }
+
+  @Override
+  public void setIdleMode(MotorIdleMode idleMode) {
+    // Do not ever put the elevator in COAST mode or else it will crash down.
+  }
+
+  @Override
+  public void periodic() {
+    updateTelemetry();
+    if (!isSeekingGoal) {
+      return;
+    }
+
+    if (atLowerLimit
+        && goalState.position == STOWED_HEIGHT_FOR_PID
+        && PARAMETERS.resetEncoderWhenStowed()) {
+      if (!resetEncoderTimer.isRunning()) {
+        resetEncoderTimer.restart();
+      } else if (resetEncoderTimer.hasElapsed(2.0)) {
+        resetEncoderTimer.stop();
+        resetEncoderTimer.reset();
+        encoder.reset();
+        disable();
+        return;
+      }
+    }
+
+    ExponentialProfile.State desiredState =
+        profile.calculate(PERIODIC_INTERVAL, lastState, goalState);
+
+    double feedforward = feedForward.calculate(desiredState.velocity);
+    double pidOutput = controller.calculate(currentState.position, desiredState.position);
+
+    currentVoltage = feedforward + pidOutput;
+    if ((currentVoltage > 0 && atUpperLimit)) {
+      currentVoltage = KG;
+    }
+    if ((currentVoltage < 0 && atLowerLimit)) {
+      currentVoltage = 0;
+    }
+
+    leftMotor.setVoltage(currentVoltage);
+
+    lastState = desiredState;
+
+    logPIDOutput.append(pidOutput);
+    logFeedForward.append(feedforward);
+    logDesiredPosition.append(desiredState.position);
+    logDesiredVelocity.append(desiredState.velocity);
+    logCurrentVoltage.append(currentVoltage);
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    simElevator.setInputVoltage(currentVoltage);
+    simElevator.update(0.020);
+  }
+
+  @Override
+  public void addShuffleboardTab() {
+    if (!ENABLE_TAB.getValue()) {
+      return;
+    }
+
+    ShuffleboardTab elevatorTab = Shuffleboard.getTab("Elevator");
+    ShuffleboardLayout elevatorLayout =
+        elevatorTab.getLayout("Status", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 5);
+    elevatorLayout.addDouble("Current Height", () -> this.currentState.position);
+    elevatorLayout.addDouble("Current Velocity", () -> this.currentState.velocity);
+    elevatorLayout.addDouble("Goal Height", () -> this.goalState.position);
+    elevatorLayout.addDouble("Goal Velocity", () -> this.goalState.velocity);
+    elevatorLayout
+        .addBoolean("Is Enabled", () -> this.isSeekingGoal)
+        .withWidget(BuiltInWidgets.kBooleanBox);
+    elevatorLayout.add("Max Velocity", MAX_SPEED);
+    elevatorLayout.add("Max Acceleration", MAX_ACCELERATION);
+
+    ShuffleboardLayout controlLayout =
+        elevatorTab.getLayout("Control", BuiltInLayouts.kList).withPosition(2, 0).withSize(2, 5);
+    controlLayout.addDouble("Current Height", () -> this.currentState.position);
+    GenericEntry elevatorHeight = controlLayout.add("Elevator Height", 0).getEntry();
+    controlLayout.add(
+        Commands.defer(
+                () ->
+                    Commands.runOnce(() -> this.setGoalHeight(elevatorHeight.getDouble(0), 0))
+                        .until(() -> this.atGoalHeight()),
+                Set.of(this))
+            .withName("Set Height"));
+    controlLayout.add(Commands.runOnce(() -> this.disable(), this).withName("Disable"));
+    controlLayout.add(
+        Commands.runOnce(() -> encoder.reset(), this)
+            .ignoringDisable(true)
+            .withName("Reset Encoder"));
+    controlLayout.add(ElevatorCommands.stowElevator(this));
+  }
+}
