@@ -143,18 +143,20 @@ public final class Autos {
   private static Map<String, Command> getPathplannerEventMap(
       Subsystems subsystems, String pathGroupName) {
 
-        Map<String, Command> eventMaps = new HashMap<String, Command>();
+    Map<String, Command> eventMaps = new HashMap<String, Command>();
 
-        
-        eventMaps.put("Start Intake", IntakeCommands.intake(subsystems));
-        eventMaps.put("Stop Intake", IntakeCommands.disableIntake(subsystems));
+    eventMaps.put("Start Intaking", IntakeCommands.intake(subsystems));
+    eventMaps.put("Stop Intaking", IntakeCommands.disableIntake(subsystems));
 
-        eventMaps.put("set intake bump angle", IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems));
-        eventMaps.put("set intake extended angle", IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
+    eventMaps.put(
+        "Set Intake Bump Angle",
+        IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems));
+    eventMaps.put(
+        "Set Intake Extended Angle",
+        IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
 
-        eventMaps.put("Start Shooting", ShootingCommands.setShooterVelocityToSeven(subsystems));
-        eventMaps.put("Shoot", ShootingCommands.shoot(subsystems));
-
+    eventMaps.put("Start Shooting", ShootingCommands.setShooterVelocityToSeven(subsystems));
+    eventMaps.put("Stop Shooting", ShootingCommands.stopShooting(subsystems));
 
     // TODO: Populate eventMaps with commands for PathPlanner event markers for the given
     // pathGroupName.
