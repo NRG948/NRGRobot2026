@@ -43,19 +43,23 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double BAR_DIAMETER = Units.inchesToMeters(1);
-  private static final double GEAR_RATIO = 9.0;
+  private static final double GEAR_RATIO = 1.0;
   private static final double METERS_PER_REVOLUTION = (BAR_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
   private static final double FEED_VELOCITY = 1.0;
 
-  private final MotorController indexerMotor =
+  private final MotorController shooterIndexerMotor =
       MOTOR.newController(
-          "/indexerMotor",
+          "/shooterIndexerMotor",
           CANID.SHOOTER_INDEXER_ID,
           MotorDirection.CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
           0);
-  private final RelativeEncoder indexEncoder = indexerMotor.getEncoder();
+  private final RelativeEncoder shooterIndexerEncoder = shooterIndexerMotor.getEncoder();
+
+  @SuppressWarnings("unused")
+  private final MotorController hopperIndexerMotor =
+      shooterIndexerMotor.createFollower(CANID.HOPPER_INDEXER_ID, false);
 
   private final double KS = MOTOR.getKs();
   private final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
@@ -127,7 +131,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void disable() {
     goalVelocity = 0;
-    indexerMotor.stopMotor();
+    shooterIndexerMotor.stopMotor();
   }
 
   @Override
@@ -138,21 +142,21 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
       double feedforward = this.feedforward.calculate(goalVelocity);
       double feedback = pidController.calculate(currentVelocity, goalVelocity);
       double voltage = feedforward + feedback;
-      indexerMotor.setVoltage(voltage);
+      shooterIndexerMotor.setVoltage(voltage);
 
     } else {
-      indexerMotor.setVoltage(0);
+      shooterIndexerMotor.setVoltage(0);
     }
   }
 
   private void updateTelemetry() {
-    currentVelocity = indexEncoder.getVelocity();
-    indexerMotor.logTelemetry();
+    currentVelocity = shooterIndexerEncoder.getVelocity();
+    shooterIndexerMotor.logTelemetry();
   }
 
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
-    indexerMotor.setIdleMode(idleMode);
+    shooterIndexerMotor.setIdleMode(idleMode);
   }
 
   @DashboardTextDisplay(
