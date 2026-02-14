@@ -39,10 +39,10 @@ public final class SparkAdapter implements MotorController {
     /**
      * Returns a new adapter of the same controller type.
      *
-     * @param namePrefix The prefix for the log entries.
+     * @param logPrefix The prefix for the log entries.
      * @param deviceID The device ID of the new controller.
      */
-    SparkAdapter newAdapter(String namePrefix, int deviceID);
+    SparkAdapter newAdapter(String logPrefix, int deviceID);
   }
 
   private static final class SparkMaxAccessor implements Accessor {
@@ -74,8 +74,8 @@ public final class SparkAdapter implements MotorController {
     }
 
     @Override
-    public SparkAdapter newAdapter(String namePrefix, int deviceID) {
-      return new SparkAdapter(namePrefix, new SparkMax(deviceID, spark.getMotorType()));
+    public SparkAdapter newAdapter(String logPrefix, int deviceID) {
+      return new SparkAdapter(logPrefix, new SparkMax(deviceID, spark.getMotorType()));
     }
   }
 
@@ -108,14 +108,16 @@ public final class SparkAdapter implements MotorController {
     }
 
     @Override
-    public SparkAdapter newAdapter(String namePrefix, int deviceID) {
-      return new SparkAdapter(namePrefix, new SparkFlex(deviceID, spark.getMotorType()));
+    public SparkAdapter newAdapter(String logPrefix, int deviceID) {
+      return new SparkAdapter(logPrefix, new SparkFlex(deviceID, spark.getMotorType()));
     }
   }
 
   private static final DataLog LOG = DataLogManager.getLog();
 
-  private final String namePrefix;
+  @SuppressWarnings("unused")
+  private final String logPrefix;
+
   private final Accessor spark;
 
   private final DoubleLogEntry logOutputCurrent;
@@ -128,14 +130,14 @@ public final class SparkAdapter implements MotorController {
    * factory methods. It assumes the SparkMax object is already configured or will be configured
    * approriately by the public constructors or factory methods.
    *
-   * @param namePrefix The prefix for the log entries.
+   * @param logPrefix The prefix for the log entries.
    * @param spark The SparkMax object to adapt.
    */
-  private SparkAdapter(String namePrefix, SparkMax spark) {
-    this.namePrefix = namePrefix;
+  private SparkAdapter(String logPrefix, SparkMax spark) {
+    this.logPrefix = logPrefix;
     this.spark = new SparkMaxAccessor(spark);
 
-    String name = String.format("%s/SparkMax-%d", namePrefix, spark.getDeviceId());
+    String name = String.format("%s/SparkMax-%d", logPrefix, spark.getDeviceId());
     this.logOutputCurrent = new DoubleLogEntry(LOG, name + "/OutputCurrent");
     this.logTemperature = new DoubleLogEntry(LOG, name + "/Temperature");
   }
@@ -143,7 +145,7 @@ public final class SparkAdapter implements MotorController {
   /**
    * Constructs a SparkAdapter for a {@link SparkMax} motor controller.
    *
-   * @param namePrefix The prefix for the log entries.
+   * @param logPrefix The prefix for the log entries.
    * @param spark The SparkMax object to adapt.
    * @param direction The direction the motor rotates when a positive voltage is applied.
    * @param idleMode The motor behavior when idle (i.e. brake or coast mode).
@@ -154,12 +156,12 @@ public final class SparkAdapter implements MotorController {
    *     the unit is typically in radians.
    */
   public SparkAdapter(
-      String namePrefix,
+      String logPrefix,
       SparkMax sparkMax,
       MotorDirection direction,
       MotorIdleMode idleMode,
       double distancePerRotation) {
-    this(namePrefix, sparkMax);
+    this(logPrefix, sparkMax);
 
     configure(direction, idleMode, distancePerRotation);
   }
@@ -171,14 +173,14 @@ public final class SparkAdapter implements MotorController {
    * factory methods. It assumes the SparkFlex object is already configured or will be configured
    * approriately by the public constructors or factory methods.
    *
-   * @param namePrefix The prefix for the log entries.
+   * @param logPrefix The prefix for the log entries.
    * @param spark The SparkFlex object to adapt.
    */
-  private SparkAdapter(String namePrefix, SparkFlex spark) {
-    this.namePrefix = namePrefix;
+  private SparkAdapter(String logPrefix, SparkFlex spark) {
+    this.logPrefix = logPrefix;
     this.spark = new SparkFlexAccessor(spark);
 
-    String name = String.format("%s/SparkMax-%d", namePrefix, spark.getDeviceId());
+    String name = String.format("%s/SparkMax-%d", logPrefix, spark.getDeviceId());
     this.logOutputCurrent = new DoubleLogEntry(LOG, name + "/OutputCurrent");
     this.logTemperature = new DoubleLogEntry(LOG, name + "/Temperature");
   }
@@ -186,7 +188,7 @@ public final class SparkAdapter implements MotorController {
   /**
    * Constructs a SparkAdapter for a {@link SparkFlex} motor controller.
    *
-   * @param namePrefix The prefix for the log entries.
+   * @param logPrefix The prefix for the log entries.
    * @param spark The SparkFlex object to adapt.
    * @param direction The direction the motor rotates when a positive voltage is applied.
    * @param idleMode The motor behavior when idle (i.e. brake or coast mode).
@@ -197,12 +199,12 @@ public final class SparkAdapter implements MotorController {
    *     the unit is typically in radians.
    */
   public SparkAdapter(
-      String namePrefix,
+      String logPrefix,
       SparkFlex sparkFlex,
       MotorDirection direction,
       MotorIdleMode idleMode,
       double distancePerRotation) {
-    this(namePrefix, sparkFlex);
+    this(logPrefix, sparkFlex);
 
     configure(direction, idleMode, distancePerRotation);
   }
@@ -286,8 +288,9 @@ public final class SparkAdapter implements MotorController {
   }
 
   @Override
-  public MotorController createFollower(int deviceID, boolean isInvertedFromLeader) {
-    SparkAdapter follower = spark.newAdapter(namePrefix, deviceID);
+  public MotorController createFollower(
+      String logPrefix, int deviceID, boolean isInvertedFromLeader) {
+    SparkAdapter follower = spark.newAdapter(logPrefix, deviceID);
     SparkBaseConfigAccessor configAccessor = spark.getConfigAccessor();
     SparkBaseConfig motorOutputConfigs = spark.newConfig();
 

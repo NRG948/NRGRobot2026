@@ -50,7 +50,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   private final MotorController shooterIndexerMotor =
       MOTOR.newController(
-          "/shooterIndexerMotor",
+          "/Indexer/Shooter Motor",
           CANID.SHOOTER_INDEXER_ID,
           MotorDirection.CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
@@ -59,7 +59,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   @SuppressWarnings("unused")
   private final MotorController hopperIndexerMotor =
-      shooterIndexerMotor.createFollower(CANID.HOPPER_INDEXER_ID, false);
+      shooterIndexerMotor.createFollower("/Indexer/Hopper Motor", CANID.HOPPER_INDEXER_ID, false);
 
   private final double KS = MOTOR.getKs();
   private final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
@@ -152,6 +152,7 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
   private void updateTelemetry() {
     currentVelocity = shooterIndexerEncoder.getVelocity();
     shooterIndexerMotor.logTelemetry();
+    hopperIndexerMotor.logTelemetry();
   }
 
   @Override

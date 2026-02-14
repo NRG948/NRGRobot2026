@@ -28,7 +28,9 @@ import edu.wpi.first.wpilibj.DataLogManager;
 public final class TalonFXAdapter implements MotorController {
   private static final DataLog LOG = DataLogManager.getLog();
 
+  @SuppressWarnings("unused")
   private final String logPrefix;
+
   private final TalonFX talonFX;
   private final double distancePerRotation;
   private final MotorOutputConfigs motorOutputConfigs;
@@ -150,7 +152,8 @@ public final class TalonFXAdapter implements MotorController {
   }
 
   @Override
-  public MotorController createFollower(int deviceID, boolean isInvertedFromLeader) {
+  public MotorController createFollower(
+      String logPrefix, int deviceID, boolean isInvertedFromLeader) {
     TalonFX follower = new TalonFX(deviceID, talonFX.getNetwork());
 
     // Get the motor output configuration from the leader and apply it to the follower.

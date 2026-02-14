@@ -34,7 +34,8 @@ public class NullMotorAdapter implements MotorController {
   public void stopMotor() {}
 
   @Override
-  public MotorController createFollower(int deviceID, boolean isInvertedFromLeader) {
+  public MotorController createFollower(
+      String logPrefix, int deviceID, boolean isInvertedFromLeader) {
     return new NullMotorAdapter();
   }
 

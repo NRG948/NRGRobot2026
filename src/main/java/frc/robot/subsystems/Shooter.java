@@ -81,11 +81,11 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
           METERS_PER_REV);
 
   private final MotorController leftLowerMotor =
-      leftUpperMotor.createFollower(SHOOTER_LOWER_LEFT_ID, false);
+      leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
   private final MotorController rightUpperMotor =
-      leftUpperMotor.createFollower(SHOOTER_UPPER_RIGHT_ID, true);
+      leftUpperMotor.createFollower("/Shooter/Right Upper Motor", SHOOTER_UPPER_RIGHT_ID, true);
   private final MotorController rightLowerMotor =
-      leftUpperMotor.createFollower(SHOOTER_LOWER_RIGHT_ID, true);
+      leftUpperMotor.createFollower("/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, true);
 
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
@@ -198,9 +198,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
     currentVelocity = encoder.getVelocity();
     logCurrentVelocity.append(currentVelocity);
     leftUpperMotor.logTelemetry();
-    // TODO: the three follower motors are not named for logging!
-    // leftLowerMotor.logTelemetry();
-    // rightLowerMotor.logTelemetry();
-    // rightUpperMotor.logTelemetry();
+    leftLowerMotor.logTelemetry();
+    rightLowerMotor.logTelemetry();
+    rightUpperMotor.logTelemetry();
   }
 }
