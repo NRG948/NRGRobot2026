@@ -58,17 +58,11 @@ public class AprilTag extends SubsystemBase {
   private static final double LAST_RESULT_TIMEOUT = 0.1;
 
   // TODO: measure ALL camera rotations and transforms for the 2026 robot.
-  private static final Rotation3d PRACTICE_ROBOT_FRONT_LEFT_CAMERA_ROTATION =
-      new Rotation3d(0, Math.toRadians(-16), 0);
-  public static final Transform3d PRACTICE_ROBOT_TO_FRONT_LEFT_CAMERA =
-      new Transform3d(
-          new Translation3d(+0.1046, +0.2588, +0.6680), PRACTICE_ROBOT_FRONT_LEFT_CAMERA_ROTATION);
-
-  private static final Rotation3d PRACTICE_ROBOT_FRONT_RIGHT_CAMERA_ROTATION =
-      new Rotation3d(0, Math.toRadians(-16), 0);
-  public static final Transform3d PRACTICE_ROBOT_TO_FRONT_RIGHT_CAMERA =
-      new Transform3d(
-          new Translation3d(+0.1046, -0.2619, +0.6680), PRACTICE_ROBOT_FRONT_RIGHT_CAMERA_ROTATION);
+  private static final Rotation3d FRONT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-16), 0);
+  public static final Transform3d ROBOT_TO_FRONT_LEFT_CAMERA =
+      new Transform3d(new Translation3d(+0.105, +0.259, +0.668), FRONT_CAMERA_ROTATION);
+  public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA =
+      new Transform3d(new Translation3d(+0.105, -0.262, +0.668), FRONT_CAMERA_ROTATION);
 
   /**
    * A single camera's parameters.
@@ -96,10 +90,8 @@ public class AprilTag extends SubsystemBase {
   // TODO: Find streamPorts for cameras on practice robot
   public static final VisionParameters PRACTICE_VISION_PARAMS =
       new VisionParameters(
-          Optional.of(
-              new CameraParameters("FrontLeftCamera", PRACTICE_ROBOT_TO_FRONT_LEFT_CAMERA, 0)),
-          Optional.of(
-              new CameraParameters("FrontRightCamera", PRACTICE_ROBOT_TO_FRONT_RIGHT_CAMERA, 0)),
+          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 1182)),
+          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 1184)),
           Optional.empty(),
           Optional.empty());
   public static final VisionParameters COMPETITION_VISION_PARAMS =
