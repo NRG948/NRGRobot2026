@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.Swerve;
+import frc.robot.util.FieldUtils;
 
 public final class ShootingCommands {
 
@@ -34,5 +36,11 @@ public final class ShootingCommands {
 
   public static Command increaseShooterVelocityByPointTwo(Shooter shooter) {
     return Commands.runOnce(() -> shooter.addGoalVelocity(0.2), shooter);
+  }
+
+  public static Command setShooterContinous(Shooter shooter, Swerve swerve) {
+    double distance =
+        FieldUtils.getHubLocation().getDistance(swerve.getPosition().getTranslation());
+    return Commands.runOnce(() -> shooter.setGoalDistance(distance), shooter);
   }
 }
