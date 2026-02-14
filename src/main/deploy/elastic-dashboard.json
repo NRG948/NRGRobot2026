@@ -269,6 +269,18 @@
           "period" : 0.06,
           "sort_options" : false
         }
+      }, {
+        "title" : "Delay (sec)",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Autonomous/Delay (sec)",
+          "period" : 0.06,
+          "sort_options" : false
+        }
       } ]
     }
   }, {

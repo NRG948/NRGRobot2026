@@ -12,14 +12,20 @@ import com.nrg948.autonomous.AutonomousCommandGenerator;
 import com.nrg948.autonomous.AutonomousCommandMethod;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.Swerve;
+import frc.robot.util.FieldUtils;
 import io.arxila.javatuples.LabelValue;
 import java.io.File;
 import java.util.Arrays;
@@ -43,6 +49,9 @@ public final class Autos {
   @DashboardComboBoxChooser(title = "Routine", column = 0, row = 0, width = 2, height = 1)
   private final SendableChooser<Command> autoChooser;
 
+  @DashboardComboBoxChooser(title = "Delay (sec)", column = 0, row = 1, width = 2, height = 1)
+  private final SendableChooser<Integer> delayChooser = new SendableChooser<>();
+
   /** Returns an autonomous command that does nothing. */
   @AutonomousCommandMethod(name = "None", isDefault = true)
   public static Command none(Subsystems subsystems) {
@@ -55,7 +64,24 @@ public final class Autos {
    * @param container
    */
   public Autos(Subsystems subsystems) {
+    RobotConfig config = Swerve.PARAMETERS.getPathplannerConfig();
+    AutoBuilder.configure(
+        subsystems.drivetrain::getPosition,
+        subsystems.drivetrain::resetPosition,
+        subsystems.drivetrain::getChassisSpeeds,
+        subsystems.drivetrain::setChassisSpeeds,
+        new PPHolonomicDriveController(
+            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+        config,
+        FieldUtils::isRedAlliance,
+        subsystems.drivetrain);
+
     autoChooser = Autonomous.getChooser(subsystems);
+
+    this.delayChooser.setDefaultOption("No Delay", (Integer) 0);
+    for (var i = 1; i < 8; i++) {
+      this.delayChooser.addOption(String.format("%d Second Delay", i), (Integer) i);
+    }
   }
 
   /**
@@ -150,6 +176,7 @@ public final class Autos {
 
   /** Gets selected autonomous routine. */
   public Command getAutonomous() {
-    return autoChooser.getSelected();
+    return Commands.sequence(
+        Commands.waitSeconds(this.delayChooser.getSelected()), this.autoChooser.getSelected());
   }
 }
