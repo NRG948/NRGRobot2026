@@ -14,9 +14,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Swerve;
-import frc.robot.util.FieldUtils;
 
 public class DriveOverBump extends DriveUsingController {
+  private static final double X_CENTER_LINE = 8.27;
+  private static final double Y_CENTER_LINE = 4.03;
+
   /** Creates a new DriveOverBump. */
   public DriveOverBump(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
@@ -34,27 +36,36 @@ public class DriveOverBump extends DriveUsingController {
     return calculateRotationSpeed(ROTATION_PID_CONTROLLER);
   }
 
-  private double calculateRotationSpeed(ProfiledPIDControllerPreference rotationPidController) {
+  private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
 
     double currentOrientation = drivetrain.getOrientation().getRadians();
 
-    return 0; // TODO: TEMPORARY--Please change this
+    double targetOrientation = getTargetAngle(currentOrientation);
+
+    double feedback = controller.calculate(currentOrientation, targetOrientation);
+
+    // TODO: Find alternative to getSetpoint() for PID preference
+    double rSpeed = feedback;
+    return rSpeed;
   }
 
   private double getTargetAngle(double currentOrientation) {
     Translation2d currentPosition = drivetrain.getPosition().getTranslation();
 
-    if (FieldUtils.getCurrentZone(currentPosition) == FieldUtils.FieldZones.BLUE_ALLIANCE_ZONE) {
-      double angle1 = (180 - RobotPreferences.DRIVE_OVER_BUMP_ANGLE);
-      double angle2 = (180 + RobotPreferences.DRIVE_OVER_BUMP_ANGLE);
-      // TODO: base on swerve and orientations
-    } else if (FieldUtils.getCurrentZone(currentPosition) == FieldUtils.FieldZones.RED_ALLIANCE_ZONE) {
-      double angle1 = -RobotPreferences.DRIVE_OVER_BUMP_ANGLE;
-      double angle2 = RobotPreferences.DRIVE_OVER_BUMP_ANGLE;
-    } else {
-
+    if (currentPosition.getX() < X_CENTER_LINE) { // On blue alliance side
+      if (currentPosition.getY()
+          < Y_CENTER_LINE) { // To the right of the field (from blue alliance)
+        return (0 + RobotPreferences.DRIVE_OVER_BUMP_ANGLE);
+      } else { // To the left of the field (from blue alliance)
+        return (0 - RobotPreferences.DRIVE_OVER_BUMP_ANGLE);
+      }
+    } else { // On red alliance side
+      if (currentPosition.getY() < Y_CENTER_LINE) {
+        return (180 - RobotPreferences.DRIVE_OVER_BUMP_ANGLE);
+      } else {
+        return (180 +
+         RobotPreferences.DRIVE_OVER_BUMP_ANGLE);
+      }
     }
-
-    return 0; // TODO: TEMPORARY--Please change this
   }
 }

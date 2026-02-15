@@ -84,29 +84,8 @@ public final class FieldUtils {
     return BLUE_HUB_POSITION;
   }
 
-  /** {@return the zone (from {@link FieldZones}) the position is in} */
-  public static FieldZones getCurrentZone(Translation2d position) {
-    if (position.getX() > 11.195) { // x-value of line between red alliance zone and neutral zone
-      return FieldZones.RED_ALLIANCE_ZONE;
-    } else if (position.getX()
-        < 4.626) { // x-value of line between blue alliance zone and neutral zone
-      return FieldZones.BLUE_ALLIANCE_ZONE;
-    } else if (position.getX() < 8.27){ // Center line
-      return FieldZones.BLUE_NEUTRAL_ZONE;
-    } else {
-      return FieldZones.RED_NEUTRAL_ZONE;
-    }
-  }
-
   /** {@return the initial orientation of the robot at the start of the match} */
   public static Rotation2d getInitialOrientation() {
     return isRedAlliance() ? Rotation2d.k180deg : Rotation2d.kZero;
-  }
-
-  public enum FieldZones {
-    BLUE_ALLIANCE_ZONE,
-    RED_ALLIANCE_ZONE,
-    RED_NEUTRAL_ZONE, 
-    BLUE_NEUTRAL_ZONE
   }
 }
