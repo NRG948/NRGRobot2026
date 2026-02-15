@@ -16,7 +16,6 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.preferences.EnumPreference;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
-import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -115,7 +114,6 @@ public class AprilTag extends SubsystemBase {
   private final PhotonCamera camera;
   private final Transform3d cameraToRobot;
   private final Transform3d robotToCamera;
-  private final int streamPort;
   private final PhotonPoseEstimator estimator;
 
   @DashboardComboBoxChooser(column = 0, row = 0, width = 2, title = "Selected April Tag")
@@ -143,7 +141,7 @@ public class AprilTag extends SubsystemBase {
   private Matrix<N3, N1> curStdDevs = SINGLE_TAG_STD_DEVS;
 
   @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width = 4, height = 4)
-  private VideoSource video;
+  private HttpCamera video;
 
   /**
    * Constructs a new AprilTagSubsystem instance.
@@ -157,7 +155,6 @@ public class AprilTag extends SubsystemBase {
     this.camera = new PhotonCamera(cameraName);
     this.robotToCamera = robotToCamera;
     this.cameraToRobot = robotToCamera.inverse();
-    this.streamPort = streamPort;
 
     estimator = new PhotonPoseEstimator(FieldUtils.getFieldLayout(), robotToCamera);
 
