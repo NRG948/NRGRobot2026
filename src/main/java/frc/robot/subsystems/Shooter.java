@@ -60,6 +60,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_VELOCITY =
       SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0;
 
+  public static final double SHOOTER_IDLE_VELOCITY = 1.0;
+
   private static final double KS = SHOOTER_MOTOR.getKs();
   private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
@@ -146,13 +148,17 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   public Shooter() {}
 
   /** Interpolates correct shooter velocity for a given distance from our Hub. */
-  public double getPowerFromInterpolationTable(double distance) {
+  public double getVelocityFromInterpolation(double distance) {
     return SHOOTER_VELOCITIES.get(distance);
   }
 
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
     logGoalVelocity.append(goalVelocity);
+  }
+
+  public void setGoalDistance(double distance) {
+    setGoalVelocity(getVelocityFromInterpolation(distance));
   }
 
   /**

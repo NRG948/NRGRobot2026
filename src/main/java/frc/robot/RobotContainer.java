@@ -21,6 +21,7 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MatchTime;
 
@@ -57,6 +58,9 @@ public class RobotContainer {
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
+
+    subsystems.shooter.setDefaultCommand(
+        ShootingCommands.setShooterVelocity(subsystems.shooter, Shooter.SHOOTER_IDLE_VELOCITY));
     // Configure the trigger bindings
     configureBindings();
 
@@ -111,11 +115,13 @@ public class RobotContainer {
     // and decrease lower shooter velocities respectively.
     manipulatorController
         .povUp()
-        .onTrue(ShootingCommands.increaseShooterVelocityByPointTwo(subsystems));
+        .onTrue(ShootingCommands.increaseShooterVelocityByPointTwo(subsystems.shooter));
     manipulatorController
         .povDown()
-        .onTrue(ShootingCommands.decreaseShooterVelocityByPointTwo(subsystems));
-    manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
+        .onTrue(ShootingCommands.decreaseShooterVelocityByPointTwo(subsystems.shooter));
+    manipulatorController
+        .back()
+        .onTrue(ShootingCommands.setShooterVelocity(subsystems.shooter, 7.0));
   }
 
   /**
