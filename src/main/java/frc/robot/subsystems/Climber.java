@@ -44,14 +44,14 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   private static final double POSITION_ERROR_TIME = 2.0; // seconds
 
   // Physical parameters of the elevator
-  public static final double PRACTICE_BOT_GEAR_RATIO = 9.0 / 2;
-  public static final double COMPETITION_BOT_GEAR_RATIO = 9.0 / 2;
   private static final double GEAR_RATIO = 1;
   private static final double SPROCKET_DIAMETER = 0.05; // meters
   private static final double MASS = 10; // TODO: Find Actual Mass (Kilograms)
   private static final double METERS_PER_REVOLUTION = (SPROCKET_DIAMETER * Math.PI) / GEAR_RATIO;
-  private static final double MAX_HEIGHT = 10; // TODO: Find actual max height of elevator in meters
-  private static final double MIN_HEIGHT = 5; // TODO: Find actual min Height of elevator in meters
+  private static final double MAX_HEIGHT =
+      0.10; // TODO: Find actual max height of elevator in meters
+  private static final double MIN_HEIGHT =
+      0.05; // TODO: Find actual min Height of elevator in meters
   private static final double DISABLE_HEIGHT = MIN_HEIGHT + 0.01;
   public static final double STOWED_HEIGHT_FOR_PID = (MIN_HEIGHT + DISABLE_HEIGHT) / 2;
 
@@ -80,7 +80,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
 
   private final TalonFXAdapter mainMotor =
       new TalonFXAdapter(
-          "/Climber/leftMotor",
+          "/Climber/Main Motor",
           new TalonFX(RobotConstants.CANID.CLIMBER_ELEVATOR_LEFT_ID, "rio"),
           CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
@@ -285,42 +285,4 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
     simElevator.setInputVoltage(currentVoltage);
     simElevator.update(0.020);
   }
-
-  // @Override
-  // public void addShuffleboardTab() {
-  //   if (!ENABLE_TAB.getValue()) {
-  //     return;
-  //   }
-
-  //   ShuffleboardTab elevatorTab = Shuffleboard.getTab("Elevator");
-  //   ShuffleboardLayout elevatorLayout =
-  //       elevatorTab.getLayout("Status", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 5);
-  //   elevatorLayout.addDouble("Current Height", () -> this.currentState.position);
-  //   elevatorLayout.addDouble("Current Velocity", () -> this.currentState.velocity);
-  //   elevatorLayout.addDouble("Goal Height", () -> this.goalState.position);
-  //   elevatorLayout.addDouble("Goal Velocity", () -> this.goalState.velocity);
-  //   elevatorLayout
-  //       .addBoolean("Is Enabled", () -> this.isSeekingGoal)
-  //       .withWidget(BuiltInWidgets.kBooleanBox);
-  //   elevatorLayout.add("Max Velocity", MAX_SPEED);
-  //   elevatorLayout.add("Max Acceleration", MAX_ACCELERATION);
-
-  //   ShuffleboardLayout controlLayout =
-  //       elevatorTab.getLayout("Control", BuiltInLayouts.kList).withPosition(2, 0).withSize(2, 5);
-  //   controlLayout.addDouble("Current Height", () -> this.currentState.position);
-  //   GenericEntry elevatorHeight = controlLayout.add("Elevator Height", 0).getEntry();
-  //   controlLayout.add(
-  //       Commands.defer(
-  //               () ->
-  //                   Commands.runOnce(() -> this.setGoalHeight(elevatorHeight.getDouble(0), 0))
-  //                       .until(() -> this.atGoalHeight()),
-  //               Set.of(this))
-  //           .withName("Set Height"));
-  //   controlLayout.add(Commands.runOnce(() -> this.disable(), this).withName("Disable"));
-  //   controlLayout.add(
-  //       Commands.runOnce(() -> encoder.reset(), this)
-  //           .ignoringDisable(true)
-  //           .withName("Reset Encoder"));
-  //   controlLayout.add(ElevatorCommands.stowElevator(this));
-  // }
 }
