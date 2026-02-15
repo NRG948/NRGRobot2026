@@ -50,7 +50,8 @@ public class Subsystems {
                       RobotPreferences.APRIL_TAG.ENABLE_FRONT_LEFT,
                       c.cameraName(),
                       c.robotToCamera(),
-                      c.streamPort()));
+                      c.cameraPublisherName(),
+                      c.streamURL()));
 
   @DashboardTab(title = "Front Right Camera")
   public final Optional<AprilTag> frontRightCamera =
@@ -63,7 +64,8 @@ public class Subsystems {
                       RobotPreferences.APRIL_TAG.ENABLE_FRONT_RIGHT,
                       c.cameraName(),
                       c.robotToCamera(),
-                      c.streamPort()));
+                      c.cameraPublisherName(),
+                      c.streamURL()));
 
   @DashboardTab(title = "Back Left Camera")
   public final Optional<AprilTag> backLeftCamera =
@@ -76,7 +78,8 @@ public class Subsystems {
                       RobotPreferences.APRIL_TAG.ENABLE_BACK_LEFT,
                       c.cameraName(),
                       c.robotToCamera(),
-                      c.streamPort()));
+                      c.cameraPublisherName(),
+                      c.streamURL()));
 
   @DashboardTab(title = "Back Right Camera")
   public final Optional<AprilTag> backRightCamera =
@@ -89,7 +92,8 @@ public class Subsystems {
                       RobotPreferences.APRIL_TAG.ENABLE_BACK_RIGHT,
                       c.cameraName(),
                       c.robotToCamera(),
-                      c.streamPort()));
+                      c.cameraPublisherName(),
+                      c.streamURL()));
 
   private final Subsystem[] all;
   private final Subsystem[] manipulators;

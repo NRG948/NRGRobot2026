@@ -68,9 +68,11 @@ public class AprilTag extends SubsystemBase {
    *
    * @param cameraName The name of the camera.
    * @param robotToCamera The transform from the robot's odometry center to the camera.
-   * @param streamPort The port for the camera stream.
+   * @param cameraPublisherName The camera publisher of the camera.
+   * @param streamURL The stream URL of the camera.
    */
-  public record CameraParameters(String cameraName, Transform3d robotToCamera, int streamPort) {}
+  public record CameraParameters(
+      String cameraName, Transform3d robotToCamera, String cameraPublisherName, String streamURL) {}
 
   /**
    * The robot's vision parameters.
@@ -89,8 +91,18 @@ public class AprilTag extends SubsystemBase {
   // TODO: Find streamPorts for cameras on practice robot
   public static final VisionParameters PRACTICE_VISION_PARAMS =
       new VisionParameters(
-          Optional.of(new CameraParameters("FrontLeftCamera", ROBOT_TO_FRONT_LEFT_CAMERA, 1182)),
-          Optional.of(new CameraParameters("FrontRightCamera", ROBOT_TO_FRONT_RIGHT_CAMERA, 1184)),
+          Optional.of(
+              new CameraParameters(
+                  "FrontLeftCamera",
+                  ROBOT_TO_FRONT_LEFT_CAMERA,
+                  "photonvision_Port_1182_Output_MJPEG_Server",
+                  "http://photonvision.local:1182/stream.mjpg")), // Port: 1182
+          Optional.of(
+              new CameraParameters(
+                  "FrontRightCamera",
+                  ROBOT_TO_FRONT_RIGHT_CAMERA,
+                  "photonvision_Port_1184_Output_MJPEG_Server",
+                  "http://photonvision2.local:1184/stream.mjpg")), // Port: 1184
           Optional.empty(),
           Optional.empty());
   public static final VisionParameters COMPETITION_VISION_PARAMS =
@@ -148,9 +160,11 @@ public class AprilTag extends SubsystemBase {
    *
    * @param cameraName The name of the camera.
    * @param robotToCamera The transform from the robot to the camera.
-   * @param streamPort The port for the camera stream.
+   * @param cameraPublisherName The camera publisher of the camera.
+   * @param streamURL The stream URL of the camera.
    */
-  public AprilTag(String cameraName, Transform3d robotToCamera, int streamPort) {
+  public AprilTag(
+      String cameraName, Transform3d robotToCamera, String cameraPublisherName, String streamURL) {
     setName(cameraName);
     this.camera = new PhotonCamera(cameraName);
     this.robotToCamera = robotToCamera;
@@ -171,8 +185,8 @@ public class AprilTag extends SubsystemBase {
             LOG, String.format("/%s/Target Poses", cameraName), Pose2d.struct);
     video =
         new HttpCamera(
-            String.format("photonvision_Port_%d_Output_MJPEG_Server", streamPort),
-            String.format("http://photonvision.local:%d/stream.mjpg", streamPort),
+            String.format(cameraPublisherName),
+            String.format(streamURL),
             HttpCameraKind.kMJPGStreamer);
   }
 
