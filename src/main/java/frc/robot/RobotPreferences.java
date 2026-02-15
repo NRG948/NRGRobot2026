@@ -76,6 +76,9 @@ public final class RobotPreferences {
       new ProfiledPIDControllerPreference(
           "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
+  @DashboardNumberSlider(title = "Drive Over Bump Angle") // TODO: FINISH THIS PREFERENCE
+  public static final double DRIVE_OVER_BUMP_ANGLE = 25;
+
   /** Enables or disables rumble functionality on the driver's controller. */
   @DashboardToggleSwitch(title = "Enable Rumble", column = 2, row = 0, width = 1, height = 1)
   public static final BooleanPreference ENABLE_RUMBLE =
