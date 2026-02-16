@@ -17,6 +17,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
+import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootingCommands;
@@ -105,6 +106,11 @@ public class RobotContainer {
     manipulatorController
         .b()
         .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
+
+    manipulatorController
+        .leftBumper()
+        .whileTrue(IndexerCommands.feed(subsystems))
+        .onFalse(IndexerCommands.disableIndexer(subsystems));
 
     // Experimental, remove after shooter interpolation table is made and implemented. Up and left
     // is increase and decrease upper shooter velocities respectively. Down and right is increase

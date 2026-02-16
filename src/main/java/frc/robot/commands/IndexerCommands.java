@@ -18,4 +18,9 @@ public final class IndexerCommands {
     Indexer indexer = subsystems.indexer;
     return Commands.runOnce(() -> indexer.feed(), indexer).withName("Feed");
   }
+
+  public static Command disableIndexer(Subsystems subsystems) {
+    Indexer indexer = subsystems.indexer;
+    return Commands.runOnce(() -> indexer.disable(), indexer).withName("Feed");
+  }
 }
