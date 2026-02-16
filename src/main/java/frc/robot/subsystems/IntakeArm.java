@@ -139,12 +139,12 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
         RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
     slot0Configs.kG = 0.9;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Configs.kP = 120;
+    slot0Configs.kP = 90;
     slot0Configs.kI = 0;
     slot0Configs.kD = 0;
 
     MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION / 10;
+    motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION / 200;
     motionMagicConfigs.MotionMagicAcceleration = MAX_ACCELERATION / RADIANS_PER_ROTATION / 30;
     TalonFXConfigurator configurator = talonFX.getConfigurator();
     configurator.apply(talonFXConfigs);
