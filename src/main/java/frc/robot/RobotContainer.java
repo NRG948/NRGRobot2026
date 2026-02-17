@@ -103,7 +103,8 @@ public class RobotContainer {
     manipulatorController
         .a()
         .whileTrue(IntakeCommands.outtake(subsystems))
-        .onFalse(IntakeCommands.disableIntake(subsystems));
+        .onFalse(IntakeCommands.disableIntake(subsystems))
+        .onFalse(IndexerCommands.disableIndexer(subsystems));
     manipulatorController
         .x()
         .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.STOW_ANGLE, subsystems));

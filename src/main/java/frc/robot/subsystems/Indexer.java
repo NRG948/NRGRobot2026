@@ -46,7 +46,8 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
   private static final double GEAR_RATIO = 1.0;
   private static final double METERS_PER_REVOLUTION = (BAR_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
-  private static final double FEED_VELOCITY = 1.5;
+  private static final double FEED_VELOCITY = 1.8;
+  private static final double OUTFEED_VELOCITY = -2.0;
 
   private final MotorController shooterIndexerMotor =
       MOTOR.newController(
@@ -122,6 +123,10 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   public void feed() {
     setGoalVelocity(FEED_VELOCITY);
+  }
+
+  public void outFeed() {
+    setGoalVelocity(OUTFEED_VELOCITY);
   }
 
   @Override
