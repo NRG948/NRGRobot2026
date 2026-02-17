@@ -87,10 +87,22 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private boolean enabled;
   private boolean hasError = false;
 
+  @DashboardCommand(
+      title = "Set Extended Position",
+      column = 2,
+      row = 0,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private Command setExtendedPositionCommand =
+      Commands.runOnce(() -> encoder.setPosition(EXTENDED_ANGLE), this)
+          .withName("Set Extended Position")
+          .ignoringDisable(true);
+
   @DashboardTextDisplay(
       title = "Test Goal Angle",
       column = 2,
-      row = 0,
+      row = 1,
       width = 2,
       height = 1,
       dataBinding = DataBinding.READ_WRITE,
@@ -100,7 +112,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   @DashboardCommand(
       title = "Set Test Goal Angle",
       column = 2,
-      row = 1,
+      row = 2,
       width = 2,
       height = 1,
       fillWidget = true)
@@ -111,7 +123,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   @DashboardCommand(
       title = "Disable",
       column = 2,
-      row = 2,
+      row = 3,
       width = 2,
       height = 1,
       fillWidget = true)
