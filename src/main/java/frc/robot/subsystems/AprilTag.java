@@ -95,14 +95,14 @@ public class AprilTag extends SubsystemBase {
               new CameraParameters(
                   "FrontLeftCamera",
                   ROBOT_TO_FRONT_LEFT_CAMERA,
-                  "photonvision_Port_1182_Output_MJPEG_Server",
-                  "http://photonvision.local:1182/stream.mjpg")), // Port: 1182
+                  "photonvision1_Port_1182_Output_MJPEG_Server",
+                  "http://photonvision1.local:1182/stream.mjpg")), // Port: 1182
           Optional.of(
               new CameraParameters(
                   "FrontRightCamera",
                   ROBOT_TO_FRONT_RIGHT_CAMERA,
-                  "photonvision_Port_1184_Output_MJPEG_Server",
-                  "http://photonvision2.local:1184/stream.mjpg")), // Port: 1184
+                  "photonvision2_Port_1182_Output_MJPEG_Server",
+                  "http://photonvision2.local:1182/stream.mjpg")), // Port: 1182
           Optional.empty(),
           Optional.empty());
   public static final VisionParameters COMPETITION_VISION_PARAMS =
