@@ -24,18 +24,13 @@ public final class ShootingCommands {
   // For testing shooter speeds. After interpolation table is done and implemented, remove the
   // methods below along with its button bindings in RobotContainer.java.
 
-  public static Command setShooterVelocityToSeven(Subsystems subsystems) {
+  public static Command setShooterVelocity(Subsystems subsystems, double velocity) {
     Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.setGoalVelocity(7.0), shooter);
+    return Commands.runOnce(() -> shooter.setGoalVelocity(velocity), shooter);
   }
 
-  public static Command decreaseShooterVelocityByPointTwo(Subsystems subsystems) {
+  public static Command addShooterVelocity(Subsystems subsystems, double increment) {
     Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addGoalVelocity(-0.2), shooter);
-  }
-
-  public static Command increaseShooterVelocityByPointTwo(Subsystems subsystems) {
-    Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addGoalVelocity(0.2), shooter);
+    return Commands.runOnce(() -> shooter.addGoalVelocity(increment), shooter);
   }
 }
