@@ -204,6 +204,7 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry rawOrientationOffsetLog =
       new DoubleLogEntry(LOG, "/Swerve/rawOrientationOffset");
   private DoubleLogEntry accelerationLog = new DoubleLogEntry(LOG, "/Swerve/acceleration");
+  private Translation2d vectorToHub;
 
   /**
    * Creates a {@link SwerveModule} object and intiailizes its motor controllers.
@@ -512,17 +513,19 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
   public double getAngleToHub() {
-    Rotation2d angleDiff =
-        FieldUtils.getHubLocation().minus(getPosition().getTranslation()).getAngle();
-    double angleDiffRad = angleDiff.getRadians();
-    return angleDiffRad;
+    return vectorToHub.getAngle().getRadians();
+  }
+
+  @DashboardTextDisplay(title = "Distance To Hub (m)", column = 6, row = 0, width = 2, height = 1)
+  public double getDistanceToHub() {
+    return vectorToHub.getNorm();
   }
 
   /** {@return the angle from the center of the robot to the hub, in degrees} */
   @DashboardTextDisplay(
-      title = "Angle Difference To Hub",
-      column = 7,
-      row = 0,
+      title = "Robot to Hub Angle (deg)",
+      column = 6,
+      row = 1,
       width = 2,
       height = 1)
   public double getAngleToHubDegrees() {
@@ -552,6 +555,8 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
 
     // Send the robot and module location to the logger
     Pose2d robotPose = getPosition();
+
+    vectorToHub = FieldUtils.getHubLocation().minus(robotPose.getTranslation());
 
     poseLog.append(robotPose);
 
