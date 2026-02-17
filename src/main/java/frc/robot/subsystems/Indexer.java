@@ -42,11 +42,11 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
-  private static final double BAR_DIAMETER = Units.inchesToMeters(1);
+  private static final double BAR_DIAMETER = Units.inchesToMeters(1.25);
   private static final double GEAR_RATIO = 1.0;
   private static final double METERS_PER_REVOLUTION = (BAR_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
-  private static final double FEED_VELOCITY = 1.0;
+  private static final double FEED_VELOCITY = 1.5;
 
   private final MotorController shooterIndexerMotor =
       MOTOR.newController(
