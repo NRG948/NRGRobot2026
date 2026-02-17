@@ -13,6 +13,7 @@ import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
+import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.COAST;
 
 import com.nrg948.dashboard.annotations.DashboardCommand;
@@ -68,7 +69,11 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       new InterpolatingDoubleTreeMap();
 
   static {
-    SHOOTER_VELOCITIES.put(0.0, 0.0); // TODO: Test & fill out table
+    SHOOTER_VELOCITIES.put(1.28, 14.0); 
+    SHOOTER_VELOCITIES.put(2.0, 16.0); 
+    SHOOTER_VELOCITIES.put(2.64, 23.0);
+    SHOOTER_VELOCITIES.put(3.0, 25.0);  
+    SHOOTER_VELOCITIES.put(3.5, 31.0); 
     SHOOTER_VELOCITIES.put(10.0, MAX_VELOCITY);
   }
 
@@ -81,11 +86,26 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
           METERS_PER_REV);
 
   private final MotorController leftLowerMotor =
-      leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
+      SHOOTER_MOTOR.newController(
+          "/Shooter/Left Lower Motor",
+          SHOOTER_LOWER_LEFT_ID,
+          CLOCKWISE_POSITIVE,
+          COAST,
+          METERS_PER_REV);
   private final MotorController rightUpperMotor =
-      leftUpperMotor.createFollower("/Shooter/Right Upper Motor", SHOOTER_UPPER_RIGHT_ID, true);
+      SHOOTER_MOTOR.newController(
+          "/Shooter/Right Upper Motor",
+          SHOOTER_UPPER_RIGHT_ID,
+          COUNTER_CLOCKWISE_POSITIVE,
+          COAST,
+          METERS_PER_REV);
   private final MotorController rightLowerMotor =
-      leftUpperMotor.createFollower("/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, true);
+      SHOOTER_MOTOR.newController(
+          "/Shooter/Right Lower Motor",
+          SHOOTER_LOWER_RIGHT_ID,
+          COUNTER_CLOCKWISE_POSITIVE,
+          COAST,
+          METERS_PER_REV);
 
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
@@ -99,7 +119,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private double goalVelocity = 0;
 
   @DashboardRadialGauge(
-      title = "Lower Velocity (m/s)",
+      title = "Velocity (m/s)",
       column = 0,
       row = 0,
       width = 2,
@@ -141,6 +161,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
+  private DoubleLogEntry logCurrentVoltage = new DoubleLogEntry(LOG, "/Shooter/Current Voltage");
 
   /** Creates a new Shooter subsystem. */
   public Shooter() {}
@@ -184,14 +205,18 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void periodic() {
     updateTelemetry();
+    double motorVoltage = 0.0;
     if (goalVelocity != 0) {
       double feedforward = this.feedforward.calculate(goalVelocity);
       double feedback = pidController.calculate(currentVelocity, goalVelocity);
-      double motorVoltage = feedforward + feedback;
-      leftUpperMotor.setVoltage(motorVoltage);
-    } else {
-      leftUpperMotor.setVoltage(0);
+      motorVoltage = feedforward + feedback;
     }
+
+    leftUpperMotor.setVoltage(motorVoltage);
+    leftLowerMotor.setVoltage(motorVoltage);
+    rightUpperMotor.setVoltage(motorVoltage);
+    rightLowerMotor.setVoltage(motorVoltage);
+    logCurrentVoltage.append(motorVoltage);
   }
 
   private void updateTelemetry() {
