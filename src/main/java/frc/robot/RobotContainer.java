@@ -24,6 +24,7 @@ import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MatchTime;
+import frc.robot.util.MotorIdleMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -115,13 +116,9 @@ public class RobotContainer {
     // Experimental, remove after shooter interpolation table is made and implemented. Up and left
     // is increase and decrease upper shooter velocities respectively. Down and right is increase
     // and decrease lower shooter velocities respectively.
-    manipulatorController
-        .povUp()
-        .onTrue(ShootingCommands.increaseShooterVelocityByPointTwo(subsystems));
-    manipulatorController
-        .povDown()
-        .onTrue(ShootingCommands.decreaseShooterVelocityByPointTwo(subsystems));
-    manipulatorController.back().onTrue(ShootingCommands.setShooterVelocityToSeven(subsystems));
+    manipulatorController.povUp().onTrue(ShootingCommands.addShooterVelocity(subsystems, 1.0));
+    manipulatorController.povDown().onTrue(ShootingCommands.addShooterVelocity(subsystems, -1.0));
+    manipulatorController.povLeft().onTrue(ShootingCommands.setShooterVelocity(subsystems, 15));
   }
 
   /**
@@ -131,6 +128,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autos.getAutonomous();
+  }
+
+  public void disableInit() {
+    subsystems.disableManipulators();
+    subsystems.setIdleMode(MotorIdleMode.COAST);
   }
 
   public void periodic() {
