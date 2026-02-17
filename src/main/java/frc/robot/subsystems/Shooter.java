@@ -69,12 +69,11 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       new InterpolatingDoubleTreeMap();
 
   static {
-    SHOOTER_VELOCITIES.put(1.28, 14.0); 
-    SHOOTER_VELOCITIES.put(2.0, 16.0); 
+    SHOOTER_VELOCITIES.put(1.28, 14.0);
+    SHOOTER_VELOCITIES.put(2.0, 16.0);
     SHOOTER_VELOCITIES.put(2.64, 23.0);
-    SHOOTER_VELOCITIES.put(3.0, 25.0);  
-    SHOOTER_VELOCITIES.put(3.5, 31.0); 
-    SHOOTER_VELOCITIES.put(10.0, MAX_VELOCITY);
+    SHOOTER_VELOCITIES.put(3.0, 25.0);
+    SHOOTER_VELOCITIES.put(3.5, 31.0);
   }
 
   private final MotorController leftUpperMotor =
@@ -160,15 +159,17 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       Commands.runOnce(this::disable, this).ignoringDisable(true).withName("Disable");
 
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
+  private DoubleLogEntry logGoalDistance = new DoubleLogEntry(LOG, "/Shooter/Goal Distance");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
   private DoubleLogEntry logCurrentVoltage = new DoubleLogEntry(LOG, "/Shooter/Current Voltage");
 
   /** Creates a new Shooter subsystem. */
   public Shooter() {}
 
-  /** Interpolates correct shooter velocity for a given distance from our Hub. */
-  public double getPowerFromInterpolationTable(double distance) {
-    return SHOOTER_VELOCITIES.get(distance);
+  /** Sets shooter goal velocity based on distance inputted to interpolation table. */
+  public void setGoalDistance(double distance) {
+    setGoalVelocity(SHOOTER_VELOCITIES.get(distance));
+    logGoalDistance.append(distance);
   }
 
   public void setGoalVelocity(double goalVelocity) {
@@ -182,6 +183,11 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
    */
   public void addGoalVelocity(double goalVelocityDelta) {
     this.goalVelocity += goalVelocityDelta;
+  }
+
+  /** Returns whether the shooter velocity has reached its goal. */
+  public boolean atOrAboveGoal() {
+    return currentVelocity >= goalVelocity;
   }
 
   @Override

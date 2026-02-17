@@ -10,6 +10,7 @@ package frc.robot;
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -88,7 +89,12 @@ public class RobotContainer {
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchTime::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
 
-    driverController.a().whileTrue(new DriveAutoRotation(subsystems.drivetrain, driverController));
+    driverController
+        .a()
+        .whileTrue(
+            Commands.parallel(
+                new DriveAutoRotation(subsystems.drivetrain, driverController),
+                ShootingCommands.shoot(subsystems)));
 
     manipulatorController
         .rightBumper()

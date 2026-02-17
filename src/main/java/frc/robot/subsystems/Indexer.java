@@ -120,10 +120,6 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
     this.goalVelocity = goalVelocity;
   }
 
-  public void setShootingVelocity() {
-    goalVelocity = 1.0;
-  }
-
   public void feed() {
     setGoalVelocity(FEED_VELOCITY);
   }
