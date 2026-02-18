@@ -26,7 +26,7 @@ public final class ShootingCommands {
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToHub()), shooter),
             Commands.sequence(
-                Commands.idle(indexer).until(shooter::atOrAboveGoal),
+                Commands.idle(indexer).until(shooter::atOrNearGoal),
                 Commands.runOnce(indexer::feed, indexer),
                 Commands.runOnce(intake::intake, intake),
                 Commands.idle(intake, indexer)))

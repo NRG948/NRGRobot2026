@@ -43,6 +43,9 @@ import java.util.Map;
 @DashboardDefinition
 public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
+  private static final double VELOCITY_PERCENT_TOLERANCE = 0.05;
+  private static final double EFFICIENCY = 0.9;
+
   private static final DataLog LOG = DataLogManager.getLog();
 
   private static final MotorParameters SHOOTER_MOTOR =
@@ -59,7 +62,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
   private static final double MAX_VELOCITY =
-      SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0;
+      (SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0) * EFFICIENCY;
 
   private static final double KS = SHOOTER_MOTOR.getKs();
   private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
@@ -69,11 +72,17 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
       new InterpolatingDoubleTreeMap();
 
   static {
-    SHOOTER_VELOCITIES.put(1.28, 14.0);
-    SHOOTER_VELOCITIES.put(2.0, 16.0);
-    SHOOTER_VELOCITIES.put(2.64, 23.0);
-    SHOOTER_VELOCITIES.put(3.0, 25.0);
-    SHOOTER_VELOCITIES.put(3.5, 31.0);
+    SHOOTER_VELOCITIES.put(1.28, 13.25);
+    SHOOTER_VELOCITIES.put(1.35, 13.5);
+    SHOOTER_VELOCITIES.put(1.67, 14.25);
+    SHOOTER_VELOCITIES.put(2.0, 15.5);
+    SHOOTER_VELOCITIES.put(2.33, 16.75);
+    SHOOTER_VELOCITIES.put(2.66, 18.0);
+    SHOOTER_VELOCITIES.put(3.05, 19.5);
+    SHOOTER_VELOCITIES.put(3.35, 22.0);
+    SHOOTER_VELOCITIES.put(3.67, 30.0);
+
+
   }
 
   private final MotorController leftUpperMotor =
@@ -186,8 +195,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   }
 
   /** Returns whether the shooter velocity has reached its goal. */
-  public boolean atOrAboveGoal() {
-    return currentVelocity >= goalVelocity;
+  public boolean atOrNearGoal() {
+    return Math.abs(currentVelocity - goalVelocity) / goalVelocity < VELOCITY_PERCENT_TOLERANCE;
   }
 
   @Override
@@ -228,9 +237,9 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private void updateTelemetry() {
     currentVelocity = encoder.getVelocity();
     logCurrentVelocity.append(currentVelocity);
-    leftUpperMotor.logTelemetry();
-    leftLowerMotor.logTelemetry();
-    rightLowerMotor.logTelemetry();
-    rightUpperMotor.logTelemetry();
+    // leftUpperMotor.logTelemetry();
+    // leftLowerMotor.logTelemetry();
+    // rightLowerMotor.logTelemetry();
+    // rightUpperMotor.logTelemetry();
   }
 }

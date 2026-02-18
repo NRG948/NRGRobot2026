@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
@@ -67,7 +68,8 @@ public final class IntakeCommands {
    */
   public static Command outtake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
+    Indexer indexer = subsystems.indexer;
     // TODO Flesh out full sequence when other subsystems are finished.
-    return Commands.runOnce(intake::outtake, intake);
+    return Commands.parallel(Commands.run(intake::outtake), Commands.run(indexer::outFeed));
   }
 }
