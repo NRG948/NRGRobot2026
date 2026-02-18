@@ -95,7 +95,16 @@ public class RobotContainer {
             Commands.parallel(
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
                 ShootingCommands.shoot(subsystems)));
-
+    driverController
+        .leftTrigger()
+        .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems));
+    driverController
+        .leftTrigger()
+        .onFalse(IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
+    driverController // Possibly temporary test
+        .rightBumper()
+        .whileTrue(IntakeCommands.intake(subsystems))
+        .onFalse(IntakeCommands.disableIntake(subsystems));
     manipulatorController
         .rightBumper()
         .whileTrue(IntakeCommands.intake(subsystems))
