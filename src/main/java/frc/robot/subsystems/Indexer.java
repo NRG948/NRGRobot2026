@@ -58,7 +58,6 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
           0);
   private final RelativeEncoder shooterIndexerEncoder = shooterIndexerMotor.getEncoder();
 
-  @SuppressWarnings("unused")
   private final MotorController hopperIndexerMotor =
       shooterIndexerMotor.createFollower("/Indexer/Hopper Motor", CANID.HOPPER_INDEXER_ID, false);
 
