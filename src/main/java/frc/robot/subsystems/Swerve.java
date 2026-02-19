@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardGyro;
 import com.nrg948.dashboard.annotations.DashboardLayout;
+import com.nrg948.dashboard.annotations.DashboardNumberBar;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.LabelPosition;
@@ -184,6 +185,26 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
       ccwPositive = true)
   private final Gyro gyro = PARAMETERS.getGyro();
 
+  @DashboardNumberBar(
+      title = "Pitch",
+      column = 4,
+      row = 2,
+      width = 2,
+      height = 1,
+      min = -20,
+      max = 20)
+  private double pitch = 0;
+
+  @DashboardNumberBar(
+      title = "Roll",
+      column = 4,
+      row = 3,
+      width = 2,
+      height = 1,
+      min = -20,
+      max = 20)
+  private double roll = 0;
+
   private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
   private final SwerveDriveKinematics kinematics = PARAMETERS.getKinematics();
@@ -256,7 +277,7 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
    * is up to date.
    */
   private void updateSensorState() {
-    double rawGyro = gyro.getAngle();
+    double rawGyro = gyro.getYaw();
     rawOrientation = rawGyro;
     rawOrientationLog.append(Math.toDegrees(rawGyro));
     orientation = new Rotation2d(MathUtil.angleModulus(rawOrientation + rawOrientationOffset));
@@ -555,6 +576,9 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
 
     // Send the robot and module location to the logger
     Pose2d robotPose = getPosition();
+
+    pitch = Math.toDegrees(gyro.getPitch());
+    roll = Math.toDegrees(gyro.getRoll());
 
     vectorToHub = FieldUtils.getHubLocation().minus(robotPose.getTranslation());
 

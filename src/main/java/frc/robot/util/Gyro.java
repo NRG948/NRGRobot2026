@@ -9,9 +9,16 @@ package frc.robot.util;
 
 import edu.wpi.first.util.sendable.Sendable;
 
+/** An interface for a sensor that provides rotational positioning. */
 public interface Gyro extends Sendable, AutoCloseable {
-  /** Returns the gyro angle in radians with positive values in the counter-clockwise direction. */
-  double getAngle();
+  /** {@return the gyro yaw angle in radians} Positive values in the counter-clockwise direction. */
+  double getYaw();
+
+  /** {@return the gyro pitch angle in radians} Positive values for nose down. */
+  double getPitch();
+
+  /** {@return the gyro roll angle in radians} Positive values for robot right side down. */
+  double getRoll();
 
   /** Resets the gyro to 0. */
   void reset();

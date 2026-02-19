@@ -522,6 +522,38 @@
           "counter_clockwise_positive" : true
         }
       }, {
+        "title" : "Pitch",
+        "type" : "Number Bar",
+        "x" : 512.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Pitch",
+          "period" : 0.06,
+          "min_value" : -20.0,
+          "max_value" : 20.0,
+          "divisions" : 5,
+          "inverted" : false,
+          "orientation" : "horizontal"
+        }
+      }, {
+        "title" : "Roll",
+        "type" : "Number Bar",
+        "x" : 512.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Roll",
+          "period" : 0.06,
+          "min_value" : -20.0,
+          "max_value" : 20.0,
+          "divisions" : 5,
+          "inverted" : false,
+          "orientation" : "horizontal"
+        }
+      }, {
         "title" : "Distance To Hub (m)",
         "type" : "Text Display",
         "x" : 768.0,

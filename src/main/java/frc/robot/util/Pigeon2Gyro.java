@@ -16,16 +16,30 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 /** A gyro implementation based on the Pigeon 2. */
 public final class Pigeon2Gyro implements Gyro {
   private final Pigeon2 pigeon;
-  private final StatusSignal<Angle> angle;
+  private final StatusSignal<Angle> yaw;
+  private final StatusSignal<Angle> pitch;
+  private final StatusSignal<Angle> roll;
 
   public Pigeon2Gyro(int canID) {
     pigeon = new Pigeon2(canID, CANBus.roboRIO());
-    angle = pigeon.getYaw();
+    yaw = pigeon.getYaw();
+    pitch = pigeon.getPitch();
+    roll = pigeon.getRoll();
   }
 
   @Override
-  public double getAngle() {
-    return Math.toRadians(angle.refresh().getValueAsDouble());
+  public double getYaw() {
+    return Math.toRadians(yaw.refresh().getValueAsDouble());
+  }
+
+  @Override
+  public double getPitch() {
+    return Math.toRadians(pitch.refresh().getValueAsDouble());
+  }
+
+  @Override
+  public double getRoll() {
+    return Math.toRadians(roll.refresh().getValueAsDouble());
   }
 
   @Override

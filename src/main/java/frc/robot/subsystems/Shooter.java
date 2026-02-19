@@ -81,8 +81,6 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
     SHOOTER_VELOCITIES.put(3.05, 19.5);
     SHOOTER_VELOCITIES.put(3.35, 22.0);
     SHOOTER_VELOCITIES.put(3.67, 30.0);
-
-
   }
 
   private final MotorController leftUpperMotor =
