@@ -12,6 +12,7 @@ import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotPreferences;
 import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
@@ -98,9 +99,13 @@ public class Subsystems {
   private final Subsystem[] all;
   private final Subsystem[] manipulators;
 
+  private final CommandXboxController controller;
+
   private Map<String, StringLogEntry> commandLogger;
 
-  public Subsystems() {
+  public Subsystems(CommandXboxController controller) {
+    this.controller = controller;
+
     // Add all manipulator subsystems to the `manipulators` list.
     var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
 
@@ -197,6 +202,9 @@ public class Subsystems {
         (est) -> {
           var estPose = est.estimatedPose.toPose2d();
           var estStdDevs = camera.getEstimationStdDevs();
+          if (controller.start().getAsBoolean()) {
+            estStdDevs.times(0.25);
+          }
 
           drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
         });

@@ -47,7 +47,7 @@ public class RobotContainer {
   @DashboardTab(title = "Preferences")
   private final RobotPreferences preferences = new RobotPreferences();
 
-  private final Subsystems subsystems = new Subsystems();
+  private final Subsystems subsystems = new Subsystems(manipulatorController);
 
   @DashboardTab(title = "Autonomous")
   private final Autos autos = new Autos(subsystems);
