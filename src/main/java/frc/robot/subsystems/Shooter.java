@@ -60,6 +60,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
 
+  public static final double SHOOTER_FEED_VELOCITY = 35;
+
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
   private static final double MAX_VELOCITY =
       (SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0) * EFFICIENCY;

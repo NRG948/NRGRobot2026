@@ -38,6 +38,26 @@ public final class ShootingCommands {
             });
   }
 
+  public static Command shoot(Subsystems subsystem, double velocity) {
+    Indexer indexer = subsystem.indexer;
+    Shooter shooter = subsystem.shooter;
+    Intake intake = subsystem.intake;
+
+    return Commands.parallel(
+            Commands.run(() -> shooter.setGoalVelocity(velocity), shooter),
+            Commands.sequence(
+                Commands.idle(indexer).until(shooter::atOrNearGoal),
+                Commands.runOnce(indexer::feed, indexer),
+                Commands.runOnce(intake::intake, intake),
+                Commands.idle(intake, indexer)))
+        .finallyDo(
+            () -> {
+              shooter.disable();
+              indexer.disable();
+              intake.disable();
+            });
+  }
+
   public static Command setShooterVelocity(Subsystems subsystems, double velocity) {
     Shooter shooter = subsystems.shooter;
     return Commands.runOnce(() -> shooter.setGoalVelocity(velocity), shooter);

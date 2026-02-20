@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.DriveAutoOrientToAlliance;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
@@ -23,6 +24,7 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.MatchTime;
 import frc.robot.util.MotorIdleMode;
@@ -96,6 +98,12 @@ public class RobotContainer {
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
                 ShootingCommands.shoot(subsystems)));
     driverController
+        .leftBumper()
+        .whileTrue(
+            Commands.parallel(
+                new DriveAutoOrientToAlliance(subsystems.drivetrain, driverController),
+                ShootingCommands.shoot(subsystems, Shooter.SHOOTER_FEED_VELOCITY)));
+    driverController
         .leftTrigger()
         .onTrue(IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems));
     driverController
@@ -107,7 +115,10 @@ public class RobotContainer {
         .onFalse(IntakeCommands.disableIntake(subsystems));
     manipulatorController
         .rightBumper()
-        .whileTrue(IntakeCommands.intake(subsystems))
+        .whileTrue(
+            Commands.parallel(
+                IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems),
+                IntakeCommands.intake(subsystems)))
         .onFalse(IntakeCommands.disableIntake(subsystems));
     manipulatorController
         .a()
