@@ -11,15 +11,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Right Scoring Point to (Bump) Right Neutral Start"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmBumpAngle"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Scoring Point to (Bump) Right Neutral Start"
+                }
+              }
+            ]
           }
         },
         {
@@ -29,9 +55,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Right Neutral End to (Bump) Right Scoring Point"
+            "name": "DisableIntake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmBumpAngle"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Neutral End to (Bump) Right Scoring Point"
+                }
+              }
+            ]
           }
         }
       ]

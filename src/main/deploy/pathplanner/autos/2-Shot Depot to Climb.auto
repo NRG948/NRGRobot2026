@@ -11,6 +11,25 @@
           }
         },
         {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Left Scoring Point to Left Depot"
@@ -23,9 +42,34 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "DisableIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right Depot to Left Scoring Point"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
           }
         },
         {

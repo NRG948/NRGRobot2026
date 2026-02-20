@@ -17,27 +17,65 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "DisableIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right Depot to Left Scoring Point"
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Left Scoring Point to (Bump) Left Neutral Start"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmBumpAngle"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Scoring Point to (Bump) Left Neutral Start"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Left Neutral Start to Left Neutral End"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DisableIntake"
           }
         }
       ]

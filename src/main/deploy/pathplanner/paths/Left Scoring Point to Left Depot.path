@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6973305084745767,
-        "y": 4.713968926553673
+        "x": 2.530522222222223,
+        "y": 4.882766666666666
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7135061855501394,
-        "y": 5.314336610458838
+        "x": 2.5466978992977856,
+        "y": 5.483134350571831
       },
       "isLocked": false,
       "linkedName": "Left Scoring Point"
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ExtendAndIntake",
+      "waypointRelativePos": 0.7215880893300246,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -48,7 +60,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -17.764853300697496
+    "rotation": -26.00334584451132
   },
   "useDefaultConstraints": true
 }

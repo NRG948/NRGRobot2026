@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.FieldUtils;
@@ -171,6 +172,30 @@ public final class Autos {
     Map<String, Command> eventMaps = new HashMap<String, Command>();
     // TODO: Populate eventMaps with commands for PathPlanner event markers for the given
     // pathGroupName.
+    eventMaps.put(
+        "ShootWithAutoRotation",
+        Commands.parallel(
+            ShootingCommands.shoot(subsystems), new AutoRotation(subsystems.drivetrain)));
+
+    eventMaps.put(
+        "IntakeArmBumpAngle",
+        Commands.sequence(
+            IntakeCommands.setIntakeArmAngle(IntakeArm.BUMP_ANGLE, subsystems),
+            IntakeCommands.disableIntake(subsystems)));
+
+    eventMaps.put(
+        "ExtendAndIntake",
+        Commands.sequence(
+            IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems),
+            IntakeCommands.intake(subsystems)));
+
+    eventMaps.put("Extend", IntakeCommands.intake(subsystems));
+
+    eventMaps.put("Intake", IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
+
+    eventMaps.put("DisableIntake", IntakeCommands.disableIntake(subsystems));
+
+    // eventMaps.put("ReduceSDs", ));
     return eventMaps;
   }
 

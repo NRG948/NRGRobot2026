@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "IntakeArmBumpAngle"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right Hub Start to Right Neutral Start"
@@ -14,6 +20,12 @@
           "type": "path",
           "data": {
             "pathName": "Right Neutral Start to Right Neutral End"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DisableIntake"
           }
         }
       ]

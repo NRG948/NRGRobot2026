@@ -19,13 +19,32 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "DisableIntake"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Right Depot to Left Scoring Point"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
           }
         },
         {
