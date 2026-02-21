@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
   private static final double GEAR_RATIO = 1;
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
-  private static final double INTAKE_VELOCITY = 7.0;
+  private static final double INTAKE_VELOCITY = 5;
   private static final double OUTTAKE_VELOCITY = -2.5;
 
   private final MotorController motor =
