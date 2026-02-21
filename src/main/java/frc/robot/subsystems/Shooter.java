@@ -60,7 +60,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
 
-  public static final double SHOOTER_FEED_VELOCITY = 35;
+  public static final double SHOOTER_FEED_VELOCITY = 30;
 
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
   private static final double MAX_VELOCITY =
@@ -197,6 +197,16 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   /** Returns whether the shooter velocity has reached its goal. */
   public boolean atOrNearGoal() {
     return Math.abs(currentVelocity - goalVelocity) / goalVelocity < VELOCITY_PERCENT_TOLERANCE;
+  }
+
+  /**
+   * Gets the velocity for the shooter given on a distance to target.
+   *
+   * @param distance Robot's distance to target.
+   * @return Velocity to reach the target.
+   */
+  public double getVelocityFromInterpolationTable(double distance) {
+    return SHOOTER_VELOCITIES.get(distance);
   }
 
   @Override
