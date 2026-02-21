@@ -267,6 +267,17 @@
           "period" : 0.06
         }
       }, {
+        "title" : "Auto Override Odometry With Pose",
+        "type" : "Toggle Switch",
+        "x" : 896.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Auto Override Odometry With Pose",
+          "period" : 0.06
+        }
+      }, {
         "title" : "Right Trigger Scalar",
         "type" : "Number Slider",
         "x" : 384.0,

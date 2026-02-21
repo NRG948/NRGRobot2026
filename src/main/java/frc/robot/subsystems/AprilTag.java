@@ -55,6 +55,9 @@ public class AprilTag extends SubsystemBase {
   private static final Matrix<N3, N1> MULTI_TAG_STD_DEVS = VecBuilder.fill(0.5, 0.5, 1);
   private static final PhotonPipelineResult NO_RESULT = new PhotonPipelineResult();
   private static final double LAST_RESULT_TIMEOUT = 0.1;
+  // Distance under which we completely trust vision multitag result (over swerve odometry)
+  private static final double TRUSTED_TAG_DISTANCE_THRESHOLD = 3.3;
+  private static final int MIN_NUMBER_OF_TRUSTED_TAGS = 2;
 
   // TODO: measure ALL camera rotations and transforms for the 2026 robot.
   private static final Rotation3d FRONT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-16), 0);
@@ -224,6 +227,7 @@ public class AprilTag extends SubsystemBase {
       // Pose present. Start running Heuristic
       int numTags = 0;
       double avgDist = 0;
+      double numTrustedTags = 0;
 
       // Precalculation - see how many tags we found, and calculate an
       // average-distance metric
@@ -233,12 +237,16 @@ public class AprilTag extends SubsystemBase {
           continue;
         }
         numTags++;
-        avgDist +=
+        double dist =
             tagPose
                 .get()
                 .toPose2d()
                 .getTranslation()
                 .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+        avgDist += dist;
+        if (dist <= TRUSTED_TAG_DISTANCE_THRESHOLD) {
+          numTrustedTags++;
+        }
       }
 
       if (numTags == 0) {
@@ -253,7 +261,7 @@ public class AprilTag extends SubsystemBase {
         // Decrease std devs if multiple tags are visible
         if (numTags > 1) {
           estStdDevs = MULTI_TAG_STD_DEVS;
-          shouldUpdateOdometry = avgDist < 4;
+          shouldUpdateOdometry = numTrustedTags >= MIN_NUMBER_OF_TRUSTED_TAGS;
         } else {
           shouldUpdateOdometry = false;
         }
@@ -279,9 +287,9 @@ public class AprilTag extends SubsystemBase {
     return curStdDevs;
   }
 
+  /** {@return whether to update the odometry based on vision measurements} */
   public boolean shouldUpdateOdometry() {
-    return false;
-    // return shouldUpdateOdometry;
+    return shouldUpdateOdometry && RobotPreferences.SHOULD_UPDATE_ODOMETRY.getValue();
   }
 
   /**
