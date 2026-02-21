@@ -378,6 +378,11 @@ public class AprilTag extends SubsystemBase {
     return result.orElse(NO_RESULT);
   }
 
+  /** Returns whether the camera is streaming or not. */
+  public boolean isCameraConnected() {
+    return camera.isConnected();
+  }
+
   /**
    * Return the transform from the camera to the center of the robot
    *

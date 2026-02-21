@@ -14,20 +14,30 @@ import com.nrg948.dashboard.annotations.DashboardMatchTime;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.model.GameField;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.subsystems.AprilTag;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchTime;
+import java.util.Optional;
 
 @DashboardDefinition
 public final class RobotOperator {
 
   private final Intake intake;
   private final Swerve drive;
+  public final Optional<AprilTag> frontLeftCamera;
+  public final Optional<AprilTag> frontRightCamera;
+  public final Optional<AprilTag> backLeftCamera;
+  public final Optional<AprilTag> backRightCamera;
 
   public RobotOperator(Subsystems subsystems) {
     intake = subsystems.intake;
     drive = subsystems.drivetrain;
+    frontLeftCamera = subsystems.frontLeftCamera;
+    frontRightCamera = subsystems.frontRightCamera;
+    backLeftCamera = subsystems.backLeftCamera;
+    backRightCamera = subsystems.backRightCamera;
   }
 
   private static final double MIN_SPEED = 0.0;
@@ -82,6 +92,26 @@ public final class RobotOperator {
   @DashboardMatchTime(title = "Match Time", row = 0, column = 6, width = 3, height = 2)
   public static double getMatchTime() {
     return MatchTime.getMatchTime();
+  }
+
+  @DashboardBooleanBox(
+      title = "Back Left Camera Connected",
+      row = 4,
+      column = 6,
+      width = 3,
+      height = 2)
+  public boolean backLeftCameraIsConnected() {
+    return backLeftCamera.isPresent() ? backLeftCamera.get().isCameraConnected() : false;
+  }
+
+  @DashboardBooleanBox(
+      title = "Back Right Camera Connected",
+      row = 4,
+      column = 9,
+      width = 3,
+      height = 2)
+  public boolean backRightCameraIsConnected() {
+    return backRightCamera.isPresent() ? backRightCamera.get().isCameraConnected() : false;
   }
 
   public void periodic() {
