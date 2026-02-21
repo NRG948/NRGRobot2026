@@ -14,10 +14,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import java.util.function.DoubleSupplier;
 
 public final class ShootingCommands {
 
   public static final double MAXIMUM_SHOOTING_RANGE = 3.5;
+  public static final double HUB_SHOT_DISTANCE = 1.3;
+  public static final double TOWER_SHOT_DISTANCE = 3.05;
 
   public static Command shootWhenInRange(Subsystems subsystem) {
     Indexer indexer = subsystem.indexer;
@@ -31,13 +34,25 @@ public final class ShootingCommands {
   }
 
   public static Command shoot(Subsystems subsystem) {
+    Swerve drivetrain = subsystem.drivetrain;
+    return shootForDistance(subsystem, drivetrain::getDistanceToHub);
+  }
+
+  public static Command shootFromHub(Subsystems subsystem) {
+    return shootForDistance(subsystem, () -> HUB_SHOT_DISTANCE);
+  }
+
+  public static Command shootFromTower(Subsystems subsystem) {
+    return shootForDistance(subsystem, () -> TOWER_SHOT_DISTANCE);
+  }
+
+  private static Command shootForDistance(Subsystems subsystem, DoubleSupplier distance) {
     Indexer indexer = subsystem.indexer;
     Shooter shooter = subsystem.shooter;
-    Swerve drivetrain = subsystem.drivetrain;
     Intake intake = subsystem.intake;
 
     return Commands.parallel(
-            Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToHub()), shooter),
+            Commands.run(() -> shooter.setGoalDistance(distance.getAsDouble()), shooter),
             feedBallsToShooter(indexer, shooter, intake))
         .finallyDo(
             () -> {

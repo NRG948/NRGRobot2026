@@ -98,6 +98,18 @@ public class RobotContainer {
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
                 ShootingCommands.shootWhenInRange(subsystems)));
     driverController
+        .povUp()
+        .whileTrue(
+            Commands.parallel(
+                new DriveAutoRotation(subsystems.drivetrain, driverController),
+                ShootingCommands.shootFromHub(subsystems)));
+    driverController
+        .povDown()
+        .whileTrue(
+            Commands.parallel(
+                new DriveAutoRotation(subsystems.drivetrain, driverController),
+                ShootingCommands.shootFromTower(subsystems)));
+    driverController
         .leftBumper()
         .whileTrue(
             Commands.parallel(
@@ -113,6 +125,7 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(IntakeCommands.intake(subsystems))
         .onFalse(IntakeCommands.disableIntake(subsystems));
+
     manipulatorController
         .rightBumper()
         .whileTrue(
