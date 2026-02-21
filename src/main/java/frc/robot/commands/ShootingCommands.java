@@ -17,6 +17,19 @@ import frc.robot.subsystems.Swerve;
 
 public final class ShootingCommands {
 
+  public static final double MAXIMUM_SHOOTING_RANGE = 3.5;
+
+  public static Command shootWhenInRange(Subsystems subsystem) {
+    Indexer indexer = subsystem.indexer;
+    Shooter shooter = subsystem.shooter;
+    Swerve drivetrain = subsystem.drivetrain;
+    Intake intake = subsystem.intake;
+    return Commands.sequence(
+        Commands.idle(indexer, shooter, intake)
+            .until(() -> drivetrain.getDistanceToHub() <= MAXIMUM_SHOOTING_RANGE),
+        shoot(subsystem));
+  }
+
   public static Command shoot(Subsystems subsystem) {
     Indexer indexer = subsystem.indexer;
     Shooter shooter = subsystem.shooter;
@@ -25,17 +38,21 @@ public final class ShootingCommands {
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToHub()), shooter),
-            Commands.sequence(
-                Commands.idle(indexer).until(shooter::atOrNearGoal),
-                Commands.runOnce(indexer::feed, indexer),
-                Commands.runOnce(intake::intake, intake),
-                Commands.idle(intake, indexer)))
+            feedBallsToShooter(indexer, shooter, intake))
         .finallyDo(
             () -> {
               shooter.disable();
               indexer.disable();
               intake.disable();
             });
+  }
+
+  private static Command feedBallsToShooter(Indexer indexer, Shooter shooter, Intake intake) {
+    return Commands.sequence(
+        Commands.idle(indexer).until(shooter::atOrNearGoal),
+        Commands.runOnce(indexer::feed, indexer),
+        Commands.runOnce(intake::intake, intake),
+        Commands.idle(intake, indexer));
   }
 
   public static Command shoot(Subsystems subsystem, double velocity) {
@@ -45,11 +62,7 @@ public final class ShootingCommands {
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalVelocity(velocity), shooter),
-            Commands.sequence(
-                Commands.idle(indexer).until(shooter::atOrNearGoal),
-                Commands.runOnce(indexer::feed, indexer),
-                Commands.runOnce(intake::intake, intake),
-                Commands.idle(intake, indexer)))
+            feedBallsToShooter(indexer, shooter, intake))
         .finallyDo(
             () -> {
               shooter.disable();

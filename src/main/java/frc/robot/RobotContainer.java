@@ -96,7 +96,7 @@ public class RobotContainer {
         .whileTrue(
             Commands.parallel(
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
-                ShootingCommands.shoot(subsystems)));
+                ShootingCommands.shootWhenInRange(subsystems)));
     driverController
         .leftBumper()
         .whileTrue(
