@@ -288,11 +288,6 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
     accelerationLog.append(acceleration);
   }
 
-  /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)} */
-  public void addVisionMeasurement(Pose2d visionMeasurement, double timestamp) {
-    odometry.addVisionMeasurement(visionMeasurement, timestamp);
-  }
-
   /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)} */
   public void addVisionMeasurement(
       Pose2d visionMeasurment, double timestamp, Matrix<N3, N1> stdDevs) {

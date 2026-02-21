@@ -152,6 +152,8 @@ public class AprilTag extends SubsystemBase {
 
   private Matrix<N3, N1> curStdDevs = SINGLE_TAG_STD_DEVS;
 
+  private boolean shouldUpdateOdometry = false;
+
   @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width = 4, height = 4)
   private HttpCamera video;
 
@@ -220,7 +222,6 @@ public class AprilTag extends SubsystemBase {
       curStdDevs = SINGLE_TAG_STD_DEVS;
     } else {
       // Pose present. Start running Heuristic
-      var estStdDevs = SINGLE_TAG_STD_DEVS;
       int numTags = 0;
       double avgDist = 0;
 
@@ -244,18 +245,26 @@ public class AprilTag extends SubsystemBase {
         // No tags visible. Default to single-tag std devs
         curStdDevs = SINGLE_TAG_STD_DEVS;
       } else {
+        var estStdDevs = SINGLE_TAG_STD_DEVS;
+
         // One or more tags visible, run the full heuristic.
         avgDist /= numTags;
+
         // Decrease std devs if multiple tags are visible
         if (numTags > 1) {
           estStdDevs = MULTI_TAG_STD_DEVS;
+          shouldUpdateOdometry = avgDist < 4;
+        } else {
+          shouldUpdateOdometry = false;
         }
+
         // Increase std devs based on (average) distance.
         if (numTags == 1 && avgDist > 4) {
           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
         } else {
           estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
         }
+
         curStdDevs = estStdDevs;
       }
     }
@@ -268,6 +277,11 @@ public class AprilTag extends SubsystemBase {
    */
   public Matrix<N3, N1> getEstimationStdDevs() {
     return curStdDevs;
+  }
+
+  public boolean shouldUpdateOdometry() {
+    return false;
+    // return shouldUpdateOdometry;
   }
 
   /**
