@@ -160,6 +160,7 @@ public class RobotContainer {
   public void disableInit() {
     subsystems.disableManipulators();
     subsystems.setIdleMode(MotorIdleMode.COAST);
+    subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
   }
 
   public void periodic() {
