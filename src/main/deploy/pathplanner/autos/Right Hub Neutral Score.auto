@@ -23,9 +23,47 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "DisableIntake"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DisableIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmBumpAngle"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Neutral End to (Bump) Right Scoring Point"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              }
+            ]
           }
         }
       ]
