@@ -143,7 +143,7 @@ public class AprilTag extends SubsystemBase {
   private int selectedAprilTag;
   private Pose3d selectedAprilTagPose = new Pose3d();
 
-  @DashboardLayout(title = "Selected April Tag", column = 9, row = 0, width = 2, height = 5)
+  @DashboardLayout(title = "Selected April Tag", column = 2, row = 0, width = 2, height = 5)
   private SelectedAprilTagTelemetry selectedAprilTagTelemetry = new SelectedAprilTagTelemetry();
 
   @DashboardLayout(title = "Estimated Pose", column = 0, row = 3, width = 2, height = 2)
@@ -157,7 +157,7 @@ public class AprilTag extends SubsystemBase {
 
   private boolean shouldUpdateOdometry = false;
 
-  @DashboardCameraStream(title = "Camera Stream", column = 2, row = 0, width = 4, height = 4)
+  @DashboardCameraStream(title = "Camera Stream", column = 4, row = 0, width = 4, height = 4)
   private HttpCamera video;
 
   /**
