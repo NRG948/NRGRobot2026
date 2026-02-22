@@ -296,10 +296,10 @@
       "layouts" : [ {
         "title" : "Estimated Pose",
         "type" : "List Layout",
-        "x" : 1152.0,
+        "x" : 1024.0,
         "y" : 0.0,
         "width" : 256.0,
-        "height" : 640.0,
+        "height" : 384.0,
         "properties" : {
           "label_position" : "TOP"
         },

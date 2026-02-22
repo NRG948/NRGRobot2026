@@ -129,7 +129,7 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   private final CANcoder backLeftAngle = PARAMETERS.getAngleEncoder(SwerveAngleEncoder.BackLeft);
   private final CANcoder backRightAngle = PARAMETERS.getAngleEncoder(SwerveAngleEncoder.BackRight);
 
-  @DashboardLayout(title = "Estimated Pose", column = 9, row = 0, width = 2, height = 5)
+  @DashboardLayout(title = "Estimated Pose", column = 8, row = 0, width = 2, height = 3)
   private EstimatedPose estimatedPose = new EstimatedPose();
 
   @DashboardLayout(
