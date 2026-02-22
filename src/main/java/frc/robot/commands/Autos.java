@@ -65,6 +65,7 @@ public final class Autos {
    * @param container
    */
   public Autos(Subsystems subsystems) {
+    NamedCommands.registerCommands(getPathplannerEventMap(subsystems));
     RobotConfig config = Swerve.PARAMETERS.getPathplannerConfig();
     AutoBuilder.configure(
         subsystems.drivetrain::getPosition,
@@ -78,6 +79,7 @@ public final class Autos {
         subsystems.drivetrain);
 
     autoChooser = Autonomous.getChooser(subsystems);
+    autoChooser.onChange(Autos::preloadAuto);
 
     this.delayChooser.setDefaultOption("No Delay", (Integer) 0);
     for (var i = 1; i < 8; i++) {
@@ -111,8 +113,6 @@ public final class Autos {
    * @return The PathPlanner auto command.
    */
   public static Command generatePathPlannerAuto(Subsystems subsystems, String name) {
-    NamedCommands.registerCommands(getPathplannerEventMap(subsystems, name));
-
     Set<Subsystem> requirements = new HashSet<>(Arrays.asList(subsystems.getManipulators()));
     requirements.add(subsystems.drivetrain);
     return Commands.defer(() -> getPathPlannerAuto(name), requirements).withName(name);
@@ -163,11 +163,9 @@ public final class Autos {
    * Returns a map of event names to commands for the given Pathplanner autonomous routine name.
    *
    * @param subsystems Subsystems container.
-   * @param pathGroupName Name of the pathplanner autonomous routine.
    * @return A map of event names to commands.
    */
-  private static Map<String, Command> getPathplannerEventMap(
-      Subsystems subsystems, String pathGroupName) {
+  private static Map<String, Command> getPathplannerEventMap(Subsystems subsystems) {
 
     Map<String, Command> eventMaps = new HashMap<String, Command>();
     // TODO: Populate eventMaps with commands for PathPlanner event markers for the given
@@ -189,9 +187,9 @@ public final class Autos {
             IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems),
             IntakeCommands.intake(subsystems)));
 
-    eventMaps.put("Extend", IntakeCommands.intake(subsystems));
+    eventMaps.put("Intake", IntakeCommands.intake(subsystems));
 
-    eventMaps.put("Intake", IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
+    eventMaps.put("Extend", IntakeCommands.setIntakeArmAngle(IntakeArm.EXTENDED_ANGLE, subsystems));
 
     eventMaps.put("DisableIntake", IntakeCommands.disableIntake(subsystems));
 

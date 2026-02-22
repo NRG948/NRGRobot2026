@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.090623889419315,
-        "y": 3.024828108085751
+        "x": 3.880998029867966,
+        "y": 3.2055763672303392
       },
       "isLocked": false,
       "linkedName": "Right Hub Start"
@@ -20,12 +20,12 @@
         "y": 2.0763666666666665
       },
       "prevControl": {
-        "x": 5.603388137645604,
-        "y": 2.27443221963485
+        "x": 5.55385387405374,
+        "y": 2.332485579000688
       },
       "nextControl": {
-        "x": 6.244855756661025,
-        "y": 1.4415470009383644
+        "x": 6.792029581124642,
+        "y": 0.7632008208964745
       },
       "isLocked": false,
       "linkedName": null
@@ -33,27 +33,27 @@
     {
       "anchor": {
         "x": 6.710888888888889,
-        "y": 1.25
+        "y": 0.8485666666666658
       },
       "prevControl": {
-        "x": 7.163071398510137,
-        "y": 1.2500174058003914
+        "x": 6.525410940180569,
+        "y": 1.0161910400225522
       },
       "nextControl": {
-        "x": 6.460888889074102,
-        "y": 1.2499903767837055
+        "x": 6.89636683759721,
+        "y": 0.6809422933107794
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.70632768361582,
-        "y": 1.25
+        "x": 7.685333333333334,
+        "y": 0.6926555555555558
       },
       "prevControl": {
-        "x": 7.200896331728037,
-        "y": 1.1955561954126126
+        "x": 7.437408484132982,
+        "y": 0.7248000597356258
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,7 +63,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.2962655601659854,
-      "rotationDegrees": 25.0
+      "rotationDegrees": -20.0
     },
     {
       "waypointRelativePos": 1.6605809128630722,
@@ -86,14 +86,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "ExtendAndIntake",
-      "waypointRelativePos": 1.1,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

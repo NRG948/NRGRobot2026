@@ -5,21 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "IntakeArmBumpAngle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Hub Start to Right Neutral Start"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Neutral Start to Right Neutral End"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmBumpAngle"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Hub Start to Right Neutral Start"
+                }
+              }
+            ]
           }
         },
         {
@@ -27,11 +28,24 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "DisableIntake"
+                  "pathName": "Right Neutral Start to Right Neutral End"
                 }
               },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ExtendAndIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
               {
                 "type": "named",
                 "data": {
@@ -48,7 +62,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -60,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.5
+                  "waitTime": 6.0
                 }
               }
             ]

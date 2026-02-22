@@ -52,7 +52,8 @@ public final class IntakeCommands {
   public static Command intake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
     // TODO Flesh out full sequence when other subsystems are finished.
-    return Commands.runOnce(intake::intake, intake);
+    return Commands.sequence(Commands.runOnce(intake::intake, intake), Commands.idle(intake))
+        .finallyDo(intake::disable);
   }
 
   public static Command disableIntake(Subsystems subsystems) {

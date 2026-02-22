@@ -6,91 +6,12 @@
     "grid_layout" : {
       "layouts" : [ ],
       "containers" : [ {
-        "title" : "Speed (M/S)",
-        "type" : "Radial Gauge",
-        "x" : 512.0,
-        "y" : 256.0,
-        "width" : 256.0,
-        "height" : 256.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Speed (M+S)",
-          "period" : 0.06,
-          "min_value" : 0.0,
-          "max_value" : 5.0,
-          "start_angle" : -140.0,
-          "end_angle" : 140.0,
-          "number_of_labels" : 8,
-          "wrap_value" : false,
-          "show_pointer" : true,
-          "show_ticks" : true
-        }
-      }, {
-        "title" : "Intaking",
-        "type" : "Boolean Box",
-        "x" : 0.0,
-        "y" : 0.0,
-        "width" : 128.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Intaking",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
-        "title" : "Outtaking",
-        "type" : "Boolean Box",
-        "x" : 128.0,
-        "y" : 0.0,
-        "width" : 128.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Outtaking",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
-        "title" : "Aligned",
-        "type" : "Boolean Box",
-        "x" : 512.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 256.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Aligned",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
-        "title" : "ShooterCorrectRPM",
-        "type" : "Boolean Box",
-        "x" : 256.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/ShooterCorrectRPM",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
         "title" : "Field",
         "type" : "Field",
         "x" : 0.0,
-        "y" : 128.0,
-        "width" : 512.0,
-        "height" : 256.0,
+        "y" : 0.0,
+        "width" : 896.0,
+        "height" : 512.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Field",
           "period" : 0.06,
@@ -106,7 +27,7 @@
       }, {
         "title" : "Match Time",
         "type" : "Match Time",
-        "x" : 768.0,
+        "x" : 1152.0,
         "y" : 0.0,
         "width" : 384.0,
         "height" : 256.0,
@@ -118,12 +39,42 @@
           "red_start_time" : 15
         }
       }, {
+        "title" : "Front Left Camera Connected",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 256.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Front Left Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Front Right Camera Connected",
+        "type" : "Boolean Box",
+        "x" : 1024.0,
+        "y" : 256.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Front Right Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
         "title" : "Back Left Camera Connected",
         "type" : "Boolean Box",
-        "x" : 768.0,
-        "y" : 512.0,
-        "width" : 384.0,
-        "height" : 256.0,
+        "x" : 896.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Back Left Camera Connected",
           "period" : 0.06,
@@ -135,12 +86,27 @@
       }, {
         "title" : "Back Right Camera Connected",
         "type" : "Boolean Box",
-        "x" : 1152.0,
-        "y" : 512.0,
-        "width" : 384.0,
-        "height" : 256.0,
+        "x" : 1024.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Back Right Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Within Range",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Within Range",
           "period" : 0.06,
           "true_color" : -16711936,
           "true_icon" : "None",
@@ -264,6 +230,17 @@
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Preferences/Enable Rumble",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Auto Override Odometry With Pose",
+        "type" : "Toggle Switch",
+        "x" : 896.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Auto Override Odometry With Pose",
           "period" : 0.06
         }
       }, {
