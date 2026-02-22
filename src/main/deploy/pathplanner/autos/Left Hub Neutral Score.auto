@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Left Hub Start to Left Scoring Point"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeArmBumpAngle"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Hub Start to Left Neutral Start"
+                }
+              }
+            ]
           }
         },
         {
@@ -17,28 +30,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ShootWithAutoRotation"
+                  "name": "ExtendAndIntake"
                 }
               },
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 1.5
+                  "pathName": "Left Neutral Start to Left Neutral End"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Scoring Point to (Bump) Left Neutral Start"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Neutral Start to Left Neutral End"
           }
         },
         {
@@ -73,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.5
+                  "waitTime": 6.0
                 }
               }
             ]

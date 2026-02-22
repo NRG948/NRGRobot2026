@@ -104,7 +104,7 @@ public class Subsystems {
     // Add all manipulator subsystems to the `manipulators` list.
     var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
 
-    var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
+    var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain, statusLEDs));
 
     frontLeftCamera.ifPresent(all::add);
     frontRightCamera.ifPresent(all::add);
