@@ -25,70 +25,79 @@ import frc.robot.subsystems.Swerve;
 @DashboardDefinition
 public final class RobotPreferences {
 
+  /** A class to group the AprilTag camera enablement preferences. */
   @DashboardDefinition
   public static final class AprilTagPreferences {
+    /** Selects whether to enable the front left camera. */
     @DashboardToggleSwitch(title = "Enable Front Left")
     public final BooleanPreference ENABLE_FRONT_LEFT =
         new BooleanPreference("AprilTag", "Enable Front Left", false);
 
+    /** Selects whether to enable the front right camera. */
     @DashboardToggleSwitch(title = "Enable Front Right")
     public final BooleanPreference ENABLE_FRONT_RIGHT =
         new BooleanPreference("AprilTag", "Enable Front Right", false);
 
+    /** Selects whether to enable the back left camera. */
     @DashboardToggleSwitch(title = "Enable Back Left")
     public final BooleanPreference ENABLE_BACK_LEFT =
         new BooleanPreference("AprilTag", "Enable Back Left", false);
 
+    /** Selects whether to enable the back right camera. */
     @DashboardToggleSwitch(title = "Enable Back Right")
     public final BooleanPreference ENABLE_BACK_RIGHT =
         new BooleanPreference("AprilTag", "Enable Back Right", false);
   }
 
-  @DashboardLayout(title = "April Tag", column = 0, row = 2, width = 1, height = 3)
+  /** Groups the AprilTag enablement preferences. */
+  @DashboardLayout(title = "April Tag", column = 5, row = 0, width = 2, height = 3)
   public static final AprilTagPreferences APRIL_TAG = new AprilTagPreferences();
 
-  @DashboardComboBoxChooser(title = "Field Layout", column = 0, row = 1, width = 2, height = 1)
+  /** Selects the field layout. */
+  @DashboardComboBoxChooser(title = "Field Layout", column = 7, row = 0, width = 2, height = 1)
   public static EnumPreference<AprilTagFieldParameters> FIELD_LAYOUT_PREFERENCE =
       new EnumPreference<AprilTagFieldParameters>(
           "AprilTag", "Field Layout", AprilTagFieldParameters.k2026RebuiltWelded);
 
+  /** Selects the AprilTag pose estimation strategy. */
   @DashboardComboBoxChooser(
       title = "Pose Est. Strategy",
-      column = 0,
-      row = 5,
+      column = 7,
+      row = 1,
       width = 2,
       height = 1)
   public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =
       new EnumPreference<PoseEstimationStrategy>(
           "AprilTag", "Pose Est. Strategy", PoseEstimationStrategy.MultiTagPnpOnCoprocessor);
 
-  /** Creates a new instance of RobotPreferences. */
-  public RobotPreferences() {}
+  /**
+   * Selects whether to override the Swerve odemetry with high-confidence estimated poses from
+   * vision.
+   */
+  @DashboardToggleSwitch(
+      title = "Auto Override Odometry With Pose",
+      column = 7,
+      row = 2,
+      width = 2,
+      height = 1)
+  public static final BooleanPreference SHOULD_UPDATE_ODOMETRY =
+      new BooleanPreference("AprilTag", "Should Update Odometry", true);
 
   /** Selects the type of robot. */
   @DashboardComboBoxChooser(title = "Robot Selector", column = 0, row = 0, width = 2, height = 1)
   public static final EnumPreference<RobotSelector> ROBOT_TYPE =
       new EnumPreference<>("Robot", "Robot Type", RobotSelector.CompetitionRobot2026);
 
-  // PID
-  @DashboardPIDController(title = "Auto Rotation PID", column = 5, row = 0, width = 2, height = 3)
+  /** Selects the auto-rotation PID controller gains. */
+  @DashboardPIDController(title = "Auto Rotation PID", column = 3, row = 1, width = 2, height = 3)
   public static final ProfiledPIDControllerPreference ROTATION_PID_CONTROLLER =
       new ProfiledPIDControllerPreference(
           "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
-  /** Enables or disables rumble functionality on the driver's controller. */
+  /** Selects whether rumble functionality is enabled on the driver's controller. */
   @DashboardToggleSwitch(title = "Enable Rumble", column = 2, row = 0, width = 1, height = 1)
   public static final BooleanPreference ENABLE_RUMBLE =
       new BooleanPreference("Drive", "Enable Rumble", true);
-
-  @DashboardToggleSwitch(
-      title = "Auto Override Odometry With Pose",
-      column = 7,
-      row = 0,
-      width = 2,
-      height = 1)
-  public static final BooleanPreference SHOULD_UPDATE_ODOMETRY =
-      new BooleanPreference("AprilTag", "Should Update Odometry", true);
 
   /** Adjusts the sensitivity of the right trigger on the driver's controller. */
   @DashboardNumberSlider(
@@ -101,4 +110,7 @@ public final class RobotPreferences {
       max = 1)
   public static final DoublePreference RIGHT_TRIGGER_SCALAR =
       new DoublePreference("Drive", "Right Trigger Scalar", 0.25);
+
+  /** Creates a new instance of RobotPreferences. */
+  public RobotPreferences() {}
 }

@@ -121,9 +121,9 @@
       "layouts" : [ {
         "title" : "April Tag",
         "type" : "List Layout",
-        "x" : 0.0,
-        "y" : 256.0,
-        "width" : 128.0,
+        "x" : 640.0,
+        "y" : 0.0,
+        "width" : 256.0,
         "height" : 384.0,
         "properties" : {
           "label_position" : "TOP"
@@ -177,8 +177,8 @@
       "containers" : [ {
         "title" : "Field Layout",
         "type" : "ComboBox Chooser",
-        "x" : 0.0,
-        "y" : 128.0,
+        "x" : 896.0,
+        "y" : 0.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
@@ -189,14 +189,25 @@
       }, {
         "title" : "Pose Est. Strategy",
         "type" : "ComboBox Chooser",
-        "x" : 0.0,
-        "y" : 640.0,
+        "x" : 896.0,
+        "y" : 128.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Preferences/Pose Est. Strategy",
           "period" : 0.06,
           "sort_options" : false
+        }
+      }, {
+        "title" : "Auto Override Odometry With Pose",
+        "type" : "Toggle Switch",
+        "x" : 896.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Auto Override Odometry With Pose",
+          "period" : 0.06
         }
       }, {
         "title" : "Robot Selector",
@@ -213,8 +224,8 @@
       }, {
         "title" : "Auto Rotation PID",
         "type" : "PID Controller",
-        "x" : 640.0,
-        "y" : 0.0,
+        "x" : 384.0,
+        "y" : 128.0,
         "width" : 256.0,
         "height" : 384.0,
         "properties" : {
@@ -230,17 +241,6 @@
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Preferences/Enable Rumble",
-          "period" : 0.06
-        }
-      }, {
-        "title" : "Auto Override Odometry With Pose",
-        "type" : "Toggle Switch",
-        "x" : 896.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Preferences/Auto Override Odometry With Pose",
           "period" : 0.06
         }
       }, {
