@@ -287,5 +287,12 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     // This method will be called once per scheduler run
     updateTelemetry();
     checkError();
+
+    if (goalAngle == EXTENDED_ANGLE && currentAngle < EXTENDED_ANGLE) {
+      encoder.setPosition(EXTENDED_ANGLE);
+    }
+    if (goalAngle == STOW_ANGLE && currentAngle > STOW_ANGLE) {
+      encoder.setPosition(STOW_ANGLE);
+    }
   }
 }
