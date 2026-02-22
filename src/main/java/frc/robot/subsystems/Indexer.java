@@ -135,6 +135,16 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
   }
 
   @Override
+  public void setIdleMode(MotorIdleMode idleMode) {
+    shooterIndexerMotor.setIdleMode(idleMode);
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return goalVelocity != 0;
+  }
+
+  @Override
   public void periodic() {
     updateTelemetry();
 
@@ -153,11 +163,6 @@ public class Indexer extends SubsystemBase implements ActiveSubsystem {
     currentVelocity = shooterIndexerEncoder.getVelocity();
     shooterIndexerMotor.logTelemetry();
     hopperIndexerMotor.logTelemetry();
-  }
-
-  @Override
-  public void setIdleMode(MotorIdleMode idleMode) {
-    shooterIndexerMotor.setIdleMode(idleMode);
   }
 
   @DashboardTextDisplay(

@@ -133,6 +133,16 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
   }
 
   @Override
+  public void setIdleMode(MotorIdleMode idleMode) {
+    motor.setIdleMode(idleMode);
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return goalVelocity != 0;
+  }
+
+  @Override
   public void periodic() {
     updateTelemetry();
 
@@ -150,11 +160,6 @@ public class Intake extends SubsystemBase implements ActiveSubsystem {
   private void updateTelemetry() {
     currentVelocity = encoder.getVelocity();
     motor.logTelemetry();
-  }
-
-  @Override
-  public void setIdleMode(MotorIdleMode idleMode) {
-    motor.setIdleMode(idleMode);
   }
 
   /** Returns the intake's current velocity. */

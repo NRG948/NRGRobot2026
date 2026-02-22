@@ -228,6 +228,11 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
   }
 
   @Override
+  public boolean isEnabled() {
+    return goalVelocity != 0;
+  }
+
+  @Override
   public void periodic() {
     updateTelemetry();
     double motorVoltage = 0.0;

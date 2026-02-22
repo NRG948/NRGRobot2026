@@ -144,6 +144,16 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
     logIsSeekingGoal.append(false);
   }
 
+  @Override
+  public void setIdleMode(MotorIdleMode idleMode) {
+    // Do not ever put the elevator in COAST mode or else it will crash down.
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return isSeekingGoal;
+  }
+
   /** Returns elevator height. */
   public double getHeight() {
     return this.currentState.position;
@@ -240,11 +250,6 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
 
   public boolean hasError() {
     return hasError;
-  }
-
-  @Override
-  public void setIdleMode(MotorIdleMode idleMode) {
-    // Do not ever put the elevator in COAST mode or else it will crash down.
   }
 
   @Override

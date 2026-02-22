@@ -16,4 +16,7 @@ public interface ActiveSubsystem {
 
   /** Sets idle mode of motor(s) to either brake mode or coast mode. */
   void setIdleMode(MotorIdleMode idleMode);
+
+  /** {@return whether the subsystem is enabled} */
+  boolean isEnabled();
 }

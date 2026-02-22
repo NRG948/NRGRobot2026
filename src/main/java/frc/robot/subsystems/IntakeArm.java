@@ -262,13 +262,19 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     motor.disable();
   }
 
+  @Override
+  public void setIdleMode(MotorIdleMode idleMode) {
+    motor.setIdleMode(idleMode);
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return enabled;
+  }
+
   /** {@return the current arm velocity in rads/s} */
   public double getCurrentVelocity() {
     return currentVelocity;
-  }
-
-  public boolean isEnabled() {
-    return enabled;
   }
 
   /** {@return whether an error has been detected} */
@@ -281,10 +287,5 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     // This method will be called once per scheduler run
     updateTelemetry();
     checkError();
-  }
-
-  @Override
-  public void setIdleMode(MotorIdleMode idleMode) {
-    motor.setIdleMode(idleMode);
   }
 }

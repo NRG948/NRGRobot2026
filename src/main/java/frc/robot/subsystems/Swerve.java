@@ -43,6 +43,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StructLogEntry;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
@@ -300,6 +301,23 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void disable() {
     disableAutoOrientation();
+  }
+
+  public void setIdleMode(MotorIdleMode idleMode) {
+    frontLeftDriveMotor.setIdleMode(idleMode);
+    frontRightDriveMotor.setIdleMode(idleMode);
+    backLeftDriveMotor.setIdleMode(idleMode);
+    backRightDriveMotor.setIdleMode(idleMode);
+
+    frontLeftSteeringMotor.setIdleMode(idleMode);
+    frontRightSteeringMotor.setIdleMode(idleMode);
+    backLeftSteeringMotor.setIdleMode(idleMode);
+    backRightSteeringMotor.setIdleMode(idleMode);
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return DriverStation.isEnabled();
   }
 
   /**
@@ -583,17 +601,5 @@ public class Swerve extends SubsystemBase implements ActiveSubsystem {
     estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
     estimatedPose.estimatedRotation = odometry.getEstimatedPosition().getRotation().getDegrees();
-  }
-
-  public void setIdleMode(MotorIdleMode idleMode) {
-    frontLeftDriveMotor.setIdleMode(idleMode);
-    frontRightDriveMotor.setIdleMode(idleMode);
-    backLeftDriveMotor.setIdleMode(idleMode);
-    backRightDriveMotor.setIdleMode(idleMode);
-
-    frontLeftSteeringMotor.setIdleMode(idleMode);
-    frontRightSteeringMotor.setIdleMode(idleMode);
-    backLeftSteeringMotor.setIdleMode(idleMode);
-    backRightSteeringMotor.setIdleMode(idleMode);
   }
 }
