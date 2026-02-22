@@ -51,17 +51,17 @@ public class RobotContainer {
 
   private final Subsystems subsystems = new Subsystems();
 
-  @DashboardTab(title = "Autonomous")
   private final Autos autos = new Autos(subsystems);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     DriverStation.silenceJoystickConnectionWarning(true);
 
-    operator = new RobotOperator(subsystems);
+    operator = new RobotOperator(subsystems, autos);
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
+
     // Configure the trigger bindings
     configureBindings();
 

@@ -10,8 +10,6 @@ package frc.robot.commands;
 import com.nrg948.autonomous.Autonomous;
 import com.nrg948.autonomous.AutonomousCommandGenerator;
 import com.nrg948.autonomous.AutonomousCommandMethod;
-import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
-import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -36,28 +34,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/** Autos class for Elastic Tab. This includes choosing autos and auto visualization. */
-@DashboardDefinition
+/** A utility class for autonomous related commands and selection. */
 public final class Autos {
   private static final String AUTO_FILE_TYPE = ".auto";
-
   private static final File AUTOS_DIR =
       new File(Filesystem.getDeployDirectory(), "pathplanner/autos");
 
   private static final HashMap<String, Command> autosMap = new HashMap<String, Command>();
 
-  /** Initiates Dropdown Menu for autonomous routine. */
-  @DashboardComboBoxChooser(title = "Routine", column = 0, row = 0, width = 2, height = 1)
   private final SendableChooser<Command> autoChooser;
-
-  @DashboardComboBoxChooser(title = "Delay (sec)", column = 0, row = 1, width = 2, height = 1)
   private final SendableChooser<Integer> delayChooser = new SendableChooser<>();
-
-  /** Returns an autonomous command that does nothing. */
-  @AutonomousCommandMethod(name = "None", isDefault = true)
-  public static Command none(Subsystems subsystems) {
-    return Commands.none().withName("None");
-  }
 
   /**
    * Initializes autoChooser for tab dependency via RobotContainer.
@@ -87,9 +73,15 @@ public final class Autos {
     }
   }
 
+  /** {@return an autonomous command that does nothing} */
+  @AutonomousCommandMethod(name = "None", isDefault = true)
+  public static Command none(Subsystems subsystems) {
+    return Commands.none().withName("None");
+  }
+
   /**
-   * Returns a collection of label-value pairs mapping autonomous routine names to autonomous
-   * commands defined using Pathplannner.
+   * {@return a collection of label-value pairs mapping autonomous routine names to autonomous
+   * commands defined using Pathplannner}
    */
   @AutonomousCommandGenerator
   public static Collection<LabelValue<String, Command>> generatePathPlannerAutos(
@@ -106,11 +98,10 @@ public final class Autos {
   }
 
   /**
-   * Returns the PathPlanner auto command.
+   * {@return the PathPlanner auto command}
    *
    * @param subsystems Subsystems container.
    * @param name Name of the PathPlanner auto.
-   * @return The PathPlanner auto command.
    */
   public static Command generatePathPlannerAuto(Subsystems subsystems, String name) {
     Set<Subsystem> requirements = new HashSet<>(Arrays.asList(subsystems.getManipulators()));
@@ -153,7 +144,9 @@ public final class Autos {
   }
 
   /**
-   * Returns a {@link PathPlannerAuto} instance for the given Pathplanner autonomous routine name.
+   * {@return a {@link PathPlannerAuto} instance for the given PathPlanner autonomous routine name}
+   *
+   * @param name the PathPlanner autonomous routine name
    */
   private static Command newPathPlannerAuto(String name) {
     return new PathPlannerAuto(name);
@@ -168,8 +161,6 @@ public final class Autos {
   private static Map<String, Command> getPathplannerEventMap(Subsystems subsystems) {
 
     Map<String, Command> eventMaps = new HashMap<String, Command>();
-    // TODO: Populate eventMaps with commands for PathPlanner event markers for the given
-    // pathGroupName.
     eventMaps.put(
         "ShootWithAutoRotation",
         Commands.parallel(
@@ -193,13 +184,22 @@ public final class Autos {
 
     eventMaps.put("DisableIntake", IntakeCommands.disableIntake(subsystems));
 
-    // eventMaps.put("ReduceSDs", ));
     return eventMaps;
   }
 
-  /** Gets selected autonomous routine. */
+  /** {@return the selected autonomous routine} */
   public Command getAutonomous() {
     return Commands.sequence(
         Commands.waitSeconds(this.delayChooser.getSelected()), this.autoChooser.getSelected());
+  }
+
+  /** {@return the {@link SendableChooser} for selecting the autonomous command} */
+  public SendableChooser<Command> getAutoChooser() {
+    return autoChooser;
+  }
+
+  /** {@return the {@link SendableChooser} for selecting the delay at the start of autonomous} */
+  public SendableChooser<Integer> getDelayChooser() {
+    return delayChooser;
   }
 }
