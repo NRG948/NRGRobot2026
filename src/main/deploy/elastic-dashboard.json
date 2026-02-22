@@ -791,7 +791,7 @@
       }, {
         "title" : "PID",
         "type" : "PID Controller",
-        "x" : 768.0,
+        "x" : 512.0,
         "y" : 0.0,
         "width" : 256.0,
         "height" : 384.0,
@@ -833,7 +833,7 @@
       }, {
         "title" : "Test Velocity (m/s)",
         "type" : "Text Display",
-        "x" : 512.0,
+        "x" : 256.0,
         "y" : 0.0,
         "width" : 256.0,
         "height" : 128.0,
@@ -845,8 +845,8 @@
       }, {
         "title" : "Set Test Velocities (m/s)",
         "type" : "Command",
-        "x" : 512.0,
-        "y" : 256.0,
+        "x" : 256.0,
+        "y" : 128.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
@@ -858,8 +858,8 @@
       }, {
         "title" : "Disable",
         "type" : "Command",
-        "x" : 512.0,
-        "y" : 384.0,
+        "x" : 256.0,
+        "y" : 256.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {

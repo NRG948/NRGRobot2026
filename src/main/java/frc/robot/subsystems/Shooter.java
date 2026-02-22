@@ -119,7 +119,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(KS, KV);
 
-  @DashboardPIDController(title = "PID", column = 6, row = 0, width = 2, height = 3)
+  @DashboardPIDController(title = "PID", column = 4, row = 0, width = 2, height = 3)
   private final PIDControllerPreference pidController =
       new PIDControllerPreference("Shooter", "PID Controller", 1, 0, 0);
 
@@ -138,7 +138,7 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardTextDisplay(
       title = "Test Velocity (m/s)",
-      column = 4,
+      column = 2,
       row = 0,
       width = 2,
       height = 1,
@@ -148,8 +148,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardCommand(
       title = "Set Test Velocities (m/s)",
-      column = 4,
-      row = 2,
+      column = 2,
+      row = 1,
       width = 2,
       height = 1,
       fillWidget = true)
@@ -159,8 +159,8 @@ public class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardCommand(
       title = "Disable",
-      column = 4,
-      row = 3,
+      column = 2,
+      row = 2,
       width = 2,
       height = 1,
       fillWidget = true)
