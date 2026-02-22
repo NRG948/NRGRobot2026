@@ -1,4 +1,3 @@
-\[]
 /*
  * Copyright (c) 2026 Newport Robotics Group. All Rights Reserved.
  *

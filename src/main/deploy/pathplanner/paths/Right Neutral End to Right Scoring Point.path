@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 3.1834,
-        "y": 2.670777777777778
+        "x": 3.183,
+        "y": 2.671
       },
       "prevControl": {
-        "x": 3.6316444444444445,
-        "y": 2.6610333333333336
+        "x": 3.6312444444444445,
+        "y": 2.6612555555555555
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Scoring Point"
     }
   ],
   "rotationTargets": [
@@ -97,7 +97,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 42.67846941016727
+    "rotation": 33.95538259252424
   },
   "reversed": false,
   "folder": null,
