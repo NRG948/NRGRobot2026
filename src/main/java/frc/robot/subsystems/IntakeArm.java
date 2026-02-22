@@ -44,7 +44,6 @@ import java.util.Map;
 
 @DashboardDefinition
 public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
-
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
@@ -58,6 +57,7 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private static final double ERROR_MARGIN =
       Units.degreesToRadians(5.0); // TODO: Add error margin in radians
   private static final double ERROR_TIME = 1;
+
   private static final double GEAR_RATIO = 50.0;
   private static final double RADIANS_PER_ROTATION = 2 * Math.PI;
   private static final double MASS = Units.lbsToKilograms(5.5);
@@ -67,7 +67,6 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_ACCELERATION =
       (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
-  // TODO: Find intake arm angles
   public static final double STOW_ANGLE = Units.degreesToRadians(140);
   public static final double BUMP_ANGLE = Units.degreesToRadians(25);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
@@ -164,7 +163,8 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     encoder.setPosition(STOW_ANGLE);
   }
 
-  public void updateTelemetry() {
+  /** Polls sensors and logs telemetry. */
+  private void updateTelemetry() {
     currentAngle = encoder.getPosition();
     currentVelocity = encoder.getVelocity();
     motor.logTelemetry();
@@ -202,6 +202,10 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     motor.setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
   }
 
+  /**
+   * {@return the current intake arm angle in degrees} The angle is relative to horizontal with
+   * positive values upward.
+   */
   @DashboardRadialGauge(
       title = "Current Angle",
       column = 0,
@@ -218,6 +222,10 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     return Math.toDegrees(currentAngle);
   }
 
+  /**
+   * {@return the goal angle in degress} The angle is relative to horizontal with positive values
+   * upward.
+   */
   @DashboardTextDisplay(
       title = "Goal Angle",
       column = 0,
@@ -230,35 +238,42 @@ public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   /**
-   * Returns whether the intake arm is near goal angle
+   * {@return whether the intake arm is near the specified angle}
    *
-   * @param goalAngle
-   * @return
+   * @param goalAngle The angle to check, in radians.
    */
-  public boolean atGoalAngle(double goalAngle) {
+  private boolean atAngle(double goalAngle) {
     return Math.abs(goalAngle - currentAngle) <= TOLERANCE;
   }
 
+  /** {@return whether the intake arm is near the goal angle} */
   public boolean atGoalAngle() {
-    return atGoalAngle(this.goalAngle);
+    return atAngle(this.goalAngle);
   }
 
+  /** {@return whether the intake arm is near the stowed angle} */
   public boolean isStowed() {
-    return atGoalAngle(STOW_ANGLE);
-  }
-
-  public boolean hasError() {
-    return hasError;
-  }
-
-  public double getStowAngle() {
-    return STOW_ANGLE;
+    return atAngle(STOW_ANGLE);
   }
 
   @Override
   public void disable() {
     enabled = false;
     motor.disable();
+  }
+
+  /** {@return the current arm velocity in rads/s} */
+  public double getCurrentVelocity() {
+    return currentVelocity;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  /** {@return whether an error has been detected} */
+  public boolean hasError() {
+    return hasError;
   }
 
   @Override

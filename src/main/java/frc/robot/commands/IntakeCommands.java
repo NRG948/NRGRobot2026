@@ -28,7 +28,7 @@ public final class IntakeCommands {
     // TODO Flesh out full sequence when other subsystems are finished.
     return Commands.parallel(
         Commands.runOnce(intake::disable, intake),
-        Commands.runOnce(() -> intakeArm.setGoalAngle(intakeArm.getStowAngle()), intakeArm));
+        Commands.runOnce(() -> intakeArm.setGoalAngle(IntakeArm.STOW_ANGLE), intakeArm));
   }
 
   public static Command setIntakeArmAngle(double angle, Subsystems subsystems) {

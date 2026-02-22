@@ -11,6 +11,7 @@ import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.parameters.MotorParameters.KrakenX60;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -81,7 +82,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   private final TalonFXAdapter mainMotor =
       new TalonFXAdapter(
           "/Climber/Main Motor",
-          new TalonFX(RobotConstants.CANID.CLIMBER_ELEVATOR_LEFT_ID, "rio"),
+          new TalonFX(RobotConstants.CANID.CLIMBER_ELEVATOR_LEFT_ID, CANBus.roboRIO()),
           CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
           METERS_PER_REVOLUTION);
@@ -114,8 +115,6 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
 
   /** The offset below the goal height when it is safe to pivot the arm. */
   private double armPivotHeightOffset = 0;
-
-  private Timer resetEncoderTimer = new Timer();
 
   private BooleanLogEntry logIsSeekingGoal = new BooleanLogEntry(LOG, "/Elevator/isSeekingGoal");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Elevator/velocity");

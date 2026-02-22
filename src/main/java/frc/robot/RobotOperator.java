@@ -15,7 +15,6 @@ import com.nrg948.dashboard.model.GameField;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.AprilTag;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchTime;
@@ -23,8 +22,6 @@ import java.util.Optional;
 
 @DashboardDefinition
 public final class RobotOperator {
-
-  private final Intake intake;
   private final Swerve drivetrain;
   public final Optional<AprilTag> frontLeftCamera;
   public final Optional<AprilTag> frontRightCamera;
@@ -32,16 +29,12 @@ public final class RobotOperator {
   public final Optional<AprilTag> backRightCamera;
 
   public RobotOperator(Subsystems subsystems) {
-    intake = subsystems.intake;
     drivetrain = subsystems.drivetrain;
     frontLeftCamera = subsystems.frontLeftCamera;
     frontRightCamera = subsystems.frontRightCamera;
     backLeftCamera = subsystems.backLeftCamera;
     backRightCamera = subsystems.backRightCamera;
   }
-
-  private static final double MIN_SPEED = 0.0;
-  private static final double MAX_SPEED = 5.0;
 
   @DashboardField(
       title = "Field",

@@ -15,7 +15,7 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 
-/** Creates a LaserCAN sensor. Make sure to call updateTelemetry() before calling getDistance(). */
+/** Creates a LaserCAN sensor. */
 public class LaserCANSensor {
   private static final DataLog LOG = DataLogManager.getLog();
 
@@ -26,7 +26,7 @@ public class LaserCANSensor {
   private double distanceCorrection;
 
   private LaserCan laserCAN;
-  private String laserCANName;
+  private String name;
 
   private DoubleLogEntry logDistance;
 
@@ -34,13 +34,13 @@ public class LaserCANSensor {
    * Creates a LaserCAN Sensor.
    *
    * @param CANID ID of the sensor.
-   * @param LaserCANName Name of the sensor.
+   * @param name Name of the sensor.
    * @param distanceCorrection Distance correction of the sensor.
    */
-  public LaserCANSensor(int CANID, String LaserCANName, double distanceCorrection) {
-    this.laserCANName = laserCANName;
+  public LaserCANSensor(int CANID, String name, double distanceCorrection) {
+    this.name = name;
     this.distanceCorrection = distanceCorrection;
-    logDistance = new DoubleLogEntry(LOG, "/LaserCAN/" + LaserCANName + "/Distance");
+    logDistance = new DoubleLogEntry(LOG, "/LaserCAN/" + name + "/Distance");
 
     try {
       laserCAN = createLaserCAN(CANID, TimingBudget.TIMING_BUDGET_20MS);
@@ -50,6 +50,14 @@ public class LaserCANSensor {
     }
   }
 
+  /**
+   * Creates and configures a {@link LaserCAN} object.
+   *
+   * @param id The laserCAN CAN id
+   * @param timingBudget The timing budget for the laserCAN sensor.
+   * @return A configured LaserCAN object.
+   * @throws ConfigurationFailedException
+   */
   private LaserCan createLaserCAN(int id, LaserCan.TimingBudget timingBudget)
       throws ConfigurationFailedException {
     LaserCan laserCAN = new LaserCan(id);
@@ -60,8 +68,16 @@ public class LaserCANSensor {
     return laserCAN;
   }
 
-  public double getDistance() {
+  /** {@return the laserCAN sensor name} */
+  public String getName() {
+    return name;
+  }
 
+  /**
+   * {@return the distance measurement in meters} If no measurement is available, this method
+   * returns {@link LaserCANSensor#NO_MEASURMENT}.
+   */
+  public double getDistance() {
     Measurement measurement = laserCAN.getMeasurement();
     double distance = NO_MEASURMENT;
 
