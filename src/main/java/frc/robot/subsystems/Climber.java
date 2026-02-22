@@ -11,12 +11,9 @@ import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.parameters.MotorParameters.KrakenX60;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 
-import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.ExponentialProfile;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
@@ -31,10 +28,14 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants;
+import frc.robot.RobotPreferences;
+import frc.robot.RobotSelector;
 import frc.robot.parameters.ElevatorLevel;
+import frc.robot.parameters.MotorParameters;
+import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
-import frc.robot.util.TalonFXAdapter;
+import java.util.Map;
 
 public class Climber extends SubsystemBase implements ActiveSubsystem {
 
@@ -57,11 +58,16 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   public static final double STOWED_HEIGHT_FOR_PID = (MIN_HEIGHT + DISABLE_HEIGHT) / 2;
 
   // Trapezoid profile values
-  private static final DCMotor MOTOR_PARAMS = DCMotor.getKrakenX60(1);
-  private static final double MAX_SPEED =
-      (MOTOR_PARAMS.freeSpeedRadPerSec / (2 * Math.PI)) * METERS_PER_REVOLUTION; // m/s
+  private static final MotorParameters MOTOR =
+      RobotPreferences.ROBOT_TYPE.selectOrDefault(
+          Map.of(
+              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
+              RobotSelector.PracticeRobot2026, MotorParameters.NullMotor,
+              RobotSelector.AlphaRobot2026, MotorParameters.NullMotor),
+          MotorParameters.NullMotor);
+  private static final double MAX_SPEED = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION; // m/s
   private static final double MAX_ACCELERATION =
-      (MOTOR_PARAMS.stallTorqueNewtonMeters * GEAR_RATIO) / (SPROCKET_DIAMETER * MASS); // m/s^2
+      (MOTOR.getStallTorque() * GEAR_RATIO) / (SPROCKET_DIAMETER * MASS); // m/s^2
   private static final ExponentialProfile.Constraints EXPONENTIAL_CONSTRAINTS =
       ExponentialProfile.Constraints.fromCharacteristics(
           MAX_BATTERY_VOLTAGE, MAX_SPEED / 2, MAX_ACCELERATION / 64);
@@ -79,10 +85,10 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
 
   public static final double KD = 0;
 
-  private final TalonFXAdapter mainMotor =
-      new TalonFXAdapter(
+  private final MotorController mainMotor =
+      MOTOR.newController(
           "/Climber/Main Motor",
-          new TalonFX(RobotConstants.CANID.CLIMBER_ELEVATOR_LEFT_ID, CANBus.roboRIO()),
+          RobotConstants.CANID.CLIMBER_ELEVATOR_LEFT_ID,
           CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
           METERS_PER_REVOLUTION);
@@ -90,7 +96,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   private final RelativeEncoder encoder = mainMotor.getEncoder();
 
   private ElevatorSim simElevator =
-      new ElevatorSim(MOTOR_PARAMS, GEAR_RATIO, MASS, SPROCKET_DIAMETER / 2, 0, 1, true, 0);
+      new ElevatorSim(MOTOR.getDCMotor(), GEAR_RATIO, MASS, SPROCKET_DIAMETER / 2, 0, 1, true, 0);
 
   private final Mechanism2d mechanism2d = new Mechanism2d(0.5, 1.0);
   private final MechanismRoot2d mechanismRoot2d = mechanism2d.getRoot("Elevator Root", 0, 0);
