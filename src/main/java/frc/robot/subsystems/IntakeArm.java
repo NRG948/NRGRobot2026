@@ -43,7 +43,7 @@ import frc.robot.util.TalonFXAdapter;
 import java.util.Map;
 
 @DashboardDefinition
-public class IntakeArm extends SubsystemBase implements ActiveSubsystem {
+public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(

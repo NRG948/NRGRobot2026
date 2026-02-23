@@ -62,10 +62,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @DashboardDefinition
-public class Swerve extends SubsystemBase implements ActiveSubsystem {
+public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardDefinition
-  public class EstimatedPose {
+  public static final class EstimatedPose {
     @DashboardTextDisplay(column = 0, row = 0, title = "X")
     public double estimatedPoseX;
 

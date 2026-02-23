@@ -33,7 +33,7 @@ import frc.robot.util.RelativeEncoder;
 import java.util.Map;
 
 @DashboardDefinition
-public class Intake extends SubsystemBase implements ActiveSubsystem {
+public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(

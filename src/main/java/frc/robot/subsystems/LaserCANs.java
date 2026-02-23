@@ -12,7 +12,7 @@ import frc.robot.Constants.LaserCANConstants;
 import frc.robot.util.LaserCANSensor;
 
 /** Subsystem made of 2 LaserCANs. */
-public class LaserCANs extends SubsystemBase {
+public final class LaserCANs extends SubsystemBase {
 
   private LaserCANSensor leftLaserCAN;
   private LaserCANSensor rightLaserCAN;

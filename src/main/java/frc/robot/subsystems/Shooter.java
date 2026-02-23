@@ -41,8 +41,7 @@ import frc.robot.util.RelativeEncoder;
 import java.util.Map;
 
 @DashboardDefinition
-public class Shooter extends SubsystemBase implements ActiveSubsystem {
-
+public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double VELOCITY_PERCENT_TOLERANCE = 0.05;
   private static final double EFFICIENCY = 0.9;
 

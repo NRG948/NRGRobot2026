@@ -47,7 +47,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 @DashboardDefinition
-public class AprilTag extends SubsystemBase {
+public final class AprilTag extends SubsystemBase {
 
   private static final DataLog LOG = DataLogManager.getLog();
 
@@ -474,7 +474,7 @@ public class AprilTag extends SubsystemBase {
   }
 
   @DashboardDefinition
-  public class SelectedAprilTagTelemetry {
+  public static final class SelectedAprilTagTelemetry {
     @DashboardTextDisplay(column = 0, row = 0, title = "X")
     public double selectedAprilTagPoseX;
 
@@ -501,7 +501,7 @@ public class AprilTag extends SubsystemBase {
   }
 
   @DashboardDefinition
-  public class EstimatedPoseTelemetry {
+  public static final class EstimatedPoseTelemetry {
     @DashboardTextDisplay(column = 0, row = 0, title = "X")
     public double lastEstimatedPoseX;
 

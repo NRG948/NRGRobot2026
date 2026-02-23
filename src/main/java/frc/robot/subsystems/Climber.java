@@ -37,7 +37,7 @@ import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 import java.util.Map;
 
-public class Climber extends SubsystemBase implements ActiveSubsystem {
+public final class Climber extends SubsystemBase implements ActiveSubsystem {
 
   private static final DataLog LOG = DataLogManager.getLog();
 

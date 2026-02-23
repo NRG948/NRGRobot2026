@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * Introduction to DC Motor Feedforward</a> articles of the WPILib documentation.
  */
 @DashboardDefinition
-public class SwerveModule {
+public final class SwerveModule {
   private static final DataLog LOG = DataLogManager.getLog();
 
   private final MotorController driveMotor;
