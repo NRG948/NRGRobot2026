@@ -10,22 +10,27 @@ package frc.robot.commands;
 import com.nrg948.autonomous.Autonomous;
 import com.nrg948.autonomous.AutonomousCommandGenerator;
 import com.nrg948.autonomous.AutonomousCommandMethod;
+import com.nrg948.util.enums.EnumChooser;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchUtil;
 import io.arxila.javatuples.LabelValue;
+import io.arxila.javatuples.Pair;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,10 +45,15 @@ public final class Autos {
   private static final File AUTOS_DIR =
       new File(Filesystem.getDeployDirectory(), "pathplanner/autos");
 
-  private static final HashMap<String, Command> autosMap = new HashMap<String, Command>();
+  private static final HashMap<Pair<String, AutoSide>, Command> autosMap = new HashMap<>();
 
-  private final SendableChooser<Command> autoChooser;
-  private final SendableChooser<Integer> delayChooser = new SendableChooser<>();
+  private static final SendableChooser<AutoSide> sideChooser =
+      EnumChooser.fromDefault(AutoSide.RIGHT);
+  private static SendableChooser<Command> autoChooser;
+  private static final SendableChooser<Integer> delayChooser = new SendableChooser<>();
+
+  private static final Alert invalidAutoAlert =
+      new Alert("Invalid auto combination.", AlertType.kError);
 
   /**
    * Initializes autoChooser for tab dependency via RobotContainer.
@@ -66,10 +76,11 @@ public final class Autos {
 
     autoChooser = Autonomous.getChooser(subsystems);
     autoChooser.onChange(Autos::preloadAuto);
+    sideChooser.onChange(Autos::preloadAuto);
 
-    this.delayChooser.setDefaultOption("No Delay", (Integer) 0);
+    delayChooser.setDefaultOption("No Delay", (Integer) 0);
     for (var i = 1; i < 8; i++) {
-      this.delayChooser.addOption(String.format("%d Second Delay", i), (Integer) i);
+      delayChooser.addOption(String.format("%d Second Delay", i), (Integer) i);
     }
   }
 
@@ -106,7 +117,12 @@ public final class Autos {
   public static Command generatePathPlannerAuto(Subsystems subsystems, String name) {
     Set<Subsystem> requirements = new HashSet<>(Arrays.asList(subsystems.getManipulators()));
     requirements.add(subsystems.drivetrain);
-    return Commands.defer(() -> getPathPlannerAuto(name), requirements).withName(name);
+    return Commands.defer(
+            () ->
+                Commands.sequence(
+                    Commands.waitSeconds(delayChooser.getSelected()), getPathPlannerAuto(name)),
+            requirements)
+        .withName(name);
   }
 
   /**
@@ -114,12 +130,13 @@ public final class Autos {
    * preloaded.
    *
    * @param name Name of the PathPlanner auto.
+   * @param shouldMirror TODO
    * @return The PathPlanner auto command.
    */
   private static Command getPathPlannerAuto(String name) {
-    Command autoCommand = autosMap.remove(name);
+    Command autoCommand = autosMap.remove(new Pair<>(name, sideChooser.getSelected()));
     if (autoCommand == null) {
-      autoCommand = newPathPlannerAuto(name);
+      autoCommand = newPathPlannerAuto(name, false);
     }
     return autoCommand;
   }
@@ -129,17 +146,32 @@ public final class Autos {
    *
    * @param auto The auto to preload.
    */
-  public static void preloadAuto(Command auto) {
+  private static void preloadAuto(Command auto) {
     if (auto == null) {
       return;
     }
 
     String autoName = auto.getName();
+    preloadAuto(autoName, sideChooser.getSelected());
+  }
+
+  private static void preloadAuto(AutoSide side) {
+    Command auto = autoChooser.getSelected();
+
+    if (auto == null) {
+      return;
+    }
+
+    preloadAuto(auto.getName(), side);
+  }
+
+  private static void preloadAuto(String autoName, AutoSide side) {
+    invalidAutoAlert.set(autoName.contains("Outpost") && side == AutoSide.LEFT);
     File autoFile = new File(AUTOS_DIR, autoName + AUTO_FILE_TYPE);
 
     if (autoFile.exists()) {
-      Command autoCommand = newPathPlannerAuto(autoName);
-      autosMap.put(autoName, autoCommand);
+      Command autoCommand = newPathPlannerAuto(autoName, side == AutoSide.LEFT);
+      autosMap.put(new Pair<String, AutoSide>(autoName, side), autoCommand);
     }
   }
 
@@ -147,9 +179,10 @@ public final class Autos {
    * {@return a {@link PathPlannerAuto} instance for the given PathPlanner autonomous routine name}
    *
    * @param name the PathPlanner autonomous routine name
+   * @param shouldMirror whether the path needs to be mirrored
    */
-  private static Command newPathPlannerAuto(String name) {
-    return new PathPlannerAuto(name);
+  private static Command newPathPlannerAuto(String name, boolean shouldMirror) {
+    return new PathPlannerAuto(name, shouldMirror);
   }
 
   /**
@@ -189,8 +222,7 @@ public final class Autos {
 
   /** {@return the selected autonomous routine} */
   public Command getAutonomous() {
-    return Commands.sequence(
-        Commands.waitSeconds(this.delayChooser.getSelected()), this.autoChooser.getSelected());
+    return autoChooser.getSelected();
   }
 
   /** {@return the {@link SendableChooser} for selecting the autonomous command} */
@@ -198,8 +230,17 @@ public final class Autos {
     return autoChooser;
   }
 
+  /** {@return the {@link SendableChooser} for selecting the autonomous path starting side} */
+  public SendableChooser<AutoSide> getSideChooser() {
+    return sideChooser;
+  }
+
   /** {@return the {@link SendableChooser} for selecting the delay at the start of autonomous} */
   public SendableChooser<Integer> getDelayChooser() {
     return delayChooser;
+  }
+
+  public Alert getInvalidAutoAlert() {
+    return invalidAutoAlert;
   }
 }

@@ -6,10 +6,21 @@
     "grid_layout" : {
       "layouts" : [ ],
       "containers" : [ {
+        "title" : "Autonomous Start Side",
+        "type" : "Split Button Chooser",
+        "x" : 1152.0,
+        "y" : 256.0,
+        "width" : 384.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Autonomous Start Side",
+          "period" : 0.06
+        }
+      }, {
         "title" : "Autonomous Routine",
         "type" : "ComboBox Chooser",
         "x" : 1152.0,
-        "y" : 256.0,
+        "y" : 384.0,
         "width" : 384.0,
         "height" : 128.0,
         "properties" : {
@@ -21,13 +32,24 @@
         "title" : "Autonomous Delay",
         "type" : "ComboBox Chooser",
         "x" : 1152.0,
-        "y" : 384.0,
+        "y" : 512.0,
         "width" : 384.0,
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Autonomous Delay",
           "period" : 0.06,
           "sort_options" : false
+        }
+      }, {
+        "title" : "Alerts",
+        "type" : "Alerts",
+        "x" : 0.0,
+        "y" : 512.0,
+        "width" : 896.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Alerts",
+          "period" : 0.06
         }
       }, {
         "title" : "Field",
