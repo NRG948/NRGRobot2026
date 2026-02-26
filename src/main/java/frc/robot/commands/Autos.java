@@ -126,11 +126,10 @@ public final class Autos {
   }
 
   /**
-   * Returns the PathPlanner auto command from the {@link #autosMap}, creating one if it hasn't
-   * already been preloaded.
+   * Returns the PathPlanner auto command for the side selected by {@link #sideChooser} from the
+   * {@link #autosMap}, creating one if it hasn't already been preloaded.
    *
    * @param name Name of the PathPlanner auto.
-   * @param shouldMirror TODO
    * @return The PathPlanner auto command.
    */
   private static Command getPathPlannerAuto(String name) {
