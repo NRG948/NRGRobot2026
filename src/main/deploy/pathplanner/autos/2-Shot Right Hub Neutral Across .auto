@@ -106,7 +106,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Right Neutral Start to Close Left Neutral End"
+                  "pathName": "Close Right Neutral Start to Close Right Neutral End"
                 }
               },
               {
@@ -125,7 +125,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Right Neutral End to Right Scoring Point"
+                  "pathName": "Close Left Neutral End to Left Scoring Point"
                 }
               },
               {
