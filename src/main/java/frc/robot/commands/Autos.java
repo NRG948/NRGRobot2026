@@ -53,7 +53,7 @@ public final class Autos {
   private static final SendableChooser<Integer> delayChooser = new SendableChooser<>();
 
   private static final Alert invalidAutoAlert =
-      new Alert("Invalid auto combination.", AlertType.kError);
+      new Alert("Invalid auto combination. No auto will run.", AlertType.kError);
 
   /**
    * Initializes autoChooser for tab dependency via RobotContainer.
@@ -126,23 +126,26 @@ public final class Autos {
   }
 
   /**
-   * Returns the PathPlanner auto command from the autosMap, creating one if it hasn't already been
-   * preloaded.
+   * Returns the PathPlanner auto command from the {@link #autosMap}, creating one if it hasn't
+   * already been preloaded.
    *
    * @param name Name of the PathPlanner auto.
    * @param shouldMirror TODO
    * @return The PathPlanner auto command.
    */
   private static Command getPathPlannerAuto(String name) {
-    Command autoCommand = autosMap.remove(new Pair<>(name, sideChooser.getSelected()));
+    AutoSide side = sideChooser.getSelected();
+    Command autoCommand = autosMap.remove(new Pair<>(name, side));
+
     if (autoCommand == null) {
-      autoCommand = newPathPlannerAuto(name, false);
+      autoCommand = newPathPlannerAuto(name, side);
     }
+
     return autoCommand;
   }
 
   /**
-   * Preloads the specified PathPlanner command.
+   * Preloads the specified PathPlanner command for the side selected by {@link #sideChooser}.
    *
    * @param auto The auto to preload.
    */
@@ -155,6 +158,11 @@ public final class Autos {
     preloadAuto(autoName, sideChooser.getSelected());
   }
 
+  /**
+   * Preloads the PathPlanner command selected by {@link #autoChooser} for the given side.
+   *
+   * @param side the side to preload the auto for
+   */
   private static void preloadAuto(AutoSide side) {
     Command auto = autoChooser.getSelected();
 
@@ -165,24 +173,50 @@ public final class Autos {
     preloadAuto(auto.getName(), side);
   }
 
+  /**
+   * Preloads the PathPlanner command with the given name for the given side, if it is valid.
+   *
+   * @param autoName the name of the PathPlanner auto
+   * @param side the side to preload the auto for
+   */
   private static void preloadAuto(String autoName, AutoSide side) {
-    invalidAutoAlert.set(autoName.contains("Outpost") && side == AutoSide.LEFT);
     File autoFile = new File(AUTOS_DIR, autoName + AUTO_FILE_TYPE);
 
     if (autoFile.exists()) {
-      Command autoCommand = newPathPlannerAuto(autoName, side == AutoSide.LEFT);
+      Command autoCommand = newPathPlannerAuto(autoName, side);
       autosMap.put(new Pair<String, AutoSide>(autoName, side), autoCommand);
     }
   }
 
   /**
+   * Checks if the specified PathPlanner auto is valid for the given side.
+   *
+   * @param autoName the name of the PathPlanner auto
+   * @param side the side to check the auto for
+   * @return true if the auto is valid, false otherwise
+   */
+  private static boolean isValidAuto(String autoName, AutoSide side) {
+    return !autoName.contains("Outpost") || side == AutoSide.RIGHT;
+  }
+
+  /**
    * {@return a {@link PathPlannerAuto} instance for the given PathPlanner autonomous routine name}
+   * If the selected PathPlanner routine is not valid for the selected side, returns a command that
+   * does nothing.
    *
    * @param name the PathPlanner autonomous routine name
-   * @param shouldMirror whether the path needs to be mirrored
+   * @param side whether the path needs to be mirrored
    */
-  private static Command newPathPlannerAuto(String name, boolean shouldMirror) {
-    return new PathPlannerAuto(name, shouldMirror);
+  private static Command newPathPlannerAuto(String name, AutoSide side) {
+    if (!isValidAuto(name, side)) {
+      invalidAutoAlert.set(true);
+
+      return Commands.none().withName(name + " (Invalid)");
+    }
+
+    invalidAutoAlert.set(false);
+
+    return new PathPlannerAuto(name, side == AutoSide.LEFT);
   }
 
   /**
