@@ -173,7 +173,7 @@ public final class Autos {
   }
 
   /**
-   * Preloads the PathPlanner command with the given name for the given side, if it is valid.
+   * Preloads the PathPlanner command with the given name for the given side.
    *
    * @param autoName the name of the PathPlanner auto
    * @param side the side to preload the auto for
