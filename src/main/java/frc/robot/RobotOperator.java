@@ -7,17 +7,20 @@
  
 package frc.robot;
 
+import com.nrg948.dashboard.annotations.DashboardAlerts;
 import com.nrg948.dashboard.annotations.DashboardBooleanBox;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
+import com.nrg948.dashboard.annotations.DashboardSplitButtonChooser;
 import com.nrg948.dashboard.model.GameField;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ShootingCommands;
+import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.AprilTag;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -32,16 +35,28 @@ public final class RobotOperator {
   private final Optional<AprilTag> backLeftCamera;
   private final Optional<AprilTag> backRightCamera;
 
-  @DashboardComboBoxChooser(
-      title = "Autonomous Routine",
+  /** Selects whether to use left or right side auto */
+  @DashboardSplitButtonChooser(
+      title = "Autonomous Start Side",
       column = 9,
       row = 2,
       width = 3,
       height = 1)
+  public final SendableChooser<AutoSide> sideChooser;
+
+  @DashboardComboBoxChooser(
+      title = "Autonomous Routine",
+      column = 9,
+      row = 3,
+      width = 3,
+      height = 1)
   private final SendableChooser<Command> autoChooser;
 
-  @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 3, width = 3, height = 1)
+  @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 4, width = 3, height = 1)
   private final SendableChooser<Integer> delayChooser;
+
+  @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 7, height = 2)
+  private final boolean invalidAutoAlert = false;
 
   public RobotOperator(Subsystems subsystems, Autos autonomous) {
     drivetrain = subsystems.drivetrain;
@@ -51,6 +66,7 @@ public final class RobotOperator {
     backRightCamera = subsystems.backRightCamera;
     autoChooser = autonomous.getAutoChooser();
     delayChooser = autonomous.getDelayChooser();
+    sideChooser = autonomous.getSideChooser();
   }
 
   @DashboardField(
