@@ -62,7 +62,7 @@ public final class ShootingCommands {
             });
   }
 
-  private static Command feedBallsToShooter(Subsystems subsystems) {
+  public static Command feedBallsToShooter(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;

@@ -22,6 +22,7 @@ import frc.robot.commands.DriveUsingController;
 import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
+import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
@@ -97,6 +98,12 @@ public class RobotContainer {
             Commands.parallel(
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
                 ShootingCommands.shootWhenInRange(subsystems)));
+    driverController
+        .rightStick()
+        .whileTrue(
+            Commands.parallel(
+                new ShootWhileMoving(subsystems, driverController),
+                ShootingCommands.feedBallsToShooter(subsystems)));
     driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
 
     driverController.povDown().whileTrue(ShootingCommands.shootFromTower(subsystems));

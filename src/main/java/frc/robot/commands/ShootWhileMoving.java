@@ -12,6 +12,7 @@ import com.nrg948.preferences.ProfiledPIDControllerPreference;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
@@ -19,11 +20,10 @@ public class ShootWhileMoving extends DriveUsingController {
 
   Shooter shooter;
 
-  public ShootWhileMoving(
-      Swerve drivetrain, CommandXboxController xboxController, Shooter shooter) {
-    super(drivetrain, xboxController);
-    this.shooter = shooter;
-    drivetrain.getChassisSpeeds();
+  public ShootWhileMoving(Subsystems subsystems, CommandXboxController xboxController) {
+    super(subsystems.drivetrain, xboxController);
+    this.shooter = subsystems.shooter;
+    addRequirements(shooter);
   }
 
   // PID
@@ -50,21 +50,23 @@ public class ShootWhileMoving extends DriveUsingController {
                 drivetrain.getChassisSpeeds().vyMetersPerSecond)
             .rotateBy(drivetrain.getOrientation().unaryMinus());
 
-    Translation2d shooterVelcocityStill =
+    Translation2d shooterVelocityStill =
         new Translation2d(
             shooter.getVelocityFromInterpolationTable(drivetrain.getDistanceToHub()),
             drivetrain.getAngleToHub());
 
-    Translation2d shooterVelocityMoving = shooterVelcocityStill.minus(robotVelocity);
+    Translation2d shooterVelocityMoving = shooterVelocityStill.minus(robotVelocity);
 
     double currentOrientation = drivetrain.getOrientation().getRadians();
 
+    double angleBetweenVector =
+        Math.acos(
+            shooterVelocityStill.dot(shooterVelocityMoving)
+                / shooterVelocityStill.getNorm()
+                / shooterVelocityMoving.getNorm());
     double targetOrientation =
         drivetrain.getAngleToHub()
-            + Math.acos(
-                shooterVelcocityStill.dot(shooterVelocityMoving)
-                    / shooterVelcocityStill.getNorm()
-                    / shooterVelocityMoving.getNorm());
+            + angleBetweenVector * Math.signum(shooterVelocityStill.cross(shooterVelocityMoving));
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 
@@ -74,5 +76,11 @@ public class ShootWhileMoving extends DriveUsingController {
     double rSpeed = feedback; // feedback + (controller.getSetpoint().velocity /
     // Swerve.getRotationalConstraints().maxVelocity);
     return rSpeed;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    super.end(interrupted);
+    shooter.disable();
   }
 }
