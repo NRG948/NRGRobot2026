@@ -205,7 +205,8 @@ public final class Autos {
    * does nothing.
    *
    * @param name the PathPlanner autonomous routine name
-   * @param side whether the path needs to be mirrored
+   * @param side the starting side/field position to run the auto from (e.g., {@code AutoSide.LEFT}
+   *     or {@code AutoSide.RIGHT}); paths are mirrored when {@code side == AutoSide.LEFT}
    */
   private static Command newPathPlannerAuto(String name, AutoSide side) {
     if (!isValidAuto(name, side)) {
