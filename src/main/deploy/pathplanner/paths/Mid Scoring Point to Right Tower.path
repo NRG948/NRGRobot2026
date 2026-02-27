@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.574636878438077,
+        "x": 2.3259107142797144,
         "y": 4.033744036509909
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.324781582857478,
-        "y": 4.025239257245777
+        "x": 2.0779389993368,
+        "y": 3.9434960841043276
       },
       "isLocked": false,
-      "linkedName": "Hub Start"
+      "linkedName": "Mid Scoring Point"
     },
     {
       "anchor": {
-        "x": 1.531553672316385,
-        "y": 4.2655932203389835
+        "x": 1.4931214689265542,
+        "y": 3.151059322033899
       },
       "prevControl": {
-        "x": 1.781552972345274,
-        "y": 4.2650016249827045
+        "x": 1.735907903916849,
+        "y": 3.210681020975671
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Tower"
+      "linkedName": "Right Tower"
     }
   ],
   "rotationTargets": [],

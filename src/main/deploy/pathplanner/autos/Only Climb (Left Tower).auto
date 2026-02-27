@@ -7,7 +7,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Hub Start to Left Tower"
+            "pathName": "Hub Start to Mid Scoring Point "
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid Scoring Point to Left Tower"
           }
         },
         {
