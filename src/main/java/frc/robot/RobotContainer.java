@@ -52,13 +52,12 @@ public class RobotContainer {
 
   private final Subsystems subsystems = new Subsystems();
 
-  private final Autos autos = new Autos(subsystems);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     DriverStation.silenceJoystickConnectionWarning(true);
+    Autos.init(subsystems);
 
-    operator = new RobotOperator(subsystems, autos);
+    operator = new RobotOperator(subsystems);
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
@@ -158,7 +157,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autos.getAutonomous();
+    return Autos.getAutonomous();
   }
 
   public void disableInit() {

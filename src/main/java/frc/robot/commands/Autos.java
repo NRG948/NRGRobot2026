@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotContainer;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Subsystems;
@@ -56,23 +57,26 @@ public final class Autos {
       new Alert("Invalid auto combination. No auto will run.", AlertType.kError);
 
   /**
-   * Initializes autoChooser for tab dependency via RobotContainer.
+   * Initializes the autonomous command selection and configuration. This should be called in {@link
+   * RobotContainer} during initialization.
    *
-   * @param container
+   * @param subsystems The subsystems container.
    */
-  public Autos(Subsystems subsystems) {
-    NamedCommands.registerCommands(getPathplannerEventMap(subsystems));
+  public static void init(Subsystems subsystems) {
     RobotConfig config = Swerve.PARAMETERS.getPathplannerConfig();
+    Swerve drivetrain = subsystems.drivetrain;
+
+    NamedCommands.registerCommands(getPathplannerEventMap(subsystems));
     AutoBuilder.configure(
-        subsystems.drivetrain::getPosition,
-        subsystems.drivetrain::resetPosition,
-        subsystems.drivetrain::getChassisSpeeds,
-        subsystems.drivetrain::setChassisSpeeds,
+        drivetrain::getPosition,
+        drivetrain::resetPosition,
+        drivetrain::getChassisSpeeds,
+        drivetrain::setChassisSpeeds,
         new PPHolonomicDriveController(
             new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
         config,
         MatchUtil::isRedAlliance,
-        subsystems.drivetrain);
+        drivetrain);
 
     autoChooser = Autonomous.getChooser(subsystems);
     autoChooser.onChange(Autos::preloadAuto);
@@ -255,26 +259,31 @@ public final class Autos {
   }
 
   /** {@return the selected autonomous routine} */
-  public Command getAutonomous() {
+  public static Command getAutonomous() {
     return autoChooser.getSelected();
   }
 
   /** {@return the {@link SendableChooser} for selecting the autonomous command} */
-  public SendableChooser<Command> getAutoChooser() {
+  public static SendableChooser<Command> getAutoChooser() {
     return autoChooser;
   }
 
   /** {@return the {@link SendableChooser} for selecting the autonomous path starting side} */
-  public SendableChooser<AutoSide> getSideChooser() {
+  public static SendableChooser<AutoSide> getSideChooser() {
     return sideChooser;
   }
 
   /** {@return the {@link SendableChooser} for selecting the delay at the start of autonomous} */
-  public SendableChooser<Integer> getDelayChooser() {
+  public static SendableChooser<Integer> getDelayChooser() {
     return delayChooser;
   }
 
-  public Alert getInvalidAutoAlert() {
+  /** {@return the {@link Alert} for an invalid autonomous routine} */
+  public static Alert getInvalidAutoAlert() {
     return invalidAutoAlert;
+  }
+
+  private Autos() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
   }
 }

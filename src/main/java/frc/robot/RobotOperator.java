@@ -58,15 +58,16 @@ public final class RobotOperator {
   @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 7, height = 2)
   private final boolean invalidAutoAlert = false;
 
-  public RobotOperator(Subsystems subsystems, Autos autonomous) {
+  public RobotOperator(Subsystems subsystems) {
     drivetrain = subsystems.drivetrain;
     frontLeftCamera = subsystems.frontLeftCamera;
     frontRightCamera = subsystems.frontRightCamera;
     backLeftCamera = subsystems.backLeftCamera;
     backRightCamera = subsystems.backRightCamera;
-    autoChooser = autonomous.getAutoChooser();
-    delayChooser = autonomous.getDelayChooser();
-    sideChooser = autonomous.getSideChooser();
+
+    autoChooser = Autos.getAutoChooser();
+    delayChooser = Autos.getDelayChooser();
+    sideChooser = Autos.getSideChooser();
   }
 
   @DashboardField(
