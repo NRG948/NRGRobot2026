@@ -123,6 +123,8 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(IntakeCommands.intake(subsystems));
 
+    manipulatorController.povRight().whileTrue(ShootingCommands.rampUpShooter(subsystems));
+
     manipulatorController
         .rightBumper()
         .whileTrue(

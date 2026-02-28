@@ -62,6 +62,13 @@ public final class ShootingCommands {
             });
   }
 
+  public static Command rampUpShooter(Subsystems subsystems) {
+    Shooter shooter = subsystems.shooter;
+    Swerve drivetrain = subsystems.drivetrain;
+    return Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToHub()), shooter)
+        .finallyDo(shooter::disable);
+  }
+
   public static Command feedBallsToShooter(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
     Shooter shooter = subsystems.shooter;
