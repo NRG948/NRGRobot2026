@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
-import static frc.robot.parameters.MotorParameters.KrakenX60;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 
 import edu.wpi.first.math.MathUtil;
@@ -46,14 +45,14 @@ public final class Climber extends SubsystemBase implements ActiveSubsystem {
   private static final double POSITION_ERROR_TIME = 2.0; // seconds
 
   // Physical parameters of the elevator
-  private static final double GEAR_RATIO = 1;
+  private static final double GEAR_RATIO = 1; // TODO: set correct gear ratio
   private static final double SPROCKET_DIAMETER = 0.05; // meters
   private static final double MASS = 10; // TODO: Find Actual Mass (Kilograms)
   private static final double METERS_PER_REVOLUTION = (SPROCKET_DIAMETER * Math.PI) / GEAR_RATIO;
-  private static final double MAX_HEIGHT =
-      0.10; // TODO: Find actual max height of elevator in meters
-  private static final double MIN_HEIGHT =
-      0.05; // TODO: Find actual min Height of elevator in meters
+  // TODO: Find actual max height of elevator in meters
+  private static final double MAX_HEIGHT = 0.10;
+  // TODO: Find actual min Height of elevator in meters
+  private static final double MIN_HEIGHT = 0.05;
   private static final double DISABLE_HEIGHT = MIN_HEIGHT + 0.01;
   public static final double STOWED_HEIGHT_FOR_PID = (MIN_HEIGHT + DISABLE_HEIGHT) / 2;
 
@@ -73,13 +72,13 @@ public final class Climber extends SubsystemBase implements ActiveSubsystem {
           MAX_BATTERY_VOLTAGE, MAX_SPEED / 2, MAX_ACCELERATION / 64);
 
   // Feedforward constants
-  private static final double KS = KrakenX60.getKs();
+  private static final double KS = MOTOR.getKs();
   private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_SPEED;
   private static final double KA = (MAX_BATTERY_VOLTAGE - KS) / MAX_ACCELERATION;
   private static final double KG = 9.81 * KA;
 
   // feedback constants
-  public static final double KP = 40;
+  public static final double KP = 10; // TODO: was 40 in 2025
 
   public static final double KI = 0;
 
