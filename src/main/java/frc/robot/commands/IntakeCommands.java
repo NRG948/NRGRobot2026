@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
@@ -27,7 +28,6 @@ public final class IntakeCommands {
   public static Command stowIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
     IntakeArm intakeArm = subsystems.intakeArm;
-    // TODO Flesh out full sequence when other subsystems are finished.
     return Commands.parallel(
         Commands.runOnce(intake::disable, intake),
         Commands.runOnce(() -> intakeArm.setGoalAngle(IntakeArm.STOW_ANGLE), intakeArm));
@@ -53,14 +53,12 @@ public final class IntakeCommands {
    */
   public static Command intake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
-    // TODO Flesh out full sequence when other subsystems are finished.
     return Commands.sequence(Commands.runOnce(intake::intake, intake), Commands.idle(intake))
         .finallyDo(intake::disable);
   }
 
   public static Command disableIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
-    // TODO Flesh out full sequence when other subsystems are finished.
     return Commands.runOnce(intake::disable, intake);
   }
 
@@ -72,8 +70,19 @@ public final class IntakeCommands {
   public static Command outtake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
     Indexer indexer = subsystems.indexer;
-    // TODO Flesh out full sequence when other subsystems are finished.
-    return Commands.parallel(Commands.run(intake::outtake), Commands.run(indexer::outFeed));
+    Hopper hopper = subsystems.hopper;
+    return Commands.sequence(
+            Commands.parallel(
+                Commands.runOnce(intake::outtake, intake),
+                Commands.runOnce(indexer::outFeed, indexer),
+                Commands.runOnce(hopper::outFeed, hopper)),
+            Commands.idle(intake, indexer, hopper))
+        .finallyDo(
+            () -> {
+              intake.disable();
+              indexer.disable();
+              hopper.disable();
+            });
   }
 
   public static Command agitateArm(Subsystems subsystems) {

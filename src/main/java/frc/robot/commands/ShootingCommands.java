@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -24,11 +25,12 @@ public final class ShootingCommands {
 
   public static Command shootWhenInRange(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
+    Hopper hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Swerve drivetrain = subsystems.drivetrain;
     Intake intake = subsystems.intake;
     return Commands.sequence(
-        Commands.idle(indexer, shooter, intake)
+        Commands.idle(indexer, shooter, intake, hopper)
             .until(() -> drivetrain.getDistanceToHub() <= MAXIMUM_SHOOTING_RANGE),
         shoot(subsystems));
   }
@@ -48,6 +50,7 @@ public final class ShootingCommands {
 
   private static Command shootForDistance(Subsystems subsystems, DoubleSupplier distance) {
     Indexer indexer = subsystems.indexer;
+    Hopper hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
 
@@ -59,6 +62,7 @@ public final class ShootingCommands {
               shooter.disable();
               indexer.disable();
               intake.disable();
+              hopper.disable();
             });
   }
 
@@ -71,11 +75,13 @@ public final class ShootingCommands {
 
   public static Command feedBallsToShooter(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
+    Hopper hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
 
     return Commands.sequence(
         Commands.idle(indexer).until(shooter::atOrNearGoal),
+        Commands.runOnce(hopper::feed, hopper),
         Commands.runOnce(indexer::feed, indexer),
         Commands.runOnce(intake::intake, intake),
         IntakeCommands.agitateArm(subsystems),

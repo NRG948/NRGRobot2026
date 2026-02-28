@@ -131,11 +131,7 @@ public class RobotContainer {
             Commands.parallel(
                 IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
                 IntakeCommands.intake(subsystems)));
-    manipulatorController
-        .a()
-        .whileTrue(IntakeCommands.outtake(subsystems))
-        .onFalse(IntakeCommands.disableIntake(subsystems))
-        .onFalse(IndexerCommands.disableIndexer(subsystems));
+    manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
     manipulatorController
         .x()
         .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.STOW_ANGLE));
@@ -146,10 +142,7 @@ public class RobotContainer {
         .b()
         .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
 
-    manipulatorController
-        .leftBumper()
-        .whileTrue(IndexerCommands.feed(subsystems))
-        .onFalse(IndexerCommands.disableIndexer(subsystems));
+    manipulatorController.leftBumper().whileTrue(IndexerCommands.feed(subsystems));
 
     // Experimental, remove after shooter interpolation table is made and implemented. Up and left
     // is increase and decrease upper shooter velocities respectively. Down and right is increase

@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Subsystems;
 
@@ -16,11 +17,19 @@ import frc.robot.subsystems.Subsystems;
 public final class IndexerCommands {
   public static Command feed(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
-    return Commands.runOnce(() -> indexer.feed(), indexer).withName("Feed");
-  }
-
-  public static Command disableIndexer(Subsystems subsystems) {
-    Indexer indexer = subsystems.indexer;
-    return Commands.runOnce(() -> indexer.disable(), indexer).withName("Feed");
+    Hopper hopper = subsystems.hopper;
+    return Commands.runOnce(
+            () -> {
+              indexer.feed();
+              hopper.feed();
+            },
+            indexer,
+            hopper)
+        .finallyDo(
+            () -> {
+              hopper.disable();
+              indexer.disable();
+            })
+        .withName("Feed");
   }
 }

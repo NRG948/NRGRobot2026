@@ -8,10 +8,6 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
-import static frc.robot.RobotPreferences.ROBOT_TYPE;
-import static frc.robot.RobotSelector.AlphaRobot2026;
-import static frc.robot.RobotSelector.CompetitionRobot2026;
-import static frc.robot.RobotSelector.PracticeRobot2026;
 
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
@@ -26,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants.CANID;
+import frc.robot.RobotPreferences;
+import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorDirection;
@@ -34,18 +32,17 @@ import frc.robot.util.RelativeEncoder;
 import java.util.Map;
 
 @DashboardDefinition
-public final class Indexer extends SubsystemBase implements ActiveSubsystem {
+public final class Hopper extends SubsystemBase implements ActiveSubsystem {
   private static final MotorParameters MOTOR =
-      ROBOT_TYPE.selectOrDefault(
+      RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              AlphaRobot2026, MotorParameters.NullMotor,
-              CompetitionRobot2026, MotorParameters.KrakenX60,
-              PracticeRobot2026, MotorParameters.KrakenX60),
+              RobotSelector.AlphaRobot2026, MotorParameters.NullMotor,
+              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
+              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
   private static final double BAR_DIAMETER = Units.inchesToMeters(1.25);
-  private static final double GEAR_RATIO =
-      ROBOT_TYPE.getValue() == CompetitionRobot2026 ? 3.0 : 1.0;
+  private static final double GEAR_RATIO = 1.0;
   private static final double METERS_PER_REVOLUTION = (BAR_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
   private static final double FEED_VELOCITY = 1.8;
@@ -53,8 +50,8 @@ public final class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   private final MotorController motor =
       MOTOR.newController(
-          "/Indexer/Shooter Motor",
-          CANID.SHOOTER_INDEXER_ID,
+          "/Hopper/Shooter Motor",
+          CANID.HOPPER_INDEXER_ID,
           MotorDirection.CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
           0);
@@ -110,10 +107,10 @@ public final class Indexer extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardPIDController(title = "PID Controller", column = 4, row = 0, width = 2, height = 3)
   private final PIDControllerPreference pidController =
-      new PIDControllerPreference("Indexer", "PID Controller", 1, 0, 0);
+      new PIDControllerPreference("Hopper", "PID Controller", 1, 0, 0);
 
-  /** Creates a new Indexer. */
-  public Indexer() {}
+  /** Creates a new Hopper. */
+  public Hopper() {}
 
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
