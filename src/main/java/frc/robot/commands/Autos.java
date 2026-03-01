@@ -255,6 +255,8 @@ public final class Autos {
 
     eventMaps.put("DisableIntake", IntakeCommands.disableIntake(subsystems));
 
+    eventMaps.put("RampUpShooter", ShootingCommands.rampUpShooter(subsystems));
+
     return eventMaps;
   }
 
