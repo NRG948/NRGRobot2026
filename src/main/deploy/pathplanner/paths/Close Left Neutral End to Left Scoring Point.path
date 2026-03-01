@@ -12,7 +12,7 @@
         "y": 5.76951111111111
       },
       "isLocked": false,
-      "linkedName": "Close Left Neutral Start"
+      "linkedName": "Close Left Neutral"
     },
     {
       "anchor": {
@@ -46,13 +46,34 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.7585062240663994,
-      "rotationDegrees": 25.0
+      "waypointRelativePos": 1.1336099585062185,
+      "rotationDegrees": -155.0
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.2918114143920445,
+      "maxWaypointRelativePos": 1.141439205955373,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "RampUpShooter",
+      "waypointRelativePos": 0.8754342431761699,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -68,8 +89,8 @@
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 3.0,
-    "rotation": 25.95876926156065
+    "velocity": 3.5,
+    "rotation": -119.4274564033082
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

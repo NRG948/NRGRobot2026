@@ -62,6 +62,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
@@ -87,7 +93,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Scoring Point to Close Right Neutral Start"
+                  "pathName": "Right Scoring Point to Right Neutral End"
                 }
               },
               {
@@ -106,7 +112,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Right Neutral Start to Close Right Neutral End"
+                  "pathName": "Close Right Neutral Start to Close Left Neutral"
                 }
               },
               {
