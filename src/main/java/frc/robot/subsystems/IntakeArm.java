@@ -52,10 +52,8 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
-  private static final double TOLERANCE =
-      Units.degreesToRadians(5); // TODO: Add tolerance in radians
-  private static final double ERROR_MARGIN =
-      Units.degreesToRadians(5.0); // TODO: Add error margin in radians
+  private static final double TOLERANCE = Units.degreesToRadians(5.0);
+  private static final double ERROR_MARGIN = Units.degreesToRadians(5.0);
   private static final double ERROR_TIME = 1;
 
   private static final double GEAR_RATIO = 50.0;
