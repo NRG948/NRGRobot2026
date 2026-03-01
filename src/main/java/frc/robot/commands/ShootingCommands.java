@@ -19,10 +19,6 @@ import java.util.function.DoubleSupplier;
 
 public final class ShootingCommands {
 
-  public static final double MAXIMUM_SHOOTING_RANGE = 3.7;
-  public static final double HUB_SHOT_DISTANCE = 1.3;
-  public static final double TOWER_SHOT_DISTANCE = 3.05;
-
   public static Command shootWhenInRange(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
     Hopper hopper = subsystems.hopper;
@@ -31,7 +27,7 @@ public final class ShootingCommands {
     Intake intake = subsystems.intake;
     return Commands.sequence(
         Commands.idle(indexer, shooter, intake, hopper)
-            .until(() -> drivetrain.getDistanceToHub() <= MAXIMUM_SHOOTING_RANGE),
+            .until(() -> drivetrain.getDistanceToHub() <= Shooter.MAXIMUM_SHOOTING_RANGE),
         shoot(subsystems));
   }
 
@@ -41,11 +37,11 @@ public final class ShootingCommands {
   }
 
   public static Command shootFromHub(Subsystems subsystems) {
-    return shootForDistance(subsystems, () -> HUB_SHOT_DISTANCE);
+    return shootForDistance(subsystems, () -> Shooter.HUB_SHOT_DISTANCE);
   }
 
   public static Command shootFromTower(Subsystems subsystems) {
-    return shootForDistance(subsystems, () -> TOWER_SHOT_DISTANCE);
+    return shootForDistance(subsystems, () -> Shooter.TOWER_SHOT_DISTANCE);
   }
 
   private static Command shootForDistance(Subsystems subsystems, DoubleSupplier distance) {
@@ -78,9 +74,10 @@ public final class ShootingCommands {
     Hopper hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
+    Swerve drivetrain = subsystems.drivetrain;
 
     return Commands.sequence(
-        Commands.idle(indexer).until(shooter::atOrNearGoal),
+        Commands.idle(indexer).until(() -> shooter.atOrNearGoal() && drivetrain.isAlignedToHub()),
         Commands.runOnce(hopper::feed, hopper),
         Commands.runOnce(indexer::feed, indexer),
         Commands.runOnce(intake::intake, intake),

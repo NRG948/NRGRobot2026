@@ -19,9 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ShootingCommands;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.AprilTag;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchUtil;
@@ -126,7 +126,7 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 2)
   public boolean isWithinShootingRange() {
-    return drivetrain.getDistanceToHub() <= ShootingCommands.MAXIMUM_SHOOTING_RANGE;
+    return drivetrain.getDistanceToHub() <= Shooter.MAXIMUM_SHOOTING_RANGE;
   }
 
   public void periodic() {
