@@ -56,7 +56,8 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private static final double ERROR_MARGIN = Units.degreesToRadians(5.0);
   private static final double ERROR_TIME = 1;
 
-  private static final double GEAR_RATIO = 50.0;
+  private static final double GEAR_RATIO =
+      RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026 ? 37.5 : 50.0;
   private static final double RADIANS_PER_ROTATION = 2 * Math.PI;
   private static final double MASS = Units.lbsToKilograms(5.5);
   private static final double LENGTH = Units.inchesToMeters(10.94);
