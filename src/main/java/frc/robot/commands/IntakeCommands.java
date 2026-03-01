@@ -46,6 +46,11 @@ public final class IntakeCommands {
             });
   }
 
+  public static Command setIntakeArmAngleNoIdle(Subsystems subsystems, double angle) {
+    IntakeArm intakeArm = subsystems.intakeArm;
+    return Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm);
+  }
+
   /**
    * Returns Command that starts the intake.
    *

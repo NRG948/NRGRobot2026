@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchUtil;
@@ -240,7 +241,7 @@ public final class Autos {
     eventMaps.put(
         "IntakeArmBumpAngle",
         Commands.parallel(
-            IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.BUMP_ANGLE),
+            IntakeCommands.setIntakeArmAngleNoIdle(subsystems, IntakeArm.BUMP_ANGLE),
             IntakeCommands.disableIntake(subsystems)));
 
     eventMaps.put(
@@ -256,6 +257,10 @@ public final class Autos {
     eventMaps.put("DisableIntake", IntakeCommands.disableIntake(subsystems));
 
     eventMaps.put("RampUpShooter", ShootingCommands.rampUpShooter(subsystems));
+
+    eventMaps.put(
+        "RampUpShooterForAutoScore",
+        ShootingCommands.rampUpShooter(subsystems, Shooter.HUB_SHOT_DISTANCE));
 
     return eventMaps;
   }

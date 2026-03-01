@@ -69,6 +69,11 @@ public final class ShootingCommands {
         .finallyDo(shooter::disable);
   }
 
+  public static Command rampUpShooter(Subsystems subsystems, double distance) {
+    Shooter shooter = subsystems.shooter;
+    return Commands.runOnce(() -> shooter.setGoalDistance(distance), shooter);
+  }
+
   public static Command feedBallsToShooter(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
     Hopper hopper = subsystems.hopper;
