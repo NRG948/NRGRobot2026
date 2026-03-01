@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.090642857142857,
-        "y": 1.1722321428571418
+        "x": 0.9922775251898781,
+        "y": 0.9193751159260681
       },
       "isLocked": false,
       "linkedName": "Outpost"
@@ -20,8 +20,8 @@
         "y": 2.671
       },
       "prevControl": {
-        "x": 2.259803571428571,
-        "y": 1.974553571428571
+        "x": 2.3695650458058335,
+        "y": 2.0446689196728633
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Ramp up shooter for right scoring point",
+      "waypointRelativePos": 0.580645161290322,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampUpShooterForAutoScore"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 42.0282331684253
   },
   "reversed": false,
   "folder": null,

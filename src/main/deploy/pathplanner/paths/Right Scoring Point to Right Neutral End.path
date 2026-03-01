@@ -68,10 +68,26 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ExtendAndIntake",
+      "name": "Bump Angle for Left Neutral",
+      "waypointRelativePos": 0.5022332506203392,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeArmBumpAngle"
+        }
+      }
+    },
+    {
+      "name": "Extend and intake for left neutral",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -90,7 +106,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 33.95538259252424
+    "rotation": 42.0282331684253
   },
   "useDefaultConstraints": false
 }

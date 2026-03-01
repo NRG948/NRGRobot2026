@@ -82,7 +82,30 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Bump Angle for right hub start",
+      "waypointRelativePos": 0.11612903225806823,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeArmBumpAngle"
+        }
+      }
+    },
+    {
+      "name": "Extend for right neutral",
+      "waypointRelativePos": 0.6699751861042116,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 3.0,

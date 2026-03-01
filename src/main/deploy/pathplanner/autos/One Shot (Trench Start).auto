@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Extend"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Right Trench Start to Right Scoring Point"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootWithAutoRotation"
           }
         }
       ]

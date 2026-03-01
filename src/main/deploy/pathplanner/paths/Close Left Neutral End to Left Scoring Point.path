@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 4.2237694444455745,
-        "y": 5.417409722222221
+        "x": 3.8460222222222225,
+        "y": 5.603855555555556
       },
       "prevControl": {
-        "x": 4.833940277779677,
-        "y": 5.593460416666666
+        "x": 4.440246943381085,
+        "y": 5.827907499599061
       },
       "nextControl": {
-        "x": 3.613598611111472,
-        "y": 5.241359027777776
+        "x": 3.251611111111111,
+        "y": 5.379733333333333
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 4.600177777777777
       },
       "prevControl": {
-        "x": 3.5439444444444446,
-        "y": 5.009444444444443
+        "x": 3.3198222222222227,
+        "y": 5.165355555555555
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,10 +68,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampUpShooter",
+      "name": "Ramp up shooter for left scoring point",
       "waypointRelativePos": 0.8754342431761699,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampUpShooterForAutoScore"
+        }
+      }
     }
   ],
   "globalConstraints": {

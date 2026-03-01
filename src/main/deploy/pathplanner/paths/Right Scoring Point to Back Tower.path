@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 2.1206240920096855,
-        "y": 2.747589891041162
+        "y": 2.7475898910411622
       },
       "isLocked": false,
       "linkedName": "Right Scoring Point"
@@ -67,7 +67,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 42.0282331684253
   },
   "useDefaultConstraints": true
 }

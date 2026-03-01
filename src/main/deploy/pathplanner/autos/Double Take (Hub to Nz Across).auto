@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeArmBumpAngle"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Hub Start to Right Neutral Start"
-                }
-              }
-            ]
+            "pathName": "Right Hub Start to Right Neutral Start"
           }
         },
         {
@@ -87,22 +74,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Scoring Point to Right Neutral End"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeArmBumpAngle"
-                }
-              }
-            ]
+            "pathName": "Right Scoring Point to Right Neutral End"
           }
         },
         {

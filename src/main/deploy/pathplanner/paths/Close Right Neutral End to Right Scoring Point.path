@@ -40,7 +40,19 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Ramp Up shooter for right scoring point 2",
+      "waypointRelativePos": 0.5905707196029759,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampUpShooterForAutoScore"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -51,7 +63,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 42.0282331684253
   },
   "reversed": false,
   "folder": null,

@@ -88,10 +88,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "RampUpShooter",
+      "name": "Ramp Up for First Shot",
       "waypointRelativePos": 1.5037220843672492,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampUpShooterForAutoScore"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -104,7 +109,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 33.95538259252424
+    "rotation": 42.0282331684253
   },
   "reversed": false,
   "folder": null,
