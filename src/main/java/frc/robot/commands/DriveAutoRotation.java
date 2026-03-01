@@ -29,24 +29,15 @@ public class DriveAutoRotation extends DriveUsingController {
   @Override
   public void initialize() {
     rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    rotationPIDController.reset(drivetrain.getOrientation().getRadians());
   }
 
   @Override
   protected double calculateRotationSpeed() {
-    return calculateRotationSpeed(rotationPIDController);
-  }
-
-  private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
-
     double currentOrientation = drivetrain.getOrientation().getRadians();
-
     double targetOrientation = drivetrain.getAngleToHub();
 
-    double feedback = controller.calculate(currentOrientation, targetOrientation);
-
-    // TODO: Find alternative to getSetpoint() for PID preference
-    double rSpeed = feedback; // feedback + (controller.getSetpoint().velocity /
-    // Swerve.getRotationalConstraints().maxVelocity);
+    double rSpeed = rotationPIDController.calculate(currentOrientation, targetOrientation);
     return rSpeed;
   }
 }

@@ -226,7 +226,11 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry rawOrientationOffsetLog =
       new DoubleLogEntry(LOG, "/Swerve/rawOrientationOffset");
   private DoubleLogEntry accelerationLog = new DoubleLogEntry(LOG, "/Swerve/acceleration");
+  private StructLogEntry<Translation2d> estimatedHubLocationLog =
+      StructLogEntry.create(LOG, "/Swerve/hubLocation", Translation2d.struct);
   private Translation2d vectorToHub;
+  private double distanceToHub;
+  private double angleToHub;
 
   /**
    * Creates a {@link SwerveModule} object and intiailizes its motor controllers.
@@ -547,7 +551,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   /** {@return the angle from the center of the robot to the hub, in radians} */
   public double getAngleToHub() {
-    return vectorToHub.getAngle().getRadians();
+    return angleToHub;
   }
 
   /** {@return whether we are aligned to hub within tolerance} */
@@ -561,7 +565,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   @DashboardTextDisplay(title = "Distance To Hub (m)", column = 6, row = 0, width = 2, height = 1)
   public double getDistanceToHub() {
-    return vectorToHub.getNorm();
+    return distanceToHub;
   }
 
   /** {@return the angle from the center of the robot to the hub, in degrees} */
@@ -602,11 +606,15 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     pitch = Math.toDegrees(gyro.getPitch());
     roll = Math.toDegrees(gyro.getRoll());
 
-    vectorToHub = FieldUtils.getHubLocation().minus(robotPose.getTranslation());
+    Translation2d hubLocation = FieldUtils.getHubLocation();
+
+    vectorToHub = hubLocation.minus(robotPose.getTranslation());
+    distanceToHub = vectorToHub.getNorm();
+    angleToHub = vectorToHub.getAngle().getRadians();
 
     poseLog.append(robotPose);
+    estimatedHubLocationLog.append(hubLocation);
 
-    //
     estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
     estimatedPose.estimatedRotation = odometry.getEstimatedPosition().getRotation().getDegrees();
