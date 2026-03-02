@@ -15,6 +15,7 @@ import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
 import com.nrg948.dashboard.annotations.DashboardSplitButtonChooser;
 import com.nrg948.dashboard.model.GameField;
+import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,7 +43,7 @@ public final class RobotOperator {
       row = 2,
       width = 3,
       height = 1)
-  public final SendableChooser<AutoSide> sideChooser;
+  public final SendableChooser<AutoSide> sideChooser = Autos.getSideChooser();
 
   @DashboardComboBoxChooser(
       title = "Autonomous Routine",
@@ -50,13 +51,13 @@ public final class RobotOperator {
       row = 3,
       width = 3,
       height = 1)
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser = Autos.getAutoChooser();
 
   @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 4, width = 3, height = 1)
-  private final SendableChooser<Integer> delayChooser;
+  private final SendableChooser<Integer> delayChooser = Autos.getDelayChooser();
 
   @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 7, height = 2)
-  private final boolean invalidAutoAlert = false;
+  private final Alert[] alerts = new Alert[] {Autos.getInvalidAutoAlert()};
 
   public RobotOperator(Subsystems subsystems) {
     drivetrain = subsystems.drivetrain;
@@ -64,10 +65,6 @@ public final class RobotOperator {
     frontRightCamera = subsystems.frontRightCamera;
     backLeftCamera = subsystems.backLeftCamera;
     backRightCamera = subsystems.backRightCamera;
-
-    autoChooser = Autos.getAutoChooser();
-    delayChooser = Autos.getDelayChooser();
-    sideChooser = Autos.getSideChooser();
   }
 
   @DashboardField(
