@@ -20,12 +20,12 @@
         "y": 2.3236319444444438
       },
       "prevControl": {
-        "x": 5.5469100572388195,
-        "y": 2.4792950115160237
+        "x": 5.5100780623816155,
+        "y": 2.415631408006738
       },
       "nextControl": {
-        "x": 7.012033792373053,
-        "y": 1.313462194525831
+        "x": 6.145711111111111,
+        "y": 2.1640666666666664
       },
       "isLocked": false,
       "linkedName": null
@@ -36,12 +36,12 @@
         "y": 0.6926555555555558
       },
       "prevControl": {
-        "x": 7.073963365495238,
-        "y": 0.9337915502528722
+        "x": 7.061688888888889,
+        "y": 1.2675777777777761
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Shallow Neutral Start"
+      "linkedName": "Shallow Neutral Start"
     }
   ],
   "rotationTargets": [

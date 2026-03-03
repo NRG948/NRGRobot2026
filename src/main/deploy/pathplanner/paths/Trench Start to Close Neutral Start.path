@@ -12,7 +12,7 @@
         "y": 2.5592388231888727
       },
       "isLocked": false,
-      "linkedName": "Right Trench Start"
+      "linkedName": "Trench Start"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Close Right Neutral Start"
+      "linkedName": "Close Neutral Start"
     }
   ],
   "rotationTargets": [

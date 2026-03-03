@@ -12,7 +12,7 @@
         "y": 2.670777777777778
       },
       "isLocked": false,
-      "linkedName": "Close Right Neutral End"
+      "linkedName": "Close Neutral End"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Scoring Point"
+      "linkedName": "Scoring Point"
     }
   ],
   "rotationTargets": [

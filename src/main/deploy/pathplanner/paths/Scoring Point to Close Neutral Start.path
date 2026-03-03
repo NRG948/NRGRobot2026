@@ -12,7 +12,7 @@
         "y": 2.7954220837386905
       },
       "isLocked": false,
-      "linkedName": "Right Scoring Point"
+      "linkedName": "Scoring Point"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Close Right Neutral Start"
+      "linkedName": "Close Neutral Start"
     }
   ],
   "rotationTargets": [

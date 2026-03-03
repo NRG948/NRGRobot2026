@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.646901129943503,
-        "y": 1.594477589453861
+        "x": 7.685333333333334,
+        "y": 1.5952961346798677
       },
       "isLocked": false,
-      "linkedName": "Right Neutral Start"
+      "linkedName": "Neutral Start"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 6.7
       },
       "prevControl": {
-        "x": 7.7447598870056495,
-        "y": 5.59771186440678
+        "x": 7.706,
+        "y": 5.632888745198768
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Neutral Zone Cross"
+      "linkedName": "Neutral Cross"
     }
   ],
   "rotationTargets": [],

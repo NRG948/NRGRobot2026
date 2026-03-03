@@ -12,7 +12,7 @@
         "y": 3.05013998957402
       },
       "isLocked": false,
-      "linkedName": "Right Hub Start"
+      "linkedName": "Hub Start"
     },
     {
       "anchor": {
@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Neutral Start"
+      "linkedName": "Neutral Start"
     }
   ],
   "rotationTargets": [

@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3999284015513256,
-        "y": 2.5458892865421547
+        "x": 3.3295666666666666,
+        "y": 2.524611111111111
       },
       "isLocked": false,
-      "linkedName": "Right Trench Start"
+      "linkedName": "Trench Start"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 2.671
       },
       "prevControl": {
-        "x": 3.422759022610324,
-        "y": 2.3521919129302957
+        "x": 3.5049666666666663,
+        "y": 2.2322777777777776
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Scoring Point"
+      "linkedName": "Scoring Point"
     }
   ],
   "rotationTargets": [],

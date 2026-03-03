@@ -8,42 +8,28 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.324781582857478,
-        "y": 4.025239257245777
+        "x": 2.607655367231639,
+        "y": 3.9325141242937853
       },
       "isLocked": false,
-      "linkedName": "Hub Start"
+      "linkedName": "Center Start"
     },
     {
       "anchor": {
-        "x": 0.6476129943502831,
-        "y": 3.7403531073446326
+        "x": 1.4671934178374861,
+        "y": 3.7306805173804376
       },
       "prevControl": {
-        "x": 0.34015536723163936,
-        "y": 6.430607344632769
+        "x": 2.2233333333333336,
+        "y": 3.855649717514125
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Back Tower"
+      "linkedName": "Mid Tower"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.48251748251748233,
-      "maxWaypointRelativePos": 0.9533799533799534,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -56,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,

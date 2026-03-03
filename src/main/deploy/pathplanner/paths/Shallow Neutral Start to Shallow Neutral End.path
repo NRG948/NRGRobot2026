@@ -12,7 +12,7 @@
         "y": 1.566850920688402
       },
       "isLocked": false,
-      "linkedName": "Right Shallow Neutral Start"
+      "linkedName": "Shallow Neutral Start"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Shallow Neutral End"
+      "linkedName": "Opposite Shallow Neutral End"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Extend and intake for shallow neutral",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

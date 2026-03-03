@@ -7,26 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Hub Start to Shallow Neutral Start"
+            "pathName": "Trench Start to Shallow Neutral Start"
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Shallow Neutral Start to Shallow Neutral End"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ExtendAndIntake"
-                }
-              }
-            ]
+            "pathName": "Shallow Neutral Start to Shallow Neutral End"
           }
         },
         {

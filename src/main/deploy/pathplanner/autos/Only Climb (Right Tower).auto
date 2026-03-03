@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Hub Start to Mid Scoring Point "
+            "pathName": "Center Start to Center Scoring Point "
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid Scoring Point to Right Tower"
+            "pathName": "Center Scoring Point to Right Tower"
           }
         },
         {

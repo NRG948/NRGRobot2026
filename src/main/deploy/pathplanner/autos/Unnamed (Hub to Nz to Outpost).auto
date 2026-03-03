@@ -11,41 +11,15 @@
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Neutral Start to Neutral End"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ExtendAndIntake"
-                }
-              }
-            ]
+            "pathName": "Neutral Start to Neutral End"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeArmBumpAngle"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Neutral End to Scoring Point"
-                }
-              }
-            ]
+            "pathName": "Neutral End to Scoring Point"
           }
         },
         {
