@@ -10,6 +10,7 @@ package frc.robot;
 import com.nrg948.dashboard.annotations.DashboardAlerts;
 import com.nrg948.dashboard.annotations.DashboardBooleanBox;
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
+import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
@@ -19,9 +20,11 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.Autos;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.AprilTag;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -31,6 +34,7 @@ import java.util.Optional;
 @DashboardDefinition
 public final class RobotOperator {
   private final Swerve drivetrain;
+  private final IntakeArm intakeArm;
   private final Optional<AprilTag> frontLeftCamera;
   private final Optional<AprilTag> frontRightCamera;
   private final Optional<AprilTag> backLeftCamera;
@@ -61,6 +65,7 @@ public final class RobotOperator {
 
   public RobotOperator(Subsystems subsystems) {
     drivetrain = subsystems.drivetrain;
+    intakeArm = subsystems.intakeArm;
     frontLeftCamera = subsystems.frontLeftCamera;
     frontRightCamera = subsystems.frontRightCamera;
     backLeftCamera = subsystems.backLeftCamera;
@@ -124,6 +129,32 @@ public final class RobotOperator {
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 2)
   public boolean isWithinShootingRange() {
     return drivetrain.getDistanceToHub() <= Shooter.MAXIMUM_SHOOTING_RANGE;
+  }
+
+  @DashboardCommand(
+      title = "Set Extended Position",
+      column = 7,
+      row = 4,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private Command setExtendedPositionCommand() {
+    return Commands.runOnce(() -> intakeArm.setExtendedPosition(), intakeArm)
+        .withName("Set Extended Position")
+        .ignoringDisable(true);
+  }
+
+  @DashboardCommand(
+      title = "Set Stowed Position",
+      column = 7,
+      row = 5,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private Command setStowedPositionCommand() {
+    return Commands.runOnce(() -> intakeArm.setStowedPosition(), intakeArm)
+        .withName("Set Stowed Position")
+        .ignoringDisable(true);
   }
 
   public void periodic() {

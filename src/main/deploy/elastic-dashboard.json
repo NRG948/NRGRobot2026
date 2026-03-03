@@ -159,6 +159,32 @@
           "false_color" : -65536,
           "false_icon" : "None"
         }
+      }, {
+        "title" : "Set Extended Position",
+        "type" : "Command",
+        "x" : 896.0,
+        "y" : 512.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Set Extended Position",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Set Stowed Position",
+        "type" : "Command",
+        "x" : 896.0,
+        "y" : 640.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Set Stowed Position",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
       } ]
     }
   }, {

@@ -94,7 +94,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       height = 1,
       fillWidget = true)
   private Command setExtendedPositionCommand =
-      Commands.runOnce(() -> encoder.setPosition(EXTENDED_ANGLE), this)
+      Commands.runOnce(this::setExtendedPosition, this)
           .withName("Set Extended Position")
           .ignoringDisable(true);
 
@@ -280,6 +280,14 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   /** {@return whether an error has been detected} */
   public boolean hasError() {
     return hasError;
+  }
+
+  public void setStowedPosition() {
+    encoder.setPosition(STOW_ANGLE);
+  }
+
+  public void setExtendedPosition() {
+    encoder.setPosition(EXTENDED_ANGLE);
   }
 
   @Override
