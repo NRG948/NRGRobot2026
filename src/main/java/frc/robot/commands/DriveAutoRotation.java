@@ -17,6 +17,7 @@ public class DriveAutoRotation extends DriveUsingController {
 
   public DriveAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
+    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // PID
@@ -28,7 +29,6 @@ public class DriveAutoRotation extends DriveUsingController {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
     rotationPIDController.reset(drivetrain.getOrientation().getRadians());
   }
 

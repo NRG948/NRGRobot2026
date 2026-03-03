@@ -21,6 +21,7 @@ public class AutoRotation extends Command {
 
   public AutoRotation(Swerve drivetrain) {
     this.drivetrain = drivetrain;
+    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   // PID
@@ -32,7 +33,7 @@ public class AutoRotation extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    rotationPIDController.reset(drivetrain.getOrientation().getRadians());
   }
 
   @Override
