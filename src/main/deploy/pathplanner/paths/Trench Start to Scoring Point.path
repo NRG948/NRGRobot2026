@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1931444444444446,
-        "y": 2.1738111111111107
+        "x": 3.3999284015513256,
+        "y": 2.5458892865421547
       },
       "isLocked": false,
       "linkedName": "Right Trench Start"
@@ -20,8 +20,8 @@
         "y": 2.671
       },
       "prevControl": {
-        "x": 3.491173624980188,
-        "y": 2.2988086067522575
+        "x": 3.422759022610324,
+        "y": 2.3521919129302957
       },
       "nextControl": null,
       "isLocked": false,
@@ -60,7 +60,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

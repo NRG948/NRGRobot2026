@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Hub Start to Right Neutral Start"
+            "pathName": "Hub Start to Neutral Start"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Neutral Start to Right Neutral End"
+                  "pathName": "Neutral Start to Neutral End"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Neutral End to Right Scoring Point"
+                  "pathName": "Neutral End to Scoring Point"
                 }
               }
             ]
@@ -70,7 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Outpost"
+            "pathName": "Scoring Point to Outpost"
           }
         },
         {
@@ -82,7 +82,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Right Scoring Point"
+            "pathName": "Outpost to Scoring Point"
           }
         },
         {

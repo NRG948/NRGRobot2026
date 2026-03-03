@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Hub Start to Right Neutral Start"
+            "pathName": "Hub Start to Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral Start to Right Neutral End"
+            "pathName": "Neutral Start to Neutral End"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Neutral End to Right Scoring Point"
+            "pathName": "Neutral End to Scoring Point"
           }
         },
         {
@@ -44,19 +44,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Close Right Neutral Start"
+            "pathName": "Scoring Point to Close Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Close Right Neutral Start to Close Right Neutral End"
+            "pathName": "Close Neutral Start to Close Neutral End"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Close Right Neutral End to Right Scoring Point"
+            "pathName": "Close Neutral End to Scoring Point"
           }
         },
         {

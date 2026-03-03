@@ -3,60 +3,60 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.183,
-        "y": 2.671
+        "x": 3.6197033898305087,
+        "y": 1.9212288135593223
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9661610157787064,
-        "y": 2.7954220837386905
+        "x": 4.501394069014511,
+        "y": 2.137867269960145
       },
       "isLocked": false,
-      "linkedName": "Right Scoring Point"
+      "linkedName": "Bump Start"
     },
     {
       "anchor": {
-        "x": 4.781488888888889,
-        "y": 2.4076777777777774
+        "x": 5.7425347222222225,
+        "y": 2.3236319444444438
       },
       "prevControl": {
-        "x": 3.938136414900655,
-        "y": 2.427521365401031
+        "x": 5.5469100572388195,
+        "y": 2.4792950115160237
       },
       "nextControl": {
-        "x": 5.609766666666667,
-        "y": 2.3881888888888874
+        "x": 7.012033792373053,
+        "y": 1.313462194525831
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.706,
-        "y": 3.6
+        "x": 7.25,
+        "y": 0.6926555555555558
       },
       "prevControl": {
-        "x": 7.120155555555556,
-        "y": 2.758477777777778
+        "x": 7.073963365495238,
+        "y": 0.9337915502528722
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Neutral End"
+      "linkedName": "Right Shallow Neutral Start"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 25.0
+      "waypointRelativePos": 0.49543568464729165,
+      "rotationDegrees": 20.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6848635235731944,
-      "maxWaypointRelativePos": 1.1334987593052148,
+      "minWaypointRelativePos": 0.00893300248140108,
+      "maxWaypointRelativePos": 0.8188585607940215,
       "constraints": {
-        "maxVelocity": 2.0,
+        "maxVelocity": 3.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -68,8 +68,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Bump Angle for Left Neutral",
-      "waypointRelativePos": 0.5022332506203392,
+      "name": "Bump Angle for right hub start",
+      "waypointRelativePos": 0.04565756823821135,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -79,8 +79,8 @@
       }
     },
     {
-      "name": "Extend and intake for left neutral",
-      "waypointRelativePos": 1.0,
+      "name": "Extend and intake for right neutral",
+      "waypointRelativePos": 0.6173697270471539,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -99,14 +99,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": 90.0
+    "velocity": 0.0,
+    "rotation": 59.99999999999999
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0.0,
-    "rotation": 42.0282331684253
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

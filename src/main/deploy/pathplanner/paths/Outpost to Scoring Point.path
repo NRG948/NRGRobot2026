@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.39803507646553826,
-        "y": 6.909510668552762
+        "x": 0.358,
+        "y": 0.411
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.3529661016898352,
-        "y": 5.726016949156349
+        "x": 0.9722775251898781,
+        "y": 0.9193751159260681
       },
       "isLocked": false,
-      "linkedName": "Left Depot"
+      "linkedName": "Outpost"
     },
     {
       "anchor": {
-        "x": 0.39803507646553826,
-        "y": 5.098231255763185
+        "x": 3.0957,
+        "y": 4.015511111111111
       },
       "prevControl": {
-        "x": 0.3980350764655381,
-        "y": 6.098231255763185
+        "x": 2.2822650458058336,
+        "y": 3.389180030783974
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Depot"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Ramp up shooter for right scoring point",
+      "waypointRelativePos": 0.580645161290322,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RampUpShooterForAutoScore"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

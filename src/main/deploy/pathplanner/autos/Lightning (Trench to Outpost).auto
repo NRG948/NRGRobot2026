@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right Trench Start to Outpost"
+                  "pathName": "Trench Start to Outpost"
                 }
               }
             ]
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Right Scoring Point"
+            "pathName": "Outpost to Scoring Point"
           }
         },
         {

@@ -7,45 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Hub Start to Right Neutral Start"
+            "pathName": "Trench Start to Neutral Start"
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Neutral Start to Right Neutral End"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ExtendAndIntake"
-                }
-              }
-            ]
+            "pathName": "Neutral Start to Neutral End"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeArmBumpAngle"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Neutral End to Right Scoring Point"
-                }
-              }
-            ]
+            "pathName": "Neutral End to Scoring Point"
           }
         },
         {
@@ -67,7 +41,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 4.0
                 }
               }
             ]
@@ -76,45 +50,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Scoring Point to Right Neutral End"
+            "pathName": "Scoring Point to Neutral End"
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Close Right Neutral Start to Close Left Neutral"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ExtendAndIntake"
-                }
-              }
-            ]
+            "pathName": "Close Neutral Start to Close Opposite Neutral"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Close Left Neutral End to Left Scoring Point"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeArmBumpAngle"
-                }
-              }
-            ]
+            "pathName": "Close Opposite Neutral End to Opposite Scoring Point"
           }
         },
         {
@@ -130,7 +78,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 4.0
                 }
               }
             ]
