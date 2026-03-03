@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.911844444442814,
-        "y": 3.2457000000000007
+        "x": 6.067755555555557,
+        "y": 3.3139111111111106
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.307688888888889,
-        "y": 2.8364333333333334
+        "x": 6.457533333334965,
+        "y": 2.2420222222222206
       },
       "isLocked": false,
       "linkedName": "Close Right Neutral End"
@@ -20,8 +20,8 @@
         "y": 2.671
       },
       "prevControl": {
-        "x": 3.6121555555555567,
-        "y": 2.777966666666666
+        "x": 3.836277777777778,
+        "y": 2.0666222222222213
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,17 +30,24 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.15,
-      "rotationDegrees": -155.0
-    },
-    {
-      "waypointRelativePos": 0.85,
-      "rotationDegrees": -155.0
+      "waypointRelativePos": 0.44730290456429833,
+      "rotationDegrees": 65.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "Disable intake for right scoring point",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "DisableIntake"
+        }
+      }
+    },
     {
       "name": "Ramp Up shooter for right scoring point 2",
       "waypointRelativePos": 0.5905707196029759,

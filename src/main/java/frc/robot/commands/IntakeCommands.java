@@ -62,6 +62,11 @@ public final class IntakeCommands {
         .finallyDo(intake::disable);
   }
 
+  public static Command autoIntake(Subsystems subsystems) {
+    Intake intake = subsystems.intake;
+    return Commands.runOnce(intake::intake, intake);
+  }
+
   public static Command disableIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
     return Commands.runOnce(intake::disable, intake);

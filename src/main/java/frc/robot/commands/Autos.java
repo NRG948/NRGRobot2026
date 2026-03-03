@@ -248,9 +248,9 @@ public final class Autos {
         "ExtendAndIntake",
         Commands.parallel(
             IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
-            IntakeCommands.intake(subsystems)));
+            IntakeCommands.autoIntake(subsystems)));
 
-    eventMaps.put("Intake", IntakeCommands.intake(subsystems));
+    eventMaps.put("Intake", IntakeCommands.autoIntake(subsystems));
 
     eventMaps.put("Extend", IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
 
