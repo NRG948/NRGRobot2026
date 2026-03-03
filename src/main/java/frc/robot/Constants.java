@@ -30,7 +30,7 @@ public final class Constants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     // TODO: Measure compbot wheel diameters
     public static final double WHEEL_DIAMETER =
-        Units.inchesToMeters(ROBOT_TYPE.getValue() == CompetitionRobot2026 ? 3.9225 : 3.875);
+        Units.inchesToMeters(ROBOT_TYPE.getValue() == CompetitionRobot2026 ? 3.9225 : 3.75);
     public static final int LED_COUNT = 77; // TODO: determine LED count
     public static final double PERIODIC_INTERVAL = 0.02;
 
