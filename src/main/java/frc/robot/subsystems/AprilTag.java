@@ -66,6 +66,16 @@ public final class AprilTag extends SubsystemBase {
   public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA =
       new Transform3d(new Translation3d(+0.105, -0.262, +0.668), FRONT_CAMERA_ROTATION);
 
+  public static final Rotation3d BACK_LEFT_CAMERA_ROTATION =
+      new Rotation3d(0, Math.toRadians(-2), Math.toRadians(90));
+  public static final Rotation3d BACK_RIGHT_CAMERA_ROTATION =
+      new Rotation3d(0, Math.toRadians(-2), Math.toRadians(-90));
+
+  public static final Transform3d ROBOT_TO_BACK_LEFT_CAMERA =
+      new Transform3d(new Translation3d(+0.323, +0.293, +0.358), BACK_LEFT_CAMERA_ROTATION);
+  public static final Transform3d ROBOT_TO_BACK_RIGHT_CAMERA =
+      new Transform3d(new Translation3d(+0.323, -0.290, +0.358), BACK_RIGHT_CAMERA_ROTATION);
+
   /**
    * A single camera's parameters.
    *
@@ -122,8 +132,18 @@ public final class AprilTag extends SubsystemBase {
                   ROBOT_TO_FRONT_RIGHT_CAMERA,
                   "photonvision2_Port_1182_Output_MJPEG_Server",
                   "http://photonvision2.local:1182/stream.mjpg")), // Port: 1182
-          Optional.empty(),
-          Optional.empty());
+          Optional.of(
+              new CameraParameters(
+                  "BackLeftCamera",
+                  ROBOT_TO_BACK_LEFT_CAMERA,
+                  "photonvision1_Port_1184_Output_MJPEG_Server",
+                  "http://photonvision1.local:1184/stream.mjpg")),
+          Optional.of(
+              new CameraParameters(
+                  "BackRightCamera",
+                  ROBOT_TO_BACK_RIGHT_CAMERA,
+                  "photonvision2_Port_1184_Output_MJPEG_Server",
+                  "http://photonvision2.local:1184/stream.mjpg")));
   public static final VisionParameters ALPHA_VISION_PARAMS =
       new VisionParameters(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
