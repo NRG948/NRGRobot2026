@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -56,8 +57,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private static final double ERROR_MARGIN = Units.degreesToRadians(5.0);
   private static final double ERROR_TIME = 1;
 
-  private static final double GEAR_RATIO =
-      RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026 ? 37.5 : 50.0;
+  private static final double GEAR_RATIO = isCompBot() ? 37.5 : 50.0;
   private static final double RADIANS_PER_ROTATION = 2 * Math.PI;
   private static final double MASS = Units.lbsToKilograms(5.5);
   private static final double LENGTH = Units.inchesToMeters(10.94);
@@ -66,9 +66,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_ACCELERATION =
       (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
-  public static final double STOW_ANGLE = Units.degreesToRadians(140);
+  public static final double STOW_ANGLE = Units.degreesToRadians(isCompBot() ? 135 : 140);
   public static final double BUMP_ANGLE = Units.degreesToRadians(25);
-  public static final double AGITATE_ANGLE = Units.degreesToRadians(20);
+  public static final double AGITATE_ANGLE = Units.degreesToRadians(isCompBot() ? 35 : 20);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
   public static final double MAX_ANGLE = STOW_ANGLE;

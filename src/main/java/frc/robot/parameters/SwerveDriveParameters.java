@@ -55,7 +55,7 @@ public enum SwerveDriveParameters {
 
   // TODO: Verify wheel distances for competition base
   CompetitionBase2026(
-      Units.lbsToKilograms(60.7),
+      Units.lbsToKilograms(143),
       0.603,
       0.501,
       MK4I_L2_PLUS,
@@ -63,7 +63,7 @@ public enum SwerveDriveParameters {
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {18.72, 299.88, 323.88, 350.68}, // CANCoder offsets
+      new double[] {-95.10, 148.80, 170, -102.78}, // CANCoder offsets
       21),
   /** Parameters for the 2026 Alpha Base robot. */
   AlphaBase2026(
