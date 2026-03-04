@@ -46,7 +46,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   // Physical parameters of the elevator
   private static final double GEAR_RATIO = 1;
   private static final double SPROCKET_DIAMETER = 0.05; // meters
-  private static final double MASS = 10; // TODO: Find Actual Mass (Kilograms)
+  private static final double ELEVATOR_MASS = 10; // TODO: Find Actual Mass (Kilograms)
   private static final double METERS_PER_REVOLUTION = (SPROCKET_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_HEIGHT =
       0.10; // TODO: Find actual max height of elevator in meters
@@ -60,7 +60,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_SPEED =
       (MOTOR_PARAMS.freeSpeedRadPerSec / (2 * Math.PI)) * METERS_PER_REVOLUTION; // m/s
   private static final double MAX_ACCELERATION =
-      (MOTOR_PARAMS.stallTorqueNewtonMeters * GEAR_RATIO) / (SPROCKET_DIAMETER * MASS); // m/s^2
+      (MOTOR_PARAMS.stallTorqueNewtonMeters * GEAR_RATIO) / (SPROCKET_DIAMETER * ELEVATOR_MASS); // m/s^2
   private static final ExponentialProfile.Constraints EXPONENTIAL_CONSTRAINTS =
       ExponentialProfile.Constraints.fromCharacteristics(
           MAX_BATTERY_VOLTAGE, MAX_SPEED / 2, MAX_ACCELERATION / 64);
@@ -89,7 +89,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   private final RelativeEncoder encoder = mainMotor.getEncoder();
 
   private ElevatorSim simElevator =
-      new ElevatorSim(MOTOR_PARAMS, GEAR_RATIO, MASS, SPROCKET_DIAMETER / 2, 0, 1, true, 0);
+      new ElevatorSim(MOTOR_PARAMS, GEAR_RATIO, ELEVATOR_MASS, SPROCKET_DIAMETER / 2, 0, 1, true, 0);
 
   private final Mechanism2d mechanism2d = new Mechanism2d(0.5, 1.0);
   private final MechanismRoot2d mechanismRoot2d = mechanism2d.getRoot("Elevator Root", 0, 0);
@@ -101,6 +101,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   private final PIDController controller = new PIDController(KP, KI, KD);
   private final Timer stuckTimer = new Timer();
 
+  private boolean isClimbing = false;
   private boolean isSeekingGoal;
   private boolean hasError;
   private final ExponentialProfile.State currentState = new ExponentialProfile.State();
@@ -142,6 +143,7 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
     mainMotor.disable();
     lastState = new ExponentialProfile.State();
     isSeekingGoal = false;
+    isClimbing = false;
     logIsSeekingGoal.append(false);
   }
 
@@ -162,6 +164,14 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
 
   public ElevatorLevel getCurrentElevatorLevel() {
     return currentElevatorLevel;
+  }
+
+  public boolean getIsClimbing() {
+    return isClimbing;
+  }
+
+  public void setIsClimbing(boolean isClimbing) {
+    this.isClimbing = isClimbing;
   }
 
   /**
@@ -187,11 +197,6 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
   /** Returns whether the elevator is at goal height. */
   public boolean atGoalHeight() {
     return MathUtil.isNear(goalState.position, getHeight(), GOAL_HEIGHT_TOLERANCE);
-  }
-
-  /** Returns whether the elevator is above the height where it is safe to tip the arm outward. */
-  public boolean isAboveSafeArmPivotHeight() {
-    return currentState.position >= goalState.position - armPivotHeightOffset;
   }
 
   /** Returns whether the elevator is seeking to the given {@link ElevatorLevel}. */
@@ -266,7 +271,13 @@ public class Climber extends SubsystemBase implements ActiveSubsystem {
       currentVoltage = KG;
     }
     if ((currentVoltage < 0 && atLowerLimit)) {
-      currentVoltage = 0;
+      if (isClimbing) {
+        currentVoltage = KG;  //TODO: IMPORTANT change this to KG relative to robot mass (rather than elevator mass)
+      }
+      else {
+        currentVoltage = 0; 
+      }
+      
     }
 
     mainMotor.setVoltage(currentVoltage);
