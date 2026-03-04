@@ -37,6 +37,9 @@ public class Subsystems {
   @DashboardTab(title = "Indexer")
   public final Indexer indexer = new Indexer();
 
+  @DashboardTab(title = "Climber")
+  public final Climber climber = new Climber();
+
   public final StatusLED statusLEDs = new StatusLED();
 
   @DashboardTab(title = "Front Left Camera")
@@ -98,7 +101,7 @@ public class Subsystems {
 
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
-    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm));
+    var manipulators = new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, intakeArm, climber));
 
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
 
