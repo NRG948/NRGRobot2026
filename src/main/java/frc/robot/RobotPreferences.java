@@ -111,7 +111,7 @@ public final class RobotPreferences {
   public static final DoublePreference RIGHT_TRIGGER_SCALAR =
       new DoublePreference("Drive", "Right Trigger Scalar", 0.25);
 
-  public static boolean isCompBot(){
+  public static boolean isCompBot() {
     return RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026;
   }
 
