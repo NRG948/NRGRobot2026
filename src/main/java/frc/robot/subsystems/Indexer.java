@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.ROBOT_TYPE;
+import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.RobotSelector.AlphaRobot2026;
 import static frc.robot.RobotSelector.CompetitionRobot2026;
 import static frc.robot.RobotSelector.PracticeRobot2026;
@@ -44,8 +45,7 @@ public final class Indexer extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double BAR_DIAMETER = Units.inchesToMeters(1.25);
-  private static final double GEAR_RATIO =
-      ROBOT_TYPE.getValue() == CompetitionRobot2026 ? 3.0 : 1.0;
+  private static final double GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
   private static final double METERS_PER_REVOLUTION = (BAR_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
   private static final double FEED_VELOCITY = 1.8;

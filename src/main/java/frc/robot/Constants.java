@@ -7,8 +7,7 @@
  
 package frc.robot;
 
-import static frc.robot.RobotPreferences.ROBOT_TYPE;
-import static frc.robot.RobotSelector.CompetitionRobot2026;
+import static frc.robot.RobotPreferences.isCompBot;
 
 import edu.wpi.first.math.util.Units;
 
@@ -30,7 +29,7 @@ public final class Constants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     // TODO: Measure compbot wheel diameters
     public static final double WHEEL_DIAMETER =
-        Units.inchesToMeters(ROBOT_TYPE.getValue() == CompetitionRobot2026 ? 3.9225 : 3.75);
+        Units.inchesToMeters(isCompBot() ? 3.9225 : 3.75);
     public static final int LED_COUNT = 77; // TODO: determine LED count
     public static final double PERIODIC_INTERVAL = 0.02;
 
