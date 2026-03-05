@@ -89,6 +89,8 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   private static final DataLog LOG = DataLogManager.getLog();
   private static final Rotation2d ROTATE_180_DEGREES = Rotation2d.fromDegrees(180);
+  private static final Rotation2d DEGREES_45 = Rotation2d.fromDegrees(45);
+  private static final Rotation2d DEGREES_NEG_45 = Rotation2d.fromDegrees(-45);
 
   public static final SwerveDriveParameters PARAMETERS =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
@@ -498,6 +500,15 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    */
   public void setModuleStates(SwerveModuleState[] states) {
     drivetrain.setModuleStates(states);
+  }
+
+  public void setXLock() {
+    SwerveModuleState[] states = new SwerveModuleState[4];
+    states[0] = new SwerveModuleState(0, DEGREES_45);
+    states[1] = new SwerveModuleState(0, DEGREES_NEG_45);
+    states[2] = new SwerveModuleState(0, DEGREES_NEG_45);
+    states[3] = new SwerveModuleState(0, DEGREES_45);
+    setModuleStates(states);
   }
 
   // Stops motors from the subsystem - may need to remove this (not sure - Om)

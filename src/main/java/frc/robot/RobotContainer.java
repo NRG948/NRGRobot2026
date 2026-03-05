@@ -27,6 +27,7 @@ import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchUtil;
 import frc.robot.util.MotorIdleMode;
 
@@ -78,7 +79,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    Swerve drivetrain = subsystems.drivetrain;
 
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
@@ -91,12 +92,24 @@ public class RobotContainer {
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchUtil::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
 
-    driverController
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         Commands.parallel(
+    //             Commands.sequence(
+    //                 new DriveAutoRotation(drivetrain, driverController)
+    //                     .onlyWhile(() -> !drivetrain.isAlignedToHub()),
+    //                 Commands.run(drivetrain::setXLock, drivetrain)),
+    //             ShootingCommands.shootWhenInRange(subsystems)));
+    
+     driverController
         .a()
         .whileTrue(
             Commands.parallel(
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
                 ShootingCommands.shootWhenInRange(subsystems)));
+
+    driverController.x().whileTrue(Commands.run(drivetrain::setXLock, drivetrain));
     driverController
         .rightStick()
         .whileTrue(
@@ -110,7 +123,7 @@ public class RobotContainer {
         .leftBumper()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoOrientToAlliance(subsystems.drivetrain, driverController),
+                new DriveAutoOrientToAlliance(drivetrain, driverController),
                 ShootingCommands.shoot(subsystems, Shooter.SHOOTER_FEED_VELOCITY)));
     driverController
         .leftTrigger()
@@ -143,12 +156,7 @@ public class RobotContainer {
 
     manipulatorController.leftBumper().whileTrue(IndexerCommands.feed(subsystems));
 
-    // Experimental, remove after shooter interpolation table is made and implemented. Up and left
-    // is increase and decrease upper shooter velocities respectively. Down and right is increase
-    // and decrease lower shooter velocities respectively.
-    manipulatorController.povUp().onTrue(ShootingCommands.addShooterVelocity(subsystems, 1.0));
-    manipulatorController.povDown().onTrue(ShootingCommands.addShooterVelocity(subsystems, -1.0));
-    manipulatorController.povLeft().onTrue(ShootingCommands.setShooterVelocity(subsystems, 15));
+    manipulatorController.back().onTrue(DriveCommands.interruptAll(subsystems));
   }
 
   /**
