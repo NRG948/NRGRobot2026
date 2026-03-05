@@ -150,9 +150,24 @@
         "x" : 896.0,
         "y" : 0.0,
         "width" : 256.0,
-        "height" : 256.0,
+        "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Within Range",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Aligned to Hub",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Aligned to Hub",
           "period" : 0.06,
           "true_color" : -16711936,
           "true_icon" : "None",

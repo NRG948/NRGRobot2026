@@ -126,9 +126,14 @@ public final class RobotOperator {
     return backRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
   }
 
-  @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 2)
+  @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 1)
   public boolean isWithinShootingRange() {
     return drivetrain.getDistanceToHub() <= Shooter.MAXIMUM_SHOOTING_RANGE;
+  }
+
+  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 1, width = 2, height = 1)
+  public boolean isAlignedToHub() {
+    return drivetrain.isAlignedToHub();
   }
 
   @DashboardCommand(
