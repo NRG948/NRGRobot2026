@@ -89,8 +89,8 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   private static final DataLog LOG = DataLogManager.getLog();
   private static final Rotation2d ROTATE_180_DEGREES = Rotation2d.fromDegrees(180);
-  private static final Rotation2d DEGREES_45 = Rotation2d.fromDegrees(45);
-  private static final Rotation2d DEGREES_NEG_45 = Rotation2d.fromDegrees(-45);
+  private static final SwerveModuleState SWERVE_MODULE_STATE_NEG_45 = new SwerveModuleState(0, Rotation2d.fromDegrees(-45));
+  private static final SwerveModuleState SWERVE_MODULE_STATE_45 = new SwerveModuleState(0, Rotation2d.fromDegrees(45));
 
   public static final SwerveDriveParameters PARAMETERS =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
@@ -233,6 +233,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private Translation2d vectorToHub;
   private double distanceToHub;
   private double angleToHub;
+  private SwerveModuleState swerveModuleState;
 
   /**
    * Creates a {@link SwerveModule} object and intiailizes its motor controllers.
@@ -504,10 +505,10 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   public void setXLock() {
     SwerveModuleState[] states = new SwerveModuleState[4];
-    states[0] = new SwerveModuleState(0, DEGREES_45);
-    states[1] = new SwerveModuleState(0, DEGREES_NEG_45);
-    states[2] = new SwerveModuleState(0, DEGREES_NEG_45);
-    states[3] = new SwerveModuleState(0, DEGREES_45);
+    states[0] = SWERVE_MODULE_STATE_45;
+    states[1] = SWERVE_MODULE_STATE_NEG_45;
+    states[2] = SWERVE_MODULE_STATE_NEG_45;
+    states[3] = SWERVE_MODULE_STATE_45;
     setModuleStates(states);
   }
 
