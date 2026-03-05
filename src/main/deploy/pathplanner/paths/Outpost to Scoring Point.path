@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.0957,
-        "y": 4.015511111111111
+        "x": 3.183,
+        "y": 2.671
       },
       "prevControl": {
-        "x": 2.2822650458058336,
-        "y": 3.389180030783974
+        "x": 2.3695650458058335,
+        "y": 2.0446689196728633
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Scoring Point"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 3.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -54,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 42.0282331684253
   },
   "reversed": false,
   "folder": null,
@@ -62,5 +62,5 @@
     "velocity": 0,
     "rotation": 90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
