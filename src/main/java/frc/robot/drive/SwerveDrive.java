@@ -150,10 +150,11 @@ public class SwerveDrive extends RobotDriveBase {
 
       double orientationRadians = -orientation.getRadians();
 
-      chassisSpeeds.vxMetersPerSecond =
-          (xSpeed * Math.cos(orientationRadians)) - (ySpeed * Math.sin(orientationRadians));
-      chassisSpeeds.vyMetersPerSecond =
-          (xSpeed * Math.sin(orientationRadians)) + (ySpeed * Math.cos(orientationRadians));
+      double cosOrientation = Math.cos(orientationRadians);
+      double sinOrientation = Math.sin(orientationRadians);
+
+      chassisSpeeds.vxMetersPerSecond = (xSpeed * cosOrientation) - (ySpeed * sinOrientation);
+      chassisSpeeds.vyMetersPerSecond = (xSpeed * sinOrientation) + (ySpeed * cosOrientation);
       chassisSpeeds.omegaRadiansPerSecond = rSpeed;
 
       setChassisSpeeds(chassisSpeeds);
