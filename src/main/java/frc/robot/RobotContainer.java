@@ -98,11 +98,11 @@ public class RobotContainer {
     //         Commands.parallel(
     //             Commands.sequence(
     //                 new DriveAutoRotation(drivetrain, driverController)
-    //                     .onlyWhile(() -> !drivetrain.isAlignedToHub()),
+    //                     .until(drivetrain::isAlignedToHub),
     //                 Commands.run(drivetrain::setXLock, drivetrain)),
     //             ShootingCommands.shootWhenInRange(subsystems)));
-    
-     driverController
+
+    driverController
         .a()
         .whileTrue(
             Commands.parallel(
