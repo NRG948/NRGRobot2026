@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -44,7 +45,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(2);
-  private static final double GEAR_RATIO = 1;
+  private static final double GEAR_RATIO = isCompBot() ? (34.0 / 14.0) : 1;
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
   private static final double INTAKE_VELOCITY = 6;
