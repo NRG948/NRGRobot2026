@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.132288888888889,
+        "y": 7.513766666666667
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.502577777777777,
+        "y": 7.484533333333334
+      },
+      "isLocked": false,
+      "linkedName": "Herd Mid"
+    },
+    {
+      "anchor": {
+        "x": 6.759611111111111,
+        "y": 6.656255555555556
+      },
+      "prevControl": {
+        "x": 6.747220757121129,
+        "y": 7.53287310034675
+      },
+      "nextControl": {
+        "x": 6.798588888888889,
+        "y": 3.8985777777777777
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.428299999999999,
+        "y": 0.9362666666666666
+      },
+      "prevControl": {
+        "x": 6.730377777777776,
+        "y": 1.3650222222222226
+      },
+      "nextControl": {
+        "x": 6.25708474770846,
+        "y": 0.6932514698657719
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.132288888888889,
+        "y": 0.5172555555555562
+      },
+      "prevControl": {
+        "x": 5.629255555555557,
+        "y": 0.5952111111111105
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Herd Mid 2"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.15,
+      "rotationDegrees": 170.0
+    },
+    {
+      "waypointRelativePos": 1.5958506224066347,
+      "rotationDegrees": 170.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}
