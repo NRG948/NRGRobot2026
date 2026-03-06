@@ -80,6 +80,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     Swerve drivetrain = subsystems.drivetrain;
+    IntakeArm intakeArm = subsystems.intakeArm;
 
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
@@ -115,7 +116,7 @@ public class RobotContainer {
         .whileTrue(
             Commands.parallel(
                 new ShootWhileMoving(subsystems, driverController),
-                ShootingCommands.feedBallsToShooter(subsystems)));
+                ShootingCommands.feedBallsToShooter(subsystems, true)));
     driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
 
     driverController.povDown().whileTrue(ShootingCommands.shootFromTower(subsystems));
@@ -140,8 +141,13 @@ public class RobotContainer {
     manipulatorController
         .rightBumper()
         .whileTrue(
-            Commands.parallel(
+            Commands.sequence(
                 IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
+                Commands.idle(subsystems.intakeArm)
+                    .until(
+                        () -> {
+                          return intakeArm.getCurrentAngleDegrees() < 10;
+                        }),
                 IntakeCommands.intake(subsystems)));
     manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
     manipulatorController

@@ -33,18 +33,19 @@ public final class ShootingCommands {
 
   public static Command shoot(Subsystems subsystems) {
     Swerve drivetrain = subsystems.drivetrain;
-    return shootForDistance(subsystems, drivetrain::getDistanceToHub);
+    return shootForDistance(subsystems, drivetrain::getDistanceToHub, true);
   }
 
   public static Command shootFromHub(Subsystems subsystems) {
-    return shootForDistance(subsystems, () -> Shooter.HUB_SHOT_DISTANCE);
+    return shootForDistance(subsystems, () -> Shooter.HUB_SHOT_DISTANCE, false);
   }
 
   public static Command shootFromTower(Subsystems subsystems) {
-    return shootForDistance(subsystems, () -> Shooter.TOWER_SHOT_DISTANCE);
+    return shootForDistance(subsystems, () -> Shooter.TOWER_SHOT_DISTANCE, false);
   }
 
-  private static Command shootForDistance(Subsystems subsystems, DoubleSupplier distance) {
+  private static Command shootForDistance(
+      Subsystems subsystems, DoubleSupplier distance, boolean shouldWaitForHubAlign) {
     Indexer indexer = subsystems.indexer;
     Hopper hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
@@ -52,7 +53,7 @@ public final class ShootingCommands {
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalDistance(distance.getAsDouble()), shooter),
-            feedBallsToShooter(subsystems))
+            feedBallsToShooter(subsystems, true))
         .finallyDo(
             () -> {
               shooter.disable();
@@ -74,7 +75,7 @@ public final class ShootingCommands {
     return Commands.runOnce(() -> shooter.setGoalDistance(distance), shooter);
   }
 
-  public static Command feedBallsToShooter(Subsystems subsystems) {
+  public static Command feedBallsToShooter(Subsystems subsystems, boolean shouldWaitForHubAlign) {
     Indexer indexer = subsystems.indexer;
     Hopper hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
@@ -82,7 +83,11 @@ public final class ShootingCommands {
     Swerve drivetrain = subsystems.drivetrain;
 
     return Commands.sequence(
-        Commands.idle(indexer).until(() -> shooter.atOrNearGoal() && drivetrain.isAlignedToHub()),
+        Commands.idle(indexer)
+            .until(
+                () ->
+                    shooter.atOrNearGoal()
+                        && (!shouldWaitForHubAlign || drivetrain.isAlignedToHub())),
         Commands.runOnce(hopper::feed, hopper),
         Commands.runOnce(indexer::feed, indexer),
         Commands.runOnce(intake::intake, intake),
@@ -97,7 +102,7 @@ public final class ShootingCommands {
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalVelocity(velocity), shooter),
-            feedBallsToShooter(subsystems))
+            feedBallsToShooter(subsystems, true))
         .finallyDo(
             () -> {
               shooter.disable();
