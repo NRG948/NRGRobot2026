@@ -42,7 +42,7 @@ import java.util.Map;
 
 @DashboardDefinition
 public final class Shooter extends SubsystemBase implements ActiveSubsystem {
-  private static final double VELOCITY_PERCENT_TOLERANCE = 0.05;
+  private static final double VELOCITY_PERCENT_TOLERANCE = 0.04;
   private static final double EFFICIENCY = 0.9;
 
   private static final DataLog LOG = DataLogManager.getLog();
