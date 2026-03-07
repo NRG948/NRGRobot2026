@@ -1,0 +1,363 @@
+{
+  "version" : 1.0,
+  "grid_size" : 128.0,
+  "tabs" : [ {
+    "name" : "Operator",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Autonomous Start Side",
+        "type" : "Split Button Chooser",
+        "x" : 1152.0,
+        "y" : 256.0,
+        "width" : 384.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Autonomous Start Side",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Autonomous Routine",
+        "type" : "ComboBox Chooser",
+        "x" : 1152.0,
+        "y" : 384.0,
+        "width" : 384.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Autonomous Routine",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Autonomous Delay",
+        "type" : "ComboBox Chooser",
+        "x" : 1152.0,
+        "y" : 512.0,
+        "width" : 384.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Autonomous Delay",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Alerts",
+        "type" : "Alerts",
+        "x" : 0.0,
+        "y" : 512.0,
+        "width" : 896.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Alerts",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Field",
+        "type" : "Field",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 896.0,
+        "height" : 512.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Field",
+          "period" : 0.06,
+          "field_game" : "Rebuilt",
+          "robot_width" : 0.85,
+          "robot_length" : 0.85,
+          "show_other_objects" : true,
+          "show_trajectories" : true,
+          "field_rotation" : 0.0,
+          "robot_color" : -65536,
+          "trajectory_color" : -1
+        }
+      }, {
+        "title" : "Match Time",
+        "type" : "Match Time",
+        "x" : 1152.0,
+        "y" : 0.0,
+        "width" : 384.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Match Time",
+          "period" : 0.06,
+          "time_display_mode" : "Minutes and Seconds",
+          "yellow_start_time" : 30,
+          "red_start_time" : 15
+        }
+      }, {
+        "title" : "Front Left Camera Connected",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 256.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Front Left Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Front Right Camera Connected",
+        "type" : "Boolean Box",
+        "x" : 1024.0,
+        "y" : 256.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Front Right Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Back Left Camera Connected",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Back Left Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Back Right Camera Connected",
+        "type" : "Boolean Box",
+        "x" : 1024.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Back Right Camera Connected",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Within Range",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Within Range",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Aligned to Hub",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Aligned to Hub",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Set Extended Position",
+        "type" : "Command",
+        "x" : 896.0,
+        "y" : 512.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Set Extended Position",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Set Stowed Position",
+        "type" : "Command",
+        "x" : 896.0,
+        "y" : 640.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Set Stowed Position",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      } ]
+    }
+  }, {
+    "name" : "Preferences",
+    "grid_layout" : {
+      "layouts" : [ {
+        "title" : "April Tag",
+        "type" : "List Layout",
+        "x" : 640.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "Enable Front Left",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Front Left",
+            "period" : 0.06
+          }
+        }, {
+          "title" : "Enable Front Right",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Front Right",
+            "period" : 0.06
+          }
+        }, {
+          "title" : "Enable Back Left",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Back Left",
+            "period" : 0.06
+          }
+        }, {
+          "title" : "Enable Back Right",
+          "type" : "Toggle Switch",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Preferences/April Tag/Enable Back Right",
+            "period" : 0.06
+          }
+        } ]
+      } ],
+      "containers" : [ {
+        "title" : "Field Layout",
+        "type" : "ComboBox Chooser",
+        "x" : 896.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Field Layout",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Pose Est. Strategy",
+        "type" : "ComboBox Chooser",
+        "x" : 896.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Pose Est. Strategy",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Auto Override Odometry With Pose",
+        "type" : "Toggle Switch",
+        "x" : 896.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Auto Override Odometry With Pose",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Robot Selector",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Robot Selector",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Dashboard Mode",
+        "type" : "ComboBox Chooser",
+        "x" : 0.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Dashboard Mode",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Auto Rotation PID",
+        "type" : "PID Controller",
+        "x" : 384.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Auto Rotation PID",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Enable Rumble",
+        "type" : "Toggle Switch",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Enable Rumble",
+          "period" : 0.06
+        }
+      }, {
+        "title" : "Right Trigger Scalar",
+        "type" : "Number Slider",
+        "x" : 384.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Right Trigger Scalar",
+          "period" : 0.06,
+          "min_value" : 0.0,
+          "max_value" : 1.0,
+          "divisions" : 5,
+          "publish_all" : false
+        }
+      } ]
+    }
+  } ]
+}
