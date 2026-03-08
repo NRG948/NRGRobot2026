@@ -178,6 +178,17 @@ public class RobotContainer {
     subsystems.disableManipulators();
     subsystems.setIdleMode(MotorIdleMode.COAST);
     subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
+    CommandScheduler.getInstance().schedule(LEDCommands.autoLEDs(subsystems));
+  }
+
+  public void teleopInit() {
+    subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
+    subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
+  }
+
+  public void autonomousInit() {
+    subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
+    subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
   }
 
   public void periodic() {
