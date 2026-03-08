@@ -73,15 +73,15 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       new InterpolatingDoubleTreeMap();
 
   static {
-    SHOOTER_VELOCITIES.put(1.28, 13.25);
-    SHOOTER_VELOCITIES.put(1.35, 13.5);
-    SHOOTER_VELOCITIES.put(1.67, 14.25);
-    SHOOTER_VELOCITIES.put(2.0, 15.5);
-    SHOOTER_VELOCITIES.put(2.33, 16.75);
-    SHOOTER_VELOCITIES.put(2.66, 18.0);
-    SHOOTER_VELOCITIES.put(3.05, 19.5);
-    SHOOTER_VELOCITIES.put(3.35, 22.0);
-    SHOOTER_VELOCITIES.put(3.67, 30.0);
+    SHOOTER_VELOCITIES.put(1.28, 13.0);
+    SHOOTER_VELOCITIES.put(1.35, 13.25);
+    SHOOTER_VELOCITIES.put(1.67, 14.0);
+    SHOOTER_VELOCITIES.put(2.0, 15.25);
+    SHOOTER_VELOCITIES.put(2.33, 16.25);
+    SHOOTER_VELOCITIES.put(2.66, 17.5);
+    SHOOTER_VELOCITIES.put(3.05, 19.0);
+    SHOOTER_VELOCITIES.put(3.35, 21.5);
+    SHOOTER_VELOCITIES.put(3.67, 29.5);
   }
 
   private final MotorController leftUpperMotor =
