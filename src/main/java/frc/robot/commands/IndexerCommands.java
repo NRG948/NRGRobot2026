@@ -18,7 +18,7 @@ public final class IndexerCommands {
   public static Command feed(Subsystems subsystems) {
     Indexer indexer = subsystems.indexer;
     Hopper hopper = subsystems.hopper;
-    return Commands.runOnce(
+    return Commands.run(
             () -> {
               indexer.feed();
               hopper.feed();
