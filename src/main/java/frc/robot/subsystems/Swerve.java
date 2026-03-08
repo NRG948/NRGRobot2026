@@ -574,8 +574,8 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   public boolean isAlignedToHub() {
     double tolerance =
         ((Shooter.MAXIMUM_SHOOTING_RANGE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
-                * Math.toRadians(4.0)
-            + Math.toRadians(1.0);
+                * Math.toRadians(4.2)
+            + Math.toRadians(1.8);
     return Math.abs(getAngleToHub() - getOrientation().getRadians()) <= tolerance;
   }
 
