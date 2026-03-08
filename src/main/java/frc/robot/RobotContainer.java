@@ -10,7 +10,9 @@ package frc.robot;
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -19,6 +21,7 @@ import frc.robot.commands.DriveAutoOrientToAlliance;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
+import frc.robot.commands.FlameCycle;
 import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
@@ -63,10 +66,16 @@ public class RobotContainer {
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
 
+    subsystems.statusLEDs.setDefaultCommand(new FlameCycle(subsystems.statusLEDs));
+
     // Configure the trigger bindings
     configureBindings();
 
     RobotContainerDashboardTabs.bind(this);
+  }
+
+  public Subsystems getAllSubsystems() {
+    return subsystems;
   }
 
   /**
@@ -93,16 +102,6 @@ public class RobotContainer {
         .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
     new Trigger(MatchUtil::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
 
-    // driverController
-    //     .a()
-    //     .whileTrue(
-    //         Commands.parallel(
-    //             Commands.sequence(
-    //                 new DriveAutoRotation(drivetrain, driverController)
-    //                     .until(drivetrain::isAlignedToHub),
-    //                 Commands.run(drivetrain::setXLock, drivetrain)),
-    //             ShootingCommands.shootWhenInRange(subsystems)));
-
     driverController
         .a()
         .whileTrue(
@@ -110,7 +109,17 @@ public class RobotContainer {
                 new DriveAutoRotation(subsystems.drivetrain, driverController),
                 ShootingCommands.shootWhenInRange(subsystems)));
 
-    driverController.x().whileTrue(Commands.run(drivetrain::setXLock, drivetrain));
+    driverController
+        .x()
+        .whileTrue(
+            Commands.parallel(
+                Commands.sequence(
+                    new DriveAutoRotation(drivetrain, driverController)
+                        .until(drivetrain::isAlignedToHub),
+                    Commands.run(drivetrain::setXLock, drivetrain)),
+                ShootingCommands.shootWhenInRange(subsystems)));
+    // driverController.x().whileTrue(Commands.run(drivetrain::setXLock, drivetrain));
+
     driverController
         .rightStick()
         .whileTrue(
@@ -136,19 +145,42 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(IntakeCommands.intake(subsystems));
 
-    manipulatorController.povRight().whileTrue(ShootingCommands.rampUpShooter(subsystems));
+    // manipulatorController.povRight().whileTrue(ShootingCommands.rampUpShooter(subsystems));
+
+    manipulatorController
+        .povRight()
+        .whileTrue(
+            Commands.either(
+                Commands.none(),
+                new ProxyCommand(ShootingCommands.rampUpShooter(subsystems)),
+                () -> {
+                  return driverController.a().getAsBoolean()
+                      || driverController.povUp().getAsBoolean()
+                      || driverController.povDown().getAsBoolean();
+                }));
 
     manipulatorController
         .rightBumper()
         .whileTrue(
-            Commands.sequence(
-                IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
-                Commands.idle(subsystems.intakeArm)
-                    .until(
-                        () -> {
-                          return intakeArm.getCurrentAngleDegrees() < 10;
-                        }),
-                IntakeCommands.intake(subsystems)));
+            Commands.either(
+                Commands.none(),
+                new ProxyCommand(IntakeCommands.extendAndIntakeWhenSafe(subsystems)),
+                () -> {
+                  return driverController.leftTrigger().getAsBoolean();
+                }));
+
+    // manipulatorController
+    //     .rightBumper()
+    //     .whileTrue(
+    //         Commands.sequence(
+    //             IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
+    //             Commands.idle(subsystems.intakeArm)
+    //                 .until(
+    //                     () -> {
+    //                       return intakeArm.getCurrentAngleDegrees() < 10;
+    //                     }),
+    //             IntakeCommands.intake(subsystems)));
+
     manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
     manipulatorController
         .x()
