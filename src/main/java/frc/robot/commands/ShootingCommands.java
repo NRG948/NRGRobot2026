@@ -53,7 +53,7 @@ public final class ShootingCommands {
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalDistance(distance.getAsDouble()), shooter),
-            feedBallsToShooter(subsystems, true))
+            feedBallsToShooter(subsystems, shouldWaitForHubAlign))
         .finallyDo(
             () -> {
               shooter.disable();
