@@ -67,6 +67,18 @@ public final class IntakeCommands {
     return Commands.runOnce(intake::intake, intake);
   }
 
+  public static Command extendAndIntakeWhenSafe(Subsystems subsystems) {
+    IntakeArm intakeArm = subsystems.intakeArm;
+    return Commands.sequence(
+        setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
+        Commands.idle(intakeArm)
+            .until(
+                () -> {
+                  return intakeArm.getCurrentAngleDegrees() < 15;
+                }),
+        intake(subsystems));
+  }
+
   public static Command disableIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
     return Commands.runOnce(intake::disable, intake);
