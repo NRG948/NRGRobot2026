@@ -1,0 +1,89 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.183,
+        "y": 2.671
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7899444444444446,
+        "y": 1.5111888888888878
+      },
+      "isLocked": false,
+      "linkedName": "Scoring Point"
+    },
+    {
+      "anchor": {
+        "x": 0.57,
+        "y": 0.72
+      },
+      "prevControl": {
+        "x": 1.826958524168983,
+        "y": 1.6001318338400718
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Outpost (Nose In)"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.158506224066387,
+      "rotationDegrees": 42.06442899332791
+    },
+    {
+      "waypointRelativePos": 0.521991701244812,
+      "rotationDegrees": -155.69576489737352
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7282878411910672,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Start Intake",
+      "waypointRelativePos": 0.5330024813895744,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -179.22577983507205
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 42.0282331684253
+  },
+  "useDefaultConstraints": false
+}
