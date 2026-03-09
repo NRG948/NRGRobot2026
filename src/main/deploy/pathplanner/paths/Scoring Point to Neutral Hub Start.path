@@ -8,55 +8,34 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9661610157787064,
-        "y": 2.7954220837386905
+        "x": 2.9369928530653198,
+        "y": 2.7155026252827703
       },
       "isLocked": false,
       "linkedName": "Scoring Point"
     },
     {
       "anchor": {
-        "x": 4.781488888888889,
-        "y": 2.4076777777777774
+        "x": 5.65848888888889,
+        "y": 2.671
       },
       "prevControl": {
-        "x": 3.938136414900655,
-        "y": 2.427521365401031
-      },
-      "nextControl": {
-        "x": 5.609766666666667,
-        "y": 2.3881888888888874
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.76,
-        "y": 3.6
-      },
-      "prevControl": {
-        "x": 7.174155555555555,
-        "y": 2.758477777777778
+        "x": 5.229733333333334,
+        "y": 2.612311111111111
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Neutral End"
+      "linkedName": "Neutral Hub Start"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 25.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6848635235731944,
-      "maxWaypointRelativePos": 1.1334987593052148,
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 0.85,
       "constraints": {
-        "maxVelocity": 2.5,
+        "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -68,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Bump Angle for Left Neutral",
-      "waypointRelativePos": 0.5022332506203392,
+      "name": "Bump Angle for Close Right Neutral",
+      "waypointRelativePos": 0.25,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -79,8 +58,8 @@
       }
     },
     {
-      "name": "Extend and intake for left neutral",
-      "waypointRelativePos": 1.0,
+      "name": "Extend and intake for close right neutral",
+      "waypointRelativePos": 0.5,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -91,7 +70,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -100,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 90.0
+    "rotation": 55.619655276154894
   },
   "reversed": false,
   "folder": null,
@@ -108,5 +87,5 @@
     "velocity": 0.0,
     "rotation": 42.0282331684253
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

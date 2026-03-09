@@ -3,49 +3,54 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.55,
-        "y": 0.72
+        "x": 5.843633333333333,
+        "y": 5.272544444444446
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.164277525189878,
-        "y": 1.228375115926068
+        "x": 5.2784555555555555,
+        "y": 6.013122222222222
       },
       "isLocked": false,
-      "linkedName": "Outpost (Nose In)"
+      "linkedName": "Neutral Hub End"
     },
     {
       "anchor": {
-        "x": 3.183,
-        "y": 2.671
+        "x": 2.7449,
+        "y": 4.678133333333332
       },
       "prevControl": {
-        "x": 2.3695650458058335,
-        "y": 2.0446689196728633
+        "x": 3.4367555555555556,
+        "y": 5.789
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Scoring Point"
+      "linkedName": "Opposite Scoring Point"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5053941908713707,
+      "rotationDegrees": -65.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Ramp up shooter for right scoring point",
-      "waypointRelativePos": 0.580645161290322,
+      "name": "BumpAngleHub",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampUpShooterForAutoScore"
+          "name": "IntakeArmBumpAngle"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -54,13 +59,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 42.0282331684253
+    "rotation": -26.00334584451132
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": -179.22577983507205
+    "velocity": 3.0,
+    "rotation": -132.13759477376118
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

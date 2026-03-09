@@ -3,49 +3,54 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.55,
-        "y": 0.72
+        "x": 5.65848888888889,
+        "y": 2.671
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.164277525189878,
-        "y": 1.228375115926068
+        "x": 7.003222222222222,
+        "y": 3.2846777777777767
       },
       "isLocked": false,
-      "linkedName": "Outpost (Nose In)"
+      "linkedName": "Neutral Hub Start"
     },
     {
       "anchor": {
-        "x": 3.183,
-        "y": 2.671
+        "x": 5.843633333333333,
+        "y": 5.272544444444446
       },
       "prevControl": {
-        "x": 2.3695650458058335,
-        "y": 2.0446689196728633
+        "x": 6.087244444444444,
+        "y": 4.902255555555556
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Scoring Point"
+      "linkedName": "Neutral Hub End"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.40248962655601916,
+      "rotationDegrees": 92.49462590835456
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Ramp up shooter for right scoring point",
-      "waypointRelativePos": 0.580645161290322,
+      "name": "HubStartIntake",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampUpShooterForAutoScore"
+          "name": "ExtendAndIntake"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -53,14 +58,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 42.0282331684253
+    "velocity": 3.0,
+    "rotation": -132.13759477376118
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": -179.22577983507205
+    "velocity": 3.0,
+    "rotation": 55.619655276154894
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

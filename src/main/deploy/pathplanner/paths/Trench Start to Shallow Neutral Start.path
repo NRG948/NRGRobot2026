@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.501394069014511,
-        "y": 2.137867269960145
+        "x": 4.635322222222222,
+        "y": 2.485633333333333
       },
       "isLocked": false,
-      "linkedName": "Bump Start"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.7425347222222225,
-        "y": 2.3236319444444438
+        "x": 5.473344444444445,
+        "y": 2.6025666666666654
       },
       "prevControl": {
-        "x": 5.5100780623816155,
-        "y": 2.415631408006738
+        "x": 5.145078820401886,
+        "y": 2.6336188202923134
       },
       "nextControl": {
-        "x": 6.145711111111111,
-        "y": 2.1640666666666664
+        "x": 6.1944333333333335,
+        "y": 2.5343555555555533
       },
       "isLocked": false,
       "linkedName": null
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.49543568464729165,
-      "rotationDegrees": 20.0
+      "rotationDegrees": 115.0
     }
   ],
   "constraintZones": [
@@ -106,7 +106,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": false
 }
