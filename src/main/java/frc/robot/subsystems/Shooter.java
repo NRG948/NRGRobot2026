@@ -43,7 +43,7 @@ import java.util.Map;
 
 @DashboardDefinition
 public final class Shooter extends SubsystemBase implements ActiveSubsystem {
-  private static final double VELOCITY_PERCENT_TOLERANCE = 0.04;
+  private static final double VELOCITY_PERCENT_TOLERANCE = 0.03;
   private static final double EFFICIENCY = 0.9;
 
   private static final DataLog LOG = DataLogManager.getLog();
@@ -75,6 +75,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   static {
     if (isCompBot()) {
+      // Comp bot 70 degree hood
       SHOOTER_VELOCITIES.put(1.28, 13.0);
       SHOOTER_VELOCITIES.put(1.35, 13.25);
       SHOOTER_VELOCITIES.put(1.67, 14.0);
@@ -85,6 +86,19 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       SHOOTER_VELOCITIES.put(3.35, 21.5);
       SHOOTER_VELOCITIES.put(3.67, 29.5);
     } else {
+      // Practice bot 65 degree hood
+      SHOOTER_VELOCITIES.put(1.28, 12.75);
+      // SHOOTER_VELOCITIES.put(1.35, TBD);
+      // SHOOTER_VELOCITIES.put(1.67, TBD); 
+      // SHOOTER_VELOCITIES.put(2.0, TBD);
+      // SHOOTER_VELOCITIES.put(2.33, TBD);
+      // SHOOTER_VELOCITIES.put(2.66, TBD);
+      // SHOOTER_VELOCITIES.put(3.05, TBD);
+      // SHOOTER_VELOCITIES.put(3.35, TBD);
+      SHOOTER_VELOCITIES.put(3.67, 17.9);
+      SHOOTER_VELOCITIES.put(4.3, 21.25);
+
+      /* Practice bot 70 degree hood
       SHOOTER_VELOCITIES.put(1.28, 13.25);
       SHOOTER_VELOCITIES.put(1.35, 13.5);
       SHOOTER_VELOCITIES.put(1.67, 14.25);
@@ -93,7 +107,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       SHOOTER_VELOCITIES.put(2.66, 18.0);
       SHOOTER_VELOCITIES.put(3.05, 19.5);
       SHOOTER_VELOCITIES.put(3.35, 22.0);
-      SHOOTER_VELOCITIES.put(3.67, 30.0);
+      SHOOTER_VELOCITIES.put(3.67, 30.0); */
     }
   }
 
