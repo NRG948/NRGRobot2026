@@ -128,7 +128,7 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 1)
   public boolean isWithinShootingRange() {
-    return drivetrain.getDistanceToHub() <= Shooter.MAXIMUM_SHOOTING_RANGE;
+    return drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE;
   }
 
   @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 1, width = 2, height = 1)

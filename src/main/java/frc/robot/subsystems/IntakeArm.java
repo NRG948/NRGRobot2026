@@ -222,6 +222,11 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     return Math.toDegrees(currentAngle);
   }
 
+  /** {@return the current angle in radians} */
+  public double getCurrentAngle() {
+    return currentAngle;
+  }
+
   /**
    * {@return the goal angle in degress} The angle is relative to horizontal with positive values
    * upward.

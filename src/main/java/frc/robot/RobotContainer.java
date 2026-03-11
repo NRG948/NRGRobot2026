@@ -74,10 +74,6 @@ public class RobotContainer {
     RobotContainerDashboardTabs.bind(this);
   }
 
-  public Subsystems getAllSubsystems() {
-    return subsystems;
-  }
-
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -118,7 +114,6 @@ public class RobotContainer {
                         .until(drivetrain::isAlignedToHub),
                     Commands.run(drivetrain::setXLock, drivetrain)),
                 ShootingCommands.shootWhenInRange(subsystems)));
-    // driverController.x().whileTrue(Commands.run(drivetrain::setXLock, drivetrain));
 
     driverController
         .rightStick()
@@ -145,8 +140,6 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(IntakeCommands.intake(subsystems));
 
-    // manipulatorController.povRight().whileTrue(ShootingCommands.rampUpShooter(subsystems));
-
     manipulatorController
         .povRight()
         .whileTrue(
@@ -168,18 +161,6 @@ public class RobotContainer {
                 () -> {
                   return driverController.leftTrigger().getAsBoolean();
                 }));
-
-    // manipulatorController
-    //     .rightBumper()
-    //     .whileTrue(
-    //         Commands.sequence(
-    //             IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
-    //             Commands.idle(subsystems.intakeArm)
-    //                 .until(
-    //                     () -> {
-    //                       return intakeArm.getCurrentAngleDegrees() < 10;
-    //                     }),
-    //             IntakeCommands.intake(subsystems)));
 
     manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
     manipulatorController

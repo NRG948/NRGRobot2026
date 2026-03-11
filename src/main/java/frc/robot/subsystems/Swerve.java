@@ -87,6 +87,10 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     public double estimatedRotation;
   }
 
+  private static final double MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(1.8);
+  private static final double MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(6);
+  private static final double SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE =
+      MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE - MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
   private static final DataLog LOG = DataLogManager.getLog();
   private static final Rotation2d ROTATE_180_DEGREES = Rotation2d.fromDegrees(180);
   private static final SwerveModuleState SWERVE_MODULE_STATE_NEG_45 =
@@ -573,9 +577,9 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   /** {@return whether we are aligned to hub within tolerance} */
   public boolean isAlignedToHub() {
     double tolerance =
-        ((Shooter.MAXIMUM_SHOOTING_RANGE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
-                * Math.toRadians(4.2)
-            + Math.toRadians(1.8);
+        ((Shooter.MAX_SHOOTING_DISTANCE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
+                * SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE
+            + MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
     return Math.abs(getAngleToHub() - getOrientation().getRadians()) <= tolerance;
   }
 

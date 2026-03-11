@@ -29,12 +29,12 @@ public final class Constants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     // TODO: Measure compbot wheel diameters
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(isCompBot() ? 3.957 : 3.75);
-    public static final int LED_COUNT = 32; // TODO: determine LED count
+    public static final int LED_COUNT = 32;
     public static final double PERIODIC_INTERVAL = 0.02;
 
     public static class LEDSegment {
       public static final int STATUS_FIRST_LED = 0;
-      public static final int STATUS_LED_COUNT = 32; // TODO: determine status LED count.
+      public static final int STATUS_LED_COUNT = 32;
     }
 
     public static class PWMPort {
@@ -44,7 +44,6 @@ public final class Constants {
     public static final class CANID {
       public static final int INTAKE_ID = 13;
       public static final int INTAKE_ARM_ID = 12;
-      // TODO: verify shooter CAN IDS with Systems
       public static final int SHOOTER_INDEXER_ID = 14;
       public static final int HOPPER_INDEXER_ID = 15;
       public static final int SHOOTER_LOWER_RIGHT_ID = 16;

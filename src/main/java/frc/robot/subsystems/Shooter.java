@@ -12,6 +12,7 @@ import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.COAST;
@@ -73,15 +74,27 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       new InterpolatingDoubleTreeMap();
 
   static {
-    SHOOTER_VELOCITIES.put(1.28, 13.0);
-    SHOOTER_VELOCITIES.put(1.35, 13.25);
-    SHOOTER_VELOCITIES.put(1.67, 14.0);
-    SHOOTER_VELOCITIES.put(2.0, 15.25);
-    SHOOTER_VELOCITIES.put(2.33, 16.25);
-    SHOOTER_VELOCITIES.put(2.66, 17.5);
-    SHOOTER_VELOCITIES.put(3.05, 19.0);
-    SHOOTER_VELOCITIES.put(3.35, 21.5);
-    SHOOTER_VELOCITIES.put(3.67, 29.5);
+    if (isCompBot()) {
+      SHOOTER_VELOCITIES.put(1.28, 13.0);
+      SHOOTER_VELOCITIES.put(1.35, 13.25);
+      SHOOTER_VELOCITIES.put(1.67, 14.0);
+      SHOOTER_VELOCITIES.put(2.0, 15.25);
+      SHOOTER_VELOCITIES.put(2.33, 16.25);
+      SHOOTER_VELOCITIES.put(2.66, 17.5);
+      SHOOTER_VELOCITIES.put(3.05, 19.0);
+      SHOOTER_VELOCITIES.put(3.35, 21.5);
+      SHOOTER_VELOCITIES.put(3.67, 29.5);
+    } else {
+      SHOOTER_VELOCITIES.put(1.28, 13.25);
+      SHOOTER_VELOCITIES.put(1.35, 13.5);
+      SHOOTER_VELOCITIES.put(1.67, 14.25);
+      SHOOTER_VELOCITIES.put(2.0, 15.5);
+      SHOOTER_VELOCITIES.put(2.33, 16.75);
+      SHOOTER_VELOCITIES.put(2.66, 18.0);
+      SHOOTER_VELOCITIES.put(3.05, 19.5);
+      SHOOTER_VELOCITIES.put(3.35, 22.0);
+      SHOOTER_VELOCITIES.put(3.67, 30.0);
+    }
   }
 
   private final MotorController leftUpperMotor =
@@ -172,8 +185,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logCurrentVoltage = new DoubleLogEntry(LOG, "/Shooter/Current Voltage");
   public static final double TOWER_SHOT_DISTANCE = 3.05;
   public static final double HUB_SHOT_DISTANCE = 1.3;
-  public static final double MAXIMUM_SHOOTING_RANGE = 3.7;
-  public static final double SHOOTING_RANGE = MAXIMUM_SHOOTING_RANGE - HUB_SHOT_DISTANCE;
+  public static final double MAX_SHOOTING_DISTANCE = 3.7;
+  public static final double SHOOTING_RANGE = MAX_SHOOTING_DISTANCE - HUB_SHOT_DISTANCE;
 
   /** Creates a new Shooter subsystem. */
   public Shooter() {}
