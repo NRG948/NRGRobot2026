@@ -75,7 +75,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   static {
     if (isCompBot()) {
-      // Comp bot 70 degree hood
+      // Competition bot 70 degree hood
       SHOOTER_VELOCITIES.put(1.28, 13.0);
       SHOOTER_VELOCITIES.put(1.35, 13.25);
       SHOOTER_VELOCITIES.put(1.67, 14.0);
@@ -89,7 +89,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       // Practice bot 65 degree hood
       SHOOTER_VELOCITIES.put(1.28, 12.75);
       // SHOOTER_VELOCITIES.put(1.35, TBD);
-      // SHOOTER_VELOCITIES.put(1.67, TBD); 
+      // SHOOTER_VELOCITIES.put(1.67, TBD);
       // SHOOTER_VELOCITIES.put(2.0, TBD);
       // SHOOTER_VELOCITIES.put(2.33, TBD);
       // SHOOTER_VELOCITIES.put(2.66, TBD);
