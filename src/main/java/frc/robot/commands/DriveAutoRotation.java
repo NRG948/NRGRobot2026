@@ -7,29 +7,26 @@
  
 package frc.robot.commands;
 
-import com.nrg948.dashboard.annotations.DashboardPIDController;
-import com.nrg948.preferences.ProfiledPIDControllerPreference;
+import static frc.robot.RobotPreferences.ROTATION_PID_CONTROLLER;
+
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Swerve;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class DriveAutoRotation extends DriveUsingController {
 
+  private static final double IZONE_SCALE_FACTOR = 1.5;
+
   public DriveAutoRotation(Swerve drivetrain, CommandXboxController xboxController) {
     super(drivetrain, xboxController);
-    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    ROTATION_PID_CONTROLLER.enableContinuousInput(-Math.PI, Math.PI);
   }
-
-  // PID
-  @DashboardPIDController(title = "Auto Rotation PID", column = 6, row = 0, width = 2, height = 3)
-  private final ProfiledPIDControllerPreference rotationPIDController =
-      new ProfiledPIDControllerPreference(
-          "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotationPIDController.reset(drivetrain.getOrientation().getRadians());
+    ROTATION_PID_CONTROLLER.reset();
+    ROTATION_PID_CONTROLLER.setIZone(drivetrain.getHubAlignmentTolerance() * IZONE_SCALE_FACTOR);
   }
 
   @Override
@@ -37,7 +34,7 @@ public class DriveAutoRotation extends DriveUsingController {
     double currentOrientation = drivetrain.getOrientation().getRadians();
     double targetOrientation = drivetrain.getAngleToHub();
 
-    double rSpeed = rotationPIDController.calculate(currentOrientation, targetOrientation);
+    double rSpeed = ROTATION_PID_CONTROLLER.calculate(currentOrientation, targetOrientation);
     return rSpeed;
   }
 }

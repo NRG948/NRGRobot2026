@@ -16,10 +16,9 @@ import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
-import com.nrg948.preferences.ProfiledPIDControllerPreference;
+import com.nrg948.preferences.PIDControllerPreference;
 import frc.robot.parameters.AprilTagFieldParameters;
 import frc.robot.parameters.PoseEstimationStrategy;
-import frc.robot.subsystems.Swerve;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -90,9 +89,8 @@ public final class RobotPreferences {
 
   /** Selects the auto-rotation PID controller gains. */
   @DashboardPIDController(title = "Auto Rotation PID", column = 3, row = 1, width = 2, height = 3)
-  public static final ProfiledPIDControllerPreference ROTATION_PID_CONTROLLER =
-      new ProfiledPIDControllerPreference(
-          "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
+  public static final PIDControllerPreference ROTATION_PID_CONTROLLER =
+      new PIDControllerPreference("Swerve", "Rotation PID Controller", 1, 0, 0);
 
   /** Selects whether rumble functionality is enabled on the driver's controller. */
   @DashboardToggleSwitch(title = "Enable Rumble", column = 2, row = 0, width = 1, height = 1)
