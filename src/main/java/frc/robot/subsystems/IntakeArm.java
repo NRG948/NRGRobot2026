@@ -81,7 +81,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private final RelativeEncoder encoder = motor.getEncoder();
 
   private double currentAngle = 0;
-  private double goalAngle = 0;
+  private double goalAngle = STOW_ANGLE;
   private double currentVelocity = 0;
   private boolean enabled;
   private boolean hasError = false;
@@ -289,23 +289,24 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   public void setStowedPosition() {
     encoder.setPosition(STOW_ANGLE);
+    goalAngle = STOW_ANGLE;
   }
 
   public void setExtendedPosition() {
     encoder.setPosition(EXTENDED_ANGLE);
+    goalAngle = EXTENDED_ANGLE;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateTelemetry();
-    checkError();
-
-    if (goalAngle == EXTENDED_ANGLE && currentAngle < EXTENDED_ANGLE) {
-      encoder.setPosition(EXTENDED_ANGLE);
-    }
-    if (goalAngle == STOW_ANGLE && currentAngle > STOW_ANGLE) {
-      encoder.setPosition(STOW_ANGLE);
+    if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)) {
+      if (atGoalAngle()) {
+        disable();
+      } else if (!enabled) {
+        setGoalAngle(goalAngle);
+      }
     }
   }
 }

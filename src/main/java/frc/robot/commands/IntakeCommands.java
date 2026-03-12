@@ -37,14 +37,8 @@ public final class IntakeCommands {
   public static Command setIntakeArmAngle(Subsystems subsystems, double angle) {
     IntakeArm intakeArm = subsystems.intakeArm;
     return Commands.sequence(
-            Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm),
-            Commands.idle(intakeArm).until(intakeArm::atGoalAngle))
-        .finallyDo(
-            () -> {
-              if (angle == IntakeArm.STOW_ANGLE || angle == IntakeArm.EXTENDED_ANGLE) {
-                intakeArm.disable();
-              }
-            });
+        Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm),
+        Commands.idle(intakeArm).until(intakeArm::atGoalAngle));
   }
 
   public static Command setIntakeArmAngleNoIdle(Subsystems subsystems, double angle) {
