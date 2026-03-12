@@ -576,11 +576,13 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   /** {@return whether we are aligned to hub within tolerance} */
   public boolean isAlignedToHub() {
-    double tolerance =
-        ((Shooter.MAX_SHOOTING_DISTANCE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
-                * SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE
-            + MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
-    return Math.abs(getAngleToHub() - getOrientation().getRadians()) <= tolerance;
+    return Math.abs(getAngleToHub() - getOrientation().getRadians()) <= getHubAlignmentTolerance();
+  }
+
+  public double getHubAlignmentTolerance() {
+    return ((Shooter.MAX_SHOOTING_DISTANCE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
+            * SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE
+        + MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
   }
 
   @DashboardTextDisplay(title = "Distance To Hub (m)", column = 6, row = 0, width = 2, height = 1)

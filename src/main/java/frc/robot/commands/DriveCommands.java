@@ -9,7 +9,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Subsystems;
+import frc.robot.subsystems.Swerve;
 import frc.robot.util.FieldUtils;
 
 /** A utility class for Drive related commands. */
@@ -25,6 +27,12 @@ public final class DriveCommands {
     var drivetrain = subsystems.drivetrain;
     return Commands.runOnce(
         () -> drivetrain.resetOrientation(FieldUtils.getInitialOrientation()), drivetrain);
+  }
+
+  public static Command hubAimAndXLock(Swerve drivetrain, CommandXboxController driverController) {
+    return Commands.sequence(
+        new DriveAutoRotation(drivetrain, driverController).until(drivetrain::isAlignedToHub),
+        Commands.run(drivetrain::setXLock, drivetrain).until(() -> !drivetrain.isAlignedToHub()));
   }
 
   /**

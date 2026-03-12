@@ -7,6 +7,8 @@
  
 package frc.robot;
 
+import static frc.robot.commands.DriveCommands.hubAimAndXLock;
+
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -102,17 +104,14 @@ public class RobotContainer {
         .a()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(subsystems.drivetrain, driverController),
+                new DriveAutoRotation(drivetrain, driverController),
                 ShootingCommands.shootWhenInRange(subsystems)));
 
     driverController
         .x()
         .whileTrue(
             Commands.parallel(
-                Commands.sequence(
-                    new DriveAutoRotation(drivetrain, driverController)
-                        .until(drivetrain::isAlignedToHub),
-                    Commands.run(drivetrain::setXLock, drivetrain)),
+                hubAimAndXLock(drivetrain, driverController).repeatedly(),
                 ShootingCommands.shootWhenInRange(subsystems)));
 
     driverController
