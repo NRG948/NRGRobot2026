@@ -827,6 +827,21 @@
           "period" : 0.06,
           "show_submit_button" : false
         }
+      }, {
+        "title" : "Enabled",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Enabled",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
       } ]
     }
   }, {

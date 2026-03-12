@@ -24,6 +24,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.nrg948.dashboard.annotations.DashboardBooleanBox;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
@@ -273,6 +274,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   @Override
+  @DashboardBooleanBox(title = "Enabled", column = 0, row = 3, width = 1, height = 1)
   public boolean isEnabled() {
     return enabled;
   }
