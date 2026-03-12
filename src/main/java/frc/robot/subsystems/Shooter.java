@@ -199,7 +199,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logCurrentVoltage = new DoubleLogEntry(LOG, "/Shooter/Current Voltage");
   public static final double TOWER_SHOT_DISTANCE = 3.05;
   public static final double HUB_SHOT_DISTANCE = 1.3;
-  public static final double MAX_SHOOTING_DISTANCE = 3.7;
+  public static final double MAX_SHOOTING_DISTANCE = 3.7; // TODO: Update for hood angle
   public static final double SHOOTING_RANGE = MAX_SHOOTING_DISTANCE - HUB_SHOT_DISTANCE;
 
   /** Creates a new Shooter subsystem. */
