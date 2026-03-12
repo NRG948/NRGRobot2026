@@ -44,19 +44,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Scoring Point to Outpost"
+            "pathName": "Scoring Point to Outpost (Nose In)"
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 2.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ExtendAndIntake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Scoring Point"
+            "pathName": "Outpost (Nose In) to Scoring Point"
           }
         },
         {

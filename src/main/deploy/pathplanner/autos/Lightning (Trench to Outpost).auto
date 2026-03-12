@@ -17,22 +17,35 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Trench Start to Outpost"
+                  "pathName": "Trench Start to Outpost (Nose-in)"
                 }
               }
             ]
           }
         },
         {
-          "type": "wait",
+          "type": "race",
           "data": {
-            "waitTime": 3.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ExtendAndIntake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Scoring Point"
+            "pathName": "Outpost (Nose In) to Scoring Point"
           }
         },
         {
