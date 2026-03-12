@@ -59,7 +59,6 @@ public final class AprilTag extends SubsystemBase {
   private static final double TRUSTED_TAG_DISTANCE_THRESHOLD = 3.3;
   private static final int MIN_NUMBER_OF_TRUSTED_TAGS = 2;
 
-  // TODO: measure ALL camera rotations and transforms for the 2026 robot.
   private static final Rotation3d FRONT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-16), 0);
   public static final Transform3d ROBOT_TO_FRONT_LEFT_CAMERA =
       new Transform3d(new Translation3d(+0.105, +0.259, +0.668), FRONT_CAMERA_ROTATION);
@@ -101,7 +100,6 @@ public final class AprilTag extends SubsystemBase {
       Optional<CameraParameters> backLeft,
       Optional<CameraParameters> backRight) {}
 
-  // TODO: Find streamPorts for cameras on practice robot
   public static final VisionParameters PRACTICE_VISION_PARAMS =
       new VisionParameters(
           Optional.of(

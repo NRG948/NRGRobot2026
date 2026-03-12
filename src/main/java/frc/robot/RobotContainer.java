@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.DriveAutoOrientToAlliance;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
@@ -30,7 +29,6 @@ import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchUtil;
@@ -120,15 +118,10 @@ public class RobotContainer {
             Commands.parallel(
                 new ShootWhileMoving(subsystems, driverController),
                 ShootingCommands.feedBallsToShooter(subsystems, true)));
-    driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
 
+    driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
     driverController.povDown().whileTrue(ShootingCommands.shootFromTower(subsystems));
-    driverController
-        .leftBumper()
-        .whileTrue(
-            Commands.parallel(
-                new DriveAutoOrientToAlliance(drivetrain, driverController),
-                ShootingCommands.shoot(subsystems, Shooter.SHOOTER_FEED_VELOCITY)));
+
     driverController
         .leftTrigger()
         .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.BUMP_ANGLE));

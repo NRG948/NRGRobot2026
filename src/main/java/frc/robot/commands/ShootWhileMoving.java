@@ -72,9 +72,8 @@ public class ShootWhileMoving extends DriveUsingController {
 
     shooter.setGoalVelocity(shooterVelocityMoving.getNorm());
 
-    // TODO: Find alternative to getSetpoint() for PID preference
-    double rSpeed = feedback; // feedback + (controller.getSetpoint().velocity /
-    // Swerve.getRotationalConstraints().maxVelocity);
+    double rSpeed = feedback;
+
     return rSpeed;
   }
 

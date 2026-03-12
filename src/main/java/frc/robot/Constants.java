@@ -27,7 +27,6 @@ public final class Constants {
 
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
-    // TODO: Measure compbot wheel diameters
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(isCompBot() ? 3.957 : 3.75);
     public static final int LED_COUNT = 32;
     public static final double PERIODIC_INTERVAL = 0.02;
@@ -53,23 +52,5 @@ public final class Constants {
       public static final int CLIMBER_ELEVATOR_LEFT_ID = 63;
       public static final int CLIMBER_ELEVATOR_RIGHT_ID = 65;
     }
-  }
-
-  public static class VisionConstants {
-    // TODO: Change this for the hub/tower
-    /** The translational tolerance value for aligning. */
-    public static final double POSE_ALIGNMENT_TOLERANCE_XY = 0.02; // in m
-
-    /** The rotational tolerance value for aligning. */
-    public static final double POSE_ALIGNMENT_TOLERANCE_R = 1.0; // in deg
-  }
-
-  public static class LaserCANConstants {
-    // TODO: SET LASER CAN ID
-    public static final int LEFT_LASER_CAN_ID = 63;
-    public static final int RIGHT_LASER_CAN_ID = 62;
-    // TODO: SET LASER CAN DISTANCE CORRECTION
-    public static final double LEFT_DISTANCE_CORRECTION = 0;
-    public static final double RIGHT_DISTANCE_CORRECTION = 0;
   }
 }

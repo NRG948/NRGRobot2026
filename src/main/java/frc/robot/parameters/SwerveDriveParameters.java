@@ -34,7 +34,7 @@ public enum SwerveDriveParameters {
   /**
    * Parameters for the 2026 Practice Base robot.
    *
-   * <p>TODO: Update these parameters when the real practice base is finished.
+   * <p>
    */
   PracticeBase2026(
       Units.lbsToKilograms(60.7),
@@ -47,13 +47,12 @@ public enum SwerveDriveParameters {
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
       new double[] {157.76, 120.32, -1.67, -100.72}, // CANCoder offsets
       21),
+
   /**
    * Parameters for the 2026 Competition Base robot.
    *
-   * <p>TODO: Update these parameters when the real competition base is finished.
+   * <p>
    */
-
-  // TODO: Verify wheel distances for competition base
   CompetitionBase2026(
       Units.lbsToKilograms(143),
       0.603,

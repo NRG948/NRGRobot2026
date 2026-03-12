@@ -61,9 +61,8 @@ public class AutoRotation extends Command {
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 
-    // TODO: Find alternative to getSetpoint() for PID preference
-    double rSpeed = feedback; // feedback + (controller.getSetpoint().velocity /
-    // Swerve.getRotationalConstraints().maxVelocity);
+    double rSpeed = feedback;
+
     return rSpeed;
   }
 }
