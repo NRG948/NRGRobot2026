@@ -161,7 +161,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     TalonFXConfigurator configurator = talonFX.getConfigurator();
     configurator.apply(talonFXConfigs);
 
-    encoder.setPosition(STOW_ANGLE);
+    resetArmPosition(STOW_ANGLE);
   }
 
   /** Polls sensors and logs telemetry. */
@@ -289,14 +289,17 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     return hasError;
   }
 
+  private void resetArmPosition(double angleRadians) {
+    encoder.setPosition(angleRadians);
+    goalAngle = angleRadians;
+  }
+
   public void setStowedPosition() {
-    encoder.setPosition(STOW_ANGLE);
-    goalAngle = STOW_ANGLE;
+    resetArmPosition(STOW_ANGLE);
   }
 
   public void setExtendedPosition() {
-    encoder.setPosition(EXTENDED_ANGLE);
-    goalAngle = EXTENDED_ANGLE;
+    resetArmPosition(EXTENDED_ANGLE);
   }
 
   @Override

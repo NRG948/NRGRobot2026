@@ -70,6 +70,7 @@ public final class AprilTag extends SubsystemBase {
   public static final Rotation3d BACK_RIGHT_CAMERA_ROTATION =
       new Rotation3d(0, Math.toRadians(-2), Math.toRadians(-90));
 
+  // TODO These transforms need more validation if we use the back cameras
   public static final Transform3d ROBOT_TO_BACK_LEFT_CAMERA =
       new Transform3d(new Translation3d(+0.323, +0.293, +0.358), BACK_LEFT_CAMERA_ROTATION);
   public static final Transform3d ROBOT_TO_BACK_RIGHT_CAMERA =

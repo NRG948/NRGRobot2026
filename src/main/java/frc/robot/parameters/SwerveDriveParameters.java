@@ -37,7 +37,7 @@ public enum SwerveDriveParameters {
    * <p>
    */
   PracticeBase2026(
-      Units.lbsToKilograms(60.7),
+      Units.lbsToKilograms(60.7), // TODO Update current PB weight
       0.603,
       0.501,
       MK4I_L2_PLUS,
