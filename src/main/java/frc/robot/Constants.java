@@ -28,12 +28,12 @@ public final class Constants {
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(isCompBot() ? 3.957 : 3.75);
-    public static final int LED_COUNT = 32;
+    public static final int LED_COUNT = 61;
     public static final double PERIODIC_INTERVAL = 0.02;
 
     public static class LEDSegment {
       public static final int STATUS_FIRST_LED = 0;
-      public static final int STATUS_LED_COUNT = 32;
+      public static final int STATUS_LED_COUNT = LED_COUNT;
     }
 
     public static class PWMPort {
