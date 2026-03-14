@@ -116,26 +116,6 @@ public final class RobotOperator {
     return frontRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
   }
 
-  @DashboardBooleanBox(
-      title = "Back Left Camera Connected",
-      column = 7,
-      row = 3,
-      width = 1,
-      height = 1)
-  public boolean backLeftCameraIsConnected() {
-    return backLeftCamera.map((c) -> c.isCameraConnected()).orElse(false);
-  }
-
-  @DashboardBooleanBox(
-      title = "Back Right Camera Connected",
-      column = 8,
-      row = 3,
-      width = 1,
-      height = 1)
-  public boolean backRightCameraIsConnected() {
-    return backRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
-  }
-
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 1)
   public boolean isWithinShootingRange() {
     return drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE;
