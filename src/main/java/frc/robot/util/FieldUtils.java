@@ -55,25 +55,9 @@ public final class FieldUtils {
     return getAprilTagPose3d(tagId).toPose2d();
   }
 
-  /** {@return the ID of the alliance-side hub's center April tag} */
-  private static int getHubAprilTagID() {
-    if (MatchUtil.isRedAlliance()) {
-      return RED_HUB_APRILTAG;
-    }
-    return BLUE_HUB_APRILTAG;
-  }
-
-  /** {@return the {@link Pose2d} of the alliance-side hub's center April tag} */
-  public static Pose2d getHubAprilTag() {
-    return getAprilTagPose2d(getHubAprilTagID());
-  }
-
   /** {@return the {@link Translation2d} of the center of the alliance-side hub} */
   public static Translation2d getHubLocation() {
-    if (MatchUtil.isRedAlliance()) {
-      return RED_HUB_POSITION;
-    }
-    return BLUE_HUB_POSITION;
+    return MatchUtil.isRedAlliance() ? RED_HUB_POSITION : BLUE_HUB_POSITION;
   }
 
   /** {@return the initial orientation of the robot at the start of the match} */
