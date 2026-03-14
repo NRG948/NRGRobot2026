@@ -17,31 +17,15 @@
     {
       "anchor": {
         "x": 5.6779777777777785,
-        "y": 2.8169444444444447
+        "y": 2.6
       },
       "prevControl": {
         "x": 6.618068026036284,
-        "y": 3.10378495123972
+        "y": 2.8868405067952754
       },
       "nextControl": {
         "x": 5.041219020715633,
-        "y": 2.6226564971751407
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.6219,
-        "y": 2.670777777777778
-      },
-      "prevControl": {
-        "x": 4.000234452846233,
-        "y": 2.719595126532131
-      },
-      "nextControl": {
-        "x": 3.3198222222222227,
-        "y": 2.6317999999999997
+        "y": 2.405712052730696
       },
       "isLocked": false,
       "linkedName": null
@@ -62,19 +46,19 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9842519685039374,
-      "rotationDegrees": 20.0
+      "waypointRelativePos": 0.8448132780083084,
+      "rotationDegrees": 130.0
     },
     {
-      "waypointRelativePos": 2.05,
-      "rotationDegrees": 20.0
+      "waypointRelativePos": 1.44232365145227,
+      "rotationDegrees": 70.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.9320099255583185,
-      "maxWaypointRelativePos": 1.7121588089330093,
+      "maxWaypointRelativePos": 1.35,
       "constraints": {
         "maxVelocity": 2.5,
         "maxAcceleration": 3.0,
@@ -89,7 +73,7 @@
   "eventMarkers": [
     {
       "name": "Ramp Up for First Shot",
-      "waypointRelativePos": 1.5037220843672492,
+      "waypointRelativePos": 1.25,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
