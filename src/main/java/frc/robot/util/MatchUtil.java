@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.DriverStation.MatchType;
 
 /** Utility class for match-related information and timing. */
 public final class MatchUtil {
+  private static final double ALMOST_ACTIVE_TOLERANCE = 2.0;
+  private static final double RECENTLY_INACTIVE_TOLERANCE = 0.0;
+
   private static final double PRE_FIRST_SHIFT_START_TIME = 135.0;
   private static final double FIRST_SHIFT_START_TIME = 130.0;
   private static final double PRE_SECOND_SHIFT_START_TIME = 110.0;
@@ -177,6 +180,24 @@ public final class MatchUtil {
       return true;
     }
 
+    return isHubActiveAt(matchTime);
+  }
+
+  public static boolean isGoodScoringTime() {
+    // We're teleop enabled, compute.
+    double matchTime = DriverStation.getMatchTime();
+    String gameData = DriverStation.getGameSpecificMessage();
+    // If we have no game data, we cannot compute, assume hub is active, as its
+    // likely early in teleop.
+    if (gameData.isEmpty()) {
+      return true;
+    }
+
+    return isHubActiveAt(matchTime - ALMOST_ACTIVE_TOLERANCE)
+        || isHubActiveAt(matchTime + RECENTLY_INACTIVE_TOLERANCE);
+  }
+
+  public static boolean isHubActiveAt(double matchTime) {
     // Shift was is active for blue if red won auto, or red if blue won auto.
     boolean shift1Active = ourAllianceHubIsActiveFirst();
 

@@ -15,6 +15,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import frc.robot.util.MatchUtil;
 import java.util.function.DoubleSupplier;
 
 public final class ShootingCommands {
@@ -28,6 +29,21 @@ public final class ShootingCommands {
     return Commands.sequence(
         Commands.idle(indexer, shooter, intake, hopper)
             .until(() -> drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE),
+        shoot(subsystems));
+  }
+
+  public static Command shootWhenInRangeAndOnShift(Subsystems subsystems) {
+    Indexer indexer = subsystems.indexer;
+    Hopper hopper = subsystems.hopper;
+    Shooter shooter = subsystems.shooter;
+    Swerve drivetrain = subsystems.drivetrain;
+    Intake intake = subsystems.intake;
+    return Commands.sequence(
+        Commands.idle(indexer, shooter, intake, hopper)
+            .until(
+                () ->
+                    drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE
+                        && MatchUtil.isHubActive()),
         shoot(subsystems));
   }
 

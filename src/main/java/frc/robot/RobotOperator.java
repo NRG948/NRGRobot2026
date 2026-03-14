@@ -60,7 +60,7 @@ public final class RobotOperator {
   @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 4, width = 3, height = 1)
   private final SendableChooser<Integer> delayChooser = Autos.getDelayChooser();
 
-  @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 7, height = 2)
+  @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 3, height = 2)
   private final Alert[] alerts = new Alert[] {Autos.getInvalidAutoAlert()};
 
   public RobotOperator(Subsystems subsystems) {
@@ -84,6 +84,16 @@ public final class RobotOperator {
   @DashboardMatchTime(title = "Match Time", row = 0, column = 9, width = 3, height = 2)
   public static double getMatchTime() {
     return MatchUtil.getMatchTime();
+  }
+
+  @DashboardBooleanBox(title = "Is Hub Active", column = 3, row = 4, width = 2, height = 2)
+  public boolean isHubActive() {
+    return MatchUtil.isHubActive();
+  }
+
+  @DashboardBooleanBox(title = "Is Good Scoring Time", column = 5, row = 4, width = 2, height = 2)
+  public boolean isGoodScoringTime() {
+    return MatchUtil.isGoodScoringTime();
   }
 
   @DashboardBooleanBox(

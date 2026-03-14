@@ -110,6 +110,13 @@ public class RobotContainer {
                 ShootingCommands.shootWhenInRange(subsystems)));
 
     driverController
+        .b()
+        .whileTrue(
+            Commands.parallel(
+                new DriveAutoRotation(drivetrain, driverController),
+                ShootingCommands.shootWhenInRangeAndOnShift(subsystems)));
+
+    driverController
         .x()
         .whileTrue(
             Commands.parallel(

@@ -45,7 +45,7 @@
         "type" : "Alerts",
         "x" : 0.0,
         "y" : 512.0,
-        "width" : 896.0,
+        "width" : 384.0,
         "height" : 256.0,
         "properties" : {
           "topic" : "/SmartDashboard/Alerts",
@@ -83,6 +83,36 @@
           "time_display_mode" : "Minutes and Seconds",
           "yellow_start_time" : 30,
           "red_start_time" : 15
+        }
+      }, {
+        "title" : "Is Hub Active",
+        "type" : "Boolean Box",
+        "x" : 384.0,
+        "y" : 512.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Is Hub Active",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Is Good Scoring Time",
+        "type" : "Boolean Box",
+        "x" : 640.0,
+        "y" : 512.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Is Good Scoring Time",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
         }
       }, {
         "title" : "Front Left Camera Connected",
