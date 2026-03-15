@@ -1,0 +1,130 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.7449,
+        "y": 4.678133333333332
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7449,
+        "y": 4.678133333333332
+      },
+      "isLocked": false,
+      "linkedName": "Opposite Scoring Point"
+    },
+    {
+      "anchor": {
+        "x": 1.361188888888889,
+        "y": 7.046033333333332
+      },
+      "prevControl": {
+        "x": 1.596813888888889,
+        "y": 6.3633333333333315
+      },
+      "nextControl": {
+        "x": 1.125563888888889,
+        "y": 7.728733333333333
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.6,
+        "y": 7.221
+      },
+      "prevControl": {
+        "x": 0.6,
+        "y": 7.471
+      },
+      "nextControl": {
+        "x": 0.6,
+        "y": 6.763011111111111
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.6,
+        "y": 5.6
+      },
+      "prevControl": {
+        "x": 0.6,
+        "y": 6.322733035509851
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Depot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.95,
+      "rotationDegrees": -115.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 2.05,
+      "maxWaypointRelativePos": 2.867493796526055,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.0272952853598105,
+      "maxWaypointRelativePos": 2.0516129032258075,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Extend for Depot",
+      "waypointRelativePos": 1.8669975186104226,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -115.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -26.00334584451132
+  },
+  "useDefaultConstraints": true
+}

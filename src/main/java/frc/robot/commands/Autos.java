@@ -200,7 +200,15 @@ public final class Autos {
    * @return true if the auto is valid, false otherwise
    */
   private static boolean isValidAuto(String autoName, AutoSide side) {
-    return !autoName.contains("Outpost") || side == AutoSide.RIGHT;
+    if (autoName.contains("Outpost")) {
+      return side == AutoSide.RIGHT;
+    }
+
+    if (autoName.contains("Depot")) {
+      return side == AutoSide.LEFT;
+    }
+
+    return true;
   }
 
   /**
@@ -221,7 +229,7 @@ public final class Autos {
 
     invalidAutoAlert.set(false);
 
-    return new PathPlannerAuto(name, side == AutoSide.LEFT);
+    return new PathPlannerAuto(name, side == AutoSide.LEFT && !name.contains("Depot"));
   }
 
   /**
