@@ -200,15 +200,19 @@ public class RobotContainer {
   public void teleopInit() {
     subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
     subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
+
+    operator.teleopInit();
   }
 
   public void autonomousInit() {
     subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
     subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
+
+    operator.autonomousInit();
   }
 
   public void periodic() {
-    operator.periodic();
     subsystems.periodic();
+    operator.periodic();
   }
 }
