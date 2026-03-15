@@ -130,6 +130,10 @@ public final class RobotOperator {
 
     double matchTime = getMatchTime();
 
+    if (matchTime < 0) {
+      setHubState(HubState.INACTIVE);
+    }
+
     switch (hubState) {
       case ACTIVE:
         if (!MatchUtil.isHubActiveAt(matchTime - HubState.PREPARING_TO_DISABLE.getDeltaTime())) {
@@ -174,6 +178,10 @@ public final class RobotOperator {
    * @param newHubState The new state.
    */
   private void setHubState(HubState newHubState) {
+    if (hubState == newHubState) {
+      return;
+    }
+
     hubState = newHubState;
     if (hubState.blink()) {
       if (!blinkTimer.isRunning()) {

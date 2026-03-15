@@ -47,12 +47,12 @@ public final class MatchUtil {
 
   /** {@return true if the robot is in teleoperated mode} */
   public static boolean isTeleop() {
-    return DriverStation.isTeleop();
+    return DriverStation.isTeleop() && DriverStation.isEnabled();
   }
 
   /** {@return true if the robot is in autonomous mode} */
   public static boolean isAutonomous() {
-    return DriverStation.isAutonomous();
+    return DriverStation.isAutonomous() && DriverStation.isEnabled();
   }
 
   /** {@return the remaining time in autonomous mode} */
