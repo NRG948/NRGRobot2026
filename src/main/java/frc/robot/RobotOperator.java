@@ -49,7 +49,9 @@ public final class RobotOperator {
     /** When the hub is active, we are ready to shoot. */
     ACTIVE(Colors.GREEN, false, 0),
     /** When the hub is nearing not active, we are ready to shoot. */
-    PREPARING_TO_DISABLE(Colors.YELLOW, true, 5);
+    PREPARING_TO_DISABLE(Colors.YELLOW, true, 5),
+    /** When nearing the end of the match. */
+    NEARING_END_OF_MATCH(Colors.YELLOW, true, 5);
 
     private final String color;
     private final boolean blink;
@@ -168,6 +170,8 @@ public final class RobotOperator {
       case ACTIVE:
         if (!MatchUtil.isHubActiveAt(matchTime - HubState.PREPARING_TO_DISABLE.getDeltaTime())) {
           setHubState(HubState.PREPARING_TO_DISABLE);
+        } else if (matchTime <= HubState.NEARING_END_OF_MATCH.getDeltaTime()) {
+          setHubState(HubState.NEARING_END_OF_MATCH);
         }
         break;
       case INACTIVE:
@@ -192,7 +196,10 @@ public final class RobotOperator {
           setHubState(HubState.INACTIVE);
         }
         break;
-      default:
+      case NEARING_END_OF_MATCH:
+        if (matchTime <= 0) {
+          setHubState(HubState.INACTIVE);
+        }
         break;
     }
   }
@@ -258,7 +265,7 @@ public final class RobotOperator {
   }
 
   public void teleopInit() {
-    setHubState(HubState.ACTIVE);
+    setHubState(MatchUtil.isHubActive() ? HubState.ACTIVE : HubState.INACTIVE);
   }
 
   public void autonomousInit() {
