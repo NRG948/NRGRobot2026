@@ -1,0 +1,87 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Trench start to Mid Line Start"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid Line Start to Mid Line End"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid Line End to Scoring Point"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Scoring Point to Neutral End"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Close Neutral Start to Close Opposite Neutral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Close Opposite Neutral End to Opposite Scoring Point"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
