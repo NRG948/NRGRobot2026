@@ -124,7 +124,7 @@ public final class RobotOperator {
 
   @DashboardMatchTime(title = "Match Time", row = 0, column = 9, width = 3, height = 2)
   public static double getMatchTime() {
-    return MatchUtil.getMatchTime();
+    return MatchUtil.getMatchTimeRemaining();
   }
 
   @DashboardBooleanBox(

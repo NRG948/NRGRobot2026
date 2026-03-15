@@ -35,8 +35,8 @@ public final class MatchUtil {
     return getAlliance() == Alliance.Red;
   }
 
-  /** {@return the current match time in seconds} */
-  public static double getMatchTime() {
+  /** {@return the remaining time, in seconds, in the current phase of the match} */
+  public static double getMatchTimeRemaining() {
     return DriverStation.getMatchTime();
   }
 
