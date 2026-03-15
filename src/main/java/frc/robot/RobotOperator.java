@@ -31,6 +31,7 @@ import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import frc.robot.util.HubState;
 import frc.robot.util.MatchUtil;
 import java.util.Optional;
 
@@ -38,43 +39,6 @@ import java.util.Optional;
 public final class RobotOperator {
   private static final String BLACK_HEX_STRING = Colors.BLACK.toHexString();
   private static final double BLINK_DURATION = 1.0 / 3.0;
-
-  private enum HubState {
-    /** When the hub is not active, we are not ready to shoot. */
-    INACTIVE(Colors.RED, false, 0),
-    /** When the hub is nearing active, we are not ready to shoot. */
-    PREPARING_SHOOTING_DISABLED(Colors.RED, true, 5),
-    /** When the hub is nearing active, we are ready to shoot. */
-    PREPARING_SHOOTING_ENABLED(Colors.YELLOW, true, 2),
-    /** When the hub is active, we are ready to shoot. */
-    ACTIVE(Colors.GREEN, false, 0),
-    /** When the hub is nearing not active, we are ready to shoot. */
-    PREPARING_TO_DISABLE(Colors.YELLOW, true, 5),
-    /** When nearing the end of the match. */
-    NEARING_END_OF_MATCH(Colors.YELLOW, true, 5);
-
-    private final String color;
-    private final boolean blink;
-    private final double deltaTime;
-
-    private HubState(Colors color, boolean blink, double deltaTime) {
-      this.color = color.toHexString();
-      this.blink = blink;
-      this.deltaTime = deltaTime;
-    }
-
-    public String getColor() {
-      return color;
-    }
-
-    public boolean blink() {
-      return blink;
-    }
-
-    public double getDeltaTime() {
-      return deltaTime;
-    }
-  }
 
   private final Swerve drivetrain;
   private final IntakeArm intakeArm;
@@ -221,6 +185,10 @@ public final class RobotOperator {
       blinkTimer.stop();
       blinkOn = true;
     }
+  }
+
+  public HubState getHubState() {
+    return hubState;
   }
 
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)

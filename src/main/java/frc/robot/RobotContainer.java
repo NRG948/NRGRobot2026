@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.BlinkColor;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
@@ -28,9 +29,12 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
+import frc.robot.parameters.Colors;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.StatusLED;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import frc.robot.util.HubState;
 import frc.robot.util.MatchUtil;
 import frc.robot.util.MotorIdleMode;
 
@@ -90,17 +94,32 @@ public class RobotContainer {
   private void configureBindings() {
     Swerve drivetrain = subsystems.drivetrain;
     IntakeArm intakeArm = subsystems.intakeArm;
+    StatusLED statusLED = subsystems.statusLEDs;
 
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
     new Trigger(MatchUtil::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
-    new Trigger(MatchUtil::isNearShiftChangeExcludingFinalSecond)
-        .whileTrue(LEDCommands.setTransitionModeLED(subsystems));
-    new Trigger(MatchUtil::isNearShiftChangeFinalSecond)
-        .whileTrue(LEDCommands.setLastSecondTransitionModeLED(subsystems));
-    new Trigger(MatchUtil::isNearEndgame)
-        .whileTrue(LEDCommands.transitionToEndgameModeLED(subsystems));
-    new Trigger(MatchUtil::isEndgame).whileTrue(LEDCommands.endgameLED(subsystems));
+
+    new Trigger(() -> MatchUtil.isTeleop() && operator.getHubState() == HubState.ACTIVE)
+        .whileTrue(LEDCommands.setColor(statusLED, Colors.GREEN));
+    new Trigger(() -> MatchUtil.isTeleop() && operator.getHubState() == HubState.INACTIVE)
+        .whileTrue(LEDCommands.setColor(statusLED, Colors.RED));
+    new Trigger(
+            () ->
+                MatchUtil.isTeleop()
+                    && operator.getHubState() == HubState.PREPARING_SHOOTING_DISABLED)
+        .whileTrue(new BlinkColor(statusLED, Colors.RED));
+    new Trigger(
+            () ->
+                MatchUtil.isTeleop()
+                    && operator.getHubState() == HubState.PREPARING_SHOOTING_ENABLED)
+        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
+    new Trigger(
+            () -> MatchUtil.isTeleop() && operator.getHubState() == HubState.PREPARING_TO_DISABLE)
+        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
+    new Trigger(
+            () -> MatchUtil.isTeleop() && operator.getHubState() == HubState.NEARING_END_OF_MATCH)
+        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
 
     driverController
         .a()
