@@ -14,9 +14,12 @@ import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
+import com.nrg948.dashboard.annotations.DashboardSingleColorView;
 import com.nrg948.dashboard.annotations.DashboardSplitButtonChooser;
 import com.nrg948.dashboard.model.GameField;
+import com.nrg948.util.Colors;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,12 +36,52 @@ import java.util.Optional;
 
 @DashboardDefinition
 public final class RobotOperator {
+  private static final String BLACK_HEX_STRING = Colors.BLACK.toHexString();
+  private static final double BLINK_DURATION = 1.0 / 3.0;
+
+  private enum ShootingReadiness {
+    /** When the hub is not active, we are not ready to shoot. */
+    NOT_READY(Colors.RED, false, 0),
+    /** When the hub is nearing active, we are not ready to shoot. */
+    PREPARING_SHOOTING_DISABLED(Colors.RED, true, 5),
+    /** When the hub is nearing active, we are ready to shoot. */
+    PREPARING_SHOOTING_ENABLED(Colors.YELLOW, true, 2),
+    /** When the hub is active, we are ready to shoot. */
+    READY(Colors.GREEN, false, 0),
+    /** When the hub is nearing not active, we are ready to shoot. */
+    PREPARING_TO_DISABLE(Colors.YELLOW, true, 5);
+
+    private final String color;
+    private final boolean blink;
+    private final double deltaTime;
+
+    private ShootingReadiness(Colors color, boolean blink, double deltaTime) {
+      this.color = color.toHexString();
+      this.blink = blink;
+      this.deltaTime = deltaTime;
+    }
+
+    public String getColor() {
+      return color;
+    }
+
+    public boolean blink() {
+      return blink;
+    }
+
+    public double getDeltaTime() {
+      return deltaTime;
+    }
+  }
+
   private final Swerve drivetrain;
   private final IntakeArm intakeArm;
   private final Optional<AprilTag> frontLeftCamera;
   private final Optional<AprilTag> frontRightCamera;
-  private final Optional<AprilTag> backLeftCamera;
-  private final Optional<AprilTag> backRightCamera;
+
+  private ShootingReadiness shootingReadiness = ShootingReadiness.NOT_READY;
+  private Timer blinkTimer = new Timer();
+  private boolean blinkOn = true;
 
   /** Selects whether to use left or right side auto */
   @DashboardSplitButtonChooser(
@@ -60,7 +103,7 @@ public final class RobotOperator {
   @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 4, width = 3, height = 1)
   private final SendableChooser<Integer> delayChooser = Autos.getDelayChooser();
 
-  @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 3, height = 2)
+  @DashboardAlerts(title = "Alerts", column = 0, row = 4, width = 5, height = 2)
   private final Alert[] alerts = new Alert[] {Autos.getInvalidAutoAlert()};
 
   public RobotOperator(Subsystems subsystems) {
@@ -68,8 +111,6 @@ public final class RobotOperator {
     intakeArm = subsystems.intakeArm;
     frontLeftCamera = subsystems.frontLeftCamera;
     frontRightCamera = subsystems.frontRightCamera;
-    backLeftCamera = subsystems.backLeftCamera;
-    backRightCamera = subsystems.backRightCamera;
   }
 
   @DashboardField(
@@ -86,20 +127,10 @@ public final class RobotOperator {
     return MatchUtil.getMatchTime();
   }
 
-  @DashboardBooleanBox(title = "Is Hub Active", column = 3, row = 4, width = 2, height = 2)
-  public boolean isHubActive() {
-    return MatchUtil.isHubActive();
-  }
-
-  @DashboardBooleanBox(title = "Is Good Scoring Time", column = 5, row = 4, width = 2, height = 2)
-  public boolean isGoodScoringTime() {
-    return MatchUtil.isGoodScoringTime();
-  }
-
   @DashboardBooleanBox(
       title = "Front Left Camera Connected",
-      column = 7,
-      row = 2,
+      column = 5,
+      row = 4,
       width = 1,
       height = 1)
   public boolean frontLeftCameraIsConnected() {
@@ -108,20 +139,78 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(
       title = "Front Right Camera Connected",
-      column = 8,
-      row = 2,
+      column = 6,
+      row = 4,
       width = 1,
       height = 1)
   public boolean frontRightCameraIsConnected() {
     return frontRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
   }
 
-  @DashboardBooleanBox(title = "Within Range", column = 7, row = 0, width = 2, height = 1)
+  @DashboardSingleColorView(title = "On Shift", column = 7, row = 0, width = 2, height = 2)
+  public String onShiftIndicator() {
+    if (MatchUtil.isAutonomous()) {
+      return ShootingReadiness.READY.getColor();
+    }
+
+    double matchTime = getMatchTime();
+
+    switch (shootingReadiness) {
+      case READY:
+        if (!MatchUtil.isHubActiveAt(
+            matchTime - ShootingReadiness.PREPARING_TO_DISABLE.getDeltaTime())) {
+          shootingReadiness = ShootingReadiness.PREPARING_TO_DISABLE;
+          blinkTimer.reset();
+          blinkTimer.start();
+          blinkOn = false;
+        }
+        break;
+      case NOT_READY:
+        if (MatchUtil.isHubActiveAt(
+            matchTime - ShootingReadiness.PREPARING_SHOOTING_DISABLED.getDeltaTime())) {
+          shootingReadiness = ShootingReadiness.PREPARING_SHOOTING_DISABLED;
+          blinkTimer.reset();
+          blinkTimer.start();
+          blinkOn = false;
+        }
+        break;
+      case PREPARING_SHOOTING_DISABLED:
+        if (MatchUtil.isHubActiveAt(
+            matchTime - ShootingReadiness.PREPARING_SHOOTING_ENABLED.getDeltaTime())) {
+          shootingReadiness = ShootingReadiness.PREPARING_SHOOTING_ENABLED;
+        }
+        break;
+      case PREPARING_SHOOTING_ENABLED:
+        if (MatchUtil.isHubActiveAt(matchTime)) {
+          shootingReadiness = ShootingReadiness.READY;
+          blinkTimer.stop();
+          blinkOn = true;
+        }
+        break;
+      case PREPARING_TO_DISABLE:
+        if (!MatchUtil.isHubActiveAt(matchTime)) {
+          shootingReadiness = ShootingReadiness.NOT_READY;
+          blinkTimer.stop();
+          blinkOn = true;
+        }
+        break;
+      default:
+        break;
+    }
+
+    if (blinkTimer.isRunning() && blinkTimer.advanceIfElapsed(BLINK_DURATION)) {
+      blinkOn = !blinkOn;
+    }
+
+    return blinkOn ? shootingReadiness.getColor() : BLACK_HEX_STRING;
+  }
+
+  @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)
   public boolean isWithinShootingRange() {
     return drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE;
   }
 
-  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 1, width = 2, height = 1)
+  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 2, height = 1)
   public boolean isAlignedToHub() {
     return drivetrain.isAlignedToHub();
   }
@@ -154,5 +243,17 @@ public final class RobotOperator {
 
   public void periodic() {
     field.setRobotPose(drivetrain.getPosition());
+  }
+
+  public void teleopInit() {
+    shootingReadiness = ShootingReadiness.READY;
+    blinkTimer.stop();
+    blinkOn = true;
+  }
+
+  public void autonomousInit() {
+    shootingReadiness = ShootingReadiness.READY;
+    blinkTimer.stop();
+    blinkOn = true;
   }
 }

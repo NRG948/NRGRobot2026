@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation.MatchType;
 /** Utility class for match-related information and timing. */
 public final class MatchUtil {
   private static final double ALMOST_ACTIVE_TOLERANCE = 2.0;
-  private static final double RECENTLY_INACTIVE_TOLERANCE = 0.0;
+  private static final double RECENTLY_INACTIVE_TOLERANCE = 1.0;
 
   private static final double PRE_FIRST_SHIFT_START_TIME = 135.0;
   private static final double FIRST_SHIFT_START_TIME = 130.0;
@@ -201,19 +201,19 @@ public final class MatchUtil {
     // Shift was is active for blue if red won auto, or red if blue won auto.
     boolean shift1Active = ourAllianceHubIsActiveFirst();
 
-    if (matchTime > 130) {
+    if (matchTime > 130.0) {
       // Transition shift, hub is active.
       return true;
-    } else if (matchTime > 105) {
+    } else if (matchTime > 105.0) {
       // Shift 1
       return shift1Active;
-    } else if (matchTime > 80) {
+    } else if (matchTime > 80.0) {
       // Shift 2
       return !shift1Active;
-    } else if (matchTime > 55) {
+    } else if (matchTime > 55.0) {
       // Shift 3
       return shift1Active;
-    } else if (matchTime > 30) {
+    } else if (matchTime > 30.0) {
       // Shift 4
       return !shift1Active;
     } else {

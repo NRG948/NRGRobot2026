@@ -45,7 +45,7 @@
         "type" : "Alerts",
         "x" : 0.0,
         "y" : 512.0,
-        "width" : 384.0,
+        "width" : 640.0,
         "height" : 256.0,
         "properties" : {
           "topic" : "/SmartDashboard/Alerts",
@@ -85,40 +85,10 @@
           "red_start_time" : 15
         }
       }, {
-        "title" : "Is Hub Active",
-        "type" : "Boolean Box",
-        "x" : 384.0,
-        "y" : 512.0,
-        "width" : 256.0,
-        "height" : 256.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Is Hub Active",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
-        "title" : "Is Good Scoring Time",
+        "title" : "Front Left Camera Connected",
         "type" : "Boolean Box",
         "x" : 640.0,
         "y" : 512.0,
-        "width" : 256.0,
-        "height" : 256.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Is Good Scoring Time",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
-        "title" : "Front Left Camera Connected",
-        "type" : "Boolean Box",
-        "x" : 896.0,
-        "y" : 256.0,
         "width" : 128.0,
         "height" : 128.0,
         "properties" : {
@@ -132,8 +102,8 @@
       }, {
         "title" : "Front Right Camera Connected",
         "type" : "Boolean Box",
-        "x" : 1024.0,
-        "y" : 256.0,
+        "x" : 768.0,
+        "y" : 512.0,
         "width" : 128.0,
         "height" : 128.0,
         "properties" : {
@@ -145,40 +115,21 @@
           "false_icon" : "None"
         }
       }, {
-        "title" : "Back Left Camera Connected",
-        "type" : "Boolean Box",
+        "title" : "On Shift",
+        "type" : "Single Color View",
         "x" : 896.0,
-        "y" : 384.0,
-        "width" : 128.0,
-        "height" : 128.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Operator/Back Left Camera Connected",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
-        }
-      }, {
-        "title" : "Back Right Camera Connected",
-        "type" : "Boolean Box",
-        "x" : 1024.0,
-        "y" : 384.0,
-        "width" : 128.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Back Right Camera Connected",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
+          "topic" : "/SmartDashboard/Operator/On Shift",
+          "period" : 0.06
         }
       }, {
         "title" : "Within Range",
         "type" : "Boolean Box",
         "x" : 896.0,
-        "y" : 0.0,
+        "y" : 256.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
@@ -193,7 +144,7 @@
         "title" : "Aligned to Hub",
         "type" : "Boolean Box",
         "x" : 896.0,
-        "y" : 128.0,
+        "y" : 384.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
