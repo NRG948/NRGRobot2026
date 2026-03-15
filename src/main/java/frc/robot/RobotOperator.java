@@ -39,15 +39,15 @@ public final class RobotOperator {
   private static final String BLACK_HEX_STRING = Colors.BLACK.toHexString();
   private static final double BLINK_DURATION = 1.0 / 3.0;
 
-  private enum ShootingReadiness {
+  private enum HubState {
     /** When the hub is not active, we are not ready to shoot. */
-    NOT_READY(Colors.RED, false, 0),
+    INACTIVE(Colors.RED, false, 0),
     /** When the hub is nearing active, we are not ready to shoot. */
     PREPARING_SHOOTING_DISABLED(Colors.RED, true, 5),
     /** When the hub is nearing active, we are ready to shoot. */
     PREPARING_SHOOTING_ENABLED(Colors.YELLOW, true, 2),
     /** When the hub is active, we are ready to shoot. */
-    READY(Colors.GREEN, false, 0),
+    ACTIVE(Colors.GREEN, false, 0),
     /** When the hub is nearing not active, we are ready to shoot. */
     PREPARING_TO_DISABLE(Colors.YELLOW, true, 5);
 
@@ -55,7 +55,7 @@ public final class RobotOperator {
     private final boolean blink;
     private final double deltaTime;
 
-    private ShootingReadiness(Colors color, boolean blink, double deltaTime) {
+    private HubState(Colors color, boolean blink, double deltaTime) {
       this.color = color.toHexString();
       this.blink = blink;
       this.deltaTime = deltaTime;
@@ -79,7 +79,7 @@ public final class RobotOperator {
   private final Optional<AprilTag> frontLeftCamera;
   private final Optional<AprilTag> frontRightCamera;
 
-  private ShootingReadiness shootingReadiness = ShootingReadiness.NOT_READY;
+  private HubState hubState = HubState.INACTIVE;
   private Timer blinkTimer = new Timer();
   private boolean blinkOn = true;
 
@@ -148,61 +148,72 @@ public final class RobotOperator {
   }
 
   @DashboardSingleColorView(title = "On Shift", column = 7, row = 0, width = 2, height = 2)
-  public String onShiftIndicator() {
-    if (MatchUtil.isAutonomous()) {
-      return ShootingReadiness.READY.getColor();
+  public String onShiftIndicatorColor() {
+    if (blinkTimer.isRunning() && blinkTimer.advanceIfElapsed(BLINK_DURATION)) {
+      blinkOn = !blinkOn;
+    }
+
+    return blinkOn ? hubState.getColor() : BLACK_HEX_STRING;
+  }
+
+  /** Called in periodic() to update to the hub state. */
+  private void updateHubState() {
+    if (!MatchUtil.isTeleop()) {
+      return;
     }
 
     double matchTime = getMatchTime();
 
-    switch (shootingReadiness) {
-      case READY:
-        if (!MatchUtil.isHubActiveAt(
-            matchTime - ShootingReadiness.PREPARING_TO_DISABLE.getDeltaTime())) {
-          shootingReadiness = ShootingReadiness.PREPARING_TO_DISABLE;
-          blinkTimer.reset();
-          blinkTimer.start();
-          blinkOn = false;
+    switch (hubState) {
+      case ACTIVE:
+        if (!MatchUtil.isHubActiveAt(matchTime - HubState.PREPARING_TO_DISABLE.getDeltaTime())) {
+          setHubState(HubState.PREPARING_TO_DISABLE);
         }
         break;
-      case NOT_READY:
+      case INACTIVE:
         if (MatchUtil.isHubActiveAt(
-            matchTime - ShootingReadiness.PREPARING_SHOOTING_DISABLED.getDeltaTime())) {
-          shootingReadiness = ShootingReadiness.PREPARING_SHOOTING_DISABLED;
-          blinkTimer.reset();
-          blinkTimer.start();
-          blinkOn = false;
+            matchTime - HubState.PREPARING_SHOOTING_DISABLED.getDeltaTime())) {
+          setHubState(HubState.PREPARING_SHOOTING_DISABLED);
         }
         break;
       case PREPARING_SHOOTING_DISABLED:
         if (MatchUtil.isHubActiveAt(
-            matchTime - ShootingReadiness.PREPARING_SHOOTING_ENABLED.getDeltaTime())) {
-          shootingReadiness = ShootingReadiness.PREPARING_SHOOTING_ENABLED;
+            matchTime - HubState.PREPARING_SHOOTING_ENABLED.getDeltaTime())) {
+          setHubState(HubState.PREPARING_SHOOTING_ENABLED);
         }
         break;
       case PREPARING_SHOOTING_ENABLED:
         if (MatchUtil.isHubActiveAt(matchTime)) {
-          shootingReadiness = ShootingReadiness.READY;
-          blinkTimer.stop();
-          blinkOn = true;
+          setHubState(HubState.ACTIVE);
         }
         break;
       case PREPARING_TO_DISABLE:
         if (!MatchUtil.isHubActiveAt(matchTime)) {
-          shootingReadiness = ShootingReadiness.NOT_READY;
-          blinkTimer.stop();
-          blinkOn = true;
+          setHubState(HubState.INACTIVE);
         }
         break;
       default:
         break;
     }
+  }
 
-    if (blinkTimer.isRunning() && blinkTimer.advanceIfElapsed(BLINK_DURATION)) {
-      blinkOn = !blinkOn;
+  /**
+   * Sets the hub state.
+   *
+   * @param newHubState The new state.
+   */
+  private void setHubState(HubState newHubState) {
+    hubState = newHubState;
+    if (hubState.blink()) {
+      if (!blinkTimer.isRunning()) {
+        blinkTimer.reset();
+        blinkTimer.start();
+        blinkOn = false;
+      }
+    } else {
+      blinkTimer.stop();
+      blinkOn = true;
     }
-
-    return blinkOn ? shootingReadiness.getColor() : BLACK_HEX_STRING;
   }
 
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)
@@ -243,17 +254,14 @@ public final class RobotOperator {
 
   public void periodic() {
     field.setRobotPose(drivetrain.getPosition());
+    updateHubState();
   }
 
   public void teleopInit() {
-    shootingReadiness = ShootingReadiness.READY;
-    blinkTimer.stop();
-    blinkOn = true;
+    setHubState(HubState.ACTIVE);
   }
 
   public void autonomousInit() {
-    shootingReadiness = ShootingReadiness.READY;
-    blinkTimer.stop();
-    blinkOn = true;
+    setHubState(HubState.ACTIVE);
   }
 }
