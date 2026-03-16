@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.RobotConstants.CANID;
 import frc.robot.RobotPreferences;
+import frc.robot.util.FuelLaunchSolver;
 import frc.robot.util.MotorCurrentConfig;
 import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
@@ -81,6 +82,8 @@ public final class Subsystems {
           "Hopper", CANID.HOPPER_INDEXER_ID, HOPPER_METERS_PER_REVOLUTION, HOPPER_CURRENT_CONFIG);
 
   public final Optional<StatusLED> statusLEDs = Optional.empty();
+
+  public final FuelLaunchSolver fuelLaunchSolver = new FuelLaunchSolver(drivetrain);
 
   @DashboardTab(
       title = "Front Left Camera",
@@ -257,6 +260,8 @@ public final class Subsystems {
     frontLeftCamera.ifPresent(this::updateEstimatedPose);
     backLeftCamera.ifPresent(this::updateEstimatedPose);
     backRightCamera.ifPresent(this::updateEstimatedPose);
+
+    fuelLaunchSolver.solve();
   }
 
   private void updateEstimatedPose(AprilTag camera) {
@@ -272,5 +277,9 @@ public final class Subsystems {
             drivetrain.resetPosition(drivetrain.getPosition());
           }
         });
+  }
+
+  public FuelLaunchSolver getFuelLaunchSolver() {
+    return fuelLaunchSolver;
   }
 }
