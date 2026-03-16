@@ -14,14 +14,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Swerve;
 
 /**
- * A subsystem which calculates shooting solutions for both the static and moving
+ * A utility class which calculates shooting solutions for both the static and moving
  * ("shoot-on-the-fly") cases.
  */
-public class FuelLaunchSolver extends SubsystemBase {
+public class FuelLaunchSolver {
 
   /** Tunable value that compensates for latency in sensor measurement and robot reaction time. */
   private static final double PHASE_DELAY = 0.03;
@@ -60,17 +59,16 @@ public class FuelLaunchSolver extends SubsystemBase {
       SHOOTER_VELOCITIES.put(3.67, 30.0);
     }
 
-    // TODO: Measure actual time of flight for each robot and distance
     // Pracetice bot 70 degree hood
-    TIME_OF_FLIGHT.put(1.28, 0.8); // TBD
-    TIME_OF_FLIGHT.put(1.35, 0.9); // TBD
-    TIME_OF_FLIGHT.put(1.67, 1.0); // TBD
-    TIME_OF_FLIGHT.put(2.0, 1.05); // TBD
-    TIME_OF_FLIGHT.put(2.33, 1.1); // TBD
-    TIME_OF_FLIGHT.put(2.66, 1.2); // TBD
-    TIME_OF_FLIGHT.put(3.05, 1.3); // TBD
-    TIME_OF_FLIGHT.put(3.35, 1.4); // TBD
-    TIME_OF_FLIGHT.put(3.67, 1.5); // TBD
+    TIME_OF_FLIGHT.put(1.28, 28.5 / 30.0);
+    TIME_OF_FLIGHT.put(1.35, 29.0 / 30.0);
+    TIME_OF_FLIGHT.put(1.67, 31.0 / 30.0);
+    TIME_OF_FLIGHT.put(2.0, 35.0 / 30.0);
+    TIME_OF_FLIGHT.put(2.33, 39.33 / 30.0);
+    TIME_OF_FLIGHT.put(2.66, 41.75 / 30.0);
+    TIME_OF_FLIGHT.put(3.05, 43.66 / 30.0);
+    TIME_OF_FLIGHT.put(3.35, 46.0 / 30.0);
+    TIME_OF_FLIGHT.put(3.67, 48.0 / 30.0);
   }
 
   public record ShootingSolution(
@@ -84,7 +82,7 @@ public class FuelLaunchSolver extends SubsystemBase {
     this.drivetrain = drivetrain;
   }
 
-  public void periodic() {
+  public void solve() {
     Pose2d currentRobotPose = drivetrain.getPosition();
 
     // TODO: implement withinAllianceZone
@@ -94,20 +92,22 @@ public class FuelLaunchSolver extends SubsystemBase {
     //     return;
     // }
 
-    // Calculate estimated robot pose while accounting for phase delay.
+    // Calculate robot velocity relative to the field coordinates.
     ChassisSpeeds robotRelativeVelocity = drivetrain.getChassisSpeeds();
-    // TODO: convert to field-relative speeds here!
-    ChassisSpeeds fieldRelativeVelocity = robotRelativeVelocity;
+    Translation2d fieldRelativeVelocity =
+        new Translation2d(
+                robotRelativeVelocity.vxMetersPerSecond, robotRelativeVelocity.vyMetersPerSecond)
+            .rotateBy(drivetrain.getOrientation().unaryMinus());
 
+    // Calculate estimated robot pose while accounting for phase delay.
     Pose2d predictedRobotPose =
         currentRobotPose.exp(
             new Twist2d(
-                fieldRelativeVelocity.vxMetersPerSecond * PHASE_DELAY,
-                fieldRelativeVelocity.vyMetersPerSecond * PHASE_DELAY,
-                fieldRelativeVelocity.omegaRadiansPerSecond * PHASE_DELAY));
+                fieldRelativeVelocity.getX() * PHASE_DELAY,
+                fieldRelativeVelocity.getY() * PHASE_DELAY,
+                robotRelativeVelocity.omegaRadiansPerSecond * PHASE_DELAY));
 
     Translation2d hubPosition = FieldUtils.getHubLocation();
-
     // First calculate the stationary (static) shooter solution.
     double staticDistanceToHub = hubPosition.getDistance(currentRobotPose.getTranslation());
     double staticTimeOfFlight = TIME_OF_FLIGHT.get(staticDistanceToHub);
@@ -121,9 +121,7 @@ public class FuelLaunchSolver extends SubsystemBase {
     // Calculate how fast the shooter's center position is moving relative to the field.
     // For simplicity, assume it is the same as the robot's velocity and ignore the impact of the
     // robot's rotational velocity on the shooter's velocity.
-    ChassisSpeeds launcherToFieldVelocity = fieldRelativeVelocity;
-    // ChassisSpeeds launcherVelocity =
-    //    transformVelocity(robotVelocity, robotToLauncherTranslate, robotOrientation);
+    Translation2d launcherToFieldVelocity = fieldRelativeVelocity;
 
     // Setup for shoot-on-the-fly iterative solution.
     double hubX = hubPosition.getX();
@@ -135,10 +133,10 @@ public class FuelLaunchSolver extends SubsystemBase {
     double predictedDistanceToHub = staticDistanceToHub;
     double timeOfFlight = staticTimeOfFlight;
 
-    // Iterate to account for the velocity imparted by the robot onto the fuel as it is launched.
+    // Iterate to solve for the velocity imparted by the robot onto the fuel as it is launched.
     for (int i = 0; i < SOLVER_ITERATIONS; i++) {
-      predictedX = predictedRobotX + launcherToFieldVelocity.vxMetersPerSecond * timeOfFlight;
-      predictedY = predictedRobotY + launcherToFieldVelocity.vyMetersPerSecond * timeOfFlight;
+      predictedX = predictedRobotX + launcherToFieldVelocity.getX() * timeOfFlight;
+      predictedY = predictedRobotY + launcherToFieldVelocity.getY() * timeOfFlight;
       predictedDistanceToHub = Math.hypot(hubX - predictedX, hubY - predictedY);
       timeOfFlight = TIME_OF_FLIGHT.get(predictedDistanceToHub);
     }

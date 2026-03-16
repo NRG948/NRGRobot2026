@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotPreferences;
+import frc.robot.util.FuelLaunchSolver;
 import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +54,8 @@ public final class Subsystems {
   public final Hopper hopper = new Hopper();
 
   public final StatusLED statusLEDs = new StatusLED();
+
+  public final FuelLaunchSolver fuelLaunchSolver = new FuelLaunchSolver(drivetrain);
 
   @DashboardTab(
       title = "Front Left Camera",
@@ -212,6 +215,8 @@ public final class Subsystems {
     frontLeftCamera.ifPresent(this::updateEstimatedPose);
     backLeftCamera.ifPresent(this::updateEstimatedPose);
     backRightCamera.ifPresent(this::updateEstimatedPose);
+
+    fuelLaunchSolver.solve();
   }
 
   private void updateEstimatedPose(AprilTag camera) {
@@ -227,5 +232,9 @@ public final class Subsystems {
             drivetrain.resetPosition(drivetrain.getPosition());
           }
         });
+  }
+
+  public FuelLaunchSolver getFuelLaunchSolver() {
+    return fuelLaunchSolver;
   }
 }
