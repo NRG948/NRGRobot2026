@@ -146,8 +146,15 @@ public class RobotContainer {
         .rightStick()
         .whileTrue(
             Commands.parallel(
-                new ShootWhileMoving(subsystems, driverController),
-                ShootingCommands.feedBallsToShooter(subsystems, true)));
+                    new ShootWhileMoving(subsystems, driverController),
+                    ShootingCommands.feedBallsToShooter(subsystems, true))
+                .finallyDo(
+                    () -> {
+                      subsystems.shooter.disable();
+                      subsystems.indexer.disable();
+                      subsystems.hopper.disable();
+                      subsystems.intake.disable();
+                    }));
 
     driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
     driverController.povDown().whileTrue(ShootingCommands.shootFromTower(subsystems));
@@ -171,7 +178,8 @@ public class RobotContainer {
                 () -> {
                   return driverController.a().getAsBoolean()
                       || driverController.povUp().getAsBoolean()
-                      || driverController.povDown().getAsBoolean();
+                      || driverController.povDown().getAsBoolean()
+                      || driverController.x().getAsBoolean();
                 }));
 
     manipulatorController
