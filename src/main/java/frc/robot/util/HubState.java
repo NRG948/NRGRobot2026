@@ -9,6 +9,7 @@ package frc.robot.util;
 
 import com.nrg948.util.Colors;
 
+/** An enum representing the hub states. */
 public enum HubState {
   /** When the hub is not active, we are not ready to shoot. */
   INACTIVE(Colors.RED, false, 0),

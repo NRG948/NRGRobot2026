@@ -229,6 +229,7 @@ public final class Autos {
 
     invalidAutoAlert.set(false);
 
+    // Depot autos are defined on the left side and do not need to be mirrored.
     return new PathPlannerAuto(name, side == AutoSide.LEFT && !name.contains("Depot"));
   }
 

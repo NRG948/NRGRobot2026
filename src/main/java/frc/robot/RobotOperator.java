@@ -124,7 +124,13 @@ public final class RobotOperator {
 
   /** Called in periodic() to update to the hub state. */
   private void updateHubState() {
+    if (MatchUtil.isAutonomous()) {
+      setHubState(HubState.ACTIVE);
+      return;
+    }
+
     if (!MatchUtil.isTeleop()) {
+      setHubState(HubState.INACTIVE);
       return;
     }
 
