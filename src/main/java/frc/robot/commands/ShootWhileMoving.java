@@ -7,73 +7,42 @@
  
 package frc.robot.commands;
 
-import com.nrg948.dashboard.annotations.DashboardPIDController;
-import com.nrg948.preferences.ProfiledPIDControllerPreference;
-import edu.wpi.first.math.geometry.Translation2d;
+import static frc.robot.RobotPreferences.ROTATION_PID_CONTROLLER;
+
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
-import frc.robot.subsystems.Swerve;
+import frc.robot.util.FuelLaunchSolver;
+import frc.robot.util.FuelLaunchSolver.ShootingSolution;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class ShootWhileMoving extends DriveUsingController {
 
-  Shooter shooter;
+  private final Shooter shooter;
+  private final FuelLaunchSolver launchSolver;
 
   public ShootWhileMoving(Subsystems subsystems, CommandXboxController xboxController) {
     super(subsystems.drivetrain, xboxController);
     this.shooter = subsystems.shooter;
+    this.launchSolver = subsystems.getFuelLaunchSolver();
     addRequirements(shooter);
   }
-
-  // PID
-  @DashboardPIDController(title = "Auto Rotation PID", column = 6, row = 0, width = 2, height = 3)
-  private final ProfiledPIDControllerPreference rotationPIDController =
-      new ProfiledPIDControllerPreference(
-          "Swerve", "Rotation PID Controller", 1, 0, 0, Swerve.getRotationalConstraints());
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    ROTATION_PID_CONTROLLER.reset();
   }
 
   @Override
   protected double calculateRotationSpeed() {
-    return calculateRotationSpeed(rotationPIDController);
-  }
+    ShootingSolution solution = launchSolver.getMovingShootingSolution();
 
-  private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
-    Translation2d robotVelocity =
-        new Translation2d(
-                drivetrain.getChassisSpeeds().vxMetersPerSecond,
-                drivetrain.getChassisSpeeds().vyMetersPerSecond)
-            .rotateBy(drivetrain.getOrientation().unaryMinus());
+    shooter.setGoalVelocity(solution.shooterSpeed());
 
-    Translation2d shooterVelocityStill =
-        new Translation2d(
-            shooter.getVelocityFromInterpolationTable(drivetrain.getDistanceToHub()),
-            drivetrain.getAngleToHub());
-
-    Translation2d shooterVelocityMoving = shooterVelocityStill.minus(robotVelocity);
-
-    double currentOrientation = drivetrain.getOrientation().getRadians();
-
-    double angleBetweenVector =
-        Math.acos(
-            shooterVelocityStill.dot(shooterVelocityMoving)
-                / shooterVelocityStill.getNorm()
-                / shooterVelocityMoving.getNorm());
-    double targetOrientation =
-        drivetrain.getAngleToHub()
-            + angleBetweenVector * Math.signum(shooterVelocityStill.cross(shooterVelocityMoving));
-
-    double feedback = controller.calculate(currentOrientation, targetOrientation);
-
-    shooter.setGoalVelocity(shooterVelocityMoving.getNorm());
-
-    double rSpeed = feedback;
-
+    double rSpeed =
+        ROTATION_PID_CONTROLLER.calculate(
+            drivetrain.getOrientation().getRadians(), solution.robotOrientation());
     return rSpeed;
   }
 
