@@ -115,6 +115,7 @@ public final class ShootingCommands {
     Indexer indexer = subsystems.indexer;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
+    Hopper hopper = subsystems.hopper;
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalVelocity(velocity), shooter),
@@ -123,6 +124,7 @@ public final class ShootingCommands {
             () -> {
               shooter.disable();
               indexer.disable();
+              hopper.disable();
               intake.disable();
             });
   }
