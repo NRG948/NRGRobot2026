@@ -112,7 +112,7 @@ public class FuelLaunchSolver extends SubsystemBase {
     double staticDistanceToHub = hubPosition.getDistance(currentRobotPose.getTranslation());
     double staticTimeOfFlight = TIME_OF_FLIGHT.get(staticDistanceToHub);
     double staticShooterSpeed = SHOOTER_VELOCITIES.get(staticDistanceToHub);
-    double staticRobotAngle = drivetrain.getAngleToHub();
+    double staticRobotAngle = drivetrain.getAngleToTarget();
 
     staticShootingSolution =
         new ShootingSolution(

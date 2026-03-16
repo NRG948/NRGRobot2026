@@ -39,6 +39,7 @@ import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDs.FlameCycle;
 import frc.robot.commands.LEDs.LEDCommands;
+import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -142,9 +143,16 @@ public class RobotContainer {
         .povUp()
         .whileTrue(
             Commands.parallel(
-                    Commands.run(drivetrain::setXLock, drivetrain),
-                    ShootingCommands.shootFromHub(subsystems))
-                .withName("ManualShootFromHub"));
+                    new ShootWhileMoving(subsystems, driverController),
+                    ShootingCommands.feedBallsToShooter(subsystems, () -> true))
+                .finallyDo(
+                    () -> {
+                      subsystems.shooter.disable();
+                      subsystems.indexer.disable();
+                      subsystems.hopper.disable();
+                      subsystems.intake.disable();
+                    }));
+
     driverController
         .povDown()
         .whileTrue(
