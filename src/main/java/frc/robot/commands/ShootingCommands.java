@@ -28,7 +28,7 @@ public final class ShootingCommands {
     Intake intake = subsystems.intake;
     return Commands.sequence(
         Commands.idle(indexer, shooter, intake, hopper)
-            .until(() -> drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE),
+            .until(() -> drivetrain.getDistanceToHub() <= Shooter.MAX_SHOT_DISTANCE),
         shoot(subsystems));
   }
 
@@ -42,7 +42,7 @@ public final class ShootingCommands {
         Commands.idle(indexer, shooter, intake, hopper)
             .until(
                 () ->
-                    drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE
+                    drivetrain.getDistanceToHub() <= Shooter.MAX_SHOT_DISTANCE
                         && MatchUtil.isHubActive()),
         shoot(subsystems));
   }

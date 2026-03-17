@@ -580,7 +580,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   }
 
   public double getHubAlignmentTolerance() {
-    return ((Shooter.MAX_SHOOTING_DISTANCE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
+    return ((Shooter.MAX_SHOT_DISTANCE - getDistanceToHub()) / Shooter.SHOOTING_RANGE)
             * SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE
         + MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
   }

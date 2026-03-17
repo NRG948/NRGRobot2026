@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -72,7 +73,13 @@ public class FuelLaunchSolver {
   }
 
   public record ShootingSolution(
-      double distanceToTarget, double timeOfFlight, double robotOrientation, double shooterSpeed) {}
+      boolean isValid,
+      double distanceToTarget,
+      double timeOfFlight,
+      double robotOrientation,
+      double shooterSpeed) {}
+
+  private static final ShootingSolution INVALID_SOLUTION = new ShootingSolution(false, 0, 0, 0, 0);
 
   private final Swerve drivetrain;
   private ShootingSolution staticShootingSolution;
@@ -85,12 +92,13 @@ public class FuelLaunchSolver {
   public void solve() {
     Pose2d currentRobotPose = drivetrain.getPosition();
 
-    // TODO: implement withinAllianceZone
-    //
     // Don't bother calculating shooting solutions if the robot is not in our Alliance Zone.
-    // if (!FieldUtils.withinAllianceZone(estimatedRobotPose)) {
-    //     return;
-    // }
+    if (!FieldUtils.isPointInAllianceZone(currentRobotPose.getTranslation())) {
+      staticShootingSolution = INVALID_SOLUTION;
+      movingShootingSolution = INVALID_SOLUTION;
+
+      return;
+    }
 
     // Calculate robot velocity relative to the field coordinates.
     ChassisSpeeds robotRelativeVelocity = drivetrain.getChassisSpeeds();
@@ -113,10 +121,13 @@ public class FuelLaunchSolver {
     double staticTimeOfFlight = TIME_OF_FLIGHT.get(staticDistanceToHub);
     double staticShooterSpeed = SHOOTER_VELOCITIES.get(staticDistanceToHub);
     double staticRobotAngle = drivetrain.getAngleToHub();
+    boolean isValid =
+        staticDistanceToHub >= Shooter.HUB_SHOT_DISTANCE
+            && staticDistanceToHub <= Shooter.MAX_SHOT_DISTANCE;
 
     staticShootingSolution =
         new ShootingSolution(
-            staticDistanceToHub, staticTimeOfFlight, staticRobotAngle, staticShooterSpeed);
+            isValid, staticDistanceToHub, staticTimeOfFlight, staticRobotAngle, staticShooterSpeed);
 
     // Calculate how fast the shooter's center position is moving relative to the field.
     // For simplicity, assume it is the same as the robot's velocity and ignore the impact of the
@@ -143,9 +154,11 @@ public class FuelLaunchSolver {
 
     double movingShooterSpeed = SHOOTER_VELOCITIES.get(predictedDistanceToHub);
     double movingRobotAngle = Math.atan2(hubY - predictedY, hubX - predictedX);
+    isValid = predictedDistanceToHub <= Shooter.MAX_SHOT_DISTANCE;
+
     movingShootingSolution =
         new ShootingSolution(
-            predictedDistanceToHub, timeOfFlight, movingRobotAngle, movingShooterSpeed);
+            isValid, predictedDistanceToHub, timeOfFlight, movingRobotAngle, movingShooterSpeed);
   }
 
   public ShootingSolution getStaticShootingSolution() {

@@ -93,7 +93,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     Swerve drivetrain = subsystems.drivetrain;
-    IntakeArm intakeArm = subsystems.intakeArm;
     StatusLED statusLED = subsystems.statusLEDs;
 
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
