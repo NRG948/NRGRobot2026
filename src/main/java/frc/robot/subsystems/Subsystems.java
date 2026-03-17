@@ -206,6 +206,21 @@ public final class Subsystems {
     }
   }
 
+  /** {@return whether the front left camera is connected} */
+  public boolean frontLeftCameraIsConnected() {
+    return frontLeftCamera.map((c) -> c.isCameraConnected()).orElse(false);
+  }
+
+  /** {@return whether the front right camera is connected} */
+  public boolean frontRightCameraIsConnected() {
+    return frontRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
+  }
+
+  /** {@return true if at least one camera is connected; false otherwise} */
+  public boolean atLeastOneCameraConnected() {
+    return frontLeftCameraIsConnected() || frontRightCameraIsConnected();
+  }
+
   /** Called to perform periodic actions. */
   public void periodic() {
     frontRightCamera.ifPresent(this::updateEstimatedPose);

@@ -49,7 +49,8 @@ public final class ShootingCommands {
 
   public static Command shoot(Subsystems subsystems) {
     Swerve drivetrain = subsystems.drivetrain;
-    return shootForDistance(subsystems, drivetrain::getDistanceToHub, true);
+    return shootForDistance(subsystems, drivetrain::getDistanceToHub, true)
+        .onlyIf(subsystems::atLeastOneCameraConnected);
   }
 
   public static Command shootFromHub(Subsystems subsystems) {
