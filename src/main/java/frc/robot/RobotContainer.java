@@ -160,7 +160,7 @@ public class RobotContainer {
         .onFalse(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
     driverController // Possibly temporary test
         .rightBumper()
-        .whileTrue(IntakeCommands.intake(subsystems));
+        .whileTrue(IntakeCommands.extendAndIntakeWhenSafe(subsystems));
 
     manipulatorController
         .povRight()
