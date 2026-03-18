@@ -12,7 +12,9 @@ import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardNumberSlider;
 import com.nrg948.dashboard.annotations.DashboardPIDController;
+import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
+import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
@@ -101,6 +103,17 @@ public final class RobotPreferences {
   @DashboardToggleSwitch(title = "Enable Rumble", column = 2, row = 0, width = 1, height = 1)
   public static final BooleanPreference ENABLE_RUMBLE =
       new BooleanPreference("Drive", "Enable Rumble", true);
+
+  @DashboardTextDisplay(
+      title = "SOTF Scalar",
+      column = 9,
+      row = 2,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference SOTF_SCALAR =
+      new DoublePreference("Drive", "SOTF Scalar", 2.0);
 
   /** Adjusts the sensitivity of the right trigger on the driver's controller. */
   @DashboardNumberSlider(

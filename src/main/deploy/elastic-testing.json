@@ -324,6 +324,18 @@
           "period" : 0.06
         }
       }, {
+        "title" : "SOTF Scalar",
+        "type" : "Text Display",
+        "x" : 1152.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/SOTF Scalar",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
         "title" : "Right Trigger Scalar",
         "type" : "Number Slider",
         "x" : 384.0,
