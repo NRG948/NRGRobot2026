@@ -10,6 +10,7 @@ package frc.robot.commands;
 import static frc.robot.RobotPreferences.ROTATION_PID_CONTROLLER;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.util.FuelLaunchSolver;
@@ -42,7 +43,8 @@ public class ShootWhileMoving extends DriveUsingController {
 
     double rSpeed =
         ROTATION_PID_CONTROLLER.calculate(
-            drivetrain.getOrientation().getRadians(), solution.robotOrientation());
+                drivetrain.getOrientation().getRadians(), solution.robotOrientation())
+            * RobotPreferences.SOTF_SCALAR.getValue();
     return rSpeed;
   }
 

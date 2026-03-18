@@ -110,6 +110,17 @@ public final class RobotPreferences {
   public static final BooleanPreference ENABLE_RUMBLE =
       new BooleanPreference("Drive", "Enable Rumble", true);
 
+  @DashboardTextDisplay(
+      title = "SOTF Scalar",
+      column = 9,
+      row = 2,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference SOTF_SCALAR =
+      new DoublePreference("Drive", "SOTF Scalar", 2.0);
+
   /** Adjusts the sensitivity of the right trigger on the driver's controller. */
   @DashboardNumberSlider(
       title = "Right Trigger Scalar",
