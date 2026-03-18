@@ -154,10 +154,10 @@ public class RobotContainer {
 
     driverController
         .leftTrigger()
-        .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.BUMP_ANGLE));
+        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.BUMP_ANGLE));
     driverController
         .leftTrigger()
-        .onFalse(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
+        .onFalse(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
     driverController // Possibly temporary test
         .rightBumper()
         .whileTrue(IntakeCommands.extendAndIntakeWhenSafe(subsystems));
@@ -187,13 +187,13 @@ public class RobotContainer {
     manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
     manipulatorController
         .x()
-        .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.STOW_ANGLE));
+        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.STOW_ANGLE));
     manipulatorController
         .y()
-        .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.BUMP_ANGLE));
+        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.BUMP_ANGLE));
     manipulatorController
         .b()
-        .onTrue(IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
+        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
 
     manipulatorController.leftBumper().whileTrue(IndexerCommands.feed(subsystems));
 

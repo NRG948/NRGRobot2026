@@ -256,12 +256,12 @@ public final class Autos {
     eventMaps.put(
         "ExtendAndIntake",
         Commands.parallel(
-            IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
+            IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
             IntakeCommands.autoIntake(subsystems)));
 
     eventMaps.put("Intake", IntakeCommands.autoIntake(subsystems));
 
-    eventMaps.put("Extend", IntakeCommands.setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
+    eventMaps.put("Extend", IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
 
     eventMaps.put("DisableIntake", IntakeCommands.disableIntake(subsystems));
 

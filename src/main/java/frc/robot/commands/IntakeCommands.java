@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -34,7 +35,7 @@ public final class IntakeCommands {
         Commands.runOnce(() -> intakeArm.setGoalAngle(IntakeArm.STOW_ANGLE), intakeArm));
   }
 
-  public static Command setIntakeArmAngle(Subsystems subsystems, double angle) {
+  public static Command moveArmToAngle(Subsystems subsystems, double angle) {
     IntakeArm intakeArm = subsystems.intakeArm;
     return Commands.sequence(
         Commands.runOnce(() -> intakeArm.setGoalAngle(angle), intakeArm),
@@ -57,21 +58,28 @@ public final class IntakeCommands {
         .finallyDo(intake::disable);
   }
 
+  public static Command intakeWhenSafe(Subsystems subsystems) {
+    Intake intake = subsystems.intake;
+    IntakeArm intakeArm = subsystems.intakeArm;
+    return Commands.sequence(
+        Commands.idle(intake)
+            .until(
+                () -> {
+                  return intakeArm.getCurrentAngle() < MINIMUM_SAFE_INTAKE_ANGLE;
+                }),
+        intake(subsystems));
+  }
+
   public static Command autoIntake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
     return Commands.runOnce(intake::intake, intake);
   }
 
   public static Command extendAndIntakeWhenSafe(Subsystems subsystems) {
-    IntakeArm intakeArm = subsystems.intakeArm;
-    return Commands.sequence(
-        setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
-        Commands.idle(subsystems.intakeArm)
-            .until(
-                () -> {
-                  return intakeArm.getCurrentAngle() < MINIMUM_SAFE_INTAKE_ANGLE;
-                }),
-        intake(subsystems));
+    return Commands.parallel(
+        Commands.print("INTAKE_VELOCITY = " + RobotPreferences.INTAKE_VELOCITY.getValue()),
+        moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
+        intakeWhenSafe(subsystems));
   }
 
   public static Command disableIntake(Subsystems subsystems) {
@@ -104,9 +112,9 @@ public final class IntakeCommands {
 
   public static Command agitateArm(Subsystems subsystems) {
     return Commands.sequence(
-            setIntakeArmAngle(subsystems, IntakeArm.AGITATE_ANGLE),
+            moveArmToAngle(subsystems, IntakeArm.AGITATE_ANGLE),
             Commands.waitSeconds(AGITATE_WAIT_TIME),
-            setIntakeArmAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
+            moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
             Commands.waitSeconds(AGITATE_WAIT_TIME))
         .repeatedly();
   }
