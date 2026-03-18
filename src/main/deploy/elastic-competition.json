@@ -338,6 +338,30 @@
           "divisions" : 5,
           "publish_all" : false
         }
+      }, {
+        "title" : "Intake Velocity",
+        "type" : "Text Display",
+        "x" : 1152.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Intake Velocity",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Outtake Velocity",
+        "type" : "Text Display",
+        "x" : 1152.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Outtake Velocity",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
       } ]
     }
   } ]

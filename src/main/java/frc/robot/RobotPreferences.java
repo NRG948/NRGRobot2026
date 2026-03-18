@@ -12,7 +12,9 @@ import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardNumberSlider;
 import com.nrg948.dashboard.annotations.DashboardPIDController;
+import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.annotations.DashboardToggleSwitch;
+import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
@@ -113,6 +115,30 @@ public final class RobotPreferences {
       max = 1)
   public static final DoublePreference RIGHT_TRIGGER_SCALAR =
       new DoublePreference("Drive", "Right Trigger Scalar", 0.25);
+
+  /** Adjusts the speed of the intake. */
+  @DashboardTextDisplay(
+      title = "Intake Velocity",
+      column = 9,
+      row = 0,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference INTAKE_VELOCITY =
+      new DoublePreference("Intake", "Intake Velocity", 4);
+
+  /** Adjusts the speed of the outtake. */
+  @DashboardTextDisplay(
+      title = "Outtake Velocity",
+      column = 9,
+      row = 1,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference OUTTAKE_VELOCITY =
+      new DoublePreference("Intake", "Outtake Velocity", -5);
 
   public static boolean isCompBot() {
     return RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026;

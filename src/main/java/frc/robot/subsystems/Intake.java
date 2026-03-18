@@ -44,12 +44,10 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
-  private static final double WHEEL_DIAMETER = Units.inchesToMeters(2);
+  private static final double WHEEL_DIAMETER = Units.inchesToMeters(2.06);
   private static final double GEAR_RATIO = isCompBot() ? 1 : 1;
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
-  private static final double INTAKE_VELOCITY = 4;
-  private static final double OUTTAKE_VELOCITY = -5;
 
   private final MotorController motor =
       MOTOR.newController(
@@ -119,12 +117,12 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
   /** Intakes fuel */
   public void intake() {
-    setGoalVelocity(INTAKE_VELOCITY);
+    setGoalVelocity(RobotPreferences.INTAKE_VELOCITY.getValue());
   }
 
   /** Outtakes fuel */
   public void outtake() {
-    setGoalVelocity(OUTTAKE_VELOCITY);
+    setGoalVelocity(RobotPreferences.OUTTAKE_VELOCITY.getValue());
   }
 
   @Override
