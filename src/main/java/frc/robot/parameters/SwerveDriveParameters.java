@@ -62,7 +62,7 @@ public enum SwerveDriveParameters {
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {-95.10, 148.80, 170, -102.78}, // CANCoder offsets
+      new double[] {-95.10, 122.1, 170, -102.78}, // CANCoder offsets
       21),
   /** Parameters for the 2026 Alpha Base robot. */
   AlphaBase2026(
