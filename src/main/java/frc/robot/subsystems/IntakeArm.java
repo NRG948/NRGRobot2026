@@ -54,7 +54,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
-  private static final double TOLERANCE = Units.degreesToRadians(2.0);
+  private static final double TOLERANCE = Units.degreesToRadians(5.0);
   private static final double ERROR_MARGIN = Units.degreesToRadians(5.0);
   private static final double ERROR_TIME = 1;
 
@@ -69,7 +69,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   public static final double STOW_ANGLE = Units.degreesToRadians(isCompBot() ? 118.78 : 140);
   public static final double BUMP_ANGLE = Units.degreesToRadians(25);
-  public static final double AGITATE_ANGLE = Units.degreesToRadians(isCompBot() ? 15 : 20);
+  public static final double AGITATE_ANGLE = Units.degreesToRadians(isCompBot() ? 25 : 20);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
   public static final double MAX_ANGLE = STOW_ANGLE;

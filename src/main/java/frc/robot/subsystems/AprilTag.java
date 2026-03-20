@@ -61,9 +61,9 @@ public final class AprilTag extends SubsystemBase {
 
   private static final Rotation3d FRONT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-16), 0);
   public static final Transform3d ROBOT_TO_FRONT_LEFT_CAMERA =
-      new Transform3d(new Translation3d(+0.105, +0.259, +0.668), FRONT_CAMERA_ROTATION);
+      new Transform3d(new Translation3d(+0.105, +0.260, +0.668), FRONT_CAMERA_ROTATION);
   public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA =
-      new Transform3d(new Translation3d(+0.105, -0.262, +0.668), FRONT_CAMERA_ROTATION);
+      new Transform3d(new Translation3d(+0.105, -0.264, +0.668), FRONT_CAMERA_ROTATION);
 
   public static final Rotation3d BACK_LEFT_CAMERA_ROTATION =
       new Rotation3d(0, Math.toRadians(-2), Math.toRadians(90));
