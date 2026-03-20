@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -77,9 +76,7 @@ public final class IntakeCommands {
 
   public static Command extendAndIntakeWhenSafe(Subsystems subsystems) {
     return Commands.parallel(
-        Commands.print("INTAKE_VELOCITY = " + RobotPreferences.INTAKE_VELOCITY.getValue()),
-        moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
-        intakeWhenSafe(subsystems));
+        moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE), intakeWhenSafe(subsystems));
   }
 
   public static Command disableIntake(Subsystems subsystems) {
