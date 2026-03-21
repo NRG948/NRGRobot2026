@@ -20,7 +20,12 @@ public enum HubState {
   /** When the hub is active, we are ready to shoot. */
   ACTIVE(Colors.GREEN, false, 0),
   /** When the hub is nearing not active, we are ready to shoot. */
-  PREPARING_TO_DISABLE(Colors.YELLOW, true, 5),
+  PREPARING_TO_DISABLE_10_SEC(Colors.YELLOW, true, 10),
+  /**
+   * When the hub is nearing not active, we are ready to shoot. (But with a different color and
+   * closer in time)
+   */
+  PREPARING_TO_DISABLE_5_SEC(Colors.ORANGE, true, 5),
   /** When nearing the end of the match. */
   NEARING_END_OF_MATCH(Colors.YELLOW, true, 5);
 

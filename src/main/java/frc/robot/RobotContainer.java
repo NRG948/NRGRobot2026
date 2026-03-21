@@ -115,7 +115,9 @@ public class RobotContainer {
                     && operator.getHubState() == HubState.PREPARING_SHOOTING_ENABLED)
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
     new Trigger(
-            () -> MatchUtil.isTeleop() && operator.getHubState() == HubState.PREPARING_TO_DISABLE)
+            () ->
+                MatchUtil.isTeleop()
+                    && operator.getHubState() == HubState.PREPARING_TO_DISABLE_10_SEC)
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
     new Trigger(
             () -> MatchUtil.isTeleop() && operator.getHubState() == HubState.NEARING_END_OF_MATCH)
