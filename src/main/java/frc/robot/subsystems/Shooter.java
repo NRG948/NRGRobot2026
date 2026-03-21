@@ -84,7 +84,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       SHOOTER_VELOCITIES.put(2.66, 18.5); // estimated
       SHOOTER_VELOCITIES.put(3.05, 22.5);
       SHOOTER_VELOCITIES.put(3.35, 30.0);
-      SHOOTER_VELOCITIES.put(3.67, 30.0); // not possible?
+      SHOOTER_VELOCITIES.put(3.67, 34.5); // some balls fall short
     } else {
       // Practice bot 65 degree hood
       // SHOOTER_VELOCITIES.put(1.28, 12.75);
