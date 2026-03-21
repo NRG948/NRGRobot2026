@@ -9,7 +9,7 @@ package frc.robot.parameters;
 
 import static frc.robot.parameters.MotorParameters.KrakenX44;
 import static frc.robot.parameters.MotorParameters.KrakenX60;
-import static frc.robot.parameters.SwerveModuleParameters.MK4I_L2_PLUS;
+import static frc.robot.parameters.SwerveModuleParameters.MK4I_L2;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -40,7 +40,7 @@ public enum SwerveDriveParameters {
       Units.lbsToKilograms(60.7), // TODO Update current PB weight
       0.603,
       0.501,
-      MK4I_L2_PLUS,
+      MK4I_L2,
       KrakenX60,
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
@@ -54,10 +54,10 @@ public enum SwerveDriveParameters {
    * <p>
    */
   CompetitionBase2026(
-      Units.lbsToKilograms(143),
+      Units.lbsToKilograms(142),
       0.603,
       0.501,
-      MK4I_L2_PLUS,
+      MK4I_L2,
       KrakenX60,
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
@@ -69,7 +69,7 @@ public enum SwerveDriveParameters {
       Units.lbsToKilograms(60.7),
       0.578,
       0.528,
-      MK4I_L2_PLUS,
+      MK4I_L2,
       KrakenX60,
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
