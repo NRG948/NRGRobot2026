@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.941077777777777,
-        "y": 3.3139111111111106
+        "x": 5.755933333333334,
+        "y": 3.021577777777777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.662166666666667,
-        "y": 3.9180666666666664
+        "x": 5.619511111111113,
+        "y": 4.639155555555558
       },
       "isLocked": false,
-      "linkedName": "Close Neutral Start"
+      "linkedName": "Shallow Close Neutral Start"
     },
     {
       "anchor": {
-        "x": 7.928944444444445,
-        "y": 3.099533333333334
+        "x": 7.334533333333334,
+        "y": 3.5282888888888877
       },
       "prevControl": {
-        "x": 7.6561,
-        "y": 4.3858
+        "x": 6.993477777777779,
+        "y": 5.126377777777777
       },
       "nextControl": {
-        "x": 8.239848293983748,
-        "y": 1.63384375693377
+        "x": 7.572340956868711,
+        "y": 2.413990310037405
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.032455555555556,
+        "y": 1.1214111111111107
+      },
+      "prevControl": {
+        "x": 7.451466666666667,
+        "y": 1.2383444444444434
+      },
+      "nextControl": {
+        "x": 6.787306634737394,
+        "y": 1.0529974587897637
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +52,8 @@
         "y": 1.9496888888888884
       },
       "prevControl": {
-        "x": 7.217600000000001,
-        "y": 1.9009666666666658
+        "x": 5.960566666666666,
+        "y": 1.0532000000000006
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,14 +63,14 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.9842323651452374,
-      "rotationDegrees": -90.0
+      "rotationDegrees": -75.84642332550708
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.3275434243176185,
-      "maxWaypointRelativePos": 1.7846153846153874,
+      "maxWaypointRelativePos": 2.55,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
@@ -66,19 +82,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "extend intake for close neutral start",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ExtendAndIntake"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -95,7 +99,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 23.55226367289463
+    "rotation": 60.708637829015885
   },
   "useDefaultConstraints": true
 }

@@ -23,12 +23,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
@@ -50,19 +44,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Scoring Point to Neutral End"
+            "pathName": "Scoring Point to Shallow Close Neutral Start"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Close Neutral Start to Close Opposite Neutral"
+            "pathName": "Shallow Close Neutral Start to Close Neutral End"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Close Opposite Neutral End to Opposite Scoring Point"
+            "pathName": "Close Neutral End to Scoring Point"
           }
         },
         {
@@ -78,7 +72,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 5.0
                 }
               }
             ]
