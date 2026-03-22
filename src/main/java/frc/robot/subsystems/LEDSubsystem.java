@@ -95,7 +95,7 @@ public class LEDSubsystem extends SubsystemBase {
 
   /** Displays the current color data on the LED strip. */
   public void commitColor() {
-    // leds.commitColor(); TODO: Figure out if LEDs are drawing too much power
+    leds.commitColor();
   }
 
   @Override
