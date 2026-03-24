@@ -71,14 +71,14 @@
           "trajectory_color" : -1
         }
       }, {
-        "title" : "Match Time",
+        "title" : "Shift Time",
         "type" : "Match Time",
         "x" : 1152.0,
-        "y" : 128.0,
+        "y" : 0.0,
         "width" : 384.0,
         "height" : 256.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Operator/Match Time",
+          "topic" : "/SmartDashboard/Operator/Shift Time",
           "period" : 0.06,
           "time_display_mode" : "Minutes and Seconds",
           "yellow_start_time" : 30,
@@ -118,7 +118,7 @@
         "title" : "On Shift",
         "type" : "Single Color View",
         "x" : 1152.0,
-        "y" : 384.0,
+        "y" : 256.0,
         "width" : 256.0,
         "height" : 256.0,
         "properties" : {

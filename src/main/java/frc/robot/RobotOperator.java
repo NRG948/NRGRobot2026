@@ -88,9 +88,9 @@ public final class RobotOperator {
       game = GameField.REBUILT)
   private Field2d field = new Field2d();
 
-  @DashboardMatchTime(title = "Match Time", row = 1, column = 9, width = 3, height = 2)
-  public static double getMatchTime() {
-    return MatchUtil.getMatchTimeRemaining();
+  @DashboardMatchTime(title = "Shift Time", row = 0, column = 9, width = 3, height = 2)
+  public static double getShiftTime() {
+    return MatchUtil.getShiftTimeRemaining();
   }
 
   @DashboardBooleanBox(
@@ -113,7 +113,7 @@ public final class RobotOperator {
     return frontRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
   }
 
-  @DashboardSingleColorView(title = "On Shift", column = 9, row = 3, width = 2, height = 2)
+  @DashboardSingleColorView(title = "On Shift", column = 9, row = 2, width = 2, height = 2)
   public String onShiftIndicatorColor() {
     if (blinkTimer.isRunning() && blinkTimer.advanceIfElapsed(BLINK_DURATION)) {
       blinkOn = !blinkOn;
@@ -134,7 +134,7 @@ public final class RobotOperator {
       return;
     }
 
-    double matchTime = getMatchTime();
+    double matchTime = MatchUtil.getMatchTimeRemaining();
 
     if (matchTime < 0) {
       setHubState(HubState.INACTIVE);

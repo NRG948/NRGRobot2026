@@ -16,6 +16,60 @@ public final class MatchUtil {
   private static final double ALMOST_ACTIVE_TOLERANCE = 2.0;
   private static final double RECENTLY_INACTIVE_TOLERANCE = 1.0;
 
+  enum ShiftTimes {
+    AUTONOMOUS("Autonomous", 20, 0),
+    TRANSITION("Transition", 140, 130),
+    SHIFT_1("First Shift", 130, 105),
+    SHIFT_2("Second Shift", 105, 80),
+    SHIFT_3("Third Shift", 80, 55),
+    SHIFT_4("Fourth Shift", 55, 30),
+    ENDGAME("Endgame", 30, 0);
+
+    private String shiftName;
+    private double startTime;
+    private double endTime;
+
+    ShiftTimes(String shiftName, double startTime, double endTime) {
+      this.shiftName = shiftName;
+      this.startTime = startTime;
+      this.endTime = endTime;
+    }
+
+    public String getName() {
+      return shiftName;
+    }
+
+    public double getStartTime() {
+      return startTime;
+    }
+
+    public double getEndTime() {
+      return endTime;
+    }
+
+    public static ShiftTimes getCurrentShiftTimes() {
+      if (isAutonomous()) {
+        return AUTONOMOUS;
+      }
+
+      double timeRemaining = getMatchTimeRemaining() + 1;
+
+      if (timeRemaining >= TRANSITION.endTime) {
+        return TRANSITION;
+      } else if (timeRemaining >= SHIFT_1.endTime) {
+        return SHIFT_1;
+      } else if (timeRemaining >= SHIFT_2.endTime) {
+        return SHIFT_2;
+      } else if (timeRemaining >= SHIFT_3.endTime) {
+        return SHIFT_3;
+      } else if (timeRemaining >= SHIFT_4.endTime) {
+        return SHIFT_4;
+      }
+
+      return ENDGAME;
+    }
+  }
+
   private static final double PRE_FIRST_SHIFT_START_TIME = 135.0;
   private static final double FIRST_SHIFT_START_TIME = 130.0;
   private static final double PRE_SECOND_SHIFT_START_TIME = 110.0;
@@ -38,6 +92,13 @@ public final class MatchUtil {
   /** {@return the remaining time, in seconds, in the current phase of the match} */
   public static double getMatchTimeRemaining() {
     return DriverStation.getMatchTime();
+  }
+
+  /** {@return The remaining time in the current shift} */
+  public static double getShiftTimeRemaining() {
+    ShiftTimes currentShift = ShiftTimes.getCurrentShiftTimes();
+
+    return MatchUtil.getMatchTimeRemaining() - currentShift.endTime;
   }
 
   /** {@return true if the match is a competition or practice match, false otherwise} */
