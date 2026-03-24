@@ -68,7 +68,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       (MOTOR.getStallTorque() * GEAR_RATIO) / ((MASS * LENGTH * LENGTH) / 3.0);
 
   public static final double STOW_ANGLE = Units.degreesToRadians(isCompBot() ? 118.78 : 140);
-  public static final double BUMP_ANGLE = Units.degreesToRadians(25);
+  public static final double BUMP_ANGLE = Units.degreesToRadians(28);
   public static final double AGITATE_ANGLE = Units.degreesToRadians(isCompBot() ? 25 : 20);
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
