@@ -1,0 +1,128 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.680366666666667,
+        "y": 1.9594333333333327
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.1870807088730855,
+        "y": 2.3589518380407766
+      },
+      "isLocked": false,
+      "linkedName": "Trench Start"
+    },
+    {
+      "anchor": {
+        "x": 5.795,
+        "y": 2.405
+      },
+      "prevControl": {
+        "x": 5.483625586858631,
+        "y": 2.618779447828403
+      },
+      "nextControl": {
+        "x": 6.447877777777776,
+        "y": 1.9567555555555551
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.710888888888889,
+        "y": 0.8485666666666658
+      },
+      "prevControl": {
+        "x": 6.330855555555555,
+        "y": 1.2675777777777761
+      },
+      "nextControl": {
+        "x": 6.878842623510344,
+        "y": 0.6633869079814729
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.3,
+        "y": 0.6926555555555558
+      },
+      "prevControl": {
+        "x": 7.085196551348259,
+        "y": 0.5232938535635159
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Neutral Shallow Start"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.24647302904565602,
+      "rotationDegrees": 115.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.00893300248140108,
+      "maxWaypointRelativePos": 0.580645161290338,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Bump Angle for right hub start",
+      "waypointRelativePos": 0.11612903225806823,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeArmBumpAngle"
+        }
+      }
+    },
+    {
+      "name": "Extend for right neutral",
+      "waypointRelativePos": 0.6699751861042116,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 1.0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0.0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": false
+}
