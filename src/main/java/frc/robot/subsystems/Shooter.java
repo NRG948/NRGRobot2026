@@ -212,13 +212,12 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private void configureMotionMagic() {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
-    // Old PID values: kP=1.0, kI=0.0, kD=0.0, kS=SHOOTER_MOTOR.getKs(),
-    // kV=(12.0-kS)/MAX_VELOCITY
-    config.Slot0.kP = 0.50;
+    double ks = SHOOTER_MOTOR.getKs();
+    config.Slot0.kP = 1.0;
     config.Slot0.kI = 0.0;
     config.Slot0.kD = 0.0;
-    config.Slot0.kS = 0.25;
-    config.Slot0.kV = 1.0 / 8.35;
+    config.Slot0.kS = ks;
+    config.Slot0.kV = (12.0 - ks) / MAX_VELOCITY;
     config.Slot0.kA = 0.0;
 
     double idleRPS = MAX_VELOCITY * RPS_PER_MPS;
