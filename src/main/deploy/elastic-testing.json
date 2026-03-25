@@ -8,8 +8,8 @@
       "containers" : [ {
         "title" : "Autonomous Start Side",
         "type" : "Split Button Chooser",
-        "x" : 768.0,
-        "y" : 0.0,
+        "x" : 1152.0,
+        "y" : 256.0,
         "width" : 384.0,
         "height" : 128.0,
         "properties" : {
@@ -19,8 +19,8 @@
       }, {
         "title" : "Autonomous Routine",
         "type" : "ComboBox Chooser",
-        "x" : 768.0,
-        "y" : 128.0,
+        "x" : 1152.0,
+        "y" : 384.0,
         "width" : 384.0,
         "height" : 128.0,
         "properties" : {
@@ -31,8 +31,8 @@
       }, {
         "title" : "Autonomous Delay",
         "type" : "ComboBox Chooser",
-        "x" : 768.0,
-        "y" : 256.0,
+        "x" : 1152.0,
+        "y" : 512.0,
         "width" : 384.0,
         "height" : 128.0,
         "properties" : {
@@ -45,7 +45,7 @@
         "type" : "Alerts",
         "x" : 0.0,
         "y" : 384.0,
-        "width" : 512.0,
+        "width" : 640.0,
         "height" : 256.0,
         "properties" : {
           "topic" : "/SmartDashboard/Alerts",
@@ -56,7 +56,7 @@
         "type" : "Field",
         "x" : 0.0,
         "y" : 0.0,
-        "width" : 768.0,
+        "width" : 896.0,
         "height" : 384.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Field",
@@ -87,7 +87,7 @@
       }, {
         "title" : "Front Left Camera Connected",
         "type" : "Boolean Box",
-        "x" : 512.0,
+        "x" : 640.0,
         "y" : 384.0,
         "width" : 128.0,
         "height" : 128.0,
@@ -102,7 +102,7 @@
       }, {
         "title" : "Front Right Camera Connected",
         "type" : "Boolean Box",
-        "x" : 640.0,
+        "x" : 768.0,
         "y" : 384.0,
         "width" : 128.0,
         "height" : 128.0,
@@ -117,8 +117,8 @@
       }, {
         "title" : "On Shift",
         "type" : "Single Color View",
-        "x" : 1152.0,
-        "y" : 256.0,
+        "x" : 896.0,
+        "y" : 0.0,
         "width" : 256.0,
         "height" : 256.0,
         "properties" : {
@@ -129,7 +129,7 @@
         "title" : "Within Range",
         "type" : "Boolean Box",
         "x" : 896.0,
-        "y" : 384.0,
+        "y" : 256.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
@@ -144,7 +144,7 @@
         "title" : "Aligned to Hub",
         "type" : "Boolean Box",
         "x" : 896.0,
-        "y" : 512.0,
+        "y" : 384.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
@@ -158,8 +158,8 @@
       }, {
         "title" : "Set Extended Position",
         "type" : "Command",
-        "x" : 0.0,
-        "y" : 640.0,
+        "x" : 896.0,
+        "y" : 512.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
@@ -171,8 +171,8 @@
       }, {
         "title" : "Set Stowed Position",
         "type" : "Command",
-        "x" : 256.0,
-        "y" : 640.0,
+        "x" : 640.0,
+        "y" : 512.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
