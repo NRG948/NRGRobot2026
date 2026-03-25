@@ -878,17 +878,6 @@
           "show_submit_button" : false
         }
       }, {
-        "title" : "PID",
-        "type" : "PID Controller",
-        "x" : 512.0,
-        "y" : 0.0,
-        "width" : 256.0,
-        "height" : 384.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Shooter/PID",
-          "period" : 0.06
-        }
-      }, {
         "title" : "Goal Velocity (m/s)",
         "type" : "Text Display",
         "x" : 0.0,
