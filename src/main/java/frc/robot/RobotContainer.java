@@ -222,7 +222,7 @@ public class RobotContainer {
   public void disableInit() {
     subsystems.disableManipulators();
     subsystems.setIdleMode(MotorIdleMode.COAST);
-    subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
+    subsystems.drivetrain.setIdleMode(MotorIdleMode.COAST);
     CommandScheduler.getInstance().schedule(LEDCommands.autoLEDs(subsystems));
   }
 
