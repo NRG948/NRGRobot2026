@@ -106,27 +106,17 @@ public class RobotContainer {
 
     new Trigger(MatchUtil::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
 
-    new Trigger(() -> MatchUtil.isTeleop() && operator.getHubState() == HubState.ACTIVE)
+    new Trigger(() -> MatchUtil.isTeleop() && isHubState(HubState.ACTIVE))
         .whileTrue(LEDCommands.setColor(statusLED, Colors.GREEN));
-    new Trigger(() -> MatchUtil.isTeleop() && operator.getHubState() == HubState.INACTIVE)
+    new Trigger(() -> isHubState(HubState.INACTIVE))
         .whileTrue(LEDCommands.setColor(statusLED, Colors.RED));
-    new Trigger(
-            () ->
-                MatchUtil.isTeleop()
-                    && operator.getHubState() == HubState.PREPARING_SHOOTING_DISABLED)
+    new Trigger(() -> isHubState(HubState.PREPARING_SHOOTING_DISABLED))
         .whileTrue(new BlinkColor(statusLED, Colors.RED));
-    new Trigger(
-            () ->
-                MatchUtil.isTeleop()
-                    && operator.getHubState() == HubState.PREPARING_SHOOTING_ENABLED)
+    new Trigger(() -> isHubState(HubState.PREPARING_SHOOTING_ENABLED))
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
-    new Trigger(
-            () ->
-                MatchUtil.isTeleop()
-                    && operator.getHubState() == HubState.PREPARING_TO_DISABLE_10_SEC)
+    new Trigger(() -> isHubState(HubState.PREPARING_TO_DISABLE_10_SEC))
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
-    new Trigger(
-            () -> MatchUtil.isTeleop() && operator.getHubState() == HubState.NEARING_END_OF_MATCH)
+    new Trigger(() -> isHubState(HubState.NEARING_END_OF_MATCH))
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
 
     driverController
@@ -182,6 +172,10 @@ public class RobotContainer {
     manipulatorController.leftBumper().whileTrue(IndexerCommands.feed(subsystems));
 
     manipulatorController.back().onTrue(DriveCommands.interruptAll(subsystems));
+  }
+
+  private boolean isHubState(HubState state) {
+    return operator.getHubState() == state;
   }
 
   /**
