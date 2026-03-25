@@ -10,7 +10,9 @@ package frc.robot.util;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
@@ -224,5 +226,33 @@ public final class TalonFXAdapter implements MotorController {
    */
   public void setControl(MotionMagicVoltage voltage) {
     talonFX.setControl(voltage);
+  }
+
+  public void setControl(MotionMagicVelocityVoltage request) {
+    talonFX.setControl(request);
+  }
+
+  public void applyConfiguration(TalonFXConfiguration config) {
+    for (int i = 0; i < 5; i++) {
+      StatusCode status = talonFX.getConfigurator().apply(config);
+      if (status.isOK()) {
+        return;
+      }
+      System.out.println(
+          String.format(
+              "ERROR: Failed to apply TalonFX config to ID %d: %s (%s)",
+              talonFX.getDeviceID(), status.getDescription(), status.getName()));
+    }
+  }
+
+  public void setFollower(int leaderDeviceID, boolean isOpposed) {
+    Follower followerConfig =
+        new Follower(
+            leaderDeviceID, isOpposed ? MotorAlignmentValue.Opposed : MotorAlignmentValue.Aligned);
+    talonFX.setControl(followerConfig);
+  }
+
+  public int getDeviceID() {
+    return talonFX.getDeviceID();
   }
 }
