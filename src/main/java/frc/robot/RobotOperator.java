@@ -52,24 +52,24 @@ public final class RobotOperator {
   /** Selects whether to use left or right side auto */
   @DashboardSplitButtonChooser(
       title = "Autonomous Start Side",
-      column = 6,
-      row = 0,
+      column = 9,
+      row = 2,
       width = 3,
       height = 1)
   public final SendableChooser<AutoSide> sideChooser = Autos.getSideChooser();
 
   @DashboardComboBoxChooser(
       title = "Autonomous Routine",
-      column = 6,
-      row = 1,
+      column = 9,
+      row = 3,
       width = 3,
       height = 1)
   private final SendableChooser<Command> autoChooser = Autos.getAutoChooser();
 
-  @DashboardComboBoxChooser(title = "Autonomous Delay", column = 6, row = 2, width = 3, height = 1)
+  @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 4, width = 3, height = 1)
   private final SendableChooser<Integer> delayChooser = Autos.getDelayChooser();
 
-  @DashboardAlerts(title = "Alerts", column = 0, row = 3, width = 4, height = 2)
+  @DashboardAlerts(title = "Alerts", column = 0, row = 3, width = 5, height = 2)
   private final Alert[] alerts = new Alert[] {Autos.getInvalidAutoAlert()};
 
   public RobotOperator(Subsystems subsystems) {
@@ -84,7 +84,7 @@ public final class RobotOperator {
       row = 0,
       column = 0,
       height = 3,
-      width = 6,
+      width = 7,
       game = GameField.REBUILT)
   private Field2d field = new Field2d();
 
@@ -95,7 +95,7 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(
       title = "Front Left Camera Connected",
-      column = 4,
+      column = 5,
       row = 3,
       width = 1,
       height = 1)
@@ -105,7 +105,7 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(
       title = "Front Right Camera Connected",
-      column = 5,
+      column = 6,
       row = 3,
       width = 1,
       height = 1)
@@ -113,7 +113,7 @@ public final class RobotOperator {
     return frontRightCamera.map((c) -> c.isCameraConnected()).orElse(false);
   }
 
-  @DashboardSingleColorView(title = "On Shift", column = 9, row = 2, width = 2, height = 2)
+  @DashboardSingleColorView(title = "On Shift", column = 7, row = 0, width = 2, height = 2)
   public String onShiftIndicatorColor() {
     if (blinkTimer.isRunning() && blinkTimer.advanceIfElapsed(BLINK_DURATION)) {
       blinkOn = !blinkOn;
@@ -212,20 +212,20 @@ public final class RobotOperator {
     return hubState;
   }
 
-  @DashboardBooleanBox(title = "Within Range", column = 7, row = 3, width = 2, height = 1)
+  @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)
   public boolean isWithinShootingRange() {
     return drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE;
   }
 
-  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 4, width = 2, height = 1)
+  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 2, height = 1)
   public boolean isAlignedToHub() {
     return drivetrain.isAlignedToHub();
   }
 
   @DashboardCommand(
       title = "Set Extended Position",
-      column = 0,
-      row = 5,
+      column = 7,
+      row = 4,
       width = 2,
       height = 1,
       fillWidget = true)
@@ -237,8 +237,8 @@ public final class RobotOperator {
 
   @DashboardCommand(
       title = "Set Stowed Position",
-      column = 2,
-      row = 5,
+      column = 5,
+      row = 4,
       width = 2,
       height = 1,
       fillWidget = true)
