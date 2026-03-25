@@ -8,6 +8,15 @@
 package frc.robot;
 
 import static frc.robot.commands.DriveCommands.hubAimAndXLock;
+import static frc.robot.commands.IntakeCommands.extendAndIntakeWhenSafe;
+import static frc.robot.commands.IntakeCommands.moveArmToAngle;
+import static frc.robot.commands.ShootingCommands.feedBallsToShooter;
+import static frc.robot.commands.ShootingCommands.rampUpShooter;
+import static frc.robot.commands.ShootingCommands.shootWhenInRange;
+import static frc.robot.commands.ShootingCommands.shootWhenInRangeAndOnShift;
+import static frc.robot.subsystems.IntakeArm.BUMP_ANGLE;
+import static frc.robot.subsystems.IntakeArm.EXTENDED_ANGLE;
+import static frc.robot.subsystems.IntakeArm.STOW_ANGLE;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -37,6 +46,7 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.util.HubState;
 import frc.robot.util.MatchUtil;
 import frc.robot.util.MotorIdleMode;
+import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -93,10 +103,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     Swerve drivetrain = subsystems.drivetrain;
-    IntakeArm intakeArm = subsystems.intakeArm;
     StatusLED statusLED = subsystems.statusLEDs;
-
-    driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
     new Trigger(MatchUtil::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
 
@@ -127,79 +134,80 @@ public class RobotContainer {
         .a()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController),
-                ShootingCommands.shootWhenInRange(subsystems)));
+                new DriveAutoRotation(drivetrain, driverController), shootWhenInRange(subsystems)));
 
     driverController
         .b()
         .whileTrue(
             Commands.parallel(
                 new DriveAutoRotation(drivetrain, driverController),
-                ShootingCommands.shootWhenInRangeAndOnShift(subsystems)));
+                shootWhenInRangeAndOnShift(subsystems)));
 
     driverController
         .x()
         .whileTrue(
             Commands.parallel(
                 hubAimAndXLock(drivetrain, driverController).repeatedly(),
-                ShootingCommands.shootWhenInRange(subsystems)));
+                shootWhenInRange(subsystems)));
 
     driverController
         .rightStick()
         .whileTrue(
             Commands.parallel(
                 new ShootWhileMoving(subsystems, driverController),
-                ShootingCommands.feedBallsToShooter(subsystems, true)));
+                feedBallsToShooter(subsystems, true)));
 
     driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
     driverController.povDown().whileTrue(ShootingCommands.shootFromTower(subsystems));
 
-    driverController
-        .leftTrigger()
-        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.BUMP_ANGLE));
-    driverController
-        .leftTrigger()
-        .onFalse(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
-    driverController // Possibly temporary test
-        .rightBumper()
-        .whileTrue(IntakeCommands.extendAndIntakeWhenSafe(subsystems));
+    driverController.leftTrigger().onTrue(moveArmToAngle(subsystems, BUMP_ANGLE));
+    driverController.leftTrigger().onFalse(moveArmToAngle(subsystems, EXTENDED_ANGLE));
+    driverController.rightBumper().whileTrue(extendAndIntakeWhenSafe(subsystems));
+
+    driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
     manipulatorController
         .povRight()
-        .whileTrue(
-            Commands.either(
-                Commands.none(),
-                new ProxyCommand(ShootingCommands.rampUpShooter(subsystems)),
-                () -> {
-                  return driverController.a().getAsBoolean()
-                      || driverController.povUp().getAsBoolean()
-                      || driverController.povDown().getAsBoolean();
-                }));
+        .whileTrue(aovidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
 
     manipulatorController
         .rightBumper()
         .whileTrue(
-            Commands.either(
-                Commands.none(),
-                new ProxyCommand(IntakeCommands.extendAndIntakeWhenSafe(subsystems)),
-                () -> {
-                  return driverController.leftTrigger().getAsBoolean();
-                }));
+            aovidConflicts(extendAndIntakeWhenSafe(subsystems), this::isDriverUsingIntakeArm));
 
     manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
-    manipulatorController
-        .x()
-        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.STOW_ANGLE));
-    manipulatorController
-        .y()
-        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.BUMP_ANGLE));
-    manipulatorController
-        .b()
-        .onTrue(IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE));
+    manipulatorController.x().onTrue(moveArmToAngle(subsystems, STOW_ANGLE));
+    manipulatorController.y().onTrue(moveArmToAngle(subsystems, BUMP_ANGLE));
+    manipulatorController.b().onTrue(moveArmToAngle(subsystems, EXTENDED_ANGLE));
 
     manipulatorController.leftBumper().whileTrue(IndexerCommands.feed(subsystems));
 
     manipulatorController.back().onTrue(DriveCommands.interruptAll(subsystems));
+  }
+
+  /**
+   * Conditionally returns a proxied version of the given command as long as it does not conflict
+   * with a cunrrently running command. If a conflict exists, returns {@code Commands.none()}.
+   *
+   * @param command the command to be proxied if it has no conflicts.
+   * @param hasConflict a boolean supplier indicating if a conflict exists.
+   * @return the conflict-free command to run, or a no-op command if it does conflict.
+   */
+  private Command aovidConflicts(Command command, BooleanSupplier hasConflict) {
+    return Commands.either(Commands.none(), new ProxyCommand(command), hasConflict);
+  }
+
+  private boolean isDriverUsingShooter() {
+    return driverController.a().getAsBoolean()
+        || driverController.b().getAsBoolean()
+        || driverController.x().getAsBoolean()
+        || driverController.povUp().getAsBoolean()
+        || driverController.povDown().getAsBoolean()
+        || driverController.rightStick().getAsBoolean();
+  }
+
+  private boolean isDriverUsingIntakeArm() {
+    return driverController.leftTrigger().getAsBoolean();
   }
 
   /**
