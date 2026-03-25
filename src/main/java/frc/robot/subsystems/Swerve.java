@@ -611,8 +611,18 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     return orientation;
   }
 
+  double periodicLoopsPassedAfterTelemetryUpdate;
+
   @Override
   public void periodic() {
+    // Updates motor currents and temperatures
+    if (periodicLoopsPassedAfterTelemetryUpdate >= 5) {
+      updateMotorTelemetry();
+      periodicLoopsPassedAfterTelemetryUpdate = 0;
+    } else {
+      periodicLoopsPassedAfterTelemetryUpdate++;
+    }
+
     // Read sensors to update subsystem state.
     updateSensorState();
 
@@ -641,5 +651,17 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
     estimatedPose.estimatedRotation = odometry.getEstimatedPosition().getRotation().getDegrees();
+  }
+
+  private void updateMotorTelemetry() {
+    frontLeftDriveMotor.logTelemetry();
+    frontRightDriveMotor.logTelemetry();
+    backLeftDriveMotor.logTelemetry();
+    backRightDriveMotor.logTelemetry();
+
+    frontLeftSteeringMotor.logTelemetry();
+    frontRightSteeringMotor.logTelemetry();
+    backLeftSteeringMotor.logTelemetry();
+    backRightSteeringMotor.logTelemetry();
   }
 }

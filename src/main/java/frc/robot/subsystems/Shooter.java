@@ -262,8 +262,17 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     return goalVelocity != 0;
   }
 
+  double periodicLoopsPassedAfterTelemetryUpdate;
+
   @Override
   public void periodic() {
+    if (periodicLoopsPassedAfterTelemetryUpdate >= 5) {
+      updateMotorTelemetry();
+      periodicLoopsPassedAfterTelemetryUpdate = 0;
+    } else {
+      periodicLoopsPassedAfterTelemetryUpdate++;
+    }
+
     updateTelemetry();
     double motorVoltage = 0.0;
     if (goalVelocity != 0) {
@@ -282,9 +291,12 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private void updateTelemetry() {
     currentVelocity = encoder.getVelocity();
     logCurrentVelocity.append(currentVelocity);
-    // leftUpperMotor.logTelemetry();
-    // leftLowerMotor.logTelemetry();
-    // rightLowerMotor.logTelemetry();
-    // rightUpperMotor.logTelemetry();
+  }
+
+  private void updateMotorTelemetry() {
+    leftUpperMotor.logTelemetry();
+    leftLowerMotor.logTelemetry();
+    rightLowerMotor.logTelemetry();
+    rightUpperMotor.logTelemetry();
   }
 }
