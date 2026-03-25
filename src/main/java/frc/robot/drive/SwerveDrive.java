@@ -180,6 +180,8 @@ public class SwerveDrive extends RobotDriveBase {
    * @param speeds The chassis speeds.
    */
   public void setChassisSpeeds(ChassisSpeeds speeds) {
+    speeds = ChassisSpeeds.discretize(speeds, 0.02);
+
     xSpeedLog.append(speeds.vxMetersPerSecond);
     ySpeedLog.append(speeds.vyMetersPerSecond);
     omegaSpeedLog.append(Math.toDegrees(speeds.omegaRadiansPerSecond));
