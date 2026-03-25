@@ -131,8 +131,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
-  private final MotionMagicVelocityVoltage motionMagicRequest =
-      new MotionMagicVelocityVoltage(0).withEnableFOC(false);
+  private final MotionMagicVelocityVoltage flywheelVelocitySmooth =
+      new MotionMagicVelocityVoltage(0).withEnableFOC(true);
 
   private static final int VELOCITY_SMOOTHING_WINDOW = 6;
   private final SimpleMovingAverage velocityFilter =
@@ -212,17 +212,21 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private void configureMotionMagic() {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
+    // Old PID values provided from previous WPILib setup
     double ks = SHOOTER_MOTOR.getKs();
+    double wpilibKV = (12.0 - ks) / MAX_VELOCITY;
+    
     config.Slot0.kP = 1.0;
     config.Slot0.kI = 0.0;
     config.Slot0.kD = 0.0;
     config.Slot0.kS = ks;
-    config.Slot0.kV = (12.0 - ks) / MAX_VELOCITY;
+    config.Slot0.kV = wpilibKV * METERS_PER_REV;
     config.Slot0.kA = 0.0;
 
-    double idleRPS = MAX_VELOCITY * RPS_PER_MPS;
-    double rampTimeSeconds = 1.5;
-    config.MotionMagic.MotionMagicAcceleration = idleRPS / rampTimeSeconds;
+    // Motion Magic is used only when we adjust to idle speed
+    double idleRPM = MAX_VELOCITY * RPS_PER_MPS * 60.0;
+    double slowRampTime = 1.5; // seconds to go from 0 to idle speed when "slow" mode is enabled
+    config.MotionMagic.MotionMagicAcceleration = idleRPM / 60.0 / slowRampTime;
     config.MotionMagic.MotionMagicJerk = config.MotionMagic.MotionMagicAcceleration / 0.5;
 
     config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
@@ -270,10 +274,11 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     return SHOOTER_VELOCITIES.get(distance);
   }
 
-  private boolean detectFlywheelDrop() {
-    return goalVelocity > 0
-        && currentVelocity > 1.0
-        && (currentVelocity - goalVelocity) <= -SHOT_DETECTION_THRESHOLD
+  private boolean detectFlywheelDrop(double dropMPS) {
+    double desiredLinearVelocity = this.goalVelocity;
+    double currentLinearVelocity = this.currentVelocity;
+    return (currentLinearVelocity - desiredLinearVelocity) <= -dropMPS
+        && currentLinearVelocity > 1.0
         && isEnabled();
   }
 
@@ -318,16 +323,16 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
     if (goalVelocity != 0) {
       double goalRPS = goalVelocity * RPS_PER_MPS;
-      leftUpperMotor.setControl(motionMagicRequest.withVelocity(goalRPS));
+      leftUpperMotor.setControl(flywheelVelocitySmooth.withVelocity(goalRPS));
       // -- If using 2 Leaders (one per side) --
-      // rightUpperMotor.setControl(motionMagicRequest.withVelocity(goalRPS));
+      // rightUpperMotor.setControl(flywheelVelocitySmooth.withVelocity(goalRPS));
     } else {
       leftUpperMotor.stopMotor();
       // -- If using 2 Leaders (one per side) --
       // rightUpperMotor.stopMotor();
     }
 
-    boolean shotDetected = shotDebouncer.calculate(detectFlywheelDrop());
+    boolean shotDetected = shotDebouncer.calculate(detectFlywheelDrop(SHOT_DETECTION_THRESHOLD));
     if (shotDetected && !lastShotDetected) {
       fuelCount++;
       logFuelCount.append(fuelCount);
