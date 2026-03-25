@@ -20,6 +20,8 @@ import static frc.robot.subsystems.IntakeArm.STOW_ANGLE;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.RobotConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BlinkColor;
 import frc.robot.commands.DriveAutoRotation;
@@ -118,6 +121,37 @@ public class RobotContainer {
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
     new Trigger(() -> isHubState(HubState.NEARING_END_OF_MATCH))
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
+
+    new Trigger(
+            () ->
+                DriverStation.isEnabled()
+                    && RobotController.getBatteryVoltage() <= RobotConstants.LOW_BATTERY_VOLTAGE)
+        .whileTrue(
+            Commands.parallel(
+                new BlinkColor(statusLED, Colors.YELLOW),
+                Commands.runOnce(
+                    () ->
+                        DriverStation.reportWarning(
+                            "Low battery: "
+                                + String.format("%.1f", RobotController.getBatteryVoltage())
+                                + "V",
+                            false))));
+
+    new Trigger(() -> MatchUtil.isTeleop() && subsystems.shooter.isHopperEmpty())
+        .whileTrue(LEDCommands.hopperEmptyLED(subsystems));
+
+    new Trigger(MatchUtil::isNearShiftChange)
+        .onTrue(
+            Commands.runEnd(
+                    () -> {
+                      driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+                      manipulatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+                    },
+                    () -> {
+                      driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                      manipulatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                    })
+                .withTimeout(1.0));
 
     driverController
         .a()
