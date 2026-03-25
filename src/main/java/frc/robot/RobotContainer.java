@@ -39,7 +39,6 @@ import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.parameters.Colors;
-import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.StatusLED;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -168,12 +167,12 @@ public class RobotContainer {
 
     manipulatorController
         .povRight()
-        .whileTrue(aovidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
+        .whileTrue(avoidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
 
     manipulatorController
         .rightBumper()
         .whileTrue(
-            aovidConflicts(extendAndIntakeWhenSafe(subsystems), this::isDriverUsingIntakeArm));
+            avoidConflicts(extendAndIntakeWhenSafe(subsystems), this::isDriverUsingIntakeArm));
 
     manipulatorController.a().whileTrue(IntakeCommands.outtake(subsystems));
     manipulatorController.x().onTrue(moveArmToAngle(subsystems, STOW_ANGLE));
@@ -186,14 +185,15 @@ public class RobotContainer {
   }
 
   /**
-   * Conditionally returns a proxied version of the given command as long as it does not conflict
-   * with a cunrrently running command. If a conflict exists, returns {@code Commands.none()}.
+   * Conditionally returns a proxied version of the given command as long as the supplied conflict
+   * condition is not met (e.g. another driver is not using the same mechanism.) If a conflict does
+   * exist, returns {@link Commands.none()}.
    *
-   * @param command the command to be proxied if it has no conflicts.
-   * @param hasConflict a boolean supplier indicating if a conflict exists.
-   * @return the conflict-free command to run, or a no-op command if it does conflict.
+   * @param command the command to be proxied when no conflict is indicated.
+   * @param hasConflict a boolean supplier that reports whether a conflict currently exists.
+   * @return the command to run when there is no conflict, else a no-op command.
    */
-  private Command aovidConflicts(Command command, BooleanSupplier hasConflict) {
+  private Command avoidConflicts(Command command, BooleanSupplier hasConflict) {
     return Commands.either(Commands.none(), new ProxyCommand(command), hasConflict);
   }
 
