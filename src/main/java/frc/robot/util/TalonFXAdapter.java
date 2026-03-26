@@ -25,6 +25,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /** A motor controller implementation based on the CTR Electronics TalonFX controller. */
 public final class TalonFXAdapter implements MotorController {
@@ -232,17 +233,30 @@ public final class TalonFXAdapter implements MotorController {
     talonFX.setControl(request);
   }
 
-  public void applyConfiguration(TalonFXConfiguration config) {
+  /**
+   * Applies a full TalonFX configuration with up to 5 retries.
+   *
+   * @param config the TalonFX configuration to apply.
+   * @return true if the configuration was successfully applied, false if all retries were
+   *     exhausted.
+   */
+  public boolean applyConfiguration(TalonFXConfiguration config) {
     for (int i = 0; i < 5; i++) {
       StatusCode status = talonFX.getConfigurator().apply(config);
       if (status.isOK()) {
-        return;
+        return true;
       }
       System.out.println(
           String.format(
               "ERROR: Failed to apply TalonFX config to ID %d: %s (%s)",
               talonFX.getDeviceID(), status.getDescription(), status.getName()));
     }
+    DriverStation.reportError(
+        String.format(
+            "All retries exhausted applying TalonFX config to ID %d. Motor may be misconfigured.",
+            talonFX.getDeviceID()),
+        false);
+    return false;
   }
 
   public void setFollower(int leaderDeviceID, boolean isOpposed) {
