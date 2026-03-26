@@ -219,13 +219,13 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     // Test new PID values: kP = 0.50, kS = 0.25, kV = 1.0 / 8.35
-    double ks = SHOOTER_MOTOR.getKs();
-    double kV = (MAX_BATTERY_VOLTAGE - ks) / MAX_VELOCITY;
+    double kS = SHOOTER_MOTOR.getKs();
+    double kV = (MAX_BATTERY_VOLTAGE - kS) / MAX_VELOCITY;
 
     config.Slot0.kP = 1.0;
     config.Slot0.kI = 0.0;
     config.Slot0.kD = 0.0;
-    config.Slot0.kS = ks;
+    config.Slot0.kS = kS;
     config.Slot0.kV = kV * METERS_PER_REV;
     config.Slot0.kA = 0.0;
 

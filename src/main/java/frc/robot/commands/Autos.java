@@ -276,7 +276,8 @@ public final class Autos {
         Commands.parallel(
                 ShootingCommands.shoot(subsystems), new AutoRotation(subsystems.drivetrain))
             .beforeStarting(() -> subsystems.shooter.armShotDetection())
-            .until(() -> subsystems.shooter.isHopperEmpty()));
+            .until(() -> subsystems.shooter.isHopperEmpty())
+            .withTimeout(5.0));
 
     return eventMaps;
   }
