@@ -11,6 +11,7 @@ import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
+import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
@@ -23,10 +24,12 @@ import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
+import com.nrg948.preferences.DoublePreference;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -132,19 +135,23 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
   private final MotionMagicVelocityVoltage flywheelVelocitySmooth =
-      new MotionMagicVelocityVoltage(0).withEnableFOC(true);
+      new MotionMagicVelocityVoltage(0).withEnableFOC(false);
 
   private static final int VELOCITY_SMOOTHING_WINDOW = 6;
   private final SimpleMovingAverage velocityFilter =
       new SimpleMovingAverage(VELOCITY_SMOOTHING_WINDOW);
 
-  private static final double SHOT_DETECTION_THRESHOLD = 0.65;
+  private static final DoublePreference SHOT_DETECTION_THRESHOLD_MPS =
+      new DoublePreference("Shooter", "Shot Detection Threshold MPS", 0.65);
+
   private final Debouncer shotDebouncer = new Debouncer(0.06, DebounceType.kRising);
   private final Debouncer hopperEmptyDebouncer = new Debouncer(0.5, DebounceType.kRising);
 
-  private int fuelCount = 0;
+  private int fuelShotCount = 0;
+
   private boolean lastShotDetected = false;
   private boolean hopperEmpty = false;
+  private boolean hasFiredSinceArmed = false;
 
   @DashboardTextDisplay(title = "Goal Velocity (m/s)", column = 0, row = 2, width = 2, height = 1)
   private double goalVelocity = 0;
@@ -195,8 +202,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
   private DoubleLogEntry logSmoothedVelocity =
       new DoubleLogEntry(LOG, "/Shooter/Smoothed Velocity");
-  private DoubleLogEntry logFuelCount = new DoubleLogEntry(LOG, "/Shooter/Fuel Count");
-  private DoubleLogEntry logHopperEmpty = new DoubleLogEntry(LOG, "/Shooter/Hopper Empty");
+  private DoubleLogEntry logFuelShotCount = new DoubleLogEntry(LOG, "/Shooter/Fuel Shot Count");
+  private BooleanLogEntry logHopperEmpty = new BooleanLogEntry(LOG, "/Shooter/Hopper Empty");
 
   public static final double TOWER_SHOT_DISTANCE = 3.05;
   public static final double HUB_SHOT_DISTANCE = 1.3;
@@ -212,15 +219,15 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private void configureMotionMagic() {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
-    // Old PID values provided from previous WPILib setup
+    // Test new PID values: kP = 0.50, kS = 0.25, kV = 1.0 / 8.35
     double ks = SHOOTER_MOTOR.getKs();
-    double wpilibKV = (12.0 - ks) / MAX_VELOCITY;
-    
+    double kV = (MAX_BATTERY_VOLTAGE - ks) / MAX_VELOCITY;
+
     config.Slot0.kP = 1.0;
     config.Slot0.kI = 0.0;
     config.Slot0.kD = 0.0;
     config.Slot0.kS = ks;
-    config.Slot0.kV = wpilibKV * METERS_PER_REV;
+    config.Slot0.kV = kV * METERS_PER_REV;
     config.Slot0.kA = 0.0;
 
     // Motion Magic is used only when we adjust to idle speed
@@ -231,8 +238,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
     config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
 
-    config.Voltage.PeakForwardVoltage = 12.0;
-    config.Voltage.PeakReverseVoltage = -12.0;
+    config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
+    config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
 
     leftUpperMotor.applyConfiguration(config);
     // -- If using 2 Leaders (one per side) --
@@ -249,7 +256,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     // leftLowerMotor.setFollower(leftUpperMotor.getDeviceID(), false);
     // rightLowerMotor.setFollower(rightUpperMotor.getDeviceID(), false);
   }
-
+  
   /** Sets shooter goal velocity based on distance inputted to interpolation table. */
   public void setGoalDistance(double distance) {
     setGoalVelocity(SHOOTER_VELOCITIES.get(distance));
@@ -279,19 +286,26 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     double currentLinearVelocity = this.currentVelocity;
     return (currentLinearVelocity - desiredLinearVelocity) <= -dropMPS
         && currentLinearVelocity > 1.0
-        && isEnabled();
+        && atOrNearGoal();
   }
 
   public boolean isHopperEmpty() {
     return hopperEmpty;
   }
 
-  public int getFuelCount() {
-    return fuelCount;
+  public int getFuelShotCount() {
+    return fuelShotCount;
   }
 
-  public void resetFuelCount() {
-    fuelCount = 0;
+  public void armShotDetection() {
+    hasFiredSinceArmed = false;
+    hopperEmpty = false;
+    fuelShotCount = 0;
+    hopperEmptyDebouncer.calculate(false);
+  }
+
+  public void resetFuelShotCount() {
+    fuelShotCount = 0;
     hopperEmpty = false;
   }
 
@@ -332,15 +346,18 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       // rightUpperMotor.stopMotor();
     }
 
-    boolean shotDetected = shotDebouncer.calculate(detectFlywheelDrop(SHOT_DETECTION_THRESHOLD));
+    boolean shotDetected =
+        shotDebouncer.calculate(detectFlywheelDrop(SHOT_DETECTION_THRESHOLD_MPS.getValue()));
     if (shotDetected && !lastShotDetected) {
-      fuelCount++;
-      logFuelCount.append(fuelCount);
+      fuelShotCount++;
+      hasFiredSinceArmed = true;
+      logFuelShotCount.append(fuelShotCount);
     }
     lastShotDetected = shotDetected;
 
-    hopperEmpty = hopperEmptyDebouncer.calculate(atOrNearGoal() && !shotDetected);
-    logHopperEmpty.append(hopperEmpty ? 1.0 : 0.0);
+    hopperEmpty =
+        hasFiredSinceArmed && hopperEmptyDebouncer.calculate(atOrNearGoal() && !shotDetected);
+    logHopperEmpty.append(hopperEmpty);
   }
 
   private void updateTelemetry() {
