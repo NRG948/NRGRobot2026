@@ -9,20 +9,24 @@ package frc.robot.commands;
 
 import com.nrg948.dashboard.annotations.DashboardPIDController;
 import com.nrg948.preferences.ProfiledPIDControllerPreference;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
+import frc.robot.util.FieldUtils;
+import frc.robot.util.ShotCalculator;
+import frc.robot.util.ShotCalculator.ShotSolution;
 
 /** A command that enables the driver to drive the robot using an Xbox controller. */
 public class ShootWhileMoving extends DriveUsingController {
 
   Shooter shooter;
+  ShotCalculator shotCalculator;
 
   public ShootWhileMoving(Subsystems subsystems, CommandXboxController xboxController) {
     super(subsystems.drivetrain, xboxController);
     this.shooter = subsystems.shooter;
+    this.shotCalculator = new ShotCalculator(Shooter.SHOOTER_VELOCITIES);
     addRequirements(shooter);
   }
 
@@ -44,37 +48,21 @@ public class ShootWhileMoving extends DriveUsingController {
   }
 
   private double calculateRotationSpeed(ProfiledPIDControllerPreference controller) {
-    Translation2d robotVelocity =
-        new Translation2d(
-                drivetrain.getChassisSpeeds().vxMetersPerSecond,
-                drivetrain.getChassisSpeeds().vyMetersPerSecond)
-            .rotateBy(drivetrain.getOrientation().unaryMinus());
-
-    Translation2d shooterVelocityStill =
-        new Translation2d(
-            shooter.getVelocityFromInterpolationTable(drivetrain.getDistanceToHub()),
-            drivetrain.getAngleToHub());
-
-    Translation2d shooterVelocityMoving = shooterVelocityStill.minus(robotVelocity);
+    ShotSolution solution =
+        shotCalculator.calculate(
+            drivetrain.getPosition(),
+            drivetrain.getChassisSpeeds(),
+            FieldUtils.getHubLocation(),
+            shooter.getCurrentVelocity());
 
     double currentOrientation = drivetrain.getOrientation().getRadians();
-
-    double angleBetweenVector =
-        Math.acos(
-            shooterVelocityStill.dot(shooterVelocityMoving)
-                / shooterVelocityStill.getNorm()
-                / shooterVelocityMoving.getNorm());
-    double targetOrientation =
-        drivetrain.getAngleToHub()
-            + angleBetweenVector * Math.signum(shooterVelocityStill.cross(shooterVelocityMoving));
+    double targetOrientation = solution.driveAngle.getRadians();
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 
-    shooter.setGoalVelocity(shooterVelocityMoving.getNorm());
+    shooter.setGoalVelocity(solution.flywheelSpeed);
 
-    double rSpeed = feedback;
-
-    return rSpeed;
+    return feedback;
   }
 
   @Override

@@ -71,7 +71,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_VELOCITY =
       (SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0) * EFFICIENCY;
 
-  private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES =
+  public static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES =
       new InterpolatingDoubleTreeMap();
 
   static {
@@ -166,6 +166,10 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       max = 41.270725699090676)
   private double currentVelocity = 0;
 
+  public double getCurrentVelocity() {
+    return currentVelocity;
+  }
+
   @DashboardTextDisplay(
       title = "Test Velocity (m/s)",
       column = 2,
@@ -256,7 +260,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     // leftLowerMotor.setFollower(leftUpperMotor.getDeviceID(), false);
     // rightLowerMotor.setFollower(rightUpperMotor.getDeviceID(), false);
   }
-  
+
   /** Sets shooter goal velocity based on distance inputted to interpolation table. */
   public void setGoalDistance(double distance) {
     setGoalVelocity(SHOOTER_VELOCITIES.get(distance));
