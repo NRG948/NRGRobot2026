@@ -14,7 +14,6 @@ import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.COAST;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -110,18 +109,12 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
           leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
   private final TalonFXAdapter rightUpperMotor =
       (TalonFXAdapter)
-          SHOOTER_MOTOR.newController(
-              "/Shooter/Right Upper Motor",
-              SHOOTER_UPPER_RIGHT_ID,
-              COUNTER_CLOCKWISE_POSITIVE,
-              COAST,
-              METERS_PER_REV);
+          leftUpperMotor.createFollower("/Shooter/Right Upper Motor", SHOOTER_UPPER_RIGHT_ID, true);
   private final TalonFXAdapter rightLowerMotor =
       (TalonFXAdapter)
-          rightUpperMotor.createFollower(
-              "/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, false);
+          leftUpperMotor.createFollower("/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, true);
 
-  private final RelativeEncoder encoder = rightUpperMotor.getEncoder();
+  private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
 
   private final MotionMagicVelocityVoltage motionMagicVelocityRequest =
       new MotionMagicVelocityVoltage(0).withEnableFOC(false);
@@ -230,7 +223,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
 
     leftUpperMotor.applyTalonFXConfiguration(config);
-    rightUpperMotor.applyTalonFXConfiguration(config);
   }
 
   /** Sets shooter goal velocity based on distance inputted to interpolation table. */
@@ -291,7 +283,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     goalVelocity = 0;
     logGoalVelocity.append(0);
     leftUpperMotor.stopMotor();
-    rightUpperMotor.stopMotor();
   }
 
   @Override
@@ -315,10 +306,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     if (goalVelocity != 0) {
       double goalRPS = goalVelocity * RPS_PER_MPS;
       leftUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
-      rightUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
     } else {
       leftUpperMotor.stopMotor();
-      rightUpperMotor.stopMotor();
     }
 
     boolean shotDetected =
