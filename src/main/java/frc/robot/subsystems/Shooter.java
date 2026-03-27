@@ -105,15 +105,9 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
               CLOCKWISE_POSITIVE,
               COAST,
               METERS_PER_REV);
-
   private final TalonFXAdapter leftLowerMotor =
       (TalonFXAdapter)
-          SHOOTER_MOTOR.newController(
-              "/Shooter/Left Lower Motor",
-              SHOOTER_LOWER_LEFT_ID,
-              CLOCKWISE_POSITIVE,
-              COAST,
-              METERS_PER_REV);
+          leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
   private final TalonFXAdapter rightUpperMotor =
       (TalonFXAdapter)
           SHOOTER_MOTOR.newController(
@@ -124,16 +118,12 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
               METERS_PER_REV);
   private final TalonFXAdapter rightLowerMotor =
       (TalonFXAdapter)
-          SHOOTER_MOTOR.newController(
-              "/Shooter/Right Lower Motor",
-              SHOOTER_LOWER_RIGHT_ID,
-              COUNTER_CLOCKWISE_POSITIVE,
-              COAST,
-              METERS_PER_REV);
+          rightUpperMotor.createFollower(
+              "/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, false);
 
-  private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
+  private final RelativeEncoder encoder = rightUpperMotor.getEncoder();
 
-  private final MotionMagicVelocityVoltage flywheelVelocitySmooth =
+  private final MotionMagicVelocityVoltage motionMagicVelocityRequest =
       new MotionMagicVelocityVoltage(0).withEnableFOC(false);
 
   private static final int VELOCITY_SMOOTHING_WINDOW = 6;
@@ -212,7 +202,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   /** Creates a new Shooter. */
   public Shooter() {
     configureMotionMagic();
-    configureFollowers();
   }
 
   private void configureMotionMagic() {
@@ -240,22 +229,10 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
     config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
 
-    leftUpperMotor.applyConfiguration(config);
-    // -- If using 2 Leaders (one per side) --
-    // rightUpperMotor.applyConfiguration(config);
+    leftUpperMotor.applyTalonFXConfiguration(config);
+    rightUpperMotor.applyTalonFXConfiguration(config);
   }
 
-  private void configureFollowers() {
-    int leaderID = leftUpperMotor.getDeviceID();
-    leftLowerMotor.setFollower(leaderID, false);
-    rightUpperMotor.setFollower(leaderID, true);
-    rightLowerMotor.setFollower(leaderID, true);
-
-    // -- If using 2 Leaders (one per side) --
-    // leftLowerMotor.setFollower(leftUpperMotor.getDeviceID(), false);
-    // rightLowerMotor.setFollower(rightUpperMotor.getDeviceID(), false);
-  }
-  
   /** Sets shooter goal velocity based on distance inputted to interpolation table. */
   public void setGoalDistance(double distance) {
     setGoalVelocity(SHOOTER_VELOCITIES.get(distance));
@@ -314,12 +291,12 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     goalVelocity = 0;
     logGoalVelocity.append(0);
     leftUpperMotor.stopMotor();
-    // -- If using 2 Leaders (one per side) --
-    // rightUpperMotor.stopMotor();
+    rightUpperMotor.stopMotor();
   }
 
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
+    // Followers do not inherit idle mode configurations when the leader's idle mode changes.
     leftUpperMotor.setIdleMode(idleMode);
     leftLowerMotor.setIdleMode(idleMode);
     rightLowerMotor.setIdleMode(idleMode);
@@ -337,13 +314,11 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
     if (goalVelocity != 0) {
       double goalRPS = goalVelocity * RPS_PER_MPS;
-      leftUpperMotor.setControl(flywheelVelocitySmooth.withVelocity(goalRPS));
-      // -- If using 2 Leaders (one per side) --
-      // rightUpperMotor.setControl(flywheelVelocitySmooth.withVelocity(goalRPS));
+      leftUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
+      rightUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
     } else {
       leftUpperMotor.stopMotor();
-      // -- If using 2 Leaders (one per side) --
-      // rightUpperMotor.stopMotor();
+      rightUpperMotor.stopMotor();
     }
 
     boolean shotDetected =
