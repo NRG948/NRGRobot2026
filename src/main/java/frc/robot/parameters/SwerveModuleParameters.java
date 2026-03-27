@@ -7,11 +7,12 @@
  
 package frc.robot.parameters;
 
+import static com.nrg948.actuator.MotorDirection.CLOCKWISE_POSITIVE;
+import static com.nrg948.actuator.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.Constants.RobotConstants.WHEEL_DIAMETER;
-import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 
-import frc.robot.util.MotorDirection;
+import com.nrg948.actuator.MotorDirection;
+import com.nrg948.actuator.Motors;
 
 /**
  * A enum representing the properties on a specific swerve drive module.
@@ -128,7 +129,7 @@ public enum SwerveModuleParameters {
    * @param motor The motor parameters.
    * @return The theoretical maximum drive speed.
    */
-  public double calculateMaxDriveSpeed(MotorParameters motor) {
+  public double calculateMaxDriveSpeed(Motors motor) {
     return (motor.getFreeSpeedRPM() * this.wheelDiameter * Math.PI) / (60.0 * this.driveGearRatio);
   }
 
@@ -139,7 +140,7 @@ public enum SwerveModuleParameters {
    * @param robotMass the total robot mass in Kg including bumpers and battery.
    * @return The theoretical maximum drive acceleration.
    */
-  public double calculateMaxDriveAcceleration(MotorParameters motor, double robotMass) {
+  public double calculateMaxDriveAcceleration(Motors motor, double robotMass) {
     return (2 * 4 * motor.getStallTorque() * this.driveGearRatio)
         / (this.wheelDiameter * robotMass);
   }
@@ -150,7 +151,7 @@ public enum SwerveModuleParameters {
    * @param motor The motor parameters.
    * @return The theoretical maximum drive speed.
    */
-  public double calculateMaxSteeringSpeed(MotorParameters motor) {
+  public double calculateMaxSteeringSpeed(Motors motor) {
     return (motor.getFreeSpeedRPM() * 2 * Math.PI) / (60.0 * this.steeringGearRatio);
   }
 
@@ -161,7 +162,7 @@ public enum SwerveModuleParameters {
    * @param robotMass the total robot mass in Kg including bumpers and battery.
    * @return The theoretical maximum drive acceleration.
    */
-  public double calculateMaxSteeringAcceleration(MotorParameters motor, double robotMass) {
+  public double calculateMaxSteeringAcceleration(Motors motor, double robotMass) {
     return (2 * 4 * motor.getStallTorque() * this.steeringGearRatio * 2 * Math.PI) / robotMass;
   }
 }
