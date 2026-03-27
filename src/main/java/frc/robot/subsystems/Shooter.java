@@ -51,7 +51,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final MotorParameters SHOOTER_MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              RobotSelector.AlphaRobot2026, MotorParameters.NullMotor,
               RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX44,
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX44),
           MotorParameters.NullMotor);

@@ -14,7 +14,5 @@ public enum RobotSelector implements SelectorEnum<RobotSelector> {
   /** The practice robot for 2026. */
   PracticeRobot2026,
   /** The competition robot for 2026. */
-  CompetitionRobot2026,
-  /** The alpha robot for 2026. */
-  AlphaRobot2026;
+  CompetitionRobot2026;
 }

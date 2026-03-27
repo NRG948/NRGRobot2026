@@ -151,8 +151,7 @@ public final class AprilTag extends SubsystemBase {
           .select(
               Map.of(
                   RobotSelector.PracticeRobot2026, PRACTICE_VISION_PARAMS,
-                  RobotSelector.CompetitionRobot2026, COMPETITION_VISION_PARAMS,
-                  RobotSelector.AlphaRobot2026, ALPHA_VISION_PARAMS))
+                  RobotSelector.CompetitionRobot2026, COMPETITION_VISION_PARAMS))
           .orElse(COMPETITION_VISION_PARAMS);
 
   public static EnumPreference<PoseEstimationStrategy> POSE_ESTIMATION_STRATEGY =

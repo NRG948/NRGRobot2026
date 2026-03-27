@@ -109,8 +109,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
               RobotSelector.PracticeRobot2026, SwerveDriveParameters.PracticeBase2026,
-              RobotSelector.CompetitionRobot2026, SwerveDriveParameters.CompetitionBase2026,
-              RobotSelector.AlphaRobot2026, SwerveDriveParameters.AlphaBase2026),
+              RobotSelector.CompetitionRobot2026, SwerveDriveParameters.CompetitionBase2026),
           SwerveDriveParameters.CompetitionBase2026);
 
   public static final double ROTATIONAL_KP = 1.0;

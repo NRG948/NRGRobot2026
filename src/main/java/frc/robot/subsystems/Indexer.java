@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.ROBOT_TYPE;
 import static frc.robot.RobotPreferences.isCompBot;
-import static frc.robot.RobotSelector.AlphaRobot2026;
 import static frc.robot.RobotSelector.CompetitionRobot2026;
 import static frc.robot.RobotSelector.PracticeRobot2026;
 
@@ -39,7 +38,6 @@ public final class Indexer extends SubsystemBase implements ActiveSubsystem {
   private static final MotorParameters MOTOR =
       ROBOT_TYPE.selectOrDefault(
           Map.of(
-              AlphaRobot2026, MotorParameters.NullMotor,
               CompetitionRobot2026, MotorParameters.KrakenX60,
               PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
