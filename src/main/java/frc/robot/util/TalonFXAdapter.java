@@ -104,7 +104,7 @@ public final class TalonFXAdapter implements MotorController {
     motorOutputConfigs.NeutralMode = idleMode.forTalonFX();
     motorOutputConfigs.Inverted = direction.forTalonFX();
 
-    applyConfig(talonFX, motorOutputConfigs);
+    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -128,8 +128,7 @@ public final class TalonFXAdapter implements MotorController {
     motorOutputConfigs.Inverted =
         isInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
-    applyConfig(talonFX, motorOutputConfigs);
-    ;
+    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -140,8 +139,7 @@ public final class TalonFXAdapter implements MotorController {
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
     motorOutputConfigs.NeutralMode = idleMode.forTalonFX();
-    applyConfig(talonFX, motorOutputConfigs);
-    ;
+    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -170,7 +168,7 @@ public final class TalonFXAdapter implements MotorController {
     followerMotorOutputConfigs.PeakReverseDutyCycle = motorOutputConfigs.PeakReverseDutyCycle;
     followerMotorOutputConfigs.ControlTimesyncFreqHz = motorOutputConfigs.ControlTimesyncFreqHz;
 
-    applyConfig(follower, followerMotorOutputConfigs);
+    applyMotorOutputConfig(follower, followerMotorOutputConfigs);
 
     // Configure the follower to follow the leader.
     Follower followerConfig =
@@ -207,7 +205,7 @@ public final class TalonFXAdapter implements MotorController {
     logTemperature.append(this.temperature.refresh().getValueAsDouble());
   }
 
-  private static void applyConfig(TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
+  private static void applyMotorOutputConfig(TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
     for (int i = 0; i < 5; i++) {
       StatusCode status = talonFX.getConfigurator().apply(motorOutputConfigs);
       if (status.isOK()) {
@@ -240,7 +238,7 @@ public final class TalonFXAdapter implements MotorController {
    * @return true if the configuration was successfully applied, false if all retries were
    *     exhausted.
    */
-  public boolean applyConfiguration(TalonFXConfiguration config) {
+  public boolean applyTalonFXConfiguration(TalonFXConfiguration config) {
     for (int i = 0; i < 5; i++) {
       StatusCode status = talonFX.getConfigurator().apply(config);
       if (status.isOK()) {
@@ -257,16 +255,5 @@ public final class TalonFXAdapter implements MotorController {
             talonFX.getDeviceID()),
         false);
     return false;
-  }
-
-  public void setFollower(int leaderDeviceID, boolean isOpposed) {
-    Follower followerConfig =
-        new Follower(
-            leaderDeviceID, isOpposed ? MotorAlignmentValue.Opposed : MotorAlignmentValue.Aligned);
-    talonFX.setControl(followerConfig);
-  }
-
-  public int getDeviceID() {
-    return talonFX.getDeviceID();
   }
 }
