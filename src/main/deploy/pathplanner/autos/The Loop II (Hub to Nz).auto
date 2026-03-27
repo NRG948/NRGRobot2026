@@ -1,0 +1,87 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Trench Start to Neutral Start"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Neutral Start to Neutral End"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Neutral End to Scoring Point"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Scoring Point to Shallow Close Neutral Start"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shallow Close Neutral Start to Close Neutral End"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Close Neutral End to Scoring Point"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
