@@ -205,7 +205,8 @@ public final class TalonFXAdapter implements MotorController {
     logTemperature.append(this.temperature.refresh().getValueAsDouble());
   }
 
-  private static void applyMotorOutputConfig(TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
+  private static void applyMotorOutputConfig(
+      TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
     for (int i = 0; i < 5; i++) {
       StatusCode status = talonFX.getConfigurator().apply(motorOutputConfigs);
       if (status.isOK()) {
