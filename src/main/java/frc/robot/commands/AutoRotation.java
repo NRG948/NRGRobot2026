@@ -57,7 +57,7 @@ public class AutoRotation extends Command {
 
     currentOrientation = drivetrain.getOrientation().getRadians();
 
-    targetOrientation = drivetrain.getAngleToHub();
+    targetOrientation = drivetrain.getAngleToTarget();
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);
 

@@ -215,14 +215,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     logGoalVelocity.append(goalVelocity);
   }
 
-  /**
-   * Adds or subtracts velocity from upper goal. Mainly for controllers and for experiments in
-   * ShootingCommands.java.
-   */
-  public void addGoalVelocity(double goalVelocityDelta) {
-    this.goalVelocity += goalVelocityDelta;
-  }
-
   /** Returns whether the shooter velocity has reached its goal. */
   public boolean atOrNearGoal() {
     return Math.abs(currentVelocity - goalVelocity) / goalVelocity < VELOCITY_PERCENT_TOLERANCE;

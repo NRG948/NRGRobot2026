@@ -52,8 +52,8 @@ public class ShootWhileMoving extends DriveUsingController {
 
     Translation2d shooterVelocityStill =
         new Translation2d(
-            shooter.getVelocityFromInterpolationTable(drivetrain.getDistanceToHub()),
-            drivetrain.getAngleToHub());
+            shooter.getVelocityFromInterpolationTable(drivetrain.getDistanceToTarget()),
+            drivetrain.getAngleToTarget());
 
     Translation2d shooterVelocityMoving = shooterVelocityStill.minus(robotVelocity);
 
@@ -65,7 +65,7 @@ public class ShootWhileMoving extends DriveUsingController {
                 / shooterVelocityStill.getNorm()
                 / shooterVelocityMoving.getNorm());
     double targetOrientation =
-        drivetrain.getAngleToHub()
+        drivetrain.getAngleToTarget()
             + angleBetweenVector * Math.signum(shooterVelocityStill.cross(shooterVelocityMoving));
 
     double feedback = controller.calculate(currentOrientation, targetOrientation);

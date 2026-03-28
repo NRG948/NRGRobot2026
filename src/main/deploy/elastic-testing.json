@@ -635,26 +635,26 @@
           "orientation" : "horizontal"
         }
       }, {
-        "title" : "Distance To Hub (m)",
+        "title" : "Distance To Target (m)",
         "type" : "Text Display",
         "x" : 768.0,
         "y" : 0.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Swerve/Distance To Hub (m)",
+          "topic" : "/SmartDashboard/Swerve/Distance To Target (m)",
           "period" : 0.06,
           "show_submit_button" : false
         }
       }, {
-        "title" : "Robot to Hub Angle (deg)",
+        "title" : "Robot to Target Angle (deg)",
         "type" : "Text Display",
         "x" : 768.0,
         "y" : 128.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
-          "topic" : "/SmartDashboard/Swerve/Robot to Hub Angle (deg)",
+          "topic" : "/SmartDashboard/Swerve/Robot to Target Angle (deg)",
           "period" : 0.06,
           "show_submit_button" : false
         }
