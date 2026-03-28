@@ -62,7 +62,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double GEAR_RATIO = 1.0;
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
-  private static final double RPS_PER_MPS = 1.0 / METERS_PER_REV;
 
   public static final double SHOOTER_FEED_VELOCITY = 30;
 
@@ -141,7 +140,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private boolean lastShotDetected = false;
   private boolean hopperEmpty = false;
-  private boolean hasFiredSinceArmed = false;
+  private boolean hasFiredSinceReset = false;
 
   @DashboardTextDisplay(title = "Goal Velocity (m/s)", column = 0, row = 2, width = 2, height = 1)
   private double goalVelocity = 0;
@@ -199,6 +198,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   public static final double HUB_SHOT_DISTANCE = 1.3;
   public static final double MAX_SHOOTING_DISTANCE = 3.7; // TODO: Update for hood angle
   public static final double SHOOTING_RANGE = MAX_SHOOTING_DISTANCE - HUB_SHOT_DISTANCE;
+  private static final double SLOW_RAMP_TIME = 1.5;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -220,10 +220,9 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Slot0.kA = 0.0;
 
     // Motion Magic is used only when we adjust to idle speed
-    double idleRPM = MAX_VELOCITY * RPS_PER_MPS * 60.0;
-    double slowRampTime = 1.5; // seconds to go from 0 to idle speed when "slow" mode is enabled
-    config.MotionMagic.MotionMagicAcceleration = idleRPM / 60.0 / slowRampTime;
-    config.MotionMagic.MotionMagicJerk = config.MotionMagic.MotionMagicAcceleration / 0.5;
+    double acceleration = SHOOTER_MOTOR.getFreeSpeedRPM() / 60.0 / SLOW_RAMP_TIME;
+    config.MotionMagic.MotionMagicAcceleration = acceleration;
+    config.MotionMagic.MotionMagicJerk = acceleration * 2;
 
     config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
 
@@ -271,12 +270,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     return hopperEmpty;
   }
 
-  public int getFuelShotCount() {
-    return fuelShotCount;
-  }
-
-  public void armShotDetection() {
-    hasFiredSinceArmed = false;
+  public void resetShotDetection() {
+    hasFiredSinceReset = false;
     hopperEmpty = false;
     fuelShotCount = 0;
     hopperEmptyDebouncer.calculate(false);
@@ -314,7 +309,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     updateTelemetry();
 
     if (goalVelocity != 0) {
-      double goalRPS = goalVelocity * RPS_PER_MPS;
+      double goalRPS = goalVelocity / METERS_PER_REV;
       leftUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
       rightUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
     } else {
@@ -326,13 +321,13 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
         shotDebouncer.calculate(detectFlywheelDrop(SHOT_DETECTION_THRESHOLD_MPS.getValue()));
     if (shotDetected && !lastShotDetected) {
       fuelShotCount++;
-      hasFiredSinceArmed = true;
+      hasFiredSinceReset = true;
       logFuelShotCount.append(fuelShotCount);
     }
     lastShotDetected = shotDetected;
 
     hopperEmpty =
-        hasFiredSinceArmed && hopperEmptyDebouncer.calculate(atOrNearGoal() && !shotDetected);
+        hasFiredSinceReset && hopperEmptyDebouncer.calculate(atOrNearGoal() && !shotDetected);
     logHopperEmpty.append(hopperEmpty);
   }
 
