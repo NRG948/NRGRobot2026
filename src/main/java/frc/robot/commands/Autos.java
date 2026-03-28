@@ -275,7 +275,7 @@ public final class Autos {
         "ShootWithAutoRotationUntilEmpty",
         Commands.parallel(
                 ShootingCommands.shoot(subsystems), new AutoRotation(subsystems.drivetrain))
-            .beforeStarting(() -> subsystems.shooter.armShotDetection())
+            .beforeStarting(() -> subsystems.shooter.resetShotDetection())
             .until(() -> subsystems.shooter.isHopperEmpty())
             .withTimeout(5.0));
 
