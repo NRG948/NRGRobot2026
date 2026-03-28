@@ -240,6 +240,8 @@ public final class TalonFXAdapter implements MotorController {
    *     exhausted.
    */
   public boolean applyTalonFXConfiguration(TalonFXConfiguration config) {
+    config.MotorOutput = this.motorOutputConfigs;
+
     for (int i = 0; i < 5; i++) {
       StatusCode status = talonFX.getConfigurator().apply(config);
       if (status.isOK()) {
