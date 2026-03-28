@@ -45,7 +45,7 @@ public enum SwerveDriveParameters {
       KrakenX44,
       new int[] {1, 2, 3, 4, 5, 6, 7, 8}, // drive, steer motor controller CAN IDs
       new int[] {31, 32, 33, 34}, // CANCoder CAN IDs
-      new double[] {157.76, 159.55, -1.67, -100.72}, // CANCoder offsets
+      new double[] {157.76, 148.3, -1.67, -100.72}, // CANCoder offsets
       21),
 
   /**
