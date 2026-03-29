@@ -269,7 +269,7 @@ public final class Autos {
 
     eventMaps.put(
         "RampUpShooterForAutoScore",
-        ShootingCommands.rampUpShooter(subsystems, Shooter.HUB_SHOT_DISTANCE));
+        ShootingCommands.rampUpShooterForDistance(subsystems, Shooter.HUB_SHOT_DISTANCE));
 
     eventMaps.put(
         "ShootWithAutoRotationUntilEmpty",
