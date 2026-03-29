@@ -332,5 +332,9 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     currentVelocity = velocityFilter.calculate(rawVelocity);
     logCurrentVelocity.append(rawVelocity);
     logSmoothedVelocity.append(currentVelocity);
+    leftUpperMotor.logTelemetry();
+    leftLowerMotor.logTelemetry();
+    rightUpperMotor.logTelemetry();
+    rightLowerMotor.logTelemetry();
   }
 }
