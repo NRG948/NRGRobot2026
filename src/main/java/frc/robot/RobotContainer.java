@@ -11,6 +11,7 @@ import static frc.robot.commands.DriveCommands.hubAimAndXLock;
 import static frc.robot.commands.IntakeCommands.extendAndIntakeWhenSafe;
 import static frc.robot.commands.IntakeCommands.moveArmToAngle;
 import static frc.robot.commands.ShootingCommands.feedBallsToShooter;
+import static frc.robot.commands.ShootingCommands.pass;
 import static frc.robot.commands.ShootingCommands.rampUpShooter;
 import static frc.robot.commands.ShootingCommands.shootWhenInRange;
 import static frc.robot.commands.ShootingCommands.shootWhenInRangeAndOnShift;
@@ -140,6 +141,13 @@ public class RobotContainer {
                 shootWhenInRange(subsystems)));
 
     driverController
+        .y()
+        .whileTrue(
+            Commands.parallel(
+                new DriveAutoRotation(drivetrain, driverController),
+                pass(subsystems, () -> drivetrain.getDistanceToTarget() * 2.5)));
+
+    driverController
         .rightStick()
         .whileTrue(
             Commands.parallel(
@@ -195,6 +203,7 @@ public class RobotContainer {
     return driverController.a().getAsBoolean()
         || driverController.b().getAsBoolean()
         || driverController.x().getAsBoolean()
+        || driverController.y().getAsBoolean()
         || driverController.povUp().getAsBoolean()
         || driverController.povDown().getAsBoolean()
         || driverController.rightStick().getAsBoolean();

@@ -32,7 +32,7 @@ public class DriveAutoRotation extends DriveUsingController {
   @Override
   protected double calculateRotationSpeed() {
     double currentOrientation = drivetrain.getOrientation().getRadians();
-    double targetOrientation = drivetrain.getAngleToHub();
+    double targetOrientation = drivetrain.getAngleToTarget();
 
     double rSpeed = ROTATION_PID_CONTROLLER.calculate(currentOrientation, targetOrientation);
     return rSpeed;

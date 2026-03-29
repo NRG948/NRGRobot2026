@@ -19,6 +19,23 @@ public final class FieldUtils {
   private static AprilTagFieldLayout FIELD_LAYOUT =
       RobotPreferences.FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
 
+  private static final double FIELD_WIDTH = Units.inchesToMeters(317.69);
+  private static final double FIELD_LENGTH = Units.inchesToMeters(651.22);
+  private static final double ALLIANCE_LENGTH = Units.inchesToMeters(182.11);
+
+  // offset of pass target from side wall and driver station wall (in meters)
+  private static final double PASS_TARGET_OFFSET = 1.2;
+
+  // left and right relative to perspective of blue driver station
+  private static final Translation2d BLUE_RIGHT_PASS_TARGET =
+      new Translation2d(PASS_TARGET_OFFSET, PASS_TARGET_OFFSET);
+  private static final Translation2d BLUE_LEFT_PASS_TARGET =
+      new Translation2d(PASS_TARGET_OFFSET, FIELD_WIDTH - PASS_TARGET_OFFSET);
+  private static final Translation2d RED_RIGHT_PASS_TARGET =
+      new Translation2d(FIELD_LENGTH - PASS_TARGET_OFFSET, PASS_TARGET_OFFSET);
+  private static final Translation2d RED_LEFT_PASS_TARGET =
+      new Translation2d(FIELD_LENGTH - PASS_TARGET_OFFSET, FIELD_WIDTH - PASS_TARGET_OFFSET);
+
   private static final int RED_HUB_APRILTAG = 10;
   private static final int BLUE_HUB_APRILTAG = 26;
 
@@ -74,6 +91,30 @@ public final class FieldUtils {
       return RED_HUB_POSITION;
     }
     return BLUE_HUB_POSITION;
+  }
+
+  public static Translation2d getPassingTarget(Translation2d robotPosition) {
+    boolean onRight = robotPosition.getY() < FIELD_WIDTH / 2;
+    if (MatchUtil.isRedAlliance()) {
+      return onRight ? RED_RIGHT_PASS_TARGET : RED_LEFT_PASS_TARGET;
+    }
+    return onRight ? BLUE_RIGHT_PASS_TARGET : BLUE_LEFT_PASS_TARGET;
+  }
+
+  private static double forceBlueX(double xCoordinate) {
+    return MatchUtil.isRedAlliance() ? FIELD_LENGTH - xCoordinate : xCoordinate;
+  }
+
+  public static boolean inAllianceZone(Translation2d robotPosition) {
+    return forceBlueX(robotPosition.getX()) <= ALLIANCE_LENGTH;
+  }
+
+  public static Translation2d getAutoRotationTarget(Translation2d robotPosition) {
+    if (inAllianceZone(robotPosition)) {
+      return getHubLocation();
+    } else {
+      return getPassingTarget(robotPosition);
+    }
   }
 
   /** {@return the initial orientation of the robot at the start of the match} */

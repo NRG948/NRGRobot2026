@@ -214,12 +214,12 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)
   public boolean isWithinShootingRange() {
-    return drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE;
+    return drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE;
   }
 
   @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 2, height = 1)
   public boolean isAlignedToHub() {
-    return drivetrain.isAlignedToHub();
+    return drivetrain.isAlignedToTarget();
   }
 
   @DashboardCommand(

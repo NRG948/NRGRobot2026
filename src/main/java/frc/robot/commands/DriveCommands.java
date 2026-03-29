@@ -31,8 +31,9 @@ public final class DriveCommands {
 
   public static Command hubAimAndXLock(Swerve drivetrain, CommandXboxController driverController) {
     return Commands.sequence(
-        new DriveAutoRotation(drivetrain, driverController).until(drivetrain::isAlignedToHub),
-        Commands.run(drivetrain::setXLock, drivetrain).until(() -> !drivetrain.isAlignedToHub()));
+        new DriveAutoRotation(drivetrain, driverController).until(drivetrain::isAlignedToTarget),
+        Commands.run(drivetrain::setXLock, drivetrain)
+            .until(() -> !drivetrain.isAlignedToTarget()));
   }
 
   /**

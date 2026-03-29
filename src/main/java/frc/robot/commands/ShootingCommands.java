@@ -28,7 +28,7 @@ public final class ShootingCommands {
     Intake intake = subsystems.intake;
     return Commands.sequence(
         Commands.idle(indexer, shooter, intake, hopper)
-            .until(() -> drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE),
+            .until(() -> drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE),
         shoot(subsystems));
   }
 
@@ -42,14 +42,14 @@ public final class ShootingCommands {
         Commands.idle(indexer, shooter, intake, hopper)
             .until(
                 () ->
-                    drivetrain.getDistanceToHub() <= Shooter.MAX_SHOOTING_DISTANCE
+                    drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE
                         && MatchUtil.isHubActive()),
         shoot(subsystems));
   }
 
   public static Command shoot(Subsystems subsystems) {
     Swerve drivetrain = subsystems.drivetrain;
-    return shootForDistance(subsystems, drivetrain::getDistanceToHub, true)
+    return shootForDistance(subsystems, drivetrain::getDistanceToTarget, true)
         .onlyIf(subsystems::atLeastOneCameraConnected);
   }
 
@@ -83,7 +83,7 @@ public final class ShootingCommands {
   public static Command rampUpShooter(Subsystems subsystems) {
     Shooter shooter = subsystems.shooter;
     Swerve drivetrain = subsystems.drivetrain;
-    return Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToHub()), shooter)
+    return Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToTarget()), shooter)
         .finallyDo(shooter::disable);
   }
 
@@ -104,7 +104,7 @@ public final class ShootingCommands {
             .until(
                 () ->
                     shooter.atOrNearGoal()
-                        && (!shouldWaitForHubAlign || drivetrain.isAlignedToHub())),
+                        && (!shouldWaitForHubAlign || drivetrain.isAlignedToTarget())),
         Commands.runOnce(hopper::feed, hopper),
         Commands.runOnce(indexer::feed, indexer),
         Commands.runOnce(intake::intake, intake),
@@ -112,29 +112,26 @@ public final class ShootingCommands {
         Commands.idle(intake, indexer));
   }
 
-  public static Command shoot(Subsystems subsystems, double velocity) {
+  public static Command pass(Subsystems subsystems, DoubleSupplier velocity) {
     Indexer indexer = subsystems.indexer;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
+    Hopper hopper = subsystems.hopper;
 
     return Commands.parallel(
-            Commands.run(() -> shooter.setGoalVelocity(velocity), shooter),
-            feedBallsToShooter(subsystems, true))
+            Commands.run(() -> shooter.setGoalVelocity(velocity.getAsDouble()), shooter),
+            feedBallsToShooter(subsystems, false))
         .finallyDo(
             () -> {
               shooter.disable();
               indexer.disable();
               intake.disable();
+              hopper.disable();
             });
   }
 
   public static Command setShooterVelocity(Subsystems subsystems, double velocity) {
     Shooter shooter = subsystems.shooter;
     return Commands.runOnce(() -> shooter.setGoalVelocity(velocity), shooter);
-  }
-
-  public static Command addShooterVelocity(Subsystems subsystems, double increment) {
-    Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.addGoalVelocity(increment), shooter);
   }
 }

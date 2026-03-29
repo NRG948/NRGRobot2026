@@ -240,11 +240,11 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry rawOrientationOffsetLog =
       new DoubleLogEntry(LOG, "/Swerve/rawOrientationOffset");
   private DoubleLogEntry accelerationLog = new DoubleLogEntry(LOG, "/Swerve/acceleration");
-  private StructLogEntry<Translation2d> estimatedHubLocationLog =
+  private StructLogEntry<Translation2d> targetLocationLog =
       StructLogEntry.create(LOG, "/Swerve/hubLocation", Translation2d.struct);
-  private Translation2d vectorToHub;
-  private double distanceToHub;
-  private double angleToHub;
+  private Translation2d vectorToTarget;
+  private double distanceToTarget;
+  private double angleToTarget;
 
   /**
    * Creates a {@link SwerveModule} object and intiailizes its motor controllers.
@@ -568,37 +568,43 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
         new Rotation3d(0.0, 0.0, robotPose2d.getRotation().getRadians()));
   }
 
-  /** {@return the angle from the center of the robot to the hub, in radians} */
-  public double getAngleToHub() {
-    return angleToHub;
+  /** {@return the angle from the center of the robot to the target, in radians} */
+  public double getAngleToTarget() {
+    return angleToTarget;
   }
 
   /** {@return whether we are aligned to hub within tolerance} */
   public boolean isAlignedToHub() {
-    return Math.abs(getAngleToHub() - getOrientation().getRadians()) <= getHubAlignmentTolerance();
+    return Math.abs(getAngleToTarget() - getOrientation().getRadians())
+        <= getHubAlignmentTolerance();
   }
 
   public double getHubAlignmentTolerance() {
-    double distanceToHub = Math.min(getDistanceToHub(), Shooter.MAX_SHOOTING_DISTANCE);
+    double distanceToHub = Math.min(getDistanceToTarget(), Shooter.MAX_SHOOTING_DISTANCE);
     return ((Shooter.MAX_SHOOTING_DISTANCE - distanceToHub) / Shooter.SHOOTING_RANGE)
             * SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE
         + MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
   }
 
-  @DashboardTextDisplay(title = "Distance To Hub (m)", column = 6, row = 0, width = 2, height = 1)
-  public double getDistanceToHub() {
-    return distanceToHub;
+  @DashboardTextDisplay(
+      title = "Distance To Target (m)",
+      column = 6,
+      row = 0,
+      width = 2,
+      height = 1)
+  public double getDistanceToTarget() {
+    return distanceToTarget;
   }
 
   /** {@return the angle from the center of the robot to the hub, in degrees} */
   @DashboardTextDisplay(
-      title = "Robot to Hub Angle (deg)",
+      title = "Robot to Target Angle (deg)",
       column = 6,
       row = 1,
       width = 2,
       height = 1)
-  public double getAngleToHubDegrees() {
-    return Math.toDegrees(getAngleToHub());
+  public double getAngleToTargetDegrees() {
+    return Math.toDegrees(getAngleToTarget());
   }
 
   /**
@@ -628,14 +634,15 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     pitch = Math.toDegrees(gyro.getPitch());
     roll = Math.toDegrees(gyro.getRoll());
 
-    Translation2d hubLocation = FieldUtils.getHubLocation();
+    Translation2d robotLocation = robotPose.getTranslation();
+    Translation2d targetLocation = FieldUtils.getAutoRotationTarget(robotLocation);
 
-    vectorToHub = hubLocation.minus(robotPose.getTranslation());
-    distanceToHub = vectorToHub.getNorm();
-    angleToHub = vectorToHub.getAngle().getRadians();
+    vectorToTarget = targetLocation.minus(robotLocation);
+    distanceToTarget = vectorToTarget.getNorm();
+    angleToTarget = vectorToTarget.getAngle().getRadians();
 
     poseLog.append(robotPose);
-    estimatedHubLocationLog.append(hubLocation);
+    targetLocationLog.append(targetLocation);
 
     estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
