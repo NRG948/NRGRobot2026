@@ -144,6 +144,17 @@ public final class RobotPreferences {
     return RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026;
   }
 
+  @DashboardTextDisplay(
+      title = "Shot Detection Threshold (m/s)",
+      column = 9,
+      row = 2,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference SHOT_DETECTION_THRESHOLD_MPS =
+      new DoublePreference("Shooter", "Shot Detection Threshold MPS", 0.65);
+
   /** Creates a new instance of RobotPreferences. */
   public RobotPreferences() {}
 }
