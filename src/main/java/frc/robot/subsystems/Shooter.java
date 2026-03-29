@@ -27,6 +27,7 @@ import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.DoublePreference;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
@@ -41,7 +42,6 @@ import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
-import frc.robot.util.SimpleMovingAverage;
 import frc.robot.util.TalonFXAdapter;
 import java.util.Map;
 
@@ -127,8 +127,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       new MotionMagicVelocityVoltage(0).withEnableFOC(false);
 
   private static final int VELOCITY_SMOOTHING_WINDOW = 6;
-  private final SimpleMovingAverage velocityFilter =
-      new SimpleMovingAverage(VELOCITY_SMOOTHING_WINDOW);
+  private final LinearFilter velocityFilter = LinearFilter.movingAverage(VELOCITY_SMOOTHING_WINDOW);
 
   private static final DoublePreference SHOT_DETECTION_THRESHOLD_MPS =
       new DoublePreference("Shooter", "Shot Detection Threshold MPS", 0.65);
@@ -333,8 +332,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private void updateTelemetry() {
     double rawVelocity = encoder.getVelocity();
-    velocityFilter.add(rawVelocity);
-    currentVelocity = velocityFilter.getAverage();
+    currentVelocity = velocityFilter.calculate(rawVelocity);
     logCurrentVelocity.append(rawVelocity);
     logSmoothedVelocity.append(currentVelocity);
   }
