@@ -104,7 +104,7 @@ public final class ShootingCommands {
             .until(
                 () ->
                     shooter.atOrNearGoal()
-                        && (!shouldWaitForHubAlign || drivetrain.isAlignedToTarget())),
+                        && (!shouldWaitForHubAlign || drivetrain.isAlignedToHub())),
         Commands.runOnce(hopper::feed, hopper),
         Commands.runOnce(indexer::feed, indexer),
         Commands.runOnce(intake::intake, intake),

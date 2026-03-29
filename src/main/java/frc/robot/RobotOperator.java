@@ -219,7 +219,7 @@ public final class RobotOperator {
 
   @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 2, height = 1)
   public boolean isAlignedToHub() {
-    return drivetrain.isAlignedToTarget();
+    return drivetrain.isAlignedToHub();
   }
 
   @DashboardCommand(
