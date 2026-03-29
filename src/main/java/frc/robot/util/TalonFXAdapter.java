@@ -217,19 +217,12 @@ public final class TalonFXAdapter implements MotorController {
               "ERROR: Failed to apply motor output configs of TalonFX ID %d: %s (%s)",
               talonFX.getDeviceID(), status.getDescription(), status.getName()));
     }
-  }
 
-  /**
-   * Sets the MotionMagic voltage
-   *
-   * @param voltage
-   */
-  public void setControl(MotionMagicVoltage voltage) {
-    talonFX.setControl(voltage);
-  }
-
-  public void setControl(MotionMagicVelocityVoltage request) {
-    talonFX.setControl(request);
+    DriverStation.reportError(
+        String.format(
+            "All retries exhausted applying TalonFX config to ID %d. Motor may be misconfigured.",
+            talonFX.getDeviceID()),
+        false);
   }
 
   /**
@@ -258,5 +251,18 @@ public final class TalonFXAdapter implements MotorController {
             talonFX.getDeviceID()),
         false);
     return false;
+  }
+
+  /**
+   * Sets the MotionMagic voltage
+   *
+   * @param voltage
+   */
+  public void setControl(MotionMagicVoltage voltage) {
+    talonFX.setControl(voltage);
+  }
+
+  public void setControl(MotionMagicVelocityVoltage request) {
+    talonFX.setControl(request);
   }
 }
