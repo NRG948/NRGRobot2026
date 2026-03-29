@@ -83,15 +83,15 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       SHOOTER_VELOCITIES.put(3.35, 21.5);
       SHOOTER_VELOCITIES.put(3.67, 29.5);
     } else {
-      SHOOTER_VELOCITIES.put(1.28, 13.25);
-      SHOOTER_VELOCITIES.put(1.35, 13.5);
-      SHOOTER_VELOCITIES.put(1.67, 14.25);
-      SHOOTER_VELOCITIES.put(2.0, 15.5);
-      SHOOTER_VELOCITIES.put(2.33, 16.75);
-      SHOOTER_VELOCITIES.put(2.66, 18.0);
-      SHOOTER_VELOCITIES.put(3.05, 19.5);
-      SHOOTER_VELOCITIES.put(3.35, 22.0);
-      SHOOTER_VELOCITIES.put(3.67, 30.0);
+      SHOOTER_VELOCITIES.put(1.28, 12.75);
+      SHOOTER_VELOCITIES.put(1.35, 13.0);
+      SHOOTER_VELOCITIES.put(1.67, 13.75);
+      SHOOTER_VELOCITIES.put(2.0, 15.0);
+      SHOOTER_VELOCITIES.put(2.33, 15.75);
+      SHOOTER_VELOCITIES.put(2.66, 17.0);
+      SHOOTER_VELOCITIES.put(3.05, 18.25);
+      SHOOTER_VELOCITIES.put(3.35, 20.75);
+      SHOOTER_VELOCITIES.put(3.67, 28.75);
     }
   }
 
@@ -193,7 +193,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   public static final double HUB_SHOT_DISTANCE = 1.3;
   public static final double MAX_SHOOTING_DISTANCE = 3.7; // TODO: Update for hood angle
   public static final double SHOOTING_RANGE = MAX_SHOOTING_DISTANCE - HUB_SHOT_DISTANCE;
-  private static final double SLOW_RAMP_TIME = 1.5;
+  private static final double SLOW_RAMP_TIME = 0.5;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -207,7 +207,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     double kS = SHOOTER_MOTOR.getKs();
     double kV = (MAX_BATTERY_VOLTAGE - kS) / MAX_VELOCITY;
 
-    config.Slot0.kP = 1.0;
+    config.Slot0.kP = 1.0 * METERS_PER_REV;
     config.Slot0.kI = 0.0;
     config.Slot0.kD = 0.0;
     config.Slot0.kS = kS;
