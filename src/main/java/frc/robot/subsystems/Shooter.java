@@ -241,6 +241,15 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
     logGoalVelocity.append(goalVelocity);
+
+    if (goalVelocity != 0) {
+      double goalRPS = goalVelocity / METERS_PER_REV;
+      leftUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
+      rightUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
+    } else {
+      leftUpperMotor.stopMotor();
+      rightUpperMotor.stopMotor();
+    }
   }
 
   public void addGoalVelocity(double goalVelocityDelta) {
@@ -306,15 +315,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void periodic() {
     updateTelemetry();
-
-    if (goalVelocity != 0) {
-      double goalRPS = goalVelocity / METERS_PER_REV;
-      leftUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
-      rightUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
-    } else {
-      leftUpperMotor.stopMotor();
-      rightUpperMotor.stopMotor();
-    }
 
     boolean shotDetected =
         shotDebouncer.calculate(detectFlywheelDrop(SHOT_DETECTION_THRESHOLD_MPS.getValue()));
