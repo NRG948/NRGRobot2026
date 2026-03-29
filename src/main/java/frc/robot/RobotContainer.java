@@ -21,6 +21,7 @@ import static frc.robot.subsystems.IntakeArm.STOW_ANGLE;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -120,32 +121,50 @@ public class RobotContainer {
     new Trigger(() -> isHubState(HubState.NEARING_END_OF_MATCH))
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
 
+    new Trigger(MatchUtil::isNearShiftChange)
+        .onTrue(
+            Commands.runEnd(
+                    () -> {
+                      driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+                      manipulatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+                    },
+                    () -> {
+                      driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                      manipulatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                    })
+                .withTimeout(1.0));
+
     driverController
         .a()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController), shootWhenInRange(subsystems)));
+                    new DriveAutoRotation(drivetrain, driverController),
+                    shootWhenInRange(subsystems))
+                .withName("AutoAlignAndShootWhenInRange"));
 
     driverController
         .b()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController),
-                shootWhenInRangeAndOnShift(subsystems)));
+                    new DriveAutoRotation(drivetrain, driverController),
+                    shootWhenInRangeAndOnShift(subsystems))
+                .withName("AutoAlignAndShootWhenInRangeAndOnShift"));
 
     driverController
         .x()
         .whileTrue(
             Commands.parallel(
-                hubAimAndXLock(drivetrain, driverController).repeatedly(),
-                shootWhenInRange(subsystems)));
+                    hubAimAndXLock(drivetrain, driverController).repeatedly(),
+                    shootWhenInRange(subsystems))
+                .withName("AutoAlignAndShootWithXLock"));
 
     driverController
         .y()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController),
-                pass(subsystems, () -> drivetrain.getDistanceToTarget() * 2.5)));
+                    new DriveAutoRotation(drivetrain, driverController),
+                    pass(subsystems, () -> drivetrain.getDistanceToTarget() * 2.5))
+                .withName("AutoAlignAndPass"));
 
     driverController
         .rightStick()

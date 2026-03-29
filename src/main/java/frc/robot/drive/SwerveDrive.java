@@ -140,7 +140,6 @@ public class SwerveDrive extends RobotDriveBase {
       chassisSpeeds.vxMetersPerSecond = xSpeed;
       chassisSpeeds.vyMetersPerSecond = ySpeed;
       chassisSpeeds.omegaRadiansPerSecond = rSpeed;
-      setChassisSpeeds(chassisSpeeds);
     } else {
 
       if (MatchUtil.isRedAlliance()) {
@@ -156,9 +155,10 @@ public class SwerveDrive extends RobotDriveBase {
       chassisSpeeds.vxMetersPerSecond = (xSpeed * cosOrientation) - (ySpeed * sinOrientation);
       chassisSpeeds.vyMetersPerSecond = (xSpeed * sinOrientation) + (ySpeed * cosOrientation);
       chassisSpeeds.omegaRadiansPerSecond = rSpeed;
-
-      setChassisSpeeds(chassisSpeeds);
     }
+
+    var discretizedSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
+    setChassisSpeeds(discretizedSpeeds);
   }
 
   /**

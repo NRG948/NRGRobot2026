@@ -159,4 +159,8 @@ public final class LEDCommands {
     return Commands.sequence(setColor(statusLEDs, RED), Commands.idle(statusLEDs))
         .withName("IndicateErrorWithSolid");
   }
+
+  public static Command hopperEmptyLED(Subsystems subsystems) {
+    return new BlinkColor(subsystems.statusLEDs, Colors.ORANGE).withName("HopperEmptyLED");
+  }
 }
