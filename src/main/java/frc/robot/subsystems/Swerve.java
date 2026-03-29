@@ -240,7 +240,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry rawOrientationOffsetLog =
       new DoubleLogEntry(LOG, "/Swerve/rawOrientationOffset");
   private DoubleLogEntry accelerationLog = new DoubleLogEntry(LOG, "/Swerve/acceleration");
-  private StructLogEntry<Translation2d> estimatedTargetLocationLog =
+  private StructLogEntry<Translation2d> targetLocationLog =
       StructLogEntry.create(LOG, "/Swerve/hubLocation", Translation2d.struct);
   private Translation2d vectorToTarget;
   private double distanceToTarget;
@@ -568,13 +568,13 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
         new Rotation3d(0.0, 0.0, robotPose2d.getRotation().getRadians()));
   }
 
-  /** {@return the angle from the center of the robot to the hub, in radians} */
+  /** {@return the angle from the center of the robot to the target, in radians} */
   public double getAngleToTarget() {
     return angleToTarget;
   }
 
   /** {@return whether we are aligned to hub within tolerance} */
-  public boolean isAlignedToTarget() {
+  public boolean isAlignedToHub() {
     return Math.abs(getAngleToTarget() - getOrientation().getRadians())
         <= getHubAlignmentTolerance();
   }
@@ -642,7 +642,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     angleToTarget = vectorToTarget.getAngle().getRadians();
 
     poseLog.append(robotPose);
-    estimatedTargetLocationLog.append(targetLocation);
+    targetLocationLog.append(targetLocation);
 
     estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
