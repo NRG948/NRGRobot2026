@@ -24,7 +24,6 @@ import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
-import com.nrg948.preferences.DoublePreference;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.filter.LinearFilter;
@@ -128,9 +127,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private static final int VELOCITY_SMOOTHING_WINDOW = 6;
   private final LinearFilter velocityFilter = LinearFilter.movingAverage(VELOCITY_SMOOTHING_WINDOW);
-
-  private static final DoublePreference SHOT_DETECTION_THRESHOLD_MPS =
-      new DoublePreference("Shooter", "Shot Detection Threshold MPS", 0.65);
 
   private final Debouncer shotDebouncer = new Debouncer(0.06, DebounceType.kRising);
   private final Debouncer hopperEmptyDebouncer = new Debouncer(0.5, DebounceType.kRising);
@@ -317,7 +313,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     updateTelemetry();
 
     boolean shotDetected =
-        shotDebouncer.calculate(detectFlywheelDrop(SHOT_DETECTION_THRESHOLD_MPS.getValue()));
+        shotDebouncer.calculate(
+            detectFlywheelDrop(RobotPreferences.SHOT_DETECTION_THRESHOLD_MPS.getValue()));
     if (shotDetected && !lastShotDetected) {
       fuelShotCount++;
       hasFiredSinceReset = true;
