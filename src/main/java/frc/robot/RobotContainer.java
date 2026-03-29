@@ -124,28 +124,33 @@ public class RobotContainer {
         .a()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController), shootWhenInRange(subsystems)));
+                    new DriveAutoRotation(drivetrain, driverController),
+                    shootWhenInRange(subsystems))
+                .withName("AutoAlignAndShootWhenInRange"));
 
     driverController
         .b()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController),
-                shootWhenInRangeAndOnShift(subsystems)));
+                    new DriveAutoRotation(drivetrain, driverController),
+                    shootWhenInRangeAndOnShift(subsystems))
+                .withName("AutoAlignAndShootWhenInRangeAndOnShift"));
 
     driverController
         .x()
         .whileTrue(
             Commands.parallel(
-                hubAimAndXLock(drivetrain, driverController).repeatedly(),
-                shootWhenInRange(subsystems)));
+                    hubAimAndXLock(drivetrain, driverController).repeatedly(),
+                    shootWhenInRange(subsystems))
+                .withName("AutoAlignAndShootWithXLock"));
 
     driverController
         .y()
         .whileTrue(
             Commands.parallel(
-                new DriveAutoRotation(drivetrain, driverController),
-                pass(subsystems, () -> drivetrain.getDistanceToTarget() * 2.5)));
+                    new DriveAutoRotation(drivetrain, driverController),
+                    pass(subsystems, () -> drivetrain.getDistanceToTarget() * 2.5))
+                .withName("AutoAlignAndPass"));
 
     driverController
         .rightStick()
