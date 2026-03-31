@@ -220,7 +220,7 @@ public final class TalonFXAdapter implements MotorController {
 
     DriverStation.reportError(
         String.format(
-            "All retries exhausted applying TalonFX config to ID %d. Motor may be misconfigured.",
+            "All retries exhausted applying motor output configs to TalonFX ID %d. Motor may be misconfigured.",
             talonFX.getDeviceID()),
         false);
   }
@@ -252,7 +252,7 @@ public final class TalonFXAdapter implements MotorController {
             talonFX.getDeviceID()),
         false);
 
-        return false;
+    return false;
   }
 
   /**
