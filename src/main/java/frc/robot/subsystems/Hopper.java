@@ -49,7 +49,7 @@ public final class Hopper extends SubsystemBase implements ActiveSubsystem {
 
   private final MotorController motor =
       MOTOR.newController(
-          "/Hopper/Shooter Motor",
+          "/Hopper/Motor",
           CANID.HOPPER_INDEXER_ID,
           MotorDirection.CLOCKWISE_POSITIVE,
           MotorIdleMode.BRAKE,
