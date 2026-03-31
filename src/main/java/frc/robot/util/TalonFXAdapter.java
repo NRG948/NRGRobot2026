@@ -10,7 +10,9 @@ package frc.robot.util;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
@@ -23,6 +25,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /** A motor controller implementation based on the CTR Electronics TalonFX controller. */
 public final class TalonFXAdapter implements MotorController {
@@ -101,7 +104,7 @@ public final class TalonFXAdapter implements MotorController {
     motorOutputConfigs.NeutralMode = idleMode.forTalonFX();
     motorOutputConfigs.Inverted = direction.forTalonFX();
 
-    applyConfig(talonFX, motorOutputConfigs);
+    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -125,8 +128,7 @@ public final class TalonFXAdapter implements MotorController {
     motorOutputConfigs.Inverted =
         isInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
-    applyConfig(talonFX, motorOutputConfigs);
-    ;
+    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -137,8 +139,7 @@ public final class TalonFXAdapter implements MotorController {
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
     motorOutputConfigs.NeutralMode = idleMode.forTalonFX();
-    applyConfig(talonFX, motorOutputConfigs);
-    ;
+    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -167,7 +168,7 @@ public final class TalonFXAdapter implements MotorController {
     followerMotorOutputConfigs.PeakReverseDutyCycle = motorOutputConfigs.PeakReverseDutyCycle;
     followerMotorOutputConfigs.ControlTimesyncFreqHz = motorOutputConfigs.ControlTimesyncFreqHz;
 
-    applyConfig(follower, followerMotorOutputConfigs);
+    applyMotorOutputConfig(follower, followerMotorOutputConfigs);
 
     // Configure the follower to follow the leader.
     Follower followerConfig =
@@ -204,7 +205,8 @@ public final class TalonFXAdapter implements MotorController {
     logTemperature.append(this.temperature.refresh().getValueAsDouble());
   }
 
-  private static void applyConfig(TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
+  private static void applyMotorOutputConfig(
+      TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
     for (int i = 0; i < 5; i++) {
       StatusCode status = talonFX.getConfigurator().apply(motorOutputConfigs);
       if (status.isOK()) {
@@ -215,6 +217,42 @@ public final class TalonFXAdapter implements MotorController {
               "ERROR: Failed to apply motor output configs of TalonFX ID %d: %s (%s)",
               talonFX.getDeviceID(), status.getDescription(), status.getName()));
     }
+
+    DriverStation.reportError(
+        String.format(
+            "All retries exhausted applying TalonFX config to ID %d. Motor may be misconfigured.",
+            talonFX.getDeviceID()),
+        false);
+  }
+
+  /**
+   * Applies a full TalonFX configuration with up to 5 retries.
+   *
+   * @param config the TalonFX configuration to apply.
+   * @return true if the configuration was successfully applied, false if all retries were
+   *     exhausted.
+   */
+  public boolean applyTalonFXConfiguration(TalonFXConfiguration config) {
+    config.MotorOutput = this.motorOutputConfigs;
+
+    for (int i = 0; i < 5; i++) {
+      StatusCode status = talonFX.getConfigurator().apply(config);
+      if (status.isOK()) {
+        return true;
+      }
+      System.out.println(
+          String.format(
+              "ERROR: Failed to apply TalonFX config to ID %d: %s (%s)",
+              talonFX.getDeviceID(), status.getDescription(), status.getName()));
+    }
+
+    DriverStation.reportError(
+        String.format(
+            "All retries exhausted applying TalonFX config to ID %d. Motor may be misconfigured.",
+            talonFX.getDeviceID()),
+        false);
+
+        return false;
   }
 
   /**
@@ -224,5 +262,9 @@ public final class TalonFXAdapter implements MotorController {
    */
   public void setControl(MotionMagicVoltage voltage) {
     talonFX.setControl(voltage);
+  }
+
+  public void setControl(MotionMagicVelocityVoltage request) {
+    talonFX.setControl(request);
   }
 }

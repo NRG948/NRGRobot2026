@@ -17,14 +17,13 @@ import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.COAST;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
-import com.nrg948.dashboard.annotations.DashboardPIDController;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
-import com.nrg948.preferences.PIDControllerPreference;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.DataLog;
@@ -36,9 +35,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
+import frc.robot.util.TalonFXAdapter;
 import java.util.Map;
 
 @DashboardDefinition
@@ -53,7 +52,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
           Map.of(
               RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX44,
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX44),
-          MotorParameters.NullMotor);
+          MotorParameters.KrakenX44);
 
   private static final double GEAR_RATIO = 1.0;
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
@@ -65,10 +64,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_VELOCITY =
       (SHOOTER_MOTOR.getFreeSpeedRPM() * METERS_PER_REV / 60.0) * EFFICIENCY;
 
-  private static final double KS = SHOOTER_MOTOR.getKs();
-  private static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
-
-  // Maps distances from our alliance's hub into corresponding shooter velocities.
   private static final InterpolatingDoubleTreeMap SHOOTER_VELOCITIES =
       new InterpolatingDoubleTreeMap();
 
@@ -85,68 +80,48 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       SHOOTER_VELOCITIES.put(3.35, 21.5);
       SHOOTER_VELOCITIES.put(3.67, 29.5);
     } else {
-      // Practice bot 65 degree hood
-      // SHOOTER_VELOCITIES.put(1.28, 12.75);
-      // SHOOTER_VELOCITIES.put(1.35, TBD);
-      // SHOOTER_VELOCITIES.put(1.67, TBD);
-      // SHOOTER_VELOCITIES.put(2.0, TBD);
-      // SHOOTER_VELOCITIES.put(2.33, TBD);
-      // SHOOTER_VELOCITIES.put(2.66, TBD);
-      // SHOOTER_VELOCITIES.put(3.05, TBD);
-      // SHOOTER_VELOCITIES.put(3.35, TBD);
-      // SHOOTER_VELOCITIES.put(3.67, 17.9);
-      // SHOOTER_VELOCITIES.put(4.3, 21.25);
-
       // Practice bot 70 degree hood
-      SHOOTER_VELOCITIES.put(1.28, 13.25);
-      SHOOTER_VELOCITIES.put(1.35, 13.5);
-      SHOOTER_VELOCITIES.put(1.67, 14.25);
-      SHOOTER_VELOCITIES.put(2.0, 15.5);
-      SHOOTER_VELOCITIES.put(2.33, 16.75);
-      SHOOTER_VELOCITIES.put(2.66, 18.0);
-      SHOOTER_VELOCITIES.put(3.05, 19.5);
-      SHOOTER_VELOCITIES.put(3.35, 22.0);
-      SHOOTER_VELOCITIES.put(3.67, 30.0);
+      SHOOTER_VELOCITIES.put(1.28, 12.75);
+      SHOOTER_VELOCITIES.put(1.35, 13.0);
+      SHOOTER_VELOCITIES.put(1.67, 13.75);
+      SHOOTER_VELOCITIES.put(2.0, 15.0);
+      SHOOTER_VELOCITIES.put(2.33, 15.75);
+      SHOOTER_VELOCITIES.put(2.66, 17.0);
+      SHOOTER_VELOCITIES.put(3.05, 18.25);
+      SHOOTER_VELOCITIES.put(3.35, 20.75);
+      SHOOTER_VELOCITIES.put(3.67, 28.75);
     }
   }
 
-  private final MotorController leftUpperMotor =
-      SHOOTER_MOTOR.newController(
-          "/Shooter/Left Upper Motor",
-          SHOOTER_UPPER_LEFT_ID,
-          CLOCKWISE_POSITIVE,
-          COAST,
-          METERS_PER_REV);
+  // These motors can only be controlled by a TalonFX Motor Controller
+  private final TalonFXAdapter leftUpperMotor =
+      (TalonFXAdapter)
+          SHOOTER_MOTOR.newController(
+              "/Shooter/Left Upper Motor",
+              SHOOTER_UPPER_LEFT_ID,
+              CLOCKWISE_POSITIVE,
+              COAST,
+              METERS_PER_REV);
+  private final TalonFXAdapter leftLowerMotor =
+      (TalonFXAdapter)
+          leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
+  private final TalonFXAdapter rightUpperMotor =
+      (TalonFXAdapter)
+          SHOOTER_MOTOR.newController(
+              "/Shooter/Right Upper Motor",
+              SHOOTER_UPPER_RIGHT_ID,
+              COUNTER_CLOCKWISE_POSITIVE,
+              COAST,
+              METERS_PER_REV);
+  private final TalonFXAdapter rightLowerMotor =
+      (TalonFXAdapter)
+          rightUpperMotor.createFollower(
+              "/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, false);
 
-  private final MotorController leftLowerMotor =
-      SHOOTER_MOTOR.newController(
-          "/Shooter/Left Lower Motor",
-          SHOOTER_LOWER_LEFT_ID,
-          CLOCKWISE_POSITIVE,
-          COAST,
-          METERS_PER_REV);
-  private final MotorController rightUpperMotor =
-      SHOOTER_MOTOR.newController(
-          "/Shooter/Right Upper Motor",
-          SHOOTER_UPPER_RIGHT_ID,
-          COUNTER_CLOCKWISE_POSITIVE,
-          COAST,
-          METERS_PER_REV);
-  private final MotorController rightLowerMotor =
-      SHOOTER_MOTOR.newController(
-          "/Shooter/Right Lower Motor",
-          SHOOTER_LOWER_RIGHT_ID,
-          COUNTER_CLOCKWISE_POSITIVE,
-          COAST,
-          METERS_PER_REV);
+  private final RelativeEncoder encoder = rightUpperMotor.getEncoder();
 
-  private final RelativeEncoder encoder = leftUpperMotor.getEncoder();
-
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(KS, KV);
-
-  @DashboardPIDController(title = "PID", column = 4, row = 0, width = 2, height = 3)
-  private final PIDControllerPreference pidController =
-      new PIDControllerPreference("Shooter", "PID Controller", 1, 0, 0);
+  private final MotionMagicVelocityVoltage motionMagicVelocityRequest =
+      new MotionMagicVelocityVoltage(0).withEnableFOC(false);
 
   @DashboardTextDisplay(title = "Goal Velocity (m/s)", column = 0, row = 2, width = 2, height = 1)
   private double goalVelocity = 0;
@@ -195,14 +170,44 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private DoubleLogEntry logGoalVelocity = new DoubleLogEntry(LOG, "/Shooter/Goal Velocity");
   private DoubleLogEntry logGoalDistance = new DoubleLogEntry(LOG, "/Shooter/Goal Distance");
   private DoubleLogEntry logCurrentVelocity = new DoubleLogEntry(LOG, "/Shooter/Current Velocity");
-  private DoubleLogEntry logCurrentVoltage = new DoubleLogEntry(LOG, "/Shooter/Current Voltage");
+
   public static final double TOWER_SHOT_DISTANCE = 3.05;
   public static final double HUB_SHOT_DISTANCE = 1.3;
   public static final double MAX_SHOOTING_DISTANCE = 3.7; // TODO: Update for hood angle
   public static final double SHOOTING_RANGE = MAX_SHOOTING_DISTANCE - HUB_SHOT_DISTANCE;
+  private static final double SLOW_RAMP_TIME = 0.5;
 
-  /** Creates a new Shooter subsystem. */
-  public Shooter() {}
+  /** Creates a new Shooter. */
+  public Shooter() {
+    configureMotionMagic();
+  }
+
+  private void configureMotionMagic() {
+    TalonFXConfiguration config = new TalonFXConfiguration();
+
+    double kS = SHOOTER_MOTOR.getKs();
+    double kV = (MAX_BATTERY_VOLTAGE - kS) / MAX_VELOCITY;
+
+    config.Slot0.kP = 1.0 * METERS_PER_REV;
+    config.Slot0.kI = 0.0;
+    config.Slot0.kD = 0.0;
+    config.Slot0.kS = kS;
+    config.Slot0.kV = kV * METERS_PER_REV;
+    config.Slot0.kA = 0.0;
+
+    // TODO: Tune acceleration and jerk values for faster response.
+    double acceleration = SHOOTER_MOTOR.getFreeSpeedRPM() / 60.0 / SLOW_RAMP_TIME;
+    config.MotionMagic.MotionMagicAcceleration = acceleration;
+    config.MotionMagic.MotionMagicJerk = acceleration * 2;
+
+    config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
+
+    config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
+    config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
+
+    leftUpperMotor.applyTalonFXConfiguration(config);
+    rightUpperMotor.applyTalonFXConfiguration(config);
+  }
 
   /** Sets shooter goal velocity based on distance inputted to interpolation table. */
   public void setGoalDistance(double distance) {
@@ -213,19 +218,25 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
     logGoalVelocity.append(goalVelocity);
+
+    if (goalVelocity != 0) {
+      // Convert linear velocity goal to rotational velocity in revolutions per second for Motion
+      // Magic.
+      double goalRPS = goalVelocity / METERS_PER_REV;
+      leftUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
+      rightUpperMotor.setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
+    } else {
+      leftUpperMotor.stopMotor();
+      rightUpperMotor.stopMotor();
+    }
   }
 
   /** Returns whether the shooter velocity has reached its goal. */
   public boolean atOrNearGoal() {
-    return Math.abs(currentVelocity - goalVelocity) / goalVelocity < VELOCITY_PERCENT_TOLERANCE;
+    return (goalVelocity != 0)
+        && (Math.abs(currentVelocity - goalVelocity) / goalVelocity) < VELOCITY_PERCENT_TOLERANCE;
   }
 
-  /**
-   * Gets the velocity for the shooter given on a distance to target.
-   *
-   * @param distance Robot's distance to target.
-   * @return Velocity to reach the target.
-   */
   public double getVelocityFromInterpolationTable(double distance) {
     return SHOOTER_VELOCITIES.get(distance);
   }
@@ -235,13 +246,12 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     goalVelocity = 0;
     logGoalVelocity.append(0);
     leftUpperMotor.stopMotor();
-    leftLowerMotor.stopMotor();
-    rightLowerMotor.stopMotor();
     rightUpperMotor.stopMotor();
   }
 
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
+    // Followers do not inherit idle mode configurations when the leader's idle mode changes.
     leftUpperMotor.setIdleMode(idleMode);
     leftLowerMotor.setIdleMode(idleMode);
     rightLowerMotor.setIdleMode(idleMode);
@@ -256,26 +266,14 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void periodic() {
     updateTelemetry();
-    double motorVoltage = 0.0;
-    if (goalVelocity != 0) {
-      double feedforward = this.feedforward.calculate(goalVelocity);
-      double feedback = pidController.calculate(currentVelocity, goalVelocity);
-      motorVoltage = feedforward + feedback;
-    }
-
-    leftUpperMotor.setVoltage(motorVoltage);
-    leftLowerMotor.setVoltage(motorVoltage);
-    rightUpperMotor.setVoltage(motorVoltage);
-    rightLowerMotor.setVoltage(motorVoltage);
-    logCurrentVoltage.append(motorVoltage);
   }
 
   private void updateTelemetry() {
     currentVelocity = encoder.getVelocity();
     logCurrentVelocity.append(currentVelocity);
-    // leftUpperMotor.logTelemetry();
-    // leftLowerMotor.logTelemetry();
-    // rightLowerMotor.logTelemetry();
-    // rightUpperMotor.logTelemetry();
+    leftUpperMotor.logTelemetry();
+    leftLowerMotor.logTelemetry();
+    rightUpperMotor.logTelemetry();
+    rightLowerMotor.logTelemetry();
   }
 }
