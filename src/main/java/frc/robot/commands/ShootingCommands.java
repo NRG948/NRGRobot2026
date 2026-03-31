@@ -27,9 +27,10 @@ public final class ShootingCommands {
     Swerve drivetrain = subsystems.drivetrain;
     Intake intake = subsystems.intake;
     return Commands.sequence(
-        Commands.idle(indexer, shooter, intake, hopper)
-            .until(() -> drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE),
-        shoot(subsystems));
+            Commands.idle(indexer, shooter, intake, hopper)
+                .until(() -> drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE),
+            shoot(subsystems))
+        .withName("ShootWhenInRange");
   }
 
   public static Command shootWhenInRangeAndOnShift(Subsystems subsystems) {
@@ -39,12 +40,13 @@ public final class ShootingCommands {
     Swerve drivetrain = subsystems.drivetrain;
     Intake intake = subsystems.intake;
     return Commands.sequence(
-        Commands.idle(indexer, shooter, intake, hopper)
-            .until(
-                () ->
-                    drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE
-                        && MatchUtil.isHubActive()),
-        shoot(subsystems));
+            Commands.idle(indexer, shooter, intake, hopper)
+                .until(
+                    () ->
+                        drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE
+                            && MatchUtil.isHubActive()),
+            shoot(subsystems))
+        .withName("ShootWhenInRangeAndOnShift");
   }
 
   public static Command shoot(Subsystems subsystems) {
@@ -54,11 +56,13 @@ public final class ShootingCommands {
   }
 
   public static Command shootFromHub(Subsystems subsystems) {
-    return shootForDistance(subsystems, () -> Shooter.HUB_SHOT_DISTANCE, false);
+    return shootForDistance(subsystems, () -> Shooter.HUB_SHOT_DISTANCE, false)
+        .withName("ShootFromHub");
   }
 
   public static Command shootFromTower(Subsystems subsystems) {
-    return shootForDistance(subsystems, () -> Shooter.TOWER_SHOT_DISTANCE, false);
+    return shootForDistance(subsystems, () -> Shooter.TOWER_SHOT_DISTANCE, false)
+        .withName("ShootFromTower");
   }
 
   private static Command shootForDistance(
@@ -84,12 +88,14 @@ public final class ShootingCommands {
     Shooter shooter = subsystems.shooter;
     Swerve drivetrain = subsystems.drivetrain;
     return Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToTarget()), shooter)
-        .finallyDo(shooter::disable);
+        .finallyDo(shooter::disable)
+        .withName("RampUpShooter");
   }
 
-  public static Command rampUpShooter(Subsystems subsystems, double distance) {
+  public static Command rampUpShooterForDistance(Subsystems subsystems, double distance) {
     Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.setGoalDistance(distance), shooter);
+    return Commands.runOnce(() -> shooter.setGoalDistance(distance), shooter)
+        .withName("RampUpShooterForDistance");
   }
 
   public static Command feedBallsToShooter(Subsystems subsystems, boolean shouldWaitForHubAlign) {
@@ -100,16 +106,17 @@ public final class ShootingCommands {
     Swerve drivetrain = subsystems.drivetrain;
 
     return Commands.sequence(
-        Commands.idle(indexer)
-            .until(
-                () ->
-                    shooter.atOrNearGoal()
-                        && (!shouldWaitForHubAlign || drivetrain.isAlignedToHub())),
-        Commands.runOnce(hopper::feed, hopper),
-        Commands.runOnce(indexer::feed, indexer),
-        Commands.runOnce(intake::intake, intake),
-        IntakeCommands.agitateArm(subsystems),
-        Commands.idle(intake, indexer));
+            Commands.idle(indexer)
+                .until(
+                    () ->
+                        shooter.atOrNearGoal()
+                            && (!shouldWaitForHubAlign || drivetrain.isAlignedToHub())),
+            Commands.runOnce(hopper::feed, hopper),
+            Commands.runOnce(indexer::feed, indexer),
+            Commands.runOnce(intake::intake, intake),
+            IntakeCommands.agitateArm(subsystems),
+            Commands.idle(intake, indexer))
+        .withName("FeedBallsToShooter");
   }
 
   public static Command pass(Subsystems subsystems, DoubleSupplier velocity) {
@@ -127,11 +134,7 @@ public final class ShootingCommands {
               indexer.disable();
               intake.disable();
               hopper.disable();
-            });
-  }
-
-  public static Command setShooterVelocity(Subsystems subsystems, double velocity) {
-    Shooter shooter = subsystems.shooter;
-    return Commands.runOnce(() -> shooter.setGoalVelocity(velocity), shooter);
+            })
+        .withName("Pass");
   }
 }
