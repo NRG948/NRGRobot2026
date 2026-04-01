@@ -9,9 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -21,8 +20,8 @@ import java.util.function.DoubleSupplier;
 public final class ShootingCommands {
 
   public static Command shootWhenInRange(Subsystems subsystems) {
-    Indexer indexer = subsystems.indexer;
-    Hopper hopper = subsystems.hopper;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Swerve drivetrain = subsystems.drivetrain;
     Intake intake = subsystems.intake;
@@ -34,8 +33,8 @@ public final class ShootingCommands {
   }
 
   public static Command shootWhenInRangeAndOnShift(Subsystems subsystems) {
-    Indexer indexer = subsystems.indexer;
-    Hopper hopper = subsystems.hopper;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Swerve drivetrain = subsystems.drivetrain;
     Intake intake = subsystems.intake;
@@ -67,8 +66,8 @@ public final class ShootingCommands {
 
   private static Command shootForDistance(
       Subsystems subsystems, DoubleSupplier distance, boolean shouldWaitForHubAlign) {
-    Indexer indexer = subsystems.indexer;
-    Hopper hopper = subsystems.hopper;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
 
@@ -99,8 +98,8 @@ public final class ShootingCommands {
   }
 
   public static Command feedBallsToShooter(Subsystems subsystems, boolean shouldWaitForHubAlign) {
-    Indexer indexer = subsystems.indexer;
-    Hopper hopper = subsystems.hopper;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
     Swerve drivetrain = subsystems.drivetrain;
@@ -120,10 +119,10 @@ public final class ShootingCommands {
   }
 
   public static Command pass(Subsystems subsystems, DoubleSupplier velocity) {
-    Indexer indexer = subsystems.indexer;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
-    Hopper hopper = subsystems.hopper;
 
     return Commands.parallel(
             Commands.run(() -> shooter.setGoalVelocity(velocity.getAsDouble()), shooter),

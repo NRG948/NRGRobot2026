@@ -9,15 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Subsystems;
 
 /** Add your docs here. */
 public final class IndexerCommands {
   public static Command feed(Subsystems subsystems) {
-    Indexer indexer = subsystems.indexer;
-    Hopper hopper = subsystems.hopper;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     return Commands.sequence(
             Commands.runOnce(
                 () -> {

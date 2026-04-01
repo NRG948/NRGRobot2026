@@ -27,6 +27,9 @@ import frc.robot.util.DashboardMode;
 @DashboardDefinition
 public final class RobotPreferences {
 
+  private static final double DEFAULT_FEED_VELOCITY = 3.0;
+  private static final double DEFAULT_UNFEED_VELOCITY = -2.0;
+
   /** A class to group the AprilTag camera enablement preferences. */
   @DashboardDefinition
   public static final class AprilTagPreferences {
@@ -139,6 +142,32 @@ public final class RobotPreferences {
       showSubmitButton = true)
   public static final DoublePreference OUTTAKE_VELOCITY =
       new DoublePreference("Intake", "Outtake Velocity", -5);
+
+  @DashboardTextDisplay(
+      title = "Feed Velocity (m/s)",
+      column = 9,
+      row = 2,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference FEED_VELOCITY =
+      new DoublePreference("Hopper + Indexer", "Feed Velocity", DEFAULT_FEED_VELOCITY);
+
+  ;
+
+  @DashboardTextDisplay(
+      title = "Unfeed Velocity (m/s)",
+      column = 9,
+      row = 3,
+      width = 2,
+      height = 1,
+      dataBinding = DataBinding.READ_WRITE,
+      showSubmitButton = true)
+  public static final DoublePreference UNFEED_VELOCITY =
+      new DoublePreference("Hopper + Indexer", "Unfeed Velocity", DEFAULT_UNFEED_VELOCITY);
+
+  ;
 
   public static boolean isCompBot() {
     return RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026;

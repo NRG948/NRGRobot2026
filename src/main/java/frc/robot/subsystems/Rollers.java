@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.RobotPreferences.FEED_VELOCITY;
+import static frc.robot.RobotPreferences.UNFEED_VELOCITY;
 
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
@@ -17,48 +19,35 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.PIDControllerPreference;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RobotConstants.CANID;
-import frc.robot.RobotPreferences;
-import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
-import java.util.Map;
 
 @DashboardDefinition
-public final class Hopper extends SubsystemBase implements ActiveSubsystem {
-  private static final MotorParameters MOTOR =
-      RobotPreferences.ROBOT_TYPE.selectOrDefault(
-          Map.of(
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
-              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
-          MotorParameters.NullMotor);
+public final class Rollers extends SubsystemBase implements ActiveSubsystem {
+  // Rollers class includes rollers from hopper and indexer
 
-  private static final double BAR_DIAMETER = Units.inchesToMeters(1.25);
-  private static final double GEAR_RATIO = 1.0;
-  private static final double METERS_PER_REVOLUTION = (BAR_DIAMETER * Math.PI) / GEAR_RATIO;
-  private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
-  private static final double FEED_VELOCITY = 1.8;
-  private static final double OUTFEED_VELOCITY = -2.0;
+  private static final DataLog LOG = DataLogManager.getLog();
 
-  private final MotorController motor =
-      MOTOR.newController(
-          "/Hopper/Motor",
-          CANID.HOPPER_INDEXER_ID,
-          MotorDirection.CLOCKWISE_POSITIVE,
-          MotorIdleMode.BRAKE,
-          0);
-  private final RelativeEncoder encoder = motor.getEncoder();
+  private static final MotorParameters MOTOR_PARAMS = MotorParameters.KrakenX60;
 
-  private final double KS = MOTOR.getKs();
-  private final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(KS, KV);
+  private static final double EFFICIENCY = 0.9;
+
+  private final double maxVelocity;
+  private final MotorController motor;
+  private final RelativeEncoder encoder;
+
+  private final double KS = MOTOR_PARAMS.getKs();
+  private final double KV;
+  private final SimpleMotorFeedforward feedforward;
 
   @DashboardTextDisplay(title = "Goal Velocity (m/s)", column = 0, row = 2, width = 2, height = 1)
   private double goalVelocity = 0;
@@ -105,22 +94,44 @@ public final class Hopper extends SubsystemBase implements ActiveSubsystem {
       Commands.runOnce(this::disable, this).ignoringDisable(true).withName("Disable");
 
   @DashboardPIDController(title = "PID Controller", column = 4, row = 0, width = 2, height = 3)
-  private final PIDControllerPreference pidController =
-      new PIDControllerPreference("Hopper", "PID Controller", 1, 0, 0);
+  private final PIDControllerPreference pidController;
 
-  /** Creates a new Hopper. */
-  public Hopper() {}
+  private final DoubleLogEntry logCurrentVelocity;
+  private final DoubleLogEntry logGoalVelocity;
 
+  /** Creates a new Rollers subsystem. */
+  public Rollers(String name, int motorId, double metersPerRevolution) {
+    setName(name);
+    maxVelocity = MOTOR_PARAMS.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
+    KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
+    feedforward = new SimpleMotorFeedforward(KS, KV);
+    motor =
+        MOTOR_PARAMS.newController(
+            "/" + name + "/Motor",
+            motorId,
+            MotorDirection.CLOCKWISE_POSITIVE,
+            MotorIdleMode.BRAKE,
+            metersPerRevolution);
+    encoder = motor.getEncoder();
+    pidController = new PIDControllerPreference(name, "PID Controller", 1, 0, 0);
+
+    logCurrentVelocity = new DoubleLogEntry(LOG, name + "/Current Velocity");
+    logGoalVelocity = new DoubleLogEntry(LOG, name + "/Goal Velocity");
+  }
+
+  /** Sets goal velocity for rollers. */
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
   }
 
+  /** Feeds balls into rollers. */
   public void feed() {
-    setGoalVelocity(FEED_VELOCITY);
+    setGoalVelocity(FEED_VELOCITY.getValue());
   }
 
-  public void outFeed() {
-    setGoalVelocity(OUTFEED_VELOCITY);
+  /** Outfeeds balls into rollers. */
+  public void unfeed() {
+    setGoalVelocity(UNFEED_VELOCITY.getValue());
   }
 
   @Override
@@ -155,8 +166,11 @@ public final class Hopper extends SubsystemBase implements ActiveSubsystem {
   }
 
   private void updateTelemetry() {
-    currentVelocity = encoder.getVelocity();
     motor.logTelemetry();
+
+    currentVelocity = encoder.getVelocity();
+    logCurrentVelocity.append(currentVelocity);
+    logGoalVelocity.append(goalVelocity);
   }
 
   @DashboardTextDisplay(

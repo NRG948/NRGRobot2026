@@ -7,11 +7,15 @@
  
 package frc.robot.subsystems;
 
+import static frc.robot.RobotPreferences.isCompBot;
+
 import com.nrg948.dashboard.annotations.DashboardTab;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.RobotConstants.CANID;
 import frc.robot.RobotPreferences;
 import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
@@ -42,15 +46,27 @@ public final class Subsystems {
       modes = {"Testing"})
   public final Shooter shooter = new Shooter();
 
+  private static final double ROLLER_DIAMETER = Units.inchesToMeters(1.25);
+
+  private static final double INDEXER_GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
+  private static final double INDEXER_METERS_PER_REVOLUTION =
+      (ROLLER_DIAMETER * Math.PI) / INDEXER_GEAR_RATIO;
+
   @DashboardTab(
       title = "Indexer",
       modes = {"Testing"})
-  public final Indexer indexer = new Indexer();
+  public final Rollers indexer =
+      new Rollers("Indexer", CANID.SHOOTER_INDEXER_ID, INDEXER_METERS_PER_REVOLUTION);
+
+  private static final double HOPPER_GEAR_RATIO = 1.0;
+  private static final double HOPPER_METERS_PER_REVOLUTION =
+      (ROLLER_DIAMETER * Math.PI) / HOPPER_GEAR_RATIO;
 
   @DashboardTab(
       title = "Hopper",
       modes = {"Testing"})
-  public final Hopper hopper = new Hopper();
+  public final Rollers hopper =
+      new Rollers("Hopper", CANID.HOPPER_INDEXER_ID, HOPPER_METERS_PER_REVOLUTION);
 
   public final StatusLED statusLEDs = new StatusLED();
 

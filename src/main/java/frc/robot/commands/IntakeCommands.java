@@ -9,10 +9,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Subsystems;
 
 /** A utility class for controlling the intake. */
@@ -92,13 +91,13 @@ public final class IntakeCommands {
    */
   public static Command outtake(Subsystems subsystems) {
     Intake intake = subsystems.intake;
-    Indexer indexer = subsystems.indexer;
-    Hopper hopper = subsystems.hopper;
+    Rollers indexer = subsystems.indexer;
+    Rollers hopper = subsystems.hopper;
     return Commands.sequence(
             Commands.parallel(
                 Commands.runOnce(intake::outtake, intake),
-                Commands.runOnce(indexer::outFeed, indexer),
-                Commands.runOnce(hopper::outFeed, hopper)),
+                Commands.runOnce(indexer::unfeed, indexer),
+                Commands.runOnce(hopper::unfeed, hopper)),
             Commands.idle(intake, indexer, hopper))
         .finallyDo(
             () -> {

@@ -303,7 +303,6 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     updateTelemetry();
     if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)) {
       if (atGoalAngle()) {

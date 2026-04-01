@@ -362,6 +362,30 @@
           "period" : 0.06,
           "show_submit_button" : true
         }
+      }, {
+        "title" : "Feed Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 1152.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Feed Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Unfeed Velocity (m/s)",
+        "type" : "Text Display",
+        "x" : 1152.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Unfeed Velocity (m+s)",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
       } ]
     }
   } ]
