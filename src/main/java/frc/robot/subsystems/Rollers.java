@@ -7,7 +7,7 @@
  
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.Constants.RobotConstants.NOMINAL_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.FEED_VELOCITY;
 import static frc.robot.RobotPreferences.UNFEED_VELOCITY;
 
@@ -103,7 +103,7 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
   public Rollers(String name, int motorId, double metersPerRevolution) {
     setName(name);
     maxVelocity = MOTOR_PARAMS.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
-    KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
+    KV = (NOMINAL_BATTERY_VOLTAGE - KS) / maxVelocity;
     feedforward = new SimpleMotorFeedforward(KS, KV);
     motor =
         MOTOR_PARAMS.newController(

@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
-import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.Constants.RobotConstants.NOMINAL_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
@@ -55,7 +55,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
   private final RelativeEncoder encoder = motor.getEncoder();
 
   private final double KS = MOTOR.getKs();
-  private final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
+  private final double KV = (NOMINAL_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
 
   private final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(KS, KV);
 

@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
-import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.Constants.RobotConstants.NOMINAL_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
@@ -145,9 +145,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
     Slot0Configs slot0Configs = talonFXConfigs.Slot0;
     slot0Configs.kS = MOTOR.getKs();
-    slot0Configs.kV = RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_VELOCITY;
+    slot0Configs.kV = RADIANS_PER_ROTATION * (NOMINAL_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_VELOCITY;
     slot0Configs.kA =
-        RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
+        RADIANS_PER_ROTATION * (NOMINAL_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
     slot0Configs.kG = 0.9;
     slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
     slot0Configs.kP = 90;

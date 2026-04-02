@@ -11,7 +11,7 @@ import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
-import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.Constants.RobotConstants.NOMINAL_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
@@ -186,7 +186,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     double kS = SHOOTER_MOTOR.getKs();
-    double kV = (MAX_BATTERY_VOLTAGE - kS) / MAX_VELOCITY;
+    double kV = (NOMINAL_BATTERY_VOLTAGE - kS) / MAX_VELOCITY;
 
     config.Slot0.kP = 1.0 * METERS_PER_REV;
     config.Slot0.kI = 0.0;
@@ -202,8 +202,8 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
     config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
 
-    config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
-    config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
+    config.Voltage.PeakForwardVoltage = NOMINAL_BATTERY_VOLTAGE;
+    config.Voltage.PeakReverseVoltage = -NOMINAL_BATTERY_VOLTAGE;
 
     leftUpperMotor.applyTalonFXConfiguration(config);
     rightUpperMotor.applyTalonFXConfiguration(config);

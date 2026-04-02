@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.ADJUSTABLE_HOOD_ID;
-import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.Constants.RobotConstants.NOMINAL_BATTERY_VOLTAGE;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
@@ -63,7 +63,7 @@ public class AdjustableHood extends SubsystemBase implements ActiveSubsystem {
   public static final double MAX_ANGLE = STOW_ANGLE;
 
   public static final double KS = MOTOR_PARAMS.getKs();
-  public static final double KV = (MAX_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
+  public static final double KV = (NOMINAL_BATTERY_VOLTAGE - KS) / MAX_VELOCITY;
   private final SimpleMotorFeedforward feedforwardController;
 
   private final TalonFX talonFX = new TalonFX(ADJUSTABLE_HOOD_ID);
