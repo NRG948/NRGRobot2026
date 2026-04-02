@@ -973,6 +973,109 @@
       } ]
     }
   }, {
+    "name" : "Adjustable Hood",
+    "grid_layout" : {
+      "layouts" : [ ],
+      "containers" : [ {
+        "title" : "Set Extended Angle",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Set Extended Angle",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Test Goal Angle",
+        "type" : "Text Display",
+        "x" : 256.0,
+        "y" : 128.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Test Goal Angle",
+          "period" : 0.06,
+          "show_submit_button" : true
+        }
+      }, {
+        "title" : "Set Test Goal Angle",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Set Test Goal Angle",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Disable",
+        "type" : "Command",
+        "x" : 256.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Disable",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Current Angle",
+        "type" : "Radial Gauge",
+        "x" : 0.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Current Angle",
+          "period" : 0.06,
+          "min_value" : -180.0,
+          "max_value" : 180.0,
+          "start_angle" : -180.0,
+          "end_angle" : 180.0,
+          "number_of_labels" : 0,
+          "wrap_value" : true,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
+        "title" : "Goal Angle",
+        "type" : "Text Display",
+        "x" : 0.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Goal Angle",
+          "period" : 0.06,
+          "show_submit_button" : false
+        }
+      }, {
+        "title" : "Enabled",
+        "type" : "Boolean Box",
+        "x" : 0.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Adjustable Hood/Enabled",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      } ]
+    }
+  }, {
     "name" : "Indexer",
     "grid_layout" : {
       "layouts" : [ ],

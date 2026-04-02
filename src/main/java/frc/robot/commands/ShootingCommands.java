@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.AdjustableHood;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
@@ -123,8 +124,10 @@ public final class ShootingCommands {
     Rollers hopper = subsystems.hopper;
     Shooter shooter = subsystems.shooter;
     Intake intake = subsystems.intake;
+    AdjustableHood hood = subsystems.hood;
 
     return Commands.parallel(
+            Commands.runOnce(hood::setPassingAngle),
             Commands.run(() -> shooter.setGoalVelocity(velocity.getAsDouble()), shooter),
             feedBallsToShooter(subsystems, false))
         .finallyDo(
@@ -133,6 +136,7 @@ public final class ShootingCommands {
               indexer.disable();
               intake.disable();
               hopper.disable();
+              hood.setStowedAngle();
             })
         .withName("Pass");
   }
