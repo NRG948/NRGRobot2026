@@ -109,25 +109,6 @@ public final class LEDCommands {
         .withName("Endgame LEDs");
   }
 
-  /**
-   * Returns a command that sets the climbing phase LEDs of the robot. When the robot is in the
-   * process of climbing, the LEDs will blink rainbow cycle. When fully climbed, the LEDs will
-   * display solid rainbow cycle.
-   *
-   * @param subsystems The subsystems container providing access to the status LEDs.
-   * @param isClimbing A supplier that returns true while the robot is actively climbing.
-   * @param isClimbed A supplier that returns true once the robot has finished climbing.
-   */
-  public static Command setClimbModeLED(
-      Subsystems subsystems, BooleanSupplier isClimbing, BooleanSupplier isClimbed) {
-    StatusLED statusLEDs = subsystems.statusLEDs;
-
-    return Commands.either(
-            new RainbowCycle(statusLEDs), new BlinkingRainbowCycle(statusLEDs), isClimbed)
-        .onlyWhile(() -> isClimbed.getAsBoolean() || isClimbing.getAsBoolean())
-        .withName("ClimbOverrideLEDs");
-  }
-
   /*
    * Returns a command that sets LEDs to solid color green if the robot is aligned to the hub.
    */
