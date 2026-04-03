@@ -1,0 +1,80 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.941077777777777,
+        "y": 3.3139111111111106
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.905777777777778,
+        "y": 3.460077777777777
+      },
+      "isLocked": false,
+      "linkedName": "Close Neutral Start"
+    },
+    {
+      "anchor": {
+        "x": 8.3,
+        "y": 3.510984308131241
+      },
+      "prevControl": {
+        "x": 7.8030333333333335,
+        "y": 3.540217641464575
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Neutral Mid"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.15,
+      "maxWaypointRelativePos": 0.9,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "extend to mid",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 13.360218444764495
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 3.0,
+    "rotation": 23.55226367289463
+  },
+  "useDefaultConstraints": true
+}
