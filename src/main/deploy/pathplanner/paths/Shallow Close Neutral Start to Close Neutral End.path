@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.755933333333334,
-        "y": 3.021577777777777
+        "x": 5.695206847360912,
+        "y": 2.268873038516405
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.570788888888888,
-        "y": 5.438199999999999
+        "x": 5.824593437945791,
+        "y": 3.148701854493581
       },
       "isLocked": false,
       "linkedName": "Shallow Close Neutral Start"
+    },
+    {
+      "anchor": {
+        "x": 6.09698888888889,
+        "y": 4.442567760342368
+      },
+      "prevControl": {
+        "x": 5.814460767943416,
+        "y": 4.044155961060726
+      },
+      "nextControl": {
+        "x": 6.445649072753208,
+        "y": 4.934236804564907
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,12 +36,12 @@
         "y": 3.693944444444444
       },
       "prevControl": {
-        "x": 7.402744444444445,
-        "y": 5.477177777777778
+        "x": 6.911440798858774,
+        "y": 5.024807417974323
       },
       "nextControl": {
-        "x": 7.386773907981992,
-        "y": 2.5545696051487186
+        "x": 7.780678721402595,
+        "y": 2.6225346266745904
       },
       "isLocked": false,
       "linkedName": null
@@ -62,19 +78,19 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.15684647302905277,
-      "rotationDegrees": 76.9656994240981
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": 88.43615936134515
     },
     {
-      "waypointRelativePos": 0.9784232365145129,
+      "waypointRelativePos": 1.95,
       "rotationDegrees": -80.08900103658543
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.3275434243176185,
-      "maxWaypointRelativePos": 2.55,
+      "minWaypointRelativePos": 0.65,
+      "maxWaypointRelativePos": 3.55,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
@@ -86,7 +102,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Hub Hugging extend and intake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -103,7 +131,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 16.699244233993614
+    "rotation": 92.07117862992651
   },
   "useDefaultConstraints": true
 }
