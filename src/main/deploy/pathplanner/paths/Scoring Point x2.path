@@ -1,0 +1,213 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.183,
+        "y": 2.671
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.183,
+        "y": 2.6709999999999994
+      },
+      "isLocked": false,
+      "linkedName": "Scoring Point"
+    },
+    {
+      "anchor": {
+        "x": 6.564722222222223,
+        "y": 2.671
+      },
+      "prevControl": {
+        "x": 6.052641032081753,
+        "y": 2.664971046146497
+      },
+      "nextControl": {
+        "x": 7.373511111111111,
+        "y": 2.680522222222221
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.802266666666666,
+        "y": 1.5793999999999992
+      },
+      "prevControl": {
+        "x": 7.852446902271741,
+        "y": 2.164836082059213
+      },
+      "nextControl": {
+        "x": 7.7438,
+        "y": 0.897288888888888
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.383255555555556,
+        "y": 0.6926555555555558
+      },
+      "prevControl": {
+        "x": 7.676504057102844,
+        "y": 0.8026237436357883
+      },
+      "nextControl": {
+        "x": 6.915522222222222,
+        "y": 0.5172555555555561
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.2528999999999995,
+        "y": 0.6926555555555558
+      },
+      "prevControl": {
+        "x": 6.545233333333333,
+        "y": 0.3418555555555567
+      },
+      "nextControl": {
+        "x": 6.034837766502984,
+        "y": 0.954330235751973
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.970311111111112,
+        "y": 1.413744444444443
+      },
+      "prevControl": {
+        "x": 5.922134931827761,
+        "y": 0.8597183826858972
+      },
+      "nextControl": {
+        "x": 6.087244444444443,
+        "y": 2.758477777777775
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.183,
+        "y": 2.671
+      },
+      "prevControl": {
+        "x": 3.894744444444445,
+        "y": 2.6610333333333336
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Scoring Point"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.16431535269708344,
+      "rotationDegrees": 72.0
+    },
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 72.0
+    },
+    {
+      "waypointRelativePos": 0.7717842323651452,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.962655601659752,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 3.0,
+      "rotationDegrees": -154.96160934639232
+    },
+    {
+      "waypointRelativePos": 4.635684647302915,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 5.332780082987568,
+      "rotationDegrees": 65.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.5895781637717108,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 5.365756823821281,
+      "maxWaypointRelativePos": 6.0,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Bump Angle for Scoring Point x2",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeArmBumpAngle"
+        }
+      }
+    },
+    {
+      "name": "Extend Intake for Scoring Point x2",
+      "waypointRelativePos": 0.42282878411910296,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 42.0282331684253
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 42.0282331684253
+  },
+  "useDefaultConstraints": true
+}

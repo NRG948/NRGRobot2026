@@ -253,11 +253,7 @@ public final class Autos {
             IntakeCommands.setIntakeArmAngleNoIdle(subsystems, IntakeArm.BUMP_ANGLE),
             IntakeCommands.disableIntake(subsystems)));
 
-    eventMaps.put(
-        "ExtendAndIntake",
-        Commands.parallel(
-            IntakeCommands.moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE),
-            IntakeCommands.autoIntake(subsystems)));
+    eventMaps.put("ExtendAndIntake", IntakeCommands.extendAndIntakeWhenSafe(subsystems));
 
     eventMaps.put("Intake", IntakeCommands.autoIntake(subsystems));
 
