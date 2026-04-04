@@ -173,6 +173,13 @@ public class RobotContainer {
         .whileTrue(avoidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
 
     manipulatorController
+        .povLeft()
+        .onTrue(
+            Commands.runOnce(() -> subsystems.intakeArm.setGoalVelocity(.2), subsystems.intakeArm))
+        .onFalse(
+            Commands.runOnce(() -> subsystems.intakeArm.setGoalVelocity(0), subsystems.intakeArm));
+
+    manipulatorController
         .rightBumper()
         .whileTrue(
             avoidConflicts(extendAndIntakeWhenSafe(subsystems), this::isDriverUsingIntakeArm));

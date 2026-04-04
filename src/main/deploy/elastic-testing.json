@@ -838,6 +838,21 @@
           "maximize_button_space" : true
         }
       }, {
+        "title" : "Motor Stalled",
+        "type" : "Boolean Box",
+        "x" : 128.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/IntakeArm/Motor Stalled",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
         "title" : "Current Angle",
         "type" : "Radial Gauge",
         "x" : 0.0,

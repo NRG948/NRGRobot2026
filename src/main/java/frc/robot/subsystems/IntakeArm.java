@@ -19,6 +19,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -32,6 +33,9 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -77,6 +81,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private final TalonFXAdapter motor =
       new TalonFXAdapter(
           "/IntakeArm/Motor", talonFX, CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION);
+
+  private static final double STATOR_CURRENT_STALL_THRESHOLD = 30.0;
+  private static final double VELOCITY_STALL_THRESHOLD = 0.3;
 
   private final RelativeEncoder encoder = motor.getEncoder();
 
@@ -130,6 +137,12 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
       Commands.runOnce(this::disable, this).ignoringDisable(true).withName("Disable");
 
   private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0);
+  private final MotionMagicVelocityVoltage motionMagicVelocityRequest =
+      new MotionMagicVelocityVoltage(0).withEnableFOC(false);
+
+  private static final DataLog LOG = DataLogManager.getLog();
+  private DoubleLogEntry logCurrentVelocity =
+      new DoubleLogEntry(LOG, "/IntakeArm/Current Velocity");
 
   private final Timer stuckTimer = new Timer();
 
@@ -168,6 +181,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     currentAngle = encoder.getPosition();
     currentVelocity = encoder.getVelocity();
     motor.logTelemetry();
+    logCurrentVelocity.append(currentVelocity);
   }
 
   /**
@@ -189,6 +203,13 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
             || stuckTimer.hasElapsed(ERROR_TIME);
   }
 
+  @DashboardBooleanBox(title = "Motor Stalled", column = 1, row = 3, width = 1, height = 1)
+  private boolean isStalled() {
+    return Math.abs(currentVelocity) < VELOCITY_STALL_THRESHOLD
+        && Math.abs(talonFX.getStatorCurrent().getValueAsDouble()) > STATOR_CURRENT_STALL_THRESHOLD
+        && enabled;
+  }
+
   /**
    * Sets motor periodic control to desired goal angle
    *
@@ -200,6 +221,12 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     enabled = true;
 
     motor.setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
+  }
+
+  public void setGoalVelocity(double goalVelocity) {
+    enabled = true;
+    // double goalRPS = goalVelocity / METERS_PER_REV;
+    motor.setControl(motionMagicVelocityRequest.withVelocity(goalVelocity));
   }
 
   /**
@@ -302,8 +329,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   }
 
   @Override
-  public void periodic() {
-    updateTelemetry();
+  public void periodic()
     if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)) {
       if (atGoalAngle()) {
         disable();
