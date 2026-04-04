@@ -50,5 +50,9 @@ public final class Constants {
       public static final int SHOOTER_LOWER_LEFT_ID = 17;
       public static final int SHOOTER_UPPER_LEFT_ID = 19;
     }
+
+    public static final class DIO {
+      public static final int EXTENDED_INTAKE_ARM_LIMIT_SWITCH = 1; // TODO: Find real DIO channel
+    }
   }
 }
