@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6,
-        "y": 5.6
+        "x": 3.592666666666667,
+        "y": 4.015511111111111
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.585311111111111,
-        "y": 5.1751
+        "x": 3.842666666666667,
+        "y": 4.015511111111111
       },
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": "Hub Shot Start"
     },
     {
       "anchor": {
-        "x": 3.144422222222222,
-        "y": 5.438199999999999
+        "x": 3.3,
+        "y": 4.015511111111111
       },
       "prevControl": {
-        "x": 2.179722222222222,
-        "y": 5.828111111111111
+        "x": 3.05,
+        "y": 4.015511111111111
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Opposite Scoring Point"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -43.83086067209259
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -115.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
