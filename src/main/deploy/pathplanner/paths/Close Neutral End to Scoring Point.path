@@ -38,7 +38,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Disable intake for right scoring point",
+      "name": "Disable intake for Right Scoring Point",
       "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
@@ -49,7 +49,7 @@
       }
     },
     {
-      "name": "Ramp Up shooter for right scoring point 2",
+      "name": "Ramp Up shooter for Right Scoring Point 2",
       "waypointRelativePos": 0.5905707196029759,
       "endWaypointRelativePos": null,
       "command": {
@@ -61,7 +61,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 3.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,

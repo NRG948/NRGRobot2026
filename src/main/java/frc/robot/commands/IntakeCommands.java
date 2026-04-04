@@ -18,7 +18,7 @@ import frc.robot.subsystems.Subsystems;
 public final class IntakeCommands {
 
   private static final double AGITATE_ARM_TIMEOUT = 0.75;
-  private static final double MINIMUM_SAFE_INTAKE_ANGLE = Math.toRadians(15);
+  private static final double MINIMUM_SAFE_INTAKE_ANGLE = Math.toRadians(10);
   private static final double AGITATE_WAIT_TIME = 0.25;
 
   /**

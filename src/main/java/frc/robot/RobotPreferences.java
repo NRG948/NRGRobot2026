@@ -129,7 +129,7 @@ public final class RobotPreferences {
       dataBinding = DataBinding.READ_WRITE,
       showSubmitButton = true)
   public static final DoublePreference INTAKE_VELOCITY =
-      new DoublePreference("Intake", "Intake Velocity", 10);
+      new DoublePreference("Intake", "Intake Velocity", 8);
 
   /** Adjusts the speed of the outtake. */
   @DashboardTextDisplay(
