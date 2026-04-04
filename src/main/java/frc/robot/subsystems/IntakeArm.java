@@ -32,7 +32,6 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -54,8 +53,6 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double TOLERANCE = Units.degreesToRadians(5.0);
-  private static final double ERROR_MARGIN = Units.degreesToRadians(5.0);
-  private static final double ERROR_TIME = 1;
 
   private static final double GEAR_RATIO = isCompBot() ? 37.5 : 50.0;
   private static final double RADIANS_PER_ROTATION = 2 * Math.PI;
@@ -84,7 +81,6 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   private double goalAngle = STOW_ANGLE;
   private double currentVelocity = 0;
   private boolean enabled;
-  private boolean hasError = false;
 
   @DashboardCommand(
       title = "Set Extended Position",
@@ -131,8 +127,6 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0);
 
-  private final Timer stuckTimer = new Timer();
-
   /** Creates a new IntakeArm. */
   public IntakeArm() {
     TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
@@ -168,25 +162,6 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     currentAngle = encoder.getPosition();
     currentVelocity = encoder.getVelocity();
     motor.logTelemetry();
-  }
-
-  /**
-   * Checks if arm is beyond its maximum and minimum angle by 2 degrees Or is taking more than 1
-   * second to be within 2 degrees of the goal angle
-   */
-  private void checkError() {
-    if (MathUtil.isNear(goalAngle, currentAngle, TOLERANCE)) {
-      stuckTimer.stop();
-      stuckTimer.reset();
-    } else {
-      if (!stuckTimer.isRunning()) {
-        stuckTimer.restart();
-      }
-    }
-    hasError =
-        currentAngle > MAX_ANGLE + ERROR_MARGIN
-            || currentAngle < MIN_ANGLE - ERROR_MARGIN
-            || stuckTimer.hasElapsed(ERROR_TIME);
   }
 
   /**
@@ -281,11 +256,6 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   /** {@return the current arm velocity in rads/s} */
   public double getCurrentVelocity() {
     return currentVelocity;
-  }
-
-  /** {@return whether an error has been detected} */
-  public boolean hasError() {
-    return hasError;
   }
 
   private void resetArmPosition(double angleRadians) {
