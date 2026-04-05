@@ -20,6 +20,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -70,6 +71,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   public static final double EXTENDED_ANGLE = Units.degreesToRadians(0);
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
   public static final double MAX_ANGLE = STOW_ANGLE;
+  private static final double HOMING_VOLTAGE = 2.0; // Volts, positive = toward stow/up
+  private static final double STALL_CURRENT_THRESHOLD = 12.0; // Amps
+  private static final double STALL_VELOCITY_THRESHOLD = 0.5; // rad/s
 
   public static final double[] AGITATE_ANGLES = {20, 0, 35, 15, 50, 30, 65, 45, 85, 60};
 
@@ -80,11 +84,13 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
               .applyConfig(new MotorConfiguration(CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION));
 
   private final RelativeEncoder encoder = motor.getEncoder();
+  private final VoltageOut homingVoltageRequest = new VoltageOut(0);
 
   private double currentAngle = 0;
   private double goalAngle = STOW_ANGLE;
   private double currentVelocity = 0;
   private boolean enabled;
+  private boolean needsHoming = true;
 
   @DashboardCommand(
       title = "Set Extended Position",
@@ -158,7 +164,8 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     TalonFXConfigurator configurator = talonFX.getConfigurator();
     configurator.apply(talonFXConfigs);
 
-    resetArmPosition(STOW_ANGLE);
+    talonFX.setPosition(0);
+    needsHoming = true;
   }
 
   /** Polls sensors and logs telemetry. */
@@ -174,6 +181,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
    * @param angle angle in radians
    */
   public void setGoalAngle(double angle) {
+    if (needsHoming) {
+      return;
+    }
     angle = MathUtil.clamp(angle, MIN_ANGLE, MAX_ANGLE);
     goalAngle = angle;
     enabled = true;
@@ -275,9 +285,38 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     resetArmPosition(EXTENDED_ANGLE);
   }
 
+  public void requestHome() {
+    enabled = false;
+    motor.disable();
+    needsHoming = true;
+  }
+
+  /** {@return whether homing is complete} */
+  @DashboardBooleanBox(title = "Homed", column = 1, row = 3, width = 1, height = 1)
+  public boolean isHomed() {
+    return !needsHoming;
+  }
+
   @Override
   public void periodic() {
     updateTelemetry();
+
+    if (needsHoming) {
+      talonFX.setControl(homingVoltageRequest.withOutput(HOMING_VOLTAGE));
+
+      double current = talonFX.getSupplyCurrent().getValueAsDouble();
+      double velocity = Math.abs(talonFX.getVelocity().getValueAsDouble() * RADIANS_PER_ROTATION);
+
+      if (current > STALL_CURRENT_THRESHOLD && velocity < STALL_VELOCITY_THRESHOLD) {
+        talonFX.setControl(homingVoltageRequest.withOutput(0));
+        encoder.setPosition(STOW_ANGLE);
+        goalAngle = STOW_ANGLE;
+        needsHoming = false;
+      }
+
+      return;
+    }
+
     if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)) {
       if (atGoalAngle()) {
         disable();
