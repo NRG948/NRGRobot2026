@@ -692,7 +692,7 @@
         "title" : "Max Velocity (m/s)",
         "type" : "Text Display",
         "x" : 0.0,
-        "y" : 640.0,
+        "y" : 512.0,
         "width" : 256.0,
         "height" : 128.0,
         "properties" : {
