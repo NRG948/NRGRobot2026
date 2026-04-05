@@ -44,9 +44,11 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
           MotorParameters.NullMotor);
 
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(2.06);
-  private static final double GEAR_RATIO = isCompBot() ? 1.5 : 1;
+  private static final double GEAR_RATIO = isCompBot() ? (34.0 / 14.0) * (24.0 / 36.0) : 1;
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
-  private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60;
+
+  @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 4, width = 2, height = 1)
+  private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60.0;
 
   private final MotorController motor =
       MOTOR.newController(

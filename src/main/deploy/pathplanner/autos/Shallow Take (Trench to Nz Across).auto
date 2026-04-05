@@ -40,6 +40,18 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Opposite Scoring Point to Opposite Hub Hug"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Opposite Hub Hug End to Opposite Scoring Point"
+          }
         }
       ]
     }

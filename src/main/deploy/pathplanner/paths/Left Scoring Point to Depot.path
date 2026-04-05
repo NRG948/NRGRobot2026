@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7449,
-        "y": 4.678133333333332
+        "x": 3.144422222222222,
+        "y": 5.438199999999999
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7449,
-        "y": 4.678133333333332
+        "x": 2.144422222222222,
+        "y": 5.438199999999999
       },
       "isLocked": false,
       "linkedName": "Opposite Scoring Point"
@@ -72,7 +72,7 @@
       "minWaypointRelativePos": 2.05,
       "maxWaypointRelativePos": 2.867493796526055,
       "constraints": {
-        "maxVelocity": 2.0,
+        "maxVelocity": 3.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -124,7 +124,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -26.00334584451132
+    "rotation": -43.83086067209259
   },
   "useDefaultConstraints": true
 }
