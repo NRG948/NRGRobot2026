@@ -8,66 +8,74 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.768066666666667,
-        "y": 6.617277777777778
+        "x": 4.3332444444444445,
+        "y": 5.993633333333333
       },
       "isLocked": false,
       "linkedName": "Opposite Scoring Point"
     },
     {
       "anchor": {
-        "x": 5.619511111111112,
+        "x": 5.67,
         "y": 5.340755555555555
       },
       "prevControl": {
-        "x": 5.336922222222223,
-        "y": 5.944911111111111
+        "x": 5.67,
+        "y": 6.007734127499283
       },
       "nextControl": {
-        "x": 5.819778966819381,
-        "y": 4.91259669162753
+        "x": 5.67,
+        "y": 4.756088888888888
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.116477777777778,
-        "y": 3.7913888888888883
+        "x": 5.67,
+        "y": 2.427166666666666
       },
       "prevControl": {
-        "x": 5.804655555555557,
-        "y": 4.376055555555555
+        "x": 5.732504634033143,
+        "y": 3.1360276587916958
       },
       "nextControl": {
-        "x": 6.2916941069184205,
-        "y": 3.4628582717501817
+        "x": 5.640766666666667,
+        "y": 2.0956333333333323
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.178622222222223,
-        "y": 4.8340444444444435
+        "x": 3.183,
+        "y": 2.671
       },
       "prevControl": {
-        "x": 7.120155555555556,
-        "y": 3.4016111111111105
+        "x": 4.177333333333333,
+        "y": 2.5441
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Opposite Hub Hug End"
+      "linkedName": "Scoring Point"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8,
-      "rotationDegrees": -73.88071412150498
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -59.99999999999999
     },
     {
-      "waypointRelativePos": 1.5609958506224137,
-      "rotationDegrees": -74.44555576577483
+      "waypointRelativePos": 0.9535269709543471,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 1.879668049792531,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.143568464730289,
+      "rotationDegrees": 125.00000000000001
     }
   ],
   "constraintZones": [],
@@ -106,7 +114,7 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 90.0
+    "rotation": 42.0282331684253
   },
   "reversed": false,
   "folder": null,
