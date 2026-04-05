@@ -38,7 +38,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Scoring Point x2"
+            "pathName": "Scoring Point to Shallow Close Neutral Start"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shallow Close Neutral Start to Close Neutral End"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Close Neutral End to Scoring Point"
           }
         },
         {
