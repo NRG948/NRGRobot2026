@@ -159,8 +159,20 @@ public class RobotContainer {
                 new ShootWhileMoving(subsystems, driverController),
                 feedBallsToShooter(subsystems, true)));
 
-    driverController.povUp().whileTrue(ShootingCommands.shootFromHub(subsystems));
-    driverController.povDown().whileTrue(ShootingCommands.shootFromTower(subsystems));
+    driverController
+        .povUp()
+        .whileTrue(
+            Commands.parallel(
+                    Commands.run(drivetrain::setXLock, drivetrain),
+                    ShootingCommands.shootFromHub(subsystems))
+                .withName("ManualShootFromHub"));
+    driverController
+        .povDown()
+        .whileTrue(
+            Commands.parallel(
+                    Commands.run(drivetrain::setXLock, drivetrain),
+                    ShootingCommands.shootFromTower(subsystems))
+                .withName("ManualShootFromTower"));
 
     driverController.leftTrigger().onTrue(moveArmToAngle(subsystems, BUMP_ANGLE));
     driverController.leftTrigger().onFalse(moveArmToAngle(subsystems, EXTENDED_ANGLE));
