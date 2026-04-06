@@ -189,6 +189,8 @@ public final class AprilTag extends SubsystemBase {
 
   private boolean shouldUpdateOdometry = false;
 
+  private BooleanLogEntry logUpdatedeOdometry;
+
   @DashboardCameraStream(title = "Camera Stream", column = 4, row = 0, width = 4, height = 4)
   private HttpCamera video;
 
@@ -220,6 +222,8 @@ public final class AprilTag extends SubsystemBase {
     targetPoseArrayLogger =
         StructArrayLogEntry.create(
             LOG, String.format("/%s/Target Poses", cameraName), Pose2d.struct);
+    logUpdatedeOdometry =
+        new BooleanLogEntry(LOG, String.format("/%s/Updated Odometry", cameraName));
     video =
         new HttpCamera(
             String.format(cameraPublisherName),
@@ -321,7 +325,10 @@ public final class AprilTag extends SubsystemBase {
 
   /** {@return whether to update the odometry based on vision measurements} */
   public boolean shouldUpdateOdometry() {
-    return shouldUpdateOdometry && RobotPreferences.SHOULD_UPDATE_ODOMETRY.getValue();
+    boolean updatedOdometry =
+        shouldUpdateOdometry && RobotPreferences.SHOULD_UPDATE_ODOMETRY.getValue();
+    logUpdatedeOdometry.append(updatedOdometry);
+    return updatedOdometry;
   }
 
   /**
