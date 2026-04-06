@@ -21,6 +21,25 @@
           "data": {
             "name": "ShootWithAutoRotation"
           }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootWithAutoRotation"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.5
+                }
+              }
+            ]
+          }
         }
       ]
     }
