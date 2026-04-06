@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.842666666666667,
+        "x": 3.342666666666667,
         "y": 4.015511111111111
       },
       "isLocked": false,
@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.3,
+        "x": 3.2,
         "y": 4.015511111111111
       },
       "prevControl": {
-        "x": 3.05,
+        "x": 3.45,
         "y": 4.015511111111111
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Mid Hub Shot"
     }
   ],
   "rotationTargets": [],
