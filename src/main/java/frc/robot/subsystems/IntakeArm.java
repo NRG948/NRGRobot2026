@@ -69,7 +69,7 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   public static final double MIN_ANGLE = Units.degreesToRadians(0);
   public static final double MAX_ANGLE = STOW_ANGLE;
 
-  public static final double[] AGITATE_ANGLES = {20, 0, 30, 10, 55, 30, 65, 40, 85, 50};
+  public static final double[] AGITATE_ANGLES = {20, 0, 35, 15, 50, 30, 65, 45, 85, 60};
 
   private final TalonFX talonFX = new TalonFX(INTAKE_ARM_ID);
   private final TalonFXAdapter motor =
