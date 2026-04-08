@@ -7,6 +7,8 @@
  
 package frc.robot.commands;
 
+import static frc.robot.subsystems.IntakeArm.AGITATE_ANGLES;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Intake;
@@ -107,12 +109,24 @@ public final class IntakeCommands {
             });
   }
 
+  private static Command agitateSequence(Subsystems subsystems, double angleDegrees) {
+    return Commands.sequence(
+        moveArmToAngle(subsystems, Math.toRadians(angleDegrees)).withTimeout(AGITATE_ARM_TIMEOUT),
+        Commands.waitSeconds(AGITATE_WAIT_TIME));
+  }
+
   public static Command agitateArm(Subsystems subsystems) {
     return Commands.sequence(
-            moveArmToAngle(subsystems, IntakeArm.AGITATE_ANGLE).withTimeout(AGITATE_ARM_TIMEOUT),
-            Commands.waitSeconds(AGITATE_WAIT_TIME),
-            moveArmToAngle(subsystems, IntakeArm.EXTENDED_ANGLE).withTimeout(AGITATE_ARM_TIMEOUT),
-            Commands.waitSeconds(AGITATE_WAIT_TIME))
+            agitateSequence(subsystems, AGITATE_ANGLES[0]),
+            agitateSequence(subsystems, AGITATE_ANGLES[1]),
+            agitateSequence(subsystems, AGITATE_ANGLES[2]),
+            agitateSequence(subsystems, AGITATE_ANGLES[3]),
+            agitateSequence(subsystems, AGITATE_ANGLES[4]),
+            agitateSequence(subsystems, AGITATE_ANGLES[5]),
+            agitateSequence(subsystems, AGITATE_ANGLES[6]),
+            agitateSequence(subsystems, AGITATE_ANGLES[7]),
+            agitateSequence(subsystems, AGITATE_ANGLES[8]),
+            agitateSequence(subsystems, AGITATE_ANGLES[9]))
         .repeatedly();
   }
 }
