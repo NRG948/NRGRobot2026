@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BlinkColor;
+import frc.robot.commands.BlinkingRainbowCycle;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
@@ -37,6 +38,7 @@ import frc.robot.commands.FlameCycle;
 import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
+import frc.robot.commands.RainbowCycle;
 import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.parameters.Colors;
@@ -107,18 +109,20 @@ public class RobotContainer {
 
     new Trigger(MatchUtil::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
 
-    new Trigger(() -> MatchUtil.isTeleop() && isHubState(HubState.ACTIVE))
+    new Trigger(
+            () ->
+                MatchUtil.isTeleop()
+                    && (isHubState(HubState.ACTIVE) || isHubState(HubState.INACTIVE)))
         .whileTrue(LEDCommands.setColor(statusLED, Colors.GREEN));
-    new Trigger(() -> isHubState(HubState.INACTIVE))
-        .whileTrue(LEDCommands.setColor(statusLED, Colors.RED));
     new Trigger(() -> isHubState(HubState.PREPARING_SHOOTING_DISABLED))
         .whileTrue(new BlinkColor(statusLED, Colors.RED));
     new Trigger(() -> isHubState(HubState.PREPARING_SHOOTING_ENABLED))
-        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
+        .whileTrue(new BlinkColor(statusLED, Colors.RED));
     new Trigger(() -> isHubState(HubState.PREPARING_TO_DISABLE_10_SEC))
         .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
+    new Trigger(() -> isHubState(HubState.ENDGAME)).whileTrue(new RainbowCycle(statusLED));
     new Trigger(() -> isHubState(HubState.NEARING_END_OF_MATCH))
-        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
+        .whileTrue(new BlinkingRainbowCycle(statusLED));
 
     driverController
         .a()

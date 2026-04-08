@@ -14,7 +14,6 @@ import static frc.robot.parameters.Colors.RED;
 import static frc.robot.parameters.Colors.WHITE;
 import static frc.robot.parameters.Colors.YELLOW;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.parameters.Colors;
@@ -95,18 +94,6 @@ public final class LEDCommands {
     return new AlternateColor(statusLEDs, BLACK, WHITE)
         .asProxy()
         .withName("LED for Transitioning to Endgame");
-  }
-
-  /*
-   * Returns a command that sets endgame lights to solid blue.
-   */
-  public static Command endgameLED(Subsystems subsystems) {
-    StatusLED statusLEDs = subsystems.statusLEDs;
-
-    return setColor(statusLEDs, BLUE)
-        .asProxy()
-        .until(() -> DriverStation.getMatchTime() <= 0.0)
-        .withName("Endgame LEDs");
   }
 
   /*

@@ -125,7 +125,7 @@ public final class RobotOperator {
   /** Called in periodic() to update to the hub state. */
   private void updateHubState() {
     if (MatchUtil.isAutonomous()) {
-      setHubState(HubState.ACTIVE);
+      setHubState(HubState.AUTO);
       return;
     }
 
@@ -141,18 +141,24 @@ public final class RobotOperator {
     }
 
     switch (hubState) {
+      case AUTO:
+        if (MatchUtil.isTeleop()) {
+          setHubState(HubState.ACTIVE);
+        }
       case ACTIVE:
         if (!MatchUtil.isHubActiveAt(
             matchTime - HubState.PREPARING_TO_DISABLE_10_SEC.getDeltaTime())) {
           setHubState(HubState.PREPARING_TO_DISABLE_10_SEC);
-        } else if (matchTime <= HubState.NEARING_END_OF_MATCH.getDeltaTime()) {
-          setHubState(HubState.NEARING_END_OF_MATCH);
+        } else if (matchTime <= HubState.ENDGAME.getDeltaTime()) {
+          setHubState(HubState.ENDGAME);
         }
         break;
       case INACTIVE:
         if (MatchUtil.isHubActiveAt(
             matchTime - HubState.PREPARING_SHOOTING_DISABLED.getDeltaTime())) {
           setHubState(HubState.PREPARING_SHOOTING_DISABLED);
+        } else if (matchTime <= HubState.ENDGAME.getDeltaTime()) {
+          setHubState(HubState.ENDGAME);
         }
         break;
       case PREPARING_SHOOTING_DISABLED:
@@ -175,6 +181,11 @@ public final class RobotOperator {
         if (!MatchUtil.isHubActiveAt(
             matchTime - HubState.PREPARING_TO_DISABLE_5_SEC.getDeltaTime())) {
           setHubState(HubState.PREPARING_TO_DISABLE_5_SEC);
+        }
+        break;
+      case ENDGAME:
+        if (matchTime <= HubState.NEARING_END_OF_MATCH.getDeltaTime()) {
+          setHubState(HubState.NEARING_END_OF_MATCH);
         }
         break;
       case NEARING_END_OF_MATCH:

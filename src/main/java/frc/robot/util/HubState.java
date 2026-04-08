@@ -11,6 +11,8 @@ import com.nrg948.util.Colors;
 
 /** An enum representing the hub states. */
 public enum HubState {
+  /** When the robot is in autonomous mode. */
+  AUTO(Colors.PURPLE, false, 0),
   /** When the hub is not active, we are not ready to shoot. */
   INACTIVE(Colors.RED, false, 0),
   /** When the hub is nearing active, we are not ready to shoot. */
@@ -26,6 +28,8 @@ public enum HubState {
    * closer in time)
    */
   PREPARING_TO_DISABLE_5_SEC(Colors.ORANGE, true, 5),
+  /** When */
+  ENDGAME(Colors.PINK, false, 30),
   /** When nearing the end of the match. */
   NEARING_END_OF_MATCH(Colors.YELLOW, true, 5);
 
