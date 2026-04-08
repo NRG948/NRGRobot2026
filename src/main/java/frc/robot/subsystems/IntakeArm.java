@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
+import static frc.robot.Constants.RobotConstants.DIO.EXTENDED_INTAKE_ARM_LIMIT_SWITCH;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
@@ -32,6 +33,7 @@ import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -77,6 +79,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
           "/IntakeArm/Motor", talonFX, CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION);
 
   private final RelativeEncoder encoder = motor.getEncoder();
+
+  private final DigitalInput extendedLimitSwitch =
+      new DigitalInput(EXTENDED_INTAKE_ARM_LIMIT_SWITCH);
 
   private double currentAngle = 0;
   private double goalAngle = STOW_ANGLE;
@@ -254,6 +259,11 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     return enabled;
   }
 
+  @DashboardBooleanBox(title = "Is Extended", column = 1, row = 3, width = 1, height = 1)
+  public boolean isExtended() {
+    return extendedLimitSwitch.get();
+  }
+
   /** {@return the current arm velocity in rads/s} */
   public double getCurrentVelocity() {
     return currentVelocity;
@@ -275,9 +285,20 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   @Override
   public void periodic() {
     updateTelemetry();
-    if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)) {
+
+    if ((goalAngle == IntakeArm.STOW_ANGLE
+        || (!isCompBot() && goalAngle == IntakeArm.EXTENDED_ANGLE))) {
       if (atGoalAngle()) {
         disable();
+      } else if (!enabled) {
+        setGoalAngle(goalAngle);
+      }
+    }
+
+    if (isCompBot() && goalAngle == IntakeArm.EXTENDED_ANGLE) {
+      if (isExtended()) {
+        disable();
+        resetArmPosition(EXTENDED_ANGLE);
       } else if (!enabled) {
         setGoalAngle(goalAngle);
       }
