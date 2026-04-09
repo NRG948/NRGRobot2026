@@ -49,6 +49,7 @@ public final class Constants {
       public static final int SHOOTER_UPPER_RIGHT_ID = 18;
       public static final int SHOOTER_LOWER_LEFT_ID = 17;
       public static final int SHOOTER_UPPER_LEFT_ID = 19;
+      public static final int ADJUSTABLE_HOOD_ID = 99; // TODO: Change ID
     }
   }
 }

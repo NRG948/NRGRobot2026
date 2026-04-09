@@ -46,6 +46,11 @@ public final class Subsystems {
       modes = {"Testing"})
   public final Shooter shooter = new Shooter();
 
+  @DashboardTab(
+      title = "Adjustable Hood",
+      modes = {"Testing"})
+  public final AdjustableHood hood = new AdjustableHood();
+
   private static final double ROLLER_DIAMETER = Units.inchesToMeters(1.25);
 
   private static final double INDEXER_GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
@@ -142,7 +147,7 @@ public final class Subsystems {
   public Subsystems() {
     // Add all manipulator subsystems to the `manipulators` list.
     var manipulators =
-        new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, hopper, intakeArm));
+        new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, hopper, intakeArm, hood));
 
     var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain, statusLEDs));
 
