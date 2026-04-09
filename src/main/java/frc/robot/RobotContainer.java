@@ -177,6 +177,7 @@ public class RobotContainer {
     driverController.leftTrigger().onTrue(moveArmToAngle(subsystems, BUMP_ANGLE));
     driverController.leftTrigger().onFalse(moveArmToAngle(subsystems, EXTENDED_ANGLE));
     driverController.rightBumper().whileTrue(extendAndIntakeWhenSafe(subsystems));
+    driverController.leftBumper().whileTrue(IntakeCommands.outtake(subsystems));
 
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
