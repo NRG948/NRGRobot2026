@@ -37,6 +37,25 @@ public final class LEDCommands {
         .withName(String.format("SetColor(%s)", color.name()));
   }
 
+  /**
+   * Returns a command that sets the color of the status LEDs.
+   *
+   * @param statusLED The status LED subsystem.
+   * @param color The color to set.
+   * @return A command that sets the color of the status LED.
+   */
+  public static Command setColorAndIdle(StatusLED statusLED, Colors color) {
+    return Commands.sequence(
+            Commands.runOnce(() -> statusLED.fillAndCommitColor(color), statusLED),
+            Commands.idle(statusLED))
+        .withName(String.format("SetColorAndIdle(%s)", color.name()));
+  }
+
+  public static Command blinkAndIdle(StatusLED statusLED, Colors color) {
+    return Commands.sequence(new BlinkColor(statusLED, color), Commands.idle(statusLED))
+        .withName(String.format("blinkAndIdle(%s)", color.name()));
+  }
+
   /*
    * Returns a command that sets the autonomous LEDs to Flame Cycle.
    *

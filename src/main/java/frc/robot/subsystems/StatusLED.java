@@ -10,9 +10,24 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.RobotConstants.LEDSegment.STATUS_FIRST_LED;
 import static frc.robot.Constants.RobotConstants.LEDSegment.STATUS_LED_COUNT;
 import static frc.robot.parameters.Colors.RED;
+import static frc.robot.util.MatchUtil.transitionTimes;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.BlinkColor;
+import frc.robot.commands.BlinkingRainbowCycle;
+import frc.robot.commands.LEDCommands;
+import frc.robot.commands.RainbowCycle;
+import frc.robot.parameters.Colors;
+import frc.robot.util.MatchUtil;
+import frc.robot.util.MatchUtil.LEDLights;
 
 /** A subsystem to control the status LEDs. */
 public final class StatusLED extends LEDSubsystem {
+
+  private LEDLights lastLights = LEDLights.NONE;
+
   /** Creates a new StatusLEDSubsystem. */
   public StatusLED() {
     super(STATUS_FIRST_LED, STATUS_LED_COUNT);
@@ -21,5 +36,33 @@ public final class StatusLED extends LEDSubsystem {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    LEDLights light = transitionTimes.get((Integer) (int) MatchUtil.getMatchTimeRemaining());
+
+    if (light != null && lastLights != light && MatchUtil.isTeleop()) {
+      lastLights = light;
+      Command toSchedule =
+          switch (light) {
+            case GREEN:
+              System.out.println("GREEN");
+              yield LEDCommands.setColorAndIdle(this, Colors.GREEN);
+            case BLINKING_YELLOW:
+              System.out.println("YELLOW");
+              yield new BlinkColor(this, Colors.YELLOW);
+            case BLINKING_RED:
+              System.out.println("RED");
+              yield new BlinkColor(this, Colors.RED);
+            case RAINBOW:
+              System.out.println("RAINBOW");
+              yield new RainbowCycle(this);
+            case BLINKING_RAINBOW:
+              System.out.println("BLINKING RAINBOW");
+              yield new BlinkingRainbowCycle(this);
+            case NONE:
+              System.out.println("NONE");
+              yield Commands.none();
+          };
+      CommandScheduler.getInstance().schedule(toSchedule);
+    }
+  }
 }
