@@ -45,7 +45,7 @@
         "type" : "Alerts",
         "x" : 0.0,
         "y" : 384.0,
-        "width" : 640.0,
+        "width" : 384.0,
         "height" : 256.0,
         "properties" : {
           "topic" : "/SmartDashboard/Alerts",
@@ -180,6 +180,18 @@
           "period" : 0.06,
           "show_type" : true,
           "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Intake Velocity: ",
+        "type" : "Text Display",
+        "x" : 384.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Intake Velocity: ",
+          "period" : 0.06,
+          "show_submit_button" : false
         }
       } ]
     }

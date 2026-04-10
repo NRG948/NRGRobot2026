@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.3,
+        "x": 7.2,
         "y": 3.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.4380444444444445,
+        "x": 6.338044444444445,
         "y": 2.9728555555555545
       },
       "isLocked": false,
@@ -71,6 +71,17 @@
   ],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "Intake for Bump",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": 0.8833746898262929,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    },
     {
       "name": "Ramp Up for First Shot",
       "waypointRelativePos": 1.25,

@@ -10,11 +10,41 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation.MatchType;
+import java.util.HashMap;
 
 /** Utility class for match-related information and timing. */
 public final class MatchUtil {
   private static final double ALMOST_ACTIVE_TOLERANCE = 2.0;
   private static final double RECENTLY_INACTIVE_TOLERANCE = 1.0;
+
+  public static final HashMap<Integer, LEDLights> transitionTimes =
+      new HashMap<Integer, LEDLights>();
+
+  public enum LEDLights {
+    GREEN,
+    BLINKING_RED,
+    BLINKING_YELLOW,
+    RAINBOW,
+    BLINKING_RAINBOW,
+    NONE
+  }
+
+  static {
+    transitionTimes.put(139, LEDLights.GREEN);
+    transitionTimes.put(115, LEDLights.BLINKING_YELLOW);
+    transitionTimes.put(110, LEDLights.BLINKING_RED);
+    transitionTimes.put(105, LEDLights.GREEN);
+    transitionTimes.put(90, LEDLights.BLINKING_YELLOW);
+    transitionTimes.put(85, LEDLights.BLINKING_RED);
+    transitionTimes.put(80, LEDLights.GREEN);
+    transitionTimes.put(65, LEDLights.BLINKING_YELLOW);
+    transitionTimes.put(60, LEDLights.BLINKING_RED);
+    transitionTimes.put(55, LEDLights.GREEN);
+    transitionTimes.put(40, LEDLights.BLINKING_YELLOW);
+    transitionTimes.put(35, LEDLights.BLINKING_RED);
+    transitionTimes.put(30, LEDLights.RAINBOW);
+    transitionTimes.put(5, LEDLights.BLINKING_RAINBOW);
+  }
 
   enum ShiftTimes {
     AUTONOMOUS("Autonomous", 20, 0),
@@ -141,6 +171,26 @@ public final class MatchUtil {
         || (time <= PRE_SECOND_SHIFT_START_TIME && time >= SECOND_SHIFT_START_TIME)
         || (time <= PRE_THIRD_SHIFT_START_TIME && time >= THIRD_SHIFT_START_TIME)
         || (time <= PRE_FOURTH_SHIFT_START_TIME && time >= FOURTH_SHIFT_START_TIME);
+  }
+
+  /** Returns whether we are within 5 seconds of a shift change. */
+  public static boolean isWithin5SecOfShift() {
+    double time = DriverStation.getMatchTime();
+
+    return (time <= (ShiftTimes.SHIFT_1.endTime + 5) && time > ShiftTimes.SHIFT_1.endTime)
+        || (time <= (ShiftTimes.SHIFT_2.endTime + 5) && time > ShiftTimes.SHIFT_2.endTime)
+        || (time <= (ShiftTimes.SHIFT_3.endTime + 5) && time > ShiftTimes.SHIFT_2.endTime)
+        || (time <= (ShiftTimes.SHIFT_4.endTime + 5) && time > ShiftTimes.SHIFT_2.endTime);
+  }
+
+  /** Returns whether we are within 10 seconds of a shift change, excluding 5 seconds. */
+  public static boolean isWithin10SecOfShift() {
+    double time = DriverStation.getMatchTime();
+
+    return (time <= (ShiftTimes.SHIFT_1.endTime + 10) && time > (ShiftTimes.SHIFT_1.endTime + 5))
+        || (time <= (ShiftTimes.SHIFT_2.endTime + 10) && time > (ShiftTimes.SHIFT_2.endTime + 5))
+        || (time <= (ShiftTimes.SHIFT_3.endTime + 10) && time > (ShiftTimes.SHIFT_2.endTime + 5))
+        || (time <= (ShiftTimes.SHIFT_4.endTime + 10) && time > (ShiftTimes.SHIFT_2.endTime + 5));
   }
 
   /**

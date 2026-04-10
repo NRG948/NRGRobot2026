@@ -16,6 +16,7 @@ import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
 import com.nrg948.dashboard.annotations.DashboardSingleColorView;
 import com.nrg948.dashboard.annotations.DashboardSplitButtonChooser;
+import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.GameField;
 import com.nrg948.util.Colors;
 import edu.wpi.first.wpilibj.Alert;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.Autos;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.AprilTag;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
@@ -42,6 +44,7 @@ public final class RobotOperator {
 
   private final Swerve drivetrain;
   private final IntakeArm intakeArm;
+  private final Intake intake;
   private final Optional<AprilTag> frontLeftCamera;
   private final Optional<AprilTag> frontRightCamera;
 
@@ -69,12 +72,13 @@ public final class RobotOperator {
   @DashboardComboBoxChooser(title = "Autonomous Delay", column = 9, row = 4, width = 3, height = 1)
   private final SendableChooser<Integer> delayChooser = Autos.getDelayChooser();
 
-  @DashboardAlerts(title = "Alerts", column = 0, row = 3, width = 5, height = 2)
+  @DashboardAlerts(title = "Alerts", column = 0, row = 3, width = 3, height = 2)
   private final Alert[] alerts = new Alert[] {Autos.getInvalidAutoAlert()};
 
   public RobotOperator(Subsystems subsystems) {
     drivetrain = subsystems.drivetrain;
     intakeArm = subsystems.intakeArm;
+    intake = subsystems.intake;
     frontLeftCamera = subsystems.frontLeftCamera;
     frontRightCamera = subsystems.frontRightCamera;
   }
@@ -246,6 +250,11 @@ public final class RobotOperator {
     return Commands.runOnce(() -> intakeArm.setStowedPosition(), intakeArm)
         .withName("Set Stowed Position")
         .ignoringDisable(true);
+  }
+
+  @DashboardTextDisplay(title = "Intake Velocity: ", column = 3, row = 3, width = 2, height = 1)
+  public double getIntakeVelocity() {
+    return intake.getCurrentVelocity();
   }
 
   public void periodic() {

@@ -17,6 +17,7 @@ import static frc.robot.commands.ShootingCommands.shootWhenInRange;
 import static frc.robot.commands.ShootingCommands.shootWhenInRangeAndOnShift;
 import static frc.robot.subsystems.IntakeArm.BUMP_ANGLE;
 import static frc.robot.subsystems.IntakeArm.EXTENDED_ANGLE;
+import static frc.robot.subsystems.IntakeArm.HALF_STOW_ANGLE;
 import static frc.robot.subsystems.IntakeArm.STOW_ANGLE;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
@@ -29,7 +30,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.BlinkColor;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
@@ -39,7 +39,6 @@ import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDCommands;
 import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
-import frc.robot.parameters.Colors;
 import frc.robot.subsystems.StatusLED;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -107,19 +106,6 @@ public class RobotContainer {
 
     new Trigger(MatchUtil::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
 
-    new Trigger(() -> MatchUtil.isTeleop() && isHubState(HubState.ACTIVE))
-        .whileTrue(LEDCommands.setColor(statusLED, Colors.GREEN));
-    new Trigger(() -> isHubState(HubState.INACTIVE))
-        .whileTrue(LEDCommands.setColor(statusLED, Colors.RED));
-    new Trigger(() -> isHubState(HubState.PREPARING_SHOOTING_DISABLED))
-        .whileTrue(new BlinkColor(statusLED, Colors.RED));
-    new Trigger(() -> isHubState(HubState.PREPARING_SHOOTING_ENABLED))
-        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
-    new Trigger(() -> isHubState(HubState.PREPARING_TO_DISABLE_10_SEC))
-        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
-    new Trigger(() -> isHubState(HubState.NEARING_END_OF_MATCH))
-        .whileTrue(new BlinkColor(statusLED, Colors.YELLOW));
-
     driverController
         .a()
         .whileTrue(
@@ -177,12 +163,17 @@ public class RobotContainer {
     driverController.leftTrigger().onTrue(moveArmToAngle(subsystems, BUMP_ANGLE));
     driverController.leftTrigger().onFalse(moveArmToAngle(subsystems, EXTENDED_ANGLE));
     driverController.rightBumper().whileTrue(extendAndIntakeWhenSafe(subsystems));
+    driverController.leftBumper().whileTrue(IntakeCommands.outtake(subsystems));
 
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
     manipulatorController
         .povRight()
         .whileTrue(avoidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
+
+    manipulatorController.povDown().onTrue(moveArmToAngle(subsystems, HALF_STOW_ANGLE));
+
+    manipulatorController.povLeft().whileTrue(IntakeCommands.intake(subsystems));
 
     manipulatorController
         .rightBumper()
