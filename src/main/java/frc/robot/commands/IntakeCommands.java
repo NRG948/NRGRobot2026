@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import static frc.robot.subsystems.IntakeArm.AGITATE_ANGLES;
+import static frc.robot.subsystems.IntakeArm.EXTENDED_ANGLE;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -127,6 +128,7 @@ public final class IntakeCommands {
             agitateSequence(subsystems, AGITATE_ANGLES[7]),
             agitateSequence(subsystems, AGITATE_ANGLES[8]),
             agitateSequence(subsystems, AGITATE_ANGLES[9]))
-        .repeatedly();
+        .repeatedly()
+        .finallyDo(() -> subsystems.intakeArm.setGoalAngle(EXTENDED_ANGLE));
   }
 }
