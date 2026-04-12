@@ -44,22 +44,16 @@ public final class StatusLED extends LEDSubsystem {
       Command toSchedule =
           switch (light) {
             case GREEN:
-              System.out.println("GREEN");
               yield LEDCommands.setColorAndIdle(this, Colors.GREEN);
             case BLINKING_YELLOW:
-              System.out.println("YELLOW");
               yield new BlinkColor(this, Colors.YELLOW);
             case BLINKING_RED:
-              System.out.println("RED");
               yield new BlinkColor(this, Colors.RED);
             case RAINBOW:
-              System.out.println("RAINBOW");
               yield new RainbowCycle(this);
             case BLINKING_RAINBOW:
-              System.out.println("BLINKING RAINBOW");
               yield new BlinkingRainbowCycle(this);
             case NONE:
-              System.out.println("NONE");
               yield Commands.none();
           };
       CommandScheduler.getInstance().schedule(toSchedule);

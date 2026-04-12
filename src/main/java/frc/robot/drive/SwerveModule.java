@@ -21,10 +21,10 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Robot;
 import frc.robot.parameters.SwerveDriveParameters;
+import frc.robot.util.MotorController;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -190,6 +190,8 @@ public final class SwerveModule {
     positionLog.append(position);
     wheelAngleLog.append(wheelAngle.getDegrees());
     wheelAngleVelocityLog.append(wheelAngleVelocity);
+    driveMotor.logTelemetry();
+    steeringMotor.logTelemetry();
   }
 
   /** Returns the name of the module. */
