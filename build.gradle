@@ -72,7 +72,7 @@ repositories {
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
-def NRGCommonVersion = "2026.2.4"
+def NRGCommonVersion = "2026.3.1-SNAPSHOT"
 
 dependencies {
     annotationProcessor wpi.java.deps.wpilibAnnotations()
@@ -97,6 +97,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation "com.nrg948:nrgcommon:${NRGCommonVersion}"
+    implementation "com.nrg948:nrgcommon-ctre:${NRGCommonVersion}"
 
     annotationProcessor "com.nrg948:nrgcommon-processor:${NRGCommonVersion}"
 }

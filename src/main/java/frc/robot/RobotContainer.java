@@ -20,6 +20,7 @@ import static frc.robot.subsystems.IntakeArm.EXTENDED_ANGLE;
 import static frc.robot.subsystems.IntakeArm.HALF_STOW_ANGLE;
 import static frc.robot.subsystems.IntakeArm.STOW_ANGLE;
 
+import com.nrg948.actuator.MotorIdleMode;
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,7 +45,6 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.HubState;
 import frc.robot.util.MatchUtil;
-import frc.robot.util.MotorIdleMode;
 import java.util.function.BooleanSupplier;
 
 /**

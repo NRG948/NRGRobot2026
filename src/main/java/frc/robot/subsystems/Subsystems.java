@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.RobotPreferences.isCompBot;
 
+import com.nrg948.actuator.MotorIdleMode;
 import com.nrg948.dashboard.annotations.DashboardTab;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.StringLogEntry;
@@ -17,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.RobotConstants.CANID;
 import frc.robot.RobotPreferences;
-import frc.robot.util.MotorIdleMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;

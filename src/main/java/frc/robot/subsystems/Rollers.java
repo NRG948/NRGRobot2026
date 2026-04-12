@@ -11,6 +11,10 @@ import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.FEED_VELOCITY;
 import static frc.robot.RobotPreferences.UNFEED_VELOCITY;
 
+import com.nrg948.actuator.MotorController;
+import com.nrg948.actuator.MotorDirection;
+import com.nrg948.actuator.MotorIdleMode;
+import com.nrg948.actuator.Motors;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardPIDController;
@@ -18,6 +22,7 @@ import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.PIDControllerPreference;
+import com.nrg948.sensor.RelativeEncoder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -25,11 +30,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorController;
-import frc.robot.util.MotorDirection;
-import frc.robot.util.MotorIdleMode;
-import frc.robot.util.RelativeEncoder;
 
 @DashboardDefinition
 public final class Rollers extends SubsystemBase implements ActiveSubsystem {
@@ -37,7 +37,7 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
 
   private static final DataLog LOG = DataLogManager.getLog();
 
-  private static final MotorParameters MOTOR_PARAMS = MotorParameters.KrakenX60;
+  private static final Motors MOTOR = Motors.KrakenX60;
 
   private static final double EFFICIENCY = 0.9;
 
@@ -45,7 +45,7 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
   private final MotorController motor;
   private final RelativeEncoder encoder;
 
-  private final double KS = MOTOR_PARAMS.getKs();
+  private final double KS = MOTOR.getKs();
   private final double KV;
   private final SimpleMotorFeedforward feedforward;
 
@@ -102,11 +102,11 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
   /** Creates a new Rollers subsystem. */
   public Rollers(String name, int motorId, double metersPerRevolution) {
     setName(name);
-    maxVelocity = MOTOR_PARAMS.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
+    maxVelocity = MOTOR.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
     KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
     feedforward = new SimpleMotorFeedforward(KS, KV);
     motor =
-        MOTOR_PARAMS.newController(
+        MOTOR.newController(
             "/" + name + "/Motor",
             motorId,
             MotorDirection.CLOCKWISE_POSITIVE,

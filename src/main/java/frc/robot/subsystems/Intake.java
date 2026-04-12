@@ -7,12 +7,15 @@
  
 package frc.robot.subsystems;
 
+import static com.nrg948.actuator.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
+import static com.nrg948.actuator.MotorIdleMode.BRAKE;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorIdleMode.BRAKE;
 
+import com.nrg948.actuator.MotorController;
+import com.nrg948.actuator.MotorIdleMode;
+import com.nrg948.actuator.Motors;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardPIDController;
@@ -20,6 +23,7 @@ import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
 import com.nrg948.preferences.PIDControllerPreference;
+import com.nrg948.sensor.RelativeEncoder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,21 +31,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
-import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorController;
-import frc.robot.util.MotorIdleMode;
-import frc.robot.util.RelativeEncoder;
 import java.util.Map;
 
 @DashboardDefinition
 public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
-  private static final MotorParameters MOTOR =
+  private static final Motors MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
-              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
-          MotorParameters.NullMotor);
+              RobotSelector.CompetitionRobot2026, Motors.KrakenX60,
+              RobotSelector.PracticeRobot2026, Motors.KrakenX60),
+          Motors.NullMotor);
 
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(2.06);
   private static final double GEAR_RATIO = isCompBot() ? (34.0 / 14.0) * (24.0 / 36.0) : 1;

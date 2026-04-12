@@ -7,7 +7,7 @@
  
 package frc.robot.subsystems;
 
-import frc.robot.util.MotorIdleMode;
+import com.nrg948.actuator.MotorIdleMode;
 
 /** Interface representing an active subsystem. */
 public interface ActiveSubsystem {

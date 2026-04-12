@@ -7,11 +7,11 @@
  
 package frc.robot.subsystems;
 
+import static com.nrg948.actuator.MotorDirection.CLOCKWISE_POSITIVE;
+import static com.nrg948.actuator.MotorIdleMode.BRAKE;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ARM_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
-import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorIdleMode.BRAKE;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
@@ -24,12 +24,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.nrg948.actuator.MotorIdleMode;
+import com.nrg948.actuator.Motors;
+import com.nrg948.actuator.ctre.TalonFXAdapter;
 import com.nrg948.dashboard.annotations.DashboardBooleanBox;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
+import com.nrg948.sensor.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,20 +41,16 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
-import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorIdleMode;
-import frc.robot.util.RelativeEncoder;
-import frc.robot.util.TalonFXAdapter;
 import java.util.Map;
 
 @DashboardDefinition
 public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
-  private static final MotorParameters MOTOR =
+  private static final Motors MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
-              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
-          MotorParameters.NullMotor);
+              RobotSelector.CompetitionRobot2026, Motors.KrakenX60,
+              RobotSelector.PracticeRobot2026, Motors.KrakenX60),
+          Motors.NullMotor);
 
   private static final double TOLERANCE = Units.degreesToRadians(2.5);
 

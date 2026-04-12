@@ -7,15 +7,18 @@
  
 package frc.robot.parameters;
 
-import static frc.robot.parameters.MotorParameters.KrakenX44;
-import static frc.robot.parameters.MotorParameters.KrakenX60;
+import static com.nrg948.actuator.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
+import static com.nrg948.actuator.MotorIdleMode.BRAKE;
+import static com.nrg948.actuator.Motors.KrakenX44;
+import static com.nrg948.actuator.Motors.KrakenX60;
 import static frc.robot.parameters.SwerveModuleParameters.MK4I_L2;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorIdleMode.BRAKE;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.nrg948.actuator.MotorController;
+import com.nrg948.actuator.MotorDirection;
+import com.nrg948.actuator.Motors;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -25,8 +28,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.Gyro;
-import frc.robot.util.MotorController;
-import frc.robot.util.MotorDirection;
 import frc.robot.util.Pigeon2Gyro;
 
 /** An enum representing the properties for the swerve drive base of a specific robot instance. */
@@ -89,8 +90,8 @@ public enum SwerveDriveParameters {
   private final double wheelDistanceX;
   private final double wheelDistanceY;
   private final SwerveModuleParameters moduleParams;
-  private final MotorParameters driveMotor;
-  private final MotorParameters steeringMotor;
+  private final Motors driveMotor;
+  private final Motors steeringMotor;
   private final int[] motorIds;
   private final int[] angleEncoderIds;
   private final double[] angleOffset;
@@ -160,8 +161,8 @@ public enum SwerveDriveParameters {
       double wheelDistanceX,
       double wheelDistanceY,
       SwerveModuleParameters moduleParams,
-      MotorParameters driveMotor,
-      MotorParameters steeringMotor,
+      Motors driveMotor,
+      Motors steeringMotor,
       int[] motorIds,
       int[] angleEncoderIds,
       double[] angleOffset,
@@ -260,8 +261,8 @@ public enum SwerveDriveParameters {
       double wheelDistanceX,
       double wheelDistanceY,
       SwerveModuleParameters swerveModule,
-      MotorParameters driveMotor,
-      MotorParameters steeringMotor,
+      Motors driveMotor,
+      Motors steeringMotor,
       int[] motorIds,
       int[] angleEncoderIds,
       double[] angleOffset,
@@ -328,8 +329,8 @@ public enum SwerveDriveParameters {
       double wheelDistanceX,
       double wheelDistanceY,
       SwerveModuleParameters swerveModule,
-      MotorParameters driveMotor,
-      MotorParameters steeringMotor,
+      Motors driveMotor,
+      Motors steeringMotor,
       int[] motorIds,
       int[] angleEncoderIds,
       double[] angleOffset,
@@ -474,7 +475,7 @@ public enum SwerveDriveParameters {
    *
    * @return The motor used by swerve module on the robot.
    */
-  public MotorParameters getMotorParameters() {
+  public Motors getMotors() {
     return this.driveMotor;
   }
 

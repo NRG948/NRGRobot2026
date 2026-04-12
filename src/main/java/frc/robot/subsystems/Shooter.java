@@ -7,23 +7,27 @@
  
 package frc.robot.subsystems;
 
+import static com.nrg948.actuator.MotorDirection.CLOCKWISE_POSITIVE;
+import static com.nrg948.actuator.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
+import static com.nrg948.actuator.MotorIdleMode.COAST;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_LOWER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_LEFT_ID;
 import static frc.robot.Constants.RobotConstants.CANID.SHOOTER_UPPER_RIGHT_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
-import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
-import static frc.robot.util.MotorIdleMode.COAST;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.nrg948.actuator.MotorIdleMode;
+import com.nrg948.actuator.Motors;
+import com.nrg948.actuator.ctre.TalonFXAdapter;
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.DataBinding;
+import com.nrg948.sensor.RelativeEncoder;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.datalog.DataLog;
@@ -32,13 +36,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotPreferences;
-import frc.robot.RobotSelector;
-import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorIdleMode;
-import frc.robot.util.RelativeEncoder;
-import frc.robot.util.TalonFXAdapter;
-import java.util.Map;
 
 @DashboardDefinition
 public final class Shooter extends SubsystemBase implements ActiveSubsystem {
@@ -47,12 +44,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   private static final DataLog LOG = DataLogManager.getLog();
 
-  private static final MotorParameters SHOOTER_MOTOR =
-      RobotPreferences.ROBOT_TYPE.selectOrDefault(
-          Map.of(
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX44,
-              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX44),
-          MotorParameters.KrakenX44);
+  private static final Motors SHOOTER_MOTOR = Motors.KrakenX44;
 
   private static final double GEAR_RATIO = 1.0;
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
@@ -205,8 +197,11 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
     config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
 
-    leftUpperMotor.applyTalonFXConfiguration(config);
-    rightUpperMotor.applyTalonFXConfiguration(config);
+    config.MotorOutput = leftUpperMotor.getMotorOutputConfigs();
+    leftUpperMotor.applyConfig(config);
+
+    config.MotorOutput = rightUpperMotor.getMotorOutputConfigs();
+    rightUpperMotor.applyConfig(config);
   }
 
   /** Sets shooter goal velocity based on distance inputted to interpolation table. */
