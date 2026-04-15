@@ -245,6 +245,7 @@ public class RobotContainer {
   }
 
   public void autonomousInit() {
+    subsystems.drivetrain.captureLevelBaseline();
     subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
     subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
 

@@ -46,7 +46,21 @@ public final class DriveCommands {
         .withName("InterruptAll");
   }
 
+  static final double DRIVE_UNTIL_LEVEL_SPEED = 0.3;
+
   private DriveCommands() {
     throw new UnsupportedOperationException("This is a utility class.");
+  }
+
+  public static Command driveUntilLevel(Subsystems subsystems) {
+    Swerve drivetrain = subsystems.drivetrain;
+    return driveUntilLevel(drivetrain);
+  }
+
+  public static Command driveUntilLevel(Swerve drivetrain) {
+    return Commands.run(() -> drivetrain.drive(-DRIVE_UNTIL_LEVEL_SPEED, 0, 0, true), drivetrain)
+        .unless(drivetrain::isLevel)
+        .until(drivetrain::isLevel)
+        .withName("DriveUntilLevel");
   }
 }

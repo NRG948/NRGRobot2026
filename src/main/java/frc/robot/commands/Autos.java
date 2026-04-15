@@ -267,6 +267,8 @@ public final class Autos {
         "RampUpShooterForAutoScore",
         ShootingCommands.rampUpShooterForDistance(subsystems, Shooter.HUB_SHOT_DISTANCE));
 
+    eventMaps.put("DriveUntilLevel", DriveCommands.driveUntilLevel(subsystems));
+
     return eventMaps;
   }
 

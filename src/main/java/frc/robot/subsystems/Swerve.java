@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardGyro;
 import com.nrg948.dashboard.annotations.DashboardLayout;
@@ -22,6 +23,7 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,9 +46,12 @@ import edu.wpi.first.util.datalog.StructLogEntry;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
+import frc.robot.commands.DriveCommands;
 import frc.robot.drive.SwerveDrive;
 import frc.robot.drive.SwerveModule;
 import frc.robot.parameters.SwerveAngleEncoder;
@@ -63,6 +68,8 @@ import java.util.function.Supplier;
 
 @DashboardDefinition
 public final class Swerve extends SubsystemBase implements ActiveSubsystem {
+
+  private static final double LEVEL_TOLERANCE = Math.toRadians(2.0);
 
   @DashboardDefinition
   public static final class EstimatedPose {
@@ -143,6 +150,11 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private final CANcoder backLeftAngle = PARAMETERS.getAngleEncoder(SwerveAngleEncoder.BackLeft);
   private final CANcoder backRightAngle = PARAMETERS.getAngleEncoder(SwerveAngleEncoder.BackRight);
 
+  private final LinearFilter averagePitch = LinearFilter.movingAverage(3);
+  private final LinearFilter averageRoll = LinearFilter.movingAverage(3);
+  private double baselinePitch;
+  private double baselineRoll;
+
   @DashboardLayout(title = "Estimated Pose", column = 8, row = 0, width = 2, height = 3)
   private EstimatedPose estimatedPose = new EstimatedPose();
 
@@ -200,25 +212,26 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
       ccwPositive = true)
   private final Gyro gyro = PARAMETERS.getGyro();
 
-  @DashboardNumberBar(
-      title = "Pitch",
+  @DashboardCommand(
+      title = "Drive Until Level",
       column = 4,
-      row = 2,
+      row = 4,
       width = 2,
       height = 1,
-      min = -20,
-      max = 20)
-  private double pitch = 0;
+      fillWidget = true)
+  private Command driveUntilLevel = DriveCommands.driveUntilLevel(this);
 
-  @DashboardNumberBar(
-      title = "Roll",
+  @DashboardCommand(
+      title = "Capture Level Baseline",
       column = 4,
-      row = 3,
+      row = 5,
       width = 2,
       height = 1,
-      min = -20,
-      max = 20)
-  private double roll = 0;
+      fillWidget = true)
+  private Command captureLevelBasline =
+      Commands.runOnce(this::captureLevelBaseline, this)
+          .ignoringDisable(true)
+          .withName("captureLevelBaseline");
 
   private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
@@ -296,15 +309,16 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    * is up to date.
    */
   private void updateSensorState() {
-    double rawGyro = gyro.getYaw();
-    rawOrientation = rawGyro;
-    rawOrientationLog.append(Math.toDegrees(rawGyro));
+    rawOrientation = gyro.getYaw();
+    rawOrientationLog.append(Math.toDegrees(rawOrientation));
     orientation = new Rotation2d(MathUtil.angleModulus(rawOrientation + rawOrientationOffset));
 
     double accelerationX = accelerometer.getX();
     double accelerationY = accelerometer.getY();
     acceleration = Math.hypot(accelerationX, accelerationY);
     accelerationLog.append(acceleration);
+    averagePitch.calculate(gyro.getPitch());
+    averageRoll.calculate(gyro.getRoll());
   }
 
   /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double, Matrix)} */
@@ -336,6 +350,53 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   @Override
   public boolean isEnabled() {
     return DriverStation.isEnabled();
+  }
+
+  /** {@return the average pitch of the robot base in degrees} */
+  @DashboardNumberBar(
+      title = "Pitch",
+      column = 4,
+      row = 2,
+      width = 2,
+      height = 1,
+      min = -20,
+      max = 20)
+  public double getAveragePitchDegrees() {
+    return Math.toDegrees(getAveragePitch());
+  }
+
+  /** {@return the average pitch of the robot base in radians} */
+  public double getAveragePitch() {
+    return averagePitch.lastValue() - baselinePitch;
+  }
+
+  /** {@return the average roll of the robot base in degrees} */
+  @DashboardNumberBar(
+      title = "Roll",
+      column = 4,
+      row = 3,
+      width = 2,
+      height = 1,
+      min = -20,
+      max = 20)
+  public double getAverageRollDegrees() {
+    return Math.toDegrees(getAverageRoll());
+  }
+
+  /** {@return the average roll of the robot base in radians} */
+  public double getAverageRoll() {
+    return averageRoll.lastValue() - baselineRoll;
+  }
+
+  /** Captures the basline pitch and roll to determine whether the robot is level. */
+  public void captureLevelBaseline() {
+    baselinePitch = averagePitch.lastValue();
+    baselineRoll = averageRoll.lastValue();
+  }
+
+  /** {@return whether the robot is level} */
+  public boolean isLevel() {
+    return Math.hypot(getAveragePitch(), getAverageRoll()) <= LEVEL_TOLERANCE;
   }
 
   /**
@@ -630,9 +691,6 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
     // Send the robot and module location to the logger
     Pose2d robotPose = getPosition();
-
-    pitch = Math.toDegrees(gyro.getPitch());
-    roll = Math.toDegrees(gyro.getRoll());
 
     Translation2d robotLocation = robotPose.getTranslation();
     Translation2d targetLocation = FieldUtils.getAutoRotationTarget(robotLocation);

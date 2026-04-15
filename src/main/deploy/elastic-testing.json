@@ -639,6 +639,32 @@
           "counter_clockwise_positive" : true
         }
       }, {
+        "title" : "Drive Until Level",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 512.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Drive Until Level",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
+        "title" : "Capture Level Baseline",
+        "type" : "Command",
+        "x" : 512.0,
+        "y" : 640.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Capture Level Baseline",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
         "title" : "Pitch",
         "type" : "Number Bar",
         "x" : 512.0,
