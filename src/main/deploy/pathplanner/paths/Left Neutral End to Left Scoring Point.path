@@ -72,6 +72,17 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "Intake to bump",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": 1.1374689826302657,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    },
+    {
       "name": "Ramp Up for First Shot",
       "waypointRelativePos": 1.25,
       "endWaypointRelativePos": null,

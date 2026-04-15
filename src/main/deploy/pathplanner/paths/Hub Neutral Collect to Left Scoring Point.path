@@ -72,13 +72,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Disable intake for opposite scoring point",
-      "waypointRelativePos": 1.2049627791563242,
-      "endWaypointRelativePos": null,
+      "name": "Intake to bump",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 1.1652605459057068,
       "command": {
         "type": "named",
         "data": {
-          "name": "DisableIntake"
+          "name": "ExtendAndIntake"
         }
       }
     },

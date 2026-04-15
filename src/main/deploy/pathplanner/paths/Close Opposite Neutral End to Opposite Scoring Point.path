@@ -47,6 +47,17 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "Intake to bump",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 0.2610421836228262,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    },
+    {
       "name": "Ramp up shooter for left scoring point",
       "waypointRelativePos": 0.45,
       "endWaypointRelativePos": null,
