@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
+import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
@@ -51,8 +52,10 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60.0;
 
   private final MotorController motor =
-      MOTOR.newController(
-          "/Intake/Motor", INTAKE_ID, COUNTER_CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
+      MOTOR
+          .newController("/Intake/Motor", INTAKE_ID)
+          .applyConfig(
+              new MotorConfiguration(COUNTER_CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION));
 
   private final RelativeEncoder encoder = motor.getEncoder();
 

@@ -9,16 +9,9 @@ package frc.robot.parameters;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.system.plant.DCMotor;
-import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorController;
-import frc.robot.util.MotorDirection;
-import frc.robot.util.MotorIdleMode;
 import frc.robot.util.NullMotorAdapter;
-import frc.robot.util.SparkAdapter;
 import frc.robot.util.TalonFXAdapter;
 import org.ejml.simple.UnsupportedOperation;
 
@@ -124,12 +117,7 @@ public enum MotorParameters {
    *     the unit is typically in radians.
    * @return A new MotorController implementation.
    */
-  public MotorController newController(
-      String logPrefix,
-      int deviceID,
-      MotorDirection direction,
-      MotorIdleMode idleMode,
-      double distancePerRotation) {
+  public MotorController newController(String logPrefix, int deviceID) {
     switch (this) {
       case NullMotor:
         return new NullMotorAdapter();
@@ -137,26 +125,7 @@ public enum MotorParameters {
       case Falcon500:
       case KrakenX44:
       case KrakenX60:
-        return new TalonFXAdapter(logPrefix, new TalonFX(deviceID, CANBus.roboRIO()))
-            .applyConfig(new MotorConfiguration(direction, idleMode, distancePerRotation));
-
-      case NeoV1_1:
-      case NeoVortexMax:
-      case Neo550:
-        return new SparkAdapter(
-            logPrefix,
-            new SparkMax(deviceID, MotorType.kBrushless),
-            direction,
-            idleMode,
-            distancePerRotation);
-
-      case NeoVortexFlex:
-        return new SparkAdapter(
-            logPrefix,
-            new SparkFlex(deviceID, MotorType.kBrushless),
-            direction,
-            idleMode,
-            distancePerRotation);
+        return new TalonFXAdapter(logPrefix, new TalonFX(deviceID, CANBus.roboRIO()));
 
       default:
         throw new UnsupportedOperation("Unknown Motor Type");
