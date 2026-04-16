@@ -5,7 +5,7 @@
  * the license file in the root directory of this project.
  */
  
-package frc.robot.commands;
+package frc.robot.commands.LEDs;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;

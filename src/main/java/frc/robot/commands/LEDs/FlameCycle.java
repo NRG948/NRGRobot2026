@@ -5,25 +5,29 @@
  * the license file in the root directory of this project.
  */
  
-package frc.robot.commands;
+package frc.robot.commands.LEDs;
 
 import static frc.robot.parameters.Colors.BLACK;
+import static frc.robot.parameters.Colors.RED;
+import static frc.robot.parameters.Colors.YELLOW;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.StatusLED;
 
-/** A command to display an animated rainbow cycle pattern on the status LEDs. */
-public final class BlinkingRainbowCycle extends Command {
+/** A command to display an animated flame pattern on the status LEDs. */
+public final class FlameCycle extends Command {
+  private static final int RED_DIFF = RED.getRed() - YELLOW.getRed();
+  private static final int GREEN_DIFF = RED.getGreen() - YELLOW.getGreen();
+  private static final int BLUE_DIFF = RED.getBlue() - YELLOW.getBlue();
+
   private final StatusLED led;
   private final int ledCount;
-  private int step;
-  private static final double BLINK_TIME = 0.19;
 
-  /** Creates a new RainbowCycle. */
-  public BlinkingRainbowCycle(StatusLED led) {
+  private int step;
+
+  /** Creates a new FlameCycle. */
+  public FlameCycle(StatusLED led) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.led = led;
     this.ledCount = led.getLEDCount();
@@ -41,20 +45,19 @@ public final class BlinkingRainbowCycle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    double t = Timer.getFPGATimestamp();
-    boolean on = ((int) (t / (BLINK_TIME / 2.0))) % 2 == 0;
-
-    if (!on) {
-      led.fillColor(BLACK);
-      led.commitColor();
-      return;
-    }
-
-    int firstPixelHue = step++ * 3;
+    double multiplier = Math.sin(step++ * Math.toRadians(6)) * 0.5 + 0.5;
+    Color8Bit color0 =
+        new Color8Bit(
+            (int) (-(RED_DIFF * multiplier) + RED.getRed()),
+            (int) (-(GREEN_DIFF * multiplier) + RED.getGreen()),
+            (int) (-(BLUE_DIFF * multiplier) + RED.getBlue()));
+    Color8Bit color1 =
+        new Color8Bit(
+            (int) (RED_DIFF * multiplier + YELLOW.getRed()),
+            (int) (GREEN_DIFF * multiplier + YELLOW.getGreen()),
+            (int) (BLUE_DIFF * multiplier + YELLOW.getBlue()));
     for (int i = 0; i < ledCount; i++) {
-      Color8Bit color =
-          new Color8Bit(Color.fromHSV((firstPixelHue + ((180 * (i + 1)) / 21)) % 180, 255, 255));
+      Color8Bit color = ((i / 3) % 2) == 0 ? color0 : color1;
       led.setColor(color, i);
     }
     led.commitColor();

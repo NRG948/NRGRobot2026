@@ -33,16 +33,14 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.DriveAutoRotation;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.DriveUsingController;
-import frc.robot.commands.FlameCycle;
 import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.LEDCommands;
+import frc.robot.commands.LEDs.FlameCycle;
+import frc.robot.commands.LEDs.LEDCommands;
 import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
-import frc.robot.subsystems.StatusLED;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
-import frc.robot.util.HubState;
 import frc.robot.util.MatchUtil;
 import frc.robot.util.MotorIdleMode;
 import java.util.function.BooleanSupplier;
@@ -102,7 +100,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     Swerve drivetrain = subsystems.drivetrain;
-    StatusLED statusLED = subsystems.statusLEDs;
 
     new Trigger(MatchUtil::isAutonomous).whileTrue(LEDCommands.autoLEDs(subsystems));
 
@@ -188,10 +185,6 @@ public class RobotContainer {
     manipulatorController.leftBumper().whileTrue(IndexerCommands.feed(subsystems));
 
     manipulatorController.back().onTrue(DriveCommands.interruptAll(subsystems));
-  }
-
-  private boolean isHubState(HubState state) {
-    return operator.getHubState() == state;
   }
 
   /**

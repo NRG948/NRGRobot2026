@@ -5,23 +5,25 @@
  * the license file in the root directory of this project.
  */
  
-package frc.robot.commands;
+package frc.robot.commands.LEDs;
 
 import static frc.robot.parameters.Colors.BLACK;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.StatusLED;
 
 /** A command to display an animated rainbow cycle pattern on the status LEDs. */
-public final class RainbowCycle extends Command {
+public final class BlinkingRainbowCycle extends Command {
   private final StatusLED led;
   private final int ledCount;
   private int step;
+  private static final double BLINK_TIME = 0.19;
 
   /** Creates a new RainbowCycle. */
-  public RainbowCycle(StatusLED led) {
+  public BlinkingRainbowCycle(StatusLED led) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.led = led;
     this.ledCount = led.getLEDCount();
@@ -39,6 +41,16 @@ public final class RainbowCycle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    double t = Timer.getFPGATimestamp();
+    boolean on = ((int) (t / (BLINK_TIME / 2.0))) % 2 == 0;
+
+    if (!on) {
+      led.fillColor(BLACK);
+      led.commitColor();
+      return;
+    }
+
     int firstPixelHue = step++ * 3;
     for (int i = 0; i < ledCount; i++) {
       Color8Bit color =

@@ -5,7 +5,7 @@
  * the license file in the root directory of this project.
  */
  
-package frc.robot.commands;
+package frc.robot.commands.LEDs;
 
 import static frc.robot.parameters.Colors.BLACK;
 
