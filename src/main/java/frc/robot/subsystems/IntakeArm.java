@@ -320,15 +320,15 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
       if (current > STALL_CURRENT_THRESHOLD && velocity < STALL_VELOCITY_THRESHOLD) {
         talonFX.setControl(homingVoltageRequest.withOutput(0));
-        encoder.setPosition(STOW_ANGLE);
-        goalAngle = STOW_ANGLE;
+        setStowedPosition();
         needsHoming = false;
       }
 
       return;
     }
 
-    if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)) {
+    if ((goalAngle == IntakeArm.STOW_ANGLE || goalAngle == IntakeArm.EXTENDED_ANGLE)
+        && !needsHoming) {
       if (atGoalAngle()) {
         disable();
       } else if (!enabled) {
