@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.FEED_VELOCITY;
 import static frc.robot.RobotPreferences.UNFEED_VELOCITY;
+import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
+import static frc.robot.util.MotorIdleMode.BRAKE;
 
 import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
@@ -26,8 +28,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.parameters.MotorParameters;
+import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorController;
-import frc.robot.util.MotorDirection;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 
@@ -106,12 +108,9 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
     KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
     feedforward = new SimpleMotorFeedforward(KS, KV);
     motor =
-        MOTOR_PARAMS.newController(
-            "/" + name + "/Motor",
-            motorId,
-            MotorDirection.CLOCKWISE_POSITIVE,
-            MotorIdleMode.BRAKE,
-            metersPerRevolution);
+        MOTOR_PARAMS
+            .newController("/" + name + "/Motor", motorId)
+            .applyConfig(new MotorConfiguration(CLOCKWISE_POSITIVE, BRAKE, metersPerRevolution));
     encoder = motor.getEncoder();
     pidController = new PIDControllerPreference(name, "PID Controller", 1, 0, 0);
 

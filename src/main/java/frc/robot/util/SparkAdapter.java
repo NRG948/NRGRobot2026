@@ -337,4 +337,9 @@ public final class SparkAdapter implements MotorController {
     logOutputCurrent.append(spark.get().getOutputCurrent());
     logTemperature.append(spark.get().getMotorTemperature());
   }
+
+  @Override
+  public MotorController applyConfig(MotorConfiguration config) {
+    throw new UnsupportedOperationException("Unimplemented method 'applyConfig'");
+  }
 }

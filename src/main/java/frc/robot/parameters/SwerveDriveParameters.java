@@ -25,6 +25,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.Gyro;
+import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.Pigeon2Gyro;
@@ -505,14 +506,17 @@ public enum SwerveDriveParameters {
       case BackRightDrive:
         double metersPerRotation = (getWheelDiameter() * Math.PI) / getDriveGearRatio();
 
-        return this.driveMotor.newController(
-            logPrefix, motorID, COUNTER_CLOCKWISE_POSITIVE, BRAKE, metersPerRotation);
+        return this.driveMotor
+            .newController(logPrefix, motorID)
+            .applyConfig(
+                new MotorConfiguration(COUNTER_CLOCKWISE_POSITIVE, BRAKE, metersPerRotation));
 
       default:
         double radiansPerRotation = (2 * Math.PI) / getSteeringGearRatio();
 
-        return this.steeringMotor.newController(
-            logPrefix, motorID, getSteeringDirection(), BRAKE, radiansPerRotation);
+        return this.steeringMotor
+            .newController(logPrefix, motorID)
+            .applyConfig(new MotorConfiguration(getSteeringDirection(), BRAKE, radiansPerRotation));
     }
   }
 

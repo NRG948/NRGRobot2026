@@ -35,8 +35,7 @@ public final class TalonFXAdapter implements MotorController {
   private final String logPrefix;
 
   private final TalonFX talonFX;
-  private final double distancePerRotation;
-  private final MotorOutputConfigs motorOutputConfigs;
+  private double distancePerRotation;
   private final StatusSignal<Current> supplyCurrent;
   private final StatusSignal<Current> statorCurrent;
   private final StatusSignal<Temperature> temperature;
@@ -48,27 +47,12 @@ public final class TalonFXAdapter implements MotorController {
   /**
    * Constructs a TalonFXAdapter.
    *
-   * <p>This constructor assumes the {@link TalonFX} object is already configured or will be
-   * configured to match the provided motor output configuration by the caller.
-   *
    * @param logPrefix The prefix for the log entries.
    * @param talonFX The TalonFX object to adapt.
-   * @param motorOutputConfigs The motor output configuration.
-   * @param distancePerRotation The distance the attached mechanism moves per rotation of the motor
-   *     output shaft.
-   *     <p>The unit of measure depends on the mechanism. For a mechanism that produces linear
-   *     motion, the unit is typically in meters. For a mechanism that produces rotational motion,
-   *     the unit is typically in radians.
    */
-  public TalonFXAdapter(
-      String logPrefix,
-      TalonFX talonFX,
-      MotorOutputConfigs motorOutputConfigs,
-      double distancePerRotation) {
+  public TalonFXAdapter(String logPrefix, TalonFX talonFX) {
     this.logPrefix = logPrefix;
     this.talonFX = talonFX;
-    this.motorOutputConfigs = motorOutputConfigs;
-    this.distancePerRotation = distancePerRotation;
     this.supplyCurrent = talonFX.getSupplyCurrent();
     this.statorCurrent = talonFX.getStatorCurrent();
     this.temperature = talonFX.getDeviceTemp();
@@ -78,33 +62,6 @@ public final class TalonFXAdapter implements MotorController {
     this.logSupplyCurrent = new DoubleLogEntry(LOG, name + "/SupplyCurrent");
     this.logStatorCurrent = new DoubleLogEntry(LOG, name + "/StatorCurrent");
     this.logTemperature = new DoubleLogEntry(LOG, name + "/Temperature");
-  }
-
-  /**
-   * Constructs a TalonFXAdapter.
-   *
-   * @param logPrefix The prefix for the log entries.
-   * @param talonFX The TalonFX object to adapt.
-   * @param direction The direction the motor rotates when a positive voltage is applied.
-   * @param idleMode The motor behavior when idle (i.e. brake or coast mode).
-   * @param distancePerRotation The distance the attached mechanism moves per rotation of the motor
-   *     output shaft.
-   *     <p>The unit of measure depends on the mechanism. For a mechanism that produces linear
-   *     motion, the unit is typically in meters. For a mechanism that produces rotational motion,
-   *     the unit is typically in radians.
-   */
-  public TalonFXAdapter(
-      String logPrefix,
-      TalonFX talonFX,
-      MotorDirection direction,
-      MotorIdleMode idleMode,
-      double distancePerRotation) {
-    this(logPrefix, talonFX, new MotorOutputConfigs(), distancePerRotation);
-
-    motorOutputConfigs.NeutralMode = idleMode.forTalonFX();
-    motorOutputConfigs.Inverted = direction.forTalonFX();
-
-    applyMotorOutputConfig(talonFX, motorOutputConfigs);
   }
 
   @Override
@@ -124,22 +81,23 @@ public final class TalonFXAdapter implements MotorController {
 
   @Override
   public void setInverted(boolean isInverted) {
-    talonFX.getConfigurator().refresh(motorOutputConfigs);
+    var motorOutputConfigs = getMotorOutputConfig();
     motorOutputConfigs.Inverted =
         isInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-
-    applyMotorOutputConfig(talonFX, motorOutputConfigs);
+    applyMotorOutputConfig(motorOutputConfigs);
   }
 
   @Override
   public boolean getInverted() {
+    var motorOutputConfigs = getMotorOutputConfig();
     return motorOutputConfigs.Inverted == InvertedValue.Clockwise_Positive;
   }
 
   @Override
   public void setIdleMode(MotorIdleMode idleMode) {
+    var motorOutputConfigs = getMotorOutputConfig();
     motorOutputConfigs.NeutralMode = idleMode.forTalonFX();
-    applyMotorOutputConfig(talonFX, motorOutputConfigs);
+    applyMotorOutputConfig(motorOutputConfigs);
   }
 
   @Override
@@ -156,19 +114,10 @@ public final class TalonFXAdapter implements MotorController {
   public MotorController createFollower(
       String logPrefix, int deviceID, boolean isInvertedFromLeader) {
     TalonFX follower = new TalonFX(deviceID, talonFX.getNetwork());
+    TalonFXAdapter followerAdapter = new TalonFXAdapter(logPrefix, follower);
 
     // Get the motor output configuration from the leader and apply it to the follower.
-    MotorOutputConfigs followerMotorOutputConfigs = new MotorOutputConfigs();
-
-    followerMotorOutputConfigs.Inverted = motorOutputConfigs.Inverted;
-    followerMotorOutputConfigs.NeutralMode = motorOutputConfigs.NeutralMode;
-    followerMotorOutputConfigs.DutyCycleNeutralDeadband =
-        motorOutputConfigs.DutyCycleNeutralDeadband;
-    followerMotorOutputConfigs.PeakForwardDutyCycle = motorOutputConfigs.PeakForwardDutyCycle;
-    followerMotorOutputConfigs.PeakReverseDutyCycle = motorOutputConfigs.PeakReverseDutyCycle;
-    followerMotorOutputConfigs.ControlTimesyncFreqHz = motorOutputConfigs.ControlTimesyncFreqHz;
-
-    applyMotorOutputConfig(follower, followerMotorOutputConfigs);
+    followerAdapter.applyMotorOutputConfig(getMotorOutputConfig());
 
     // Configure the follower to follow the leader.
     Follower followerConfig =
@@ -178,7 +127,7 @@ public final class TalonFXAdapter implements MotorController {
 
     follower.setControl(followerConfig);
 
-    return new TalonFXAdapter(logPrefix, follower, followerMotorOutputConfigs, distancePerRotation);
+    return followerAdapter;
   }
 
   @Override
@@ -205,24 +154,64 @@ public final class TalonFXAdapter implements MotorController {
     logTemperature.append(this.temperature.refresh().getValueAsDouble());
   }
 
-  private static void applyMotorOutputConfig(
-      TalonFX talonFX, MotorOutputConfigs motorOutputConfigs) {
+  public MotorOutputConfigs getMotorOutputConfig() {
+    var motorOutputConfig = new MotorOutputConfigs();
+    StatusCode status = StatusCode.OK;
+
     for (int i = 0; i < 5; i++) {
-      StatusCode status = talonFX.getConfigurator().apply(motorOutputConfigs);
+      status = talonFX.getConfigurator().refresh(motorOutputConfig);
+      if (status.isOK()) {
+        return motorOutputConfig;
+      }
+    }
+
+    String errorMessage =
+        String.format(
+            "ERROR: Failed to get motor output config from ID %d: %s (%s)",
+            talonFX.getDeviceID(), status.getDescription(), status.getName());
+
+    DriverStation.reportError(errorMessage, false);
+
+    throw new RuntimeException(errorMessage);
+  }
+
+  public void applyMotorOutputConfig(MotorOutputConfigs motorOutputConfigs) {
+    StatusCode status = StatusCode.OK;
+    for (int i = 0; i < 5; i++) {
+      status = talonFX.getConfigurator().apply(motorOutputConfigs);
       if (status.isOK()) {
         return;
       }
-      System.out.println(
-          String.format(
-              "ERROR: Failed to apply motor output configs of TalonFX ID %d: %s (%s)",
-              talonFX.getDeviceID(), status.getDescription(), status.getName()));
+    }
+    String errorMessage =
+        String.format(
+            "ERROR: Failed to apply motor output config to ID %d: %s (%s)",
+            talonFX.getDeviceID(), status.getDescription(), status.getName());
+
+    DriverStation.reportError(errorMessage, false);
+
+    throw new RuntimeException(errorMessage);
+  }
+
+  public TalonFXConfiguration getTalonFXConfiguration() {
+    var talonFXConfig = new TalonFXConfiguration();
+    StatusCode status = StatusCode.OK;
+
+    for (int i = 0; i < 5; i++) {
+      status = talonFX.getConfigurator().refresh(talonFXConfig);
+      if (status.isOK()) {
+        return talonFXConfig;
+      }
     }
 
-    DriverStation.reportError(
+    String errorMessage =
         String.format(
-            "All retries exhausted applying motor output configs to TalonFX ID %d. Motor may be misconfigured.",
-            talonFX.getDeviceID()),
-        false);
+            "ERROR: Failed to get TalonFX config from ID %d: %s (%s)",
+            talonFX.getDeviceID(), status.getDescription(), status.getName());
+
+    DriverStation.reportError(errorMessage, false);
+
+    throw new RuntimeException(errorMessage);
   }
 
   /**
@@ -232,27 +221,24 @@ public final class TalonFXAdapter implements MotorController {
    * @return true if the configuration was successfully applied, false if all retries were
    *     exhausted.
    */
-  public boolean applyTalonFXConfiguration(TalonFXConfiguration config) {
-    config.MotorOutput = this.motorOutputConfigs;
+  public void applyTalonFXConfiguration(TalonFXConfiguration config) {
+    StatusCode status = StatusCode.OK;
 
     for (int i = 0; i < 5; i++) {
-      StatusCode status = talonFX.getConfigurator().apply(config);
+      status = talonFX.getConfigurator().apply(config);
       if (status.isOK()) {
-        return true;
+        return;
       }
-      System.out.println(
-          String.format(
-              "ERROR: Failed to apply TalonFX config to ID %d: %s (%s)",
-              talonFX.getDeviceID(), status.getDescription(), status.getName()));
     }
 
-    DriverStation.reportError(
+    String errorMessage =
         String.format(
-            "All retries exhausted applying TalonFX config to ID %d. Motor may be misconfigured.",
-            talonFX.getDeviceID()),
-        false);
+            "ERROR: Failed to apply TalonFX config to ID %d: %s (%s)",
+            talonFX.getDeviceID(), status.getDescription(), status.getName());
 
-    return false;
+    DriverStation.reportError(errorMessage, false);
+
+    throw new RuntimeException(errorMessage);
   }
 
   /**
@@ -266,5 +252,16 @@ public final class TalonFXAdapter implements MotorController {
 
   public void setControl(MotionMagicVelocityVoltage request) {
     talonFX.setControl(request);
+  }
+
+  @Override
+  public MotorController applyConfig(MotorConfiguration config) {
+    var talonFXConfig = getTalonFXConfiguration();
+    talonFXConfig.MotorOutput.Inverted = config.direction().forTalonFX();
+    talonFXConfig.MotorOutput.NeutralMode = config.idleMode().forTalonFX();
+    talonFXConfig.Feedback.SensorToMechanismRatio = 1.0;
+    applyTalonFXConfiguration(talonFXConfig);
+    distancePerRotation = config.distancePerRotation();
+    return this;
   }
 }

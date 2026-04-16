@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
+import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
@@ -96,23 +97,18 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   // These motors can only be controlled by a TalonFX Motor Controller
   private final TalonFXAdapter leftUpperMotor =
       (TalonFXAdapter)
-          SHOOTER_MOTOR.newController(
-              "/Shooter/Left Upper Motor",
-              SHOOTER_UPPER_LEFT_ID,
-              CLOCKWISE_POSITIVE,
-              COAST,
-              METERS_PER_REV);
+          SHOOTER_MOTOR
+              .newController("/Shooter/Left Upper Motor", SHOOTER_UPPER_LEFT_ID)
+              .applyConfig(new MotorConfiguration(CLOCKWISE_POSITIVE, COAST, METERS_PER_REV));
   private final TalonFXAdapter leftLowerMotor =
       (TalonFXAdapter)
           leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
   private final TalonFXAdapter rightUpperMotor =
       (TalonFXAdapter)
-          SHOOTER_MOTOR.newController(
-              "/Shooter/Right Upper Motor",
-              SHOOTER_UPPER_RIGHT_ID,
-              COUNTER_CLOCKWISE_POSITIVE,
-              COAST,
-              METERS_PER_REV);
+          SHOOTER_MOTOR
+              .newController("/Shooter/Right Upper Motor", SHOOTER_UPPER_RIGHT_ID)
+              .applyConfig(
+                  new MotorConfiguration(COUNTER_CLOCKWISE_POSITIVE, COAST, METERS_PER_REV));
   private final TalonFXAdapter rightLowerMotor =
       (TalonFXAdapter)
           rightUpperMotor.createFollower(
@@ -205,7 +201,9 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
     config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
 
+    config.MotorOutput = leftUpperMotor.getMotorOutputConfig();
     leftUpperMotor.applyTalonFXConfiguration(config);
+    config.MotorOutput = rightUpperMotor.getMotorOutputConfig();
     rightUpperMotor.applyTalonFXConfiguration(config);
   }
 
