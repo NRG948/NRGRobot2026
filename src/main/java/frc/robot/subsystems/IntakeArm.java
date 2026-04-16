@@ -297,6 +297,17 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     return !needsHoming;
   }
 
+  @DashboardCommand(
+      title = "Begin Homing Sequence",
+      column = 7,
+      row = 4,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private Command beginHomingSequence() {
+    return Commands.runOnce(() -> requestHome());
+  }
+
   @Override
   public void periodic() {
     updateTelemetry();
