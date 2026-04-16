@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.system.plant.DCMotor;
+import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.MotorIdleMode;
@@ -136,12 +137,8 @@ public enum MotorParameters {
       case Falcon500:
       case KrakenX44:
       case KrakenX60:
-        return new TalonFXAdapter(
-            logPrefix,
-            new TalonFX(deviceID, CANBus.roboRIO()),
-            direction,
-            idleMode,
-            distancePerRotation);
+        return new TalonFXAdapter(logPrefix, new TalonFX(deviceID, CANBus.roboRIO()))
+            .applyConfig(new MotorConfiguration(direction, idleMode, distancePerRotation));
 
       case NeoV1_1:
       case NeoVortexMax:

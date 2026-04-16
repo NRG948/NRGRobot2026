@@ -205,7 +205,9 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
     config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
 
+    config.MotorOutput = leftUpperMotor.getMotorOutputConfig();
     leftUpperMotor.applyTalonFXConfiguration(config);
+    config.MotorOutput = rightUpperMotor.getMotorOutputConfig();
     rightUpperMotor.applyTalonFXConfiguration(config);
   }
 

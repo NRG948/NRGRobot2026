@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
+import frc.robot.util.MotorConfiguration;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
@@ -74,8 +75,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private final TalonFX talonFX = new TalonFX(INTAKE_ARM_ID);
   private final TalonFXAdapter motor =
-      new TalonFXAdapter(
-          "/IntakeArm/Motor", talonFX, CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION);
+      (TalonFXAdapter)
+          new TalonFXAdapter("/IntakeArm/Motor", talonFX)
+              .applyConfig(new MotorConfiguration(CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION));
 
   private final RelativeEncoder encoder = motor.getEncoder();
 

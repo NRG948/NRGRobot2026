@@ -33,4 +33,7 @@ public interface MotorController extends edu.wpi.first.wpilibj.motorcontrol.Moto
 
   /** Logs motor-specific telemetry to the data log. */
   void logTelemetry();
+
+  /** Applies motor configuration. */
+  MotorController applyConfig(MotorConfiguration config);
 }
