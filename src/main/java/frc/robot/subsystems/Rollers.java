@@ -103,13 +103,13 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
   private final DoubleLogEntry logGoalVelocity;
 
   /** Creates a new Rollers subsystem. */
-  public Rollers(String name, int motorId, double metersPerRevolution) {
+  public Rollers(
+      String name, int motorId, double metersPerRevolution, MotorCurrentConfig currentConfig) {
     setName(name);
     maxVelocity = MOTOR_PARAMS.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
     KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
     feedforward = new SimpleMotorFeedforward(KS, KV);
     var motorConfig = new MotorConfig(CLOCKWISE_POSITIVE, BRAKE, metersPerRevolution);
-    var currentConfig = new MotorCurrentConfig();
     motor = MOTOR_PARAMS.newController("/" + name + "/Motor", motorId, motorConfig, currentConfig);
     encoder = motor.getEncoder();
     pidController = new PIDControllerPreference(name, "PID Controller", 1, 0, 0);
