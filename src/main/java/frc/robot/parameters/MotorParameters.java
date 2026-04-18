@@ -10,7 +10,10 @@ package frc.robot.parameters;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.system.plant.DCMotor;
+import frc.robot.util.MotorConfig;
+import frc.robot.util.MotorConfigException;
 import frc.robot.util.MotorController;
+import frc.robot.util.MotorCurrentConfig;
 import frc.robot.util.NullMotorAdapter;
 import frc.robot.util.TalonFXAdapter;
 import org.ejml.simple.UnsupportedOperation;
@@ -129,6 +132,15 @@ public enum MotorParameters {
 
       default:
         throw new UnsupportedOperation("Unknown Motor Type");
+    }
+  }
+
+  public MotorController newController(
+      String logPrefix, int deviceID, MotorConfig motorConfig, MotorCurrentConfig currentConfig) {
+    try {
+      return newController(logPrefix, deviceID).apply(motorConfig).apply(currentConfig);
+    } catch (MotorConfigException e) {
+      return new NullMotorAdapter();
     }
   }
 }

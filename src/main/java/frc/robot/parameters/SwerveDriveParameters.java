@@ -25,8 +25,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.Gyro;
-import frc.robot.util.MotorConfiguration;
+import frc.robot.util.MotorConfig;
 import frc.robot.util.MotorController;
+import frc.robot.util.MotorCurrentConfig;
 import frc.robot.util.MotorDirection;
 import frc.robot.util.Pigeon2Gyro;
 
@@ -498,6 +499,7 @@ public enum SwerveDriveParameters {
   public MotorController getMotorController(SwerveMotors motor) {
     String logPrefix = "/SwerveModule/" + motor.name();
     int motorID = getMotorId(motor);
+    MotorConfig motorConfig;
 
     switch (motor) {
       case FrontLeftDrive:
@@ -505,18 +507,16 @@ public enum SwerveDriveParameters {
       case BackLeftDrive:
       case BackRightDrive:
         double metersPerRotation = (getWheelDiameter() * Math.PI) / getDriveGearRatio();
+        motorConfig = new MotorConfig(COUNTER_CLOCKWISE_POSITIVE, BRAKE, metersPerRotation);
 
-        return this.driveMotor
-            .newController(logPrefix, motorID)
-            .applyConfig(
-                new MotorConfiguration(COUNTER_CLOCKWISE_POSITIVE, BRAKE, metersPerRotation));
+        return driveMotor.newController(logPrefix, motorID, motorConfig, new MotorCurrentConfig());
 
       default:
         double radiansPerRotation = (2 * Math.PI) / getSteeringGearRatio();
+        motorConfig = new MotorConfig(getSteeringDirection(), BRAKE, radiansPerRotation);
 
-        return this.steeringMotor
-            .newController(logPrefix, motorID)
-            .applyConfig(new MotorConfiguration(getSteeringDirection(), BRAKE, radiansPerRotation));
+        return steeringMotor.newController(
+            logPrefix, motorID, motorConfig, new MotorCurrentConfig());
     }
   }
 

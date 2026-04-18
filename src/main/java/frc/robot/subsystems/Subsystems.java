@@ -58,7 +58,7 @@ public final class Subsystems {
   public final Rollers indexer =
       new Rollers("Indexer", CANID.SHOOTER_INDEXER_ID, INDEXER_METERS_PER_REVOLUTION);
 
-  private static final double HOPPER_GEAR_RATIO = 1.0;
+  private static final double HOPPER_GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
   private static final double HOPPER_METERS_PER_REVOLUTION =
       (ROLLER_DIAMETER * Math.PI) / HOPPER_GEAR_RATIO;
 

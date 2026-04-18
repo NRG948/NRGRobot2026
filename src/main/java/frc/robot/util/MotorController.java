@@ -17,7 +17,8 @@ public interface MotorController extends edu.wpi.first.wpilibj.motorcontrol.Moto
    *     from this motor controller. This is useful for when the follower is mechanically connected
    *     to the leader but must spin in the opposite direction.
    */
-  MotorController createFollower(String logPrefix, int deviceID, boolean isInvertedFromLeader);
+  MotorController createFollower(String logPrefix, int deviceID, boolean isInvertedFromLeader)
+      throws MotorConfigException;
 
   /** Returns the motor controller's relative encoder. */
   RelativeEncoder getEncoder();
@@ -35,5 +36,8 @@ public interface MotorController extends edu.wpi.first.wpilibj.motorcontrol.Moto
   void logTelemetry();
 
   /** Applies motor configuration. */
-  MotorController applyConfig(MotorConfiguration config);
+  MotorController apply(MotorConfig config) throws MotorConfigException;
+
+  /** Applies motor current configuration. */
+  MotorController apply(MotorCurrentConfig config) throws MotorConfigException;
 }
