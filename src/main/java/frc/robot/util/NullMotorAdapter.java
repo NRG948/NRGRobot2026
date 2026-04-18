@@ -84,7 +84,12 @@ public class NullMotorAdapter implements MotorController {
   public void logTelemetry() {}
 
   @Override
-  public MotorController applyConfig(MotorConfiguration config) {
+  public MotorController apply(MotorConfig config) {
+    return this;
+  }
+
+  @Override
+  public MotorController apply(MotorCurrentConfig config) {
     return this;
   }
 }

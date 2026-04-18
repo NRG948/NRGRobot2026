@@ -38,14 +38,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorConfiguration;
+import frc.robot.util.MotorConfig;
+import frc.robot.util.MotorConfigException;
+import frc.robot.util.MotorController;
+import frc.robot.util.MotorCurrentConfig;
 import frc.robot.util.MotorIdleMode;
+import frc.robot.util.NullMotorAdapter;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
 import java.util.Map;
 
 @DashboardDefinition
 public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
+
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
@@ -57,6 +62,11 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   private static final double GEAR_RATIO = isCompBot() ? 62.5 : 50.0;
   private static final double RADIANS_PER_ROTATION = 2 * Math.PI;
+
+  private static final MotorConfig MOTOR_CONFIG =
+      new MotorConfig(CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION);
+  private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig();
+
   private static final double MASS = Units.lbsToKilograms(8.108);
   private static final double LENGTH = Units.inchesToMeters(11.8);
   private static final double MAX_VELOCITY =
@@ -74,12 +84,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
   public static final double[] AGITATE_ANGLES = {20, 0, 35, 15, 50, 30, 65, 45, 85, 60};
 
   private final TalonFX talonFX = new TalonFX(INTAKE_ARM_ID);
-  private final TalonFXAdapter motor =
-      (TalonFXAdapter)
-          new TalonFXAdapter("/IntakeArm/Motor", talonFX)
-              .applyConfig(new MotorConfiguration(CLOCKWISE_POSITIVE, BRAKE, RADIANS_PER_ROTATION));
+  private MotorController motor;
 
-  private final RelativeEncoder encoder = motor.getEncoder();
+  private final RelativeEncoder encoder;
 
   private double currentAngle = 0;
   private double goalAngle = STOW_ANGLE;
@@ -133,30 +140,46 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
 
   /** Creates a new IntakeArm. */
   public IntakeArm() {
-    TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
-    MotorOutputConfigs motorOutputConfigs = talonFXConfigs.MotorOutput;
-    motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-    motorOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
+    try {
+      TalonFXAdapter motor =
+          (TalonFXAdapter)
+              new TalonFXAdapter("/IntakeArm/Motor", talonFX)
+                  .apply(MOTOR_CONFIG)
+                  .apply(CURRENT_CONFIG);
 
-    FeedbackConfigs feedbackConfigs = talonFXConfigs.Feedback;
-    feedbackConfigs.SensorToMechanismRatio = GEAR_RATIO;
+      TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
 
-    Slot0Configs slot0Configs = talonFXConfigs.Slot0;
-    slot0Configs.kS = MOTOR.getKs();
-    slot0Configs.kV = RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_VELOCITY;
-    slot0Configs.kA =
-        RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
-    slot0Configs.kG = 0.9;
-    slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
-    slot0Configs.kP = 90;
-    slot0Configs.kI = 0;
-    slot0Configs.kD = 0;
+      MotorOutputConfigs motorOutputConfigs = talonFXConfigs.MotorOutput;
+      motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+      motorOutputConfigs.Inverted = InvertedValue.Clockwise_Positive;
 
-    MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
-    motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION / 200;
-    motionMagicConfigs.MotionMagicAcceleration = MAX_ACCELERATION / RADIANS_PER_ROTATION / 30;
-    TalonFXConfigurator configurator = talonFX.getConfigurator();
-    configurator.apply(talonFXConfigs);
+      FeedbackConfigs feedbackConfigs = talonFXConfigs.Feedback;
+      feedbackConfigs.SensorToMechanismRatio = GEAR_RATIO;
+
+      Slot0Configs slot0Configs = talonFXConfigs.Slot0;
+      slot0Configs.kS = MOTOR.getKs();
+      slot0Configs.kV = RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_VELOCITY;
+      slot0Configs.kA =
+          RADIANS_PER_ROTATION * (MAX_BATTERY_VOLTAGE - MOTOR.getKs()) / MAX_ACCELERATION;
+      slot0Configs.kG = 0.9;
+      slot0Configs.GravityType = GravityTypeValue.Arm_Cosine;
+      slot0Configs.kP = 90;
+      slot0Configs.kI = 0;
+      slot0Configs.kD = 0;
+
+      MotionMagicConfigs motionMagicConfigs = talonFXConfigs.MotionMagic;
+      motionMagicConfigs.MotionMagicCruiseVelocity = MAX_VELOCITY / RADIANS_PER_ROTATION / 200;
+      motionMagicConfigs.MotionMagicAcceleration = MAX_ACCELERATION / RADIANS_PER_ROTATION / 30;
+      TalonFXConfigurator configurator = talonFX.getConfigurator();
+      configurator.apply(talonFXConfigs);
+
+      this.motor = motor;
+    } catch (MotorConfigException e) {
+      this.motor = new NullMotorAdapter();
+      e.printStackTrace();
+    }
+
+    this.encoder = motor.getEncoder();
 
     resetArmPosition(STOW_ANGLE);
   }
@@ -178,7 +201,8 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     goalAngle = angle;
     enabled = true;
 
-    motor.setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
+    ((TalonFXAdapter) motor)
+        .setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
   }
 
   /**

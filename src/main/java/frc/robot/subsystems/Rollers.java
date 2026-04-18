@@ -28,8 +28,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.parameters.MotorParameters;
-import frc.robot.util.MotorConfiguration;
+import frc.robot.util.MotorConfig;
 import frc.robot.util.MotorController;
+import frc.robot.util.MotorCurrentConfig;
 import frc.robot.util.MotorIdleMode;
 import frc.robot.util.RelativeEncoder;
 
@@ -107,10 +108,9 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
     maxVelocity = MOTOR_PARAMS.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
     KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
     feedforward = new SimpleMotorFeedforward(KS, KV);
-    motor =
-        MOTOR_PARAMS
-            .newController("/" + name + "/Motor", motorId)
-            .applyConfig(new MotorConfiguration(CLOCKWISE_POSITIVE, BRAKE, metersPerRevolution));
+    var motorConfig = new MotorConfig(CLOCKWISE_POSITIVE, BRAKE, metersPerRevolution);
+    var currentConfig = new MotorCurrentConfig();
+    motor = MOTOR_PARAMS.newController("/" + name + "/Motor", motorId, motorConfig, currentConfig);
     encoder = motor.getEncoder();
     pidController = new PIDControllerPreference(name, "PID Controller", 1, 0, 0);
 

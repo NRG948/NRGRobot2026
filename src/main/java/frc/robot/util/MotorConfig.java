@@ -21,9 +21,9 @@ import static frc.robot.util.MotorIdleMode.COAST;
  *     the unit is typically in meters. For a mechanism that produces rotational motion, the unit is
  *     typically in radians.
  */
-public record MotorConfiguration(
+public record MotorConfig(
     MotorDirection direction, MotorIdleMode idleMode, double distancePerRotation) {
-  public MotorConfiguration {
+  public MotorConfig {
     if (direction == null) {
       direction = COUNTER_CLOCKWISE_POSITIVE;
     }
