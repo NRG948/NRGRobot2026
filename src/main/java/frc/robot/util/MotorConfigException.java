@@ -7,7 +7,7 @@
  
 package frc.robot.util;
 
-/** */
+/** An exception thrown whenever we fail to configure a motor. */
 public class MotorConfigException extends Exception {
   public MotorConfigException(String message) {
     super(message);
