@@ -79,6 +79,11 @@ public enum SwerveDriveParameters {
       new double[] {24.00, -60.12, -36.39, -109.69},
       21);
 
+  private static final MotorCurrentConfig STEERING_CURRENT_CONFIG =
+      new MotorCurrentConfig(10, 20, true);
+  private static final MotorCurrentConfig DRIVE_CURRENT_CONFIG =
+      new MotorCurrentConfig(80, 160, true);
+
   public static class Constants {
     /**
      * A scaling factor used to adjust from theoretical maximums given that any physical system
@@ -509,14 +514,14 @@ public enum SwerveDriveParameters {
         double metersPerRotation = (getWheelDiameter() * Math.PI) / getDriveGearRatio();
         motorConfig = new MotorConfig(COUNTER_CLOCKWISE_POSITIVE, BRAKE, metersPerRotation);
 
-        return driveMotor.newController(logPrefix, motorID, motorConfig, new MotorCurrentConfig());
+        return driveMotor.newController(logPrefix, motorID, motorConfig, DRIVE_CURRENT_CONFIG);
 
       default:
         double radiansPerRotation = (2 * Math.PI) / getSteeringGearRatio();
         motorConfig = new MotorConfig(getSteeringDirection(), BRAKE, radiansPerRotation);
 
         return steeringMotor.newController(
-            logPrefix, motorID, motorConfig, new MotorCurrentConfig());
+            logPrefix, motorID, motorConfig, STEERING_CURRENT_CONFIG);
     }
   }
 
