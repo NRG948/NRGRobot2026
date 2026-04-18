@@ -7,6 +7,7 @@
  
 package frc.robot.util;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
@@ -26,6 +27,8 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import java.util.HashMap;
 
 /** A motor controller implementation based on the CTR Electronics TalonFX controller. */
 public final class TalonFXAdapter implements MotorController {
@@ -36,13 +39,18 @@ public final class TalonFXAdapter implements MotorController {
 
   private final TalonFX talonFX;
   private double distancePerRotation;
-  private final StatusSignal<Current> supplyCurrent;
-  private final StatusSignal<Current> statorCurrent;
+  public final StatusSignal<Current> supplyCurrent;
+  public final StatusSignal<Current> statorCurrent;
   private final StatusSignal<Temperature> temperature;
 
   private final DoubleLogEntry logSupplyCurrent;
   private final DoubleLogEntry logStatorCurrent;
   private final DoubleLogEntry logTemperature;
+
+  public static final HashMap<Integer, TalonFXAdapter> motors =
+      new HashMap<Integer, TalonFXAdapter>();
+
+  public static final SendableChooser<Integer> motorChooser = new SendableChooser<Integer>();
 
   /**
    * Constructs a TalonFXAdapter.
@@ -57,11 +65,16 @@ public final class TalonFXAdapter implements MotorController {
     this.statorCurrent = talonFX.getStatorCurrent();
     this.temperature = talonFX.getDeviceTemp();
 
+    BaseStatusSignal.setUpdateFrequencyForAll(50.0, this.supplyCurrent, this.statorCurrent);
+
     String name = String.format("%s/TalonFX-%d", logPrefix, talonFX.getDeviceID());
 
     this.logSupplyCurrent = new DoubleLogEntry(LOG, name + "/SupplyCurrent");
     this.logStatorCurrent = new DoubleLogEntry(LOG, name + "/StatorCurrent");
     this.logTemperature = new DoubleLogEntry(LOG, name + "/Temperature");
+
+    TalonFXAdapter.motorChooser.addOption(name, talonFX.getDeviceID());
+    TalonFXAdapter.motors.put(talonFX.getDeviceID(), this);
   }
 
   @Override
@@ -285,11 +298,21 @@ public final class TalonFXAdapter implements MotorController {
   @Override
   public MotorController apply(MotorCurrentConfig config) throws MotorConfigException {
     var talonFXConfig = getTalonFXConfiguration();
-    talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = config.enableCurrentLimit();
+    talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = config.enableCurrentLimit();
     talonFXConfig.CurrentLimits.StatorCurrentLimit = config.statorCurrentLimit();
     talonFXConfig.CurrentLimits.SupplyCurrentLimit = config.supplyCurrentLimit();
     applyTalonFXConfiguration(talonFXConfig);
     return this;
+  }
+
+  public static double getSelectedMotorSupplyCurrent() {
+    TalonFXAdapter motor = motors.get(motorChooser.getSelected());
+    return motor == null ? 0.0 : motor.supplyCurrent.getValueAsDouble();
+  }
+
+  public static double getSelectedMotorStatorCurrent() {
+    TalonFXAdapter motor = motors.get(motorChooser.getSelected());
+    return motor == null ? 0.0 : motor.statorCurrent.getValueAsDouble();
   }
 }

@@ -316,8 +316,8 @@
       }, {
         "title" : "Auto Rotation PID",
         "type" : "PID Controller",
-        "x" : 384.0,
-        "y" : 128.0,
+        "x" : 0.0,
+        "y" : 256.0,
         "width" : 256.0,
         "height" : 384.0,
         "properties" : {
@@ -397,6 +397,50 @@
           "topic" : "/SmartDashboard/Preferences/Unfeed Velocity (m+s)",
           "period" : 0.06,
           "show_submit_button" : true
+        }
+      }, {
+        "title" : "Motor ID",
+        "type" : "ComboBox Chooser",
+        "x" : 384.0,
+        "y" : 256.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Motor ID",
+          "period" : 0.06,
+          "sort_options" : false
+        }
+      }, {
+        "title" : "Supply Current",
+        "type" : "Graph",
+        "x" : 384.0,
+        "y" : 384.0,
+        "width" : 384.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Supply Current",
+          "period" : 0.06,
+          "time_displayed" : 5.0,
+          "min_value" : 0.0,
+          "max_value" : 90.0,
+          "color" : -5383962,
+          "stroke_width" : 2.0
+        }
+      }, {
+        "title" : "Stator Current",
+        "type" : "Graph",
+        "x" : 768.0,
+        "y" : 384.0,
+        "width" : 384.0,
+        "height" : 256.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Preferences/Stator Current",
+          "period" : 0.06,
+          "time_displayed" : 5.0,
+          "min_value" : 0.0,
+          "max_value" : 170.0,
+          "color" : -5383962,
+          "stroke_width" : 2.0
         }
       } ]
     }

@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.nrg948.dashboard.annotations.DashboardComboBoxChooser;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
+import com.nrg948.dashboard.annotations.DashboardGraph;
 import com.nrg948.dashboard.annotations.DashboardLayout;
 import com.nrg948.dashboard.annotations.DashboardNumberSlider;
 import com.nrg948.dashboard.annotations.DashboardPIDController;
@@ -19,9 +20,11 @@ import com.nrg948.preferences.BooleanPreference;
 import com.nrg948.preferences.DoublePreference;
 import com.nrg948.preferences.EnumPreference;
 import com.nrg948.preferences.PIDControllerPreference;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.parameters.AprilTagFieldParameters;
 import frc.robot.parameters.PoseEstimationStrategy;
 import frc.robot.util.DashboardMode;
+import frc.robot.util.TalonFXAdapter;
 
 /** Defines robot preferences that can be adjusted via the dashboard. */
 @DashboardDefinition
@@ -98,7 +101,7 @@ public final class RobotPreferences {
       new EnumPreference<DashboardMode>("Dashboard", "Dashboard Mode", DashboardMode.COMPETITION);
 
   /** Selects the auto-rotation PID controller gains. */
-  @DashboardPIDController(title = "Auto Rotation PID", column = 3, row = 1, width = 2, height = 3)
+  @DashboardPIDController(title = "Auto Rotation PID", column = 0, row = 2, width = 2, height = 3)
   public static final PIDControllerPreference ROTATION_PID_CONTROLLER =
       new PIDControllerPreference("Swerve", "Rotation PID Controller", 1, 0, 0);
 
@@ -171,6 +174,19 @@ public final class RobotPreferences {
 
   public static boolean isCompBot() {
     return RobotPreferences.ROBOT_TYPE.getValue() == RobotSelector.CompetitionRobot2026;
+  }
+
+  @DashboardComboBoxChooser(title = "Motor ID", row = 2, column = 3, width = 2, height = 1)
+  private SendableChooser<Integer> motorChooser = TalonFXAdapter.motorChooser;
+
+  @DashboardGraph(title = "Supply Current", row = 3, column = 3, width = 3, height = 2, max = 90)
+  private double getSelectedMotorSupplyCurrent() {
+    return TalonFXAdapter.getSelectedMotorSupplyCurrent();
+  }
+
+  @DashboardGraph(title = "Stator Current", row = 3, column = 6, width = 3, height = 2, max = 170)
+  private double getSelectedMotorStatorCurrent() {
+    return TalonFXAdapter.getSelectedMotorStatorCurrent();
   }
 
   /** Creates a new instance of RobotPreferences. */
