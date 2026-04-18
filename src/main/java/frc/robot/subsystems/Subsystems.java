@@ -49,7 +49,8 @@ public final class Subsystems {
 
   private static final double ROLLER_DIAMETER = Units.inchesToMeters(1.25);
 
-  private static final MotorCurrentConfig INDEXER_CURRENT_CONFIG = new MotorCurrentConfig(35, 90);
+  private static final MotorCurrentConfig INDEXER_CURRENT_CONFIG =
+      new MotorCurrentConfig(60.0, 60.0, true);
   private static final double INDEXER_GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
   private static final double INDEXER_METERS_PER_REVOLUTION =
       (ROLLER_DIAMETER * Math.PI) / INDEXER_GEAR_RATIO;
@@ -64,7 +65,8 @@ public final class Subsystems {
           INDEXER_METERS_PER_REVOLUTION,
           INDEXER_CURRENT_CONFIG);
 
-  private static final MotorCurrentConfig HOPPER_CURRENT_CONFIG = new MotorCurrentConfig(30, 120);
+  private static final MotorCurrentConfig HOPPER_CURRENT_CONFIG =
+      new MotorCurrentConfig(60.0, 60.0, true);
   private static final double HOPPER_GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
   private static final double HOPPER_METERS_PER_REVOLUTION =
       (ROLLER_DIAMETER * Math.PI) / HOPPER_GEAR_RATIO;
