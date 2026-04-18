@@ -96,7 +96,7 @@
     },
     {
       "name": "Extend for right neutral",
-      "waypointRelativePos": 0.6699751861042116,
+      "waypointRelativePos": 0.6104218362282913,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
