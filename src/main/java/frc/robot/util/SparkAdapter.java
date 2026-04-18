@@ -340,11 +340,11 @@ public final class SparkAdapter implements MotorController {
 
   @Override
   public MotorController apply(MotorConfig config) {
-    throw new UnsupportedOperationException("Unimplemented method 'applyConfig'");
+    throw new UnsupportedOperationException("Unimplemented method 'apply'");
   }
 
   @Override
   public MotorController apply(MotorCurrentConfig config) {
-    throw new UnsupportedOperationException("Unimplemented method 'applyConfig'");
+    throw new UnsupportedOperationException("Unimplemented method 'apply'");
   }
 }

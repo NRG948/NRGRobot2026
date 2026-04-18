@@ -201,8 +201,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       leftLowerMotor = nullMotor;
       rightUpperMotor = nullMotor;
       rightLowerMotor = nullMotor;
-
-      e.printStackTrace();
     }
 
     this.encoder = rightUpperMotor.getEncoder();
