@@ -50,7 +50,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
   private static final MotorConfig MOTOR_CONFIG =
       new MotorConfig(COUNTER_CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
-  private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig();
+  private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig(80, 160, true);
 
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 4, width = 2, height = 1)
   private static final double MAX_VELOCITY = MOTOR.getFreeSpeedRPM() * METERS_PER_REVOLUTION / 60.0;
