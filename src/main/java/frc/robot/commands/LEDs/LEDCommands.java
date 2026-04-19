@@ -35,7 +35,9 @@ public final class LEDCommands {
    *
    */
   public static Command autoLEDs(Subsystems subsystems) {
-    StatusLED leds = subsystems.statusLEDs;
-    return new FlameCycle(leds);
+    return subsystems
+        .statusLEDs
+        .map(statusLEDS -> (Command) new FlameCycle(statusLEDS))
+        .orElse(Commands.none());
   }
 }

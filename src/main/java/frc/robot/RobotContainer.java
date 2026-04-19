@@ -81,7 +81,8 @@ public class RobotContainer {
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
 
-    subsystems.statusLEDs.setDefaultCommand(new FlameCycle(subsystems.statusLEDs));
+    subsystems.statusLEDs.ifPresent(
+        statusLEDS -> statusLEDS.setDefaultCommand(new FlameCycle(statusLEDS)));
 
     // Configure the trigger bindings
     configureBindings();

@@ -78,7 +78,7 @@ public final class Subsystems {
       new Rollers(
           "Hopper", CANID.HOPPER_INDEXER_ID, HOPPER_METERS_PER_REVOLUTION, HOPPER_CURRENT_CONFIG);
 
-  public final StatusLED statusLEDs = new StatusLED();
+  public final Optional<StatusLED> statusLEDs = Optional.empty();
 
   @DashboardTab(
       title = "Front Left Camera",
@@ -154,12 +154,14 @@ public final class Subsystems {
     var manipulators =
         new ArrayList<Subsystem>(Arrays.asList(intake, shooter, indexer, hopper, intakeArm));
 
-    var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain, statusLEDs));
+    var all = new ArrayList<Subsystem>(Arrays.asList(drivetrain));
 
     frontLeftCamera.ifPresent(all::add);
     frontRightCamera.ifPresent(all::add);
     backLeftCamera.ifPresent(all::add);
     backRightCamera.ifPresent(all::add);
+
+    statusLEDs.ifPresent((all::add));
 
     all.addAll(manipulators);
     this.all = all.toArray(Subsystem[]::new);
