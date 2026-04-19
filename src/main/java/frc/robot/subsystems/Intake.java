@@ -11,7 +11,7 @@ import static frc.robot.Constants.RobotConstants.CANID.INTAKE_FOLLOWER_ID;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
-import static frc.robot.util.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
+import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
 
 import com.nrg948.dashboard.annotations.DashboardCommand;
@@ -52,7 +52,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
 
   private static final MotorConfig MOTOR_CONFIG =
-      new MotorConfig(COUNTER_CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
+      new MotorConfig(CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
   private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig(80, 160, true);
 
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 4, width = 2, height = 1)
