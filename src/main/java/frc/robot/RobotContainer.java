@@ -10,8 +10,6 @@ package frc.robot;
 import static frc.robot.commands.DriveCommands.hubAimAndXLock;
 import static frc.robot.commands.IntakeCommands.extendAndIntakeWhenSafe;
 import static frc.robot.commands.IntakeCommands.moveArmToAngle;
-import static frc.robot.commands.ShootingCommands.feedBallsToShooter;
-import static frc.robot.commands.ShootingCommands.pass;
 import static frc.robot.commands.ShootingCommands.rampUpShooter;
 import static frc.robot.commands.ShootingCommands.shootWhenInRange;
 import static frc.robot.commands.ShootingCommands.shootWhenInRangeAndOnShift;
@@ -37,7 +35,6 @@ import frc.robot.commands.IndexerCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.LEDs.FlameCycle;
 import frc.robot.commands.LEDs.LEDCommands;
-import frc.robot.commands.ShootWhileMoving;
 import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
@@ -129,21 +126,6 @@ public class RobotContainer {
                 .withName("AutoAlignAndShootWithXLock"));
 
     driverController
-        .y()
-        .whileTrue(
-            Commands.parallel(
-                    new DriveAutoRotation(drivetrain, driverController),
-                    pass(subsystems, () -> drivetrain.getDistanceToTarget() * 2.5))
-                .withName("AutoAlignAndPass"));
-
-    driverController
-        .rightStick()
-        .whileTrue(
-            Commands.parallel(
-                new ShootWhileMoving(subsystems, driverController),
-                feedBallsToShooter(subsystems, true)));
-
-    driverController
         .povUp()
         .whileTrue(
             Commands.parallel(
@@ -205,10 +187,8 @@ public class RobotContainer {
     return driverController.a().getAsBoolean()
         || driverController.b().getAsBoolean()
         || driverController.x().getAsBoolean()
-        || driverController.y().getAsBoolean()
         || driverController.povUp().getAsBoolean()
-        || driverController.povDown().getAsBoolean()
-        || driverController.rightStick().getAsBoolean();
+        || driverController.povDown().getAsBoolean();
   }
 
   private boolean isDriverUsingIntakeArm() {

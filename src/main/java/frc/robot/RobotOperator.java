@@ -221,9 +221,21 @@ public final class RobotOperator {
     return drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE;
   }
 
-  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 2, height = 1)
+  @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 1, height = 1)
   public boolean isAlignedToHub() {
     return drivetrain.isAlignedToHub();
+  }
+
+  @DashboardBooleanBox(title = "Is Level", column = 8, row = 3, width = 1, height = 1)
+  public boolean isLevel() {
+    return drivetrain.isLevel();
+  }
+
+  @DashboardCommand(title = "Set Level", column = 3, row = 4, width = 2, height = 1)
+  private Command setLevelCommand() {
+    return Commands.runOnce(drivetrain::captureLevelBaseline, drivetrain)
+        .withName("Set Level")
+        .ignoringDisable(true);
   }
 
   @DashboardCommand(

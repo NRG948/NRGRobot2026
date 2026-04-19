@@ -145,7 +145,7 @@
         "type" : "Boolean Box",
         "x" : 896.0,
         "y" : 384.0,
-        "width" : 256.0,
+        "width" : 128.0,
         "height" : 128.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Aligned to Hub",
@@ -154,6 +154,34 @@
           "true_icon" : "None",
           "false_color" : -65536,
           "false_icon" : "None"
+        }
+      }, {
+        "title" : "Is Level",
+        "type" : "Boolean Box",
+        "x" : 1024.0,
+        "y" : 384.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Is Level",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Set Level",
+        "type" : "Command",
+        "x" : 384.0,
+        "y" : 512.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Set Level",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : false
         }
       }, {
         "title" : "Set Extended Position",
