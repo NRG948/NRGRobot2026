@@ -67,7 +67,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       new MotorConfig(CLOCKWISE_POSITIVE, COAST, METERS_PER_REV);
   private static final MotorConfig RIGHT_MOTOR_CONFIG =
       new MotorConfig(COUNTER_CLOCKWISE_POSITIVE, COAST, METERS_PER_REV);
-  private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig();
+  private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig(40.0, 70.0, true);
 
   public static final double SHOOTER_FEED_VELOCITY = 30;
 
