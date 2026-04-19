@@ -32,6 +32,8 @@ import java.util.HashMap;
 
 /** A motor controller implementation based on the CTR Electronics TalonFX controller. */
 public final class TalonFXAdapter implements MotorController {
+  private static final int NUM_RETRIES = 5;
+
   private static final DataLog LOG = DataLogManager.getLog();
 
   @SuppressWarnings("unused")
@@ -182,11 +184,17 @@ public final class TalonFXAdapter implements MotorController {
     logTemperature.append(this.temperature.refresh().getValueAsDouble());
   }
 
+  /**
+   * Gets the current motor output configuration.
+   *
+   * @return The current motor output configuration.
+   * @throws MotorConfigException If the configuration cannot be retrieved.
+   */
   public MotorOutputConfigs getMotorOutputConfig() throws MotorConfigException {
     var motorOutputConfig = new MotorOutputConfigs();
     StatusCode status = StatusCode.OK;
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < NUM_RETRIES; i++) {
       status = talonFX.getConfigurator().refresh(motorOutputConfig);
       if (status.isOK()) {
         return motorOutputConfig;
@@ -203,10 +211,17 @@ public final class TalonFXAdapter implements MotorController {
     throw new MotorConfigException(errorMessage);
   }
 
+  /**
+   * Applies the motor output configuration.
+   *
+   * @param motorOutputConfigs The motor output configuration to apply.
+   * @throws MotorConfigException If the configuration is invalid or we fail to apply it for any
+   *     reason.
+   */
   public void applyMotorOutputConfig(MotorOutputConfigs motorOutputConfigs)
       throws MotorConfigException {
     StatusCode status = StatusCode.OK;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < NUM_RETRIES; i++) {
       status = talonFX.getConfigurator().apply(motorOutputConfigs);
       if (status.isOK()) {
         return;
@@ -222,11 +237,17 @@ public final class TalonFXAdapter implements MotorController {
     throw new MotorConfigException(errorMessage);
   }
 
+  /**
+   * Gets the current Talon FX configuration.
+   *
+   * @return The current Talon FX configuration.
+   * @throws MotorConfigException If the configuration cannot be retrieved.
+   */
   public TalonFXConfiguration getTalonFXConfiguration() throws MotorConfigException {
     var talonFXConfig = new TalonFXConfiguration();
     StatusCode status = StatusCode.OK;
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < NUM_RETRIES; i++) {
       status = talonFX.getConfigurator().refresh(talonFXConfig);
       if (status.isOK()) {
         return talonFXConfig;
@@ -244,17 +265,18 @@ public final class TalonFXAdapter implements MotorController {
   }
 
   /**
-   * Applies a full TalonFX configuration with up to 5 retries.
+   * Applies a full TalonFX configuration.
    *
    * @param config the TalonFX configuration to apply.
    * @return true if the configuration was successfully applied, false if all retries were
    *     exhausted.
-   * @throws MotorConfigException when it fails to configure the motor.
+   * @throws MotorConfigException If the configuration is invalid or we fail to apply it for any
+   *     reason.
    */
   public void applyTalonFXConfiguration(TalonFXConfiguration config) throws MotorConfigException {
     StatusCode status = StatusCode.OK;
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < NUM_RETRIES; i++) {
       status = talonFX.getConfigurator().apply(config);
       if (status.isOK()) {
         return;
@@ -274,14 +296,19 @@ public final class TalonFXAdapter implements MotorController {
   /**
    * Sets the MotionMagic voltage
    *
-   * @param voltage
+   * @param voltage The voltage and optional feedforward to set for the MotionMagic control mode.
    */
   public void setControl(MotionMagicVoltage voltage) {
     talonFX.setControl(voltage);
   }
 
-  public void setControl(MotionMagicVelocityVoltage request) {
-    talonFX.setControl(request);
+  /**
+   * Sets the MotionMagic velocity
+   *
+   * @param velocity The velocity and optional feedforward to set for the MotionMagic control mode.
+   */
+  public void setControl(MotionMagicVelocityVoltage velocity) {
+    talonFX.setControl(velocity);
   }
 
   @Override
@@ -306,11 +333,31 @@ public final class TalonFXAdapter implements MotorController {
     return this;
   }
 
+  /**
+   * Gets the supply current of the currently selected motor in the motor chooser.
+   *
+   * <p>This is useful for debugging and monitoring the current draw of the motors during operation.
+   * Note that this method will return 0 if no motor is selected or if the selected motor cannot be
+   * found in the motors map.
+   *
+   * @return The supply current of the currently selected motor, or 0 if no motor is selected or
+   *     found.
+   */
   public static double getSelectedMotorSupplyCurrent() {
     TalonFXAdapter motor = motors.get(motorChooser.getSelected());
     return motor == null ? 0.0 : motor.supplyCurrent.getValueAsDouble();
   }
 
+  /**
+   * Gets the stator current of the currently selected motor in the motor chooser.
+   *
+   * <p>This is useful for debugging and monitoring the current draw of the motors during operation.
+   * Note that this method will return 0 if no motor is selected or if the selected motor cannot be
+   * found in the motors map.
+   *
+   * @return The stator current of the currently selected motor, or 0 if no motor is selected or
+   *     found.
+   */
   public static double getSelectedMotorStatorCurrent() {
     TalonFXAdapter motor = motors.get(motorChooser.getSelected());
     return motor == null ? 0.0 : motor.statorCurrent.getValueAsDouble();

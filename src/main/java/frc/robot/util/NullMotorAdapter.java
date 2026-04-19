@@ -7,6 +7,7 @@
  
 package frc.robot.util;
 
+/** A motor controller that does nothing. Used for testing and as a fallback. */
 public class NullMotorAdapter implements MotorController {
 
   public NullMotorAdapter() {}

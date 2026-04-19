@@ -7,6 +7,7 @@
  
 package frc.robot.util;
 
+/** An interface representing a motor controller with extended functionality. */
 public interface MotorController extends edu.wpi.first.wpilibj.motorcontrol.MotorController {
   /**
    * Creates a new motor controller that is configured to follow this motor controller.
@@ -35,9 +36,23 @@ public interface MotorController extends edu.wpi.first.wpilibj.motorcontrol.Moto
   /** Logs motor-specific telemetry to the data log. */
   void logTelemetry();
 
-  /** Applies motor configuration. */
+  /**
+   * Applies the basic motor configuration.
+   *
+   * @param config The motor configuration to apply.
+   * @return This motor controller for chaining.
+   * @throws MotorConfigException If the configuration is invalid or we fail to apply it for any
+   *     reason.
+   */
   MotorController apply(MotorConfig config) throws MotorConfigException;
 
-  /** Applies motor current configuration. */
+  /**
+   * Applies the motor current configuration.
+   *
+   * @param config The motor current configuration to apply.
+   * @return This motor controller for chaining.
+   * @throws MotorConfigException If the configuration is invalid or we fail to apply it for any
+   *     reason.
+   */
   MotorController apply(MotorCurrentConfig config) throws MotorConfigException;
 }
