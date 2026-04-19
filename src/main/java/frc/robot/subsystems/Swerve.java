@@ -258,6 +258,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private Translation2d vectorToTarget;
   private double distanceToTarget;
   private double angleToTarget;
+  private int isAlignedCount = 0;
 
   /**
    * Creates a {@link SwerveModule} object and intiailizes its motor controllers.
@@ -636,8 +637,16 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   /** {@return whether we are aligned to hub within tolerance} */
   public boolean isAlignedToHub() {
-    return Math.abs(getAngleToTarget() - getOrientation().getRadians())
-        <= getHubAlignmentTolerance();
+    boolean isAligned =
+        Math.abs(getAngleToTarget() - getOrientation().getRadians()) <= getHubAlignmentTolerance();
+
+    if (isAligned) {
+      isAligned = ++isAlignedCount >= 3;
+    } else {
+      isAlignedCount = 0;
+    }
+
+    return isAligned;
   }
 
   public double getHubAlignmentTolerance() {
