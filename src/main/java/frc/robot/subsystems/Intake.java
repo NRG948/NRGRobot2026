@@ -7,6 +7,7 @@
  
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.RobotConstants.CANID.INTAKE_FOLLOWER_ID;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.isCompBot;
@@ -29,9 +30,11 @@ import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorConfig;
+import frc.robot.util.MotorConfigException;
 import frc.robot.util.MotorController;
 import frc.robot.util.MotorCurrentConfig;
 import frc.robot.util.MotorIdleMode;
+import frc.robot.util.NullMotorAdapter;
 import frc.robot.util.RelativeEncoder;
 import java.util.Map;
 
@@ -40,7 +43,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX60,
+              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX44,
               RobotSelector.PracticeRobot2026, MotorParameters.KrakenX60),
           MotorParameters.NullMotor);
 
@@ -57,6 +60,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
   private final MotorController motor =
       MOTOR.newController("/Intake/Motor", INTAKE_ID, MOTOR_CONFIG, CURRENT_CONFIG);
+  private final MotorController follower;
 
   private final RelativeEncoder encoder = motor.getEncoder();
 
@@ -114,7 +118,18 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
       new PIDControllerPreference("Intake", "PID Controller", 1, 0, 0);
 
   /** Creates a new Intake subsystem. */
-  public Intake() {}
+  public Intake() {
+    MotorController follower;
+    try {
+      follower =
+          isCompBot()
+              ? motor.createFollower("/Intake/Follower", INTAKE_FOLLOWER_ID, false)
+              : new NullMotorAdapter();
+    } catch (MotorConfigException e) {
+      follower = new NullMotorAdapter();
+    }
+    this.follower = follower;
+  }
 
   public void setGoalVelocity(double goalVelocity) {
     this.goalVelocity = goalVelocity;
