@@ -17,6 +17,8 @@ import frc.robot.util.FieldUtils;
 /** A utility class for Drive related commands. */
 public final class DriveCommands {
 
+  private static final double DRIVE_UNTIL_LEVEL_TIMEOUT = 0.75;
+
   /**
    * Resets the orientation of the robot.
    *
@@ -61,7 +63,7 @@ public final class DriveCommands {
     return Commands.sequence(
             Commands.print("Driving Until Level"),
             Commands.run(() -> drivetrain.drive(-DRIVE_UNTIL_LEVEL_SPEED, 0, 0, true), drivetrain))
-        .withTimeout(2.0)
+        .withTimeout(DRIVE_UNTIL_LEVEL_TIMEOUT)
         .unless(drivetrain::isLevel)
         .until(drivetrain::isLevel)
         .withName("DriveUntilLevel");
