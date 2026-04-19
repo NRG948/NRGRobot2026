@@ -268,8 +268,6 @@ public final class TalonFXAdapter implements MotorController {
    * Applies a full TalonFX configuration.
    *
    * @param config the TalonFX configuration to apply.
-   * @return true if the configuration was successfully applied, false if all retries were
-   *     exhausted.
    * @throws MotorConfigException If the configuration is invalid or we fail to apply it for any
    *     reason.
    */
