@@ -3,42 +3,62 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.145711111111111,
-        "y": 2.1738111111111107
+        "x": 3.680366666666667,
+        "y": 1.9594333333333327
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.054333333333334,
-        "y": 2.3492111111111114
+        "x": 4.1870807088730855,
+        "y": 2.3589518380407766
       },
       "isLocked": false,
-      "linkedName": "Close Neutral End"
+      "linkedName": "Trench Start"
     },
     {
       "anchor": {
-        "x": 3.183,
-        "y": 2.671
+        "x": 5.795,
+        "y": 2.405
       },
       "prevControl": {
-        "x": 4.177333333333333,
-        "y": 2.43691111111111
+        "x": 5.375900000000001,
+        "y": 2.5733333333333324
+      },
+      "nextControl": {
+        "x": 6.529879921095854,
+        "y": 2.1098322912961063
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.2,
+        "y": 1.03
+      },
+      "prevControl": {
+        "x": 6.839455555555555,
+        "y": 1.6146666666666658
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Scoring Point"
+      "linkedName": "Direct Neutral Start"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.34754797441363583,
-      "rotationDegrees": 116.90052594433892
+      "waypointRelativePos": 0.24647302904565602,
+      "rotationDegrees": 115.0
+    },
+    {
+      "waypointRelativePos": 1.4987551867219955,
+      "rotationDegrees": 130.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.29478908188585884,
-      "maxWaypointRelativePos": 0.7116625310173686,
+      "minWaypointRelativePos": 0.00893300248140108,
+      "maxWaypointRelativePos": 0.6640198511166189,
       "constraints": {
         "maxVelocity": 2.5,
         "maxAcceleration": 3.0,
@@ -52,24 +72,24 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Disable intake for Right Scoring Point",
-      "waypointRelativePos": 0.3166253101736927,
+      "name": "Bump Angle for right hub start",
+      "waypointRelativePos": 0.11612903225806823,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "DisableIntake"
+          "name": "IntakeArmBumpAngle"
         }
       }
     },
     {
-      "name": "Ramp Up shooter for Right Scoring Point 2",
-      "waypointRelativePos": 0.5905707196029759,
+      "name": "Extend for right neutral",
+      "waypointRelativePos": 0.6699751861042116,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampUpShooterForAutoScore"
+          "name": "ExtendAndIntake"
         }
       }
     }
@@ -83,14 +103,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 42.0282331684253
+    "velocity": 3.0,
+    "rotation": 54.104923870951616
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 3.0,
-    "rotation": 125.02794231266894
+    "velocity": 0.0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
