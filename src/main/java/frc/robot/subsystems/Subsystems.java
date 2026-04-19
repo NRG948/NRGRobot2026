@@ -49,8 +49,10 @@ public final class Subsystems {
 
   private static final double ROLLER_DIAMETER = Units.inchesToMeters(1.25);
 
-  private static final MotorCurrentConfig INDEXER_CURRENT_CONFIG =
+  private static final MotorCurrentConfig COMP_INDEXER_CURRENT_CONFIG =
       new MotorCurrentConfig(60.0, 60.0, true);
+  private static final MotorCurrentConfig PRACTICE_INDEXER_CURRENT_CONFIG =
+      new MotorCurrentConfig(90.0, 90.0, true);
   private static final double INDEXER_GEAR_RATIO = isCompBot() ? 3.0 : 1.0;
   private static final double INDEXER_METERS_PER_REVOLUTION =
       (ROLLER_DIAMETER * Math.PI) / INDEXER_GEAR_RATIO;
@@ -63,7 +65,7 @@ public final class Subsystems {
           "Indexer",
           CANID.SHOOTER_INDEXER_ID,
           INDEXER_METERS_PER_REVOLUTION,
-          INDEXER_CURRENT_CONFIG);
+          isCompBot() ? COMP_INDEXER_CURRENT_CONFIG : PRACTICE_INDEXER_CURRENT_CONFIG);
 
   private static final MotorCurrentConfig HOPPER_CURRENT_CONFIG =
       new MotorCurrentConfig(60.0, 60.0, true);
