@@ -95,7 +95,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   }
 
   private static final double MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(1.8);
-  private static final double MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(6);
+  private static final double MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(3);
   private static final double SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE =
       MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE - MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
   private static final DataLog LOG = DataLogManager.getLog();
