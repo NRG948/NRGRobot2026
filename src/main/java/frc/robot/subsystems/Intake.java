@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_FOLLOWER_ID;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
+import static frc.robot.RobotPreferences.INTAKE_VELOCITY;
+import static frc.robot.RobotPreferences.OUTTAKE_VELOCITY;
 import static frc.robot.RobotPreferences.isCompBot;
 import static frc.robot.util.MotorDirection.CLOCKWISE_POSITIVE;
 import static frc.robot.util.MotorIdleMode.BRAKE;
@@ -60,6 +62,8 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
   private final MotorController motor =
       MOTOR.newController("/Intake/Motor", INTAKE_ID, MOTOR_CONFIG, CURRENT_CONFIG);
+
+  @SuppressWarnings("unused")
   private final MotorController follower;
 
   private final RelativeEncoder encoder = motor.getEncoder();
@@ -137,12 +141,12 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
 
   /** Intakes fuel */
   public void intake() {
-    setGoalVelocity(RobotPreferences.INTAKE_VELOCITY.getValue());
+    setGoalVelocity(INTAKE_VELOCITY.getValue());
   }
 
   /** Outtakes fuel */
   public void outtake() {
-    setGoalVelocity(RobotPreferences.OUTTAKE_VELOCITY.getValue());
+    setGoalVelocity(OUTTAKE_VELOCITY.getValue());
   }
 
   @Override
