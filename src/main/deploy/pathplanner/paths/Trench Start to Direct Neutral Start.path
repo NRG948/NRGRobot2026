@@ -3,62 +3,62 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.56,
-        "y": 3.6
+        "x": 3.680366666666667,
+        "y": 1.9594333333333327
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.549158345221112,
-        "y": 2.967560627674751
+        "x": 4.1870807088730855,
+        "y": 2.3589518380407766
       },
       "isLocked": false,
-      "linkedName": "Neutral End"
+      "linkedName": "Trench Start"
     },
     {
       "anchor": {
-        "x": 5.423495007132667,
-        "y": 2.42413694721826
+        "x": 5.795,
+        "y": 2.405
       },
       "prevControl": {
-        "x": 6.329201141226819,
-        "y": 2.4629529243937225
+        "x": 5.375900000000001,
+        "y": 2.5733333333333324
       },
       "nextControl": {
-        "x": 4.7206405641457,
-        "y": 2.394014613947391
+        "x": 6.529879921095854,
+        "y": 2.1098322912961063
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.183,
-        "y": 2.671
+        "x": 7.2,
+        "y": 1.03
       },
       "prevControl": {
-        "x": 3.5732667617689007,
-        "y": 2.501768901569187
+        "x": 6.839455555555555,
+        "y": 1.6146666666666658
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Scoring Point"
+      "linkedName": "Direct Neutral Start"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.8448132780083084,
-      "rotationDegrees": 130.0
+      "waypointRelativePos": 0.24647302904565602,
+      "rotationDegrees": 115.0
     },
     {
-      "waypointRelativePos": 1.44232365145227,
-      "rotationDegrees": 70.0
+      "waypointRelativePos": 1.4987551867219955,
+      "rotationDegrees": 130.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.9320099255583185,
-      "maxWaypointRelativePos": 1.5344913151364652,
+      "minWaypointRelativePos": 0.00893300248140108,
+      "maxWaypointRelativePos": 0.6640198511166189,
       "constraints": {
         "maxVelocity": 2.5,
         "maxAcceleration": 3.0,
@@ -72,24 +72,24 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Extend to Bump",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": 0.8534773801485456,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ExtendAndIntake"
-        }
-      }
-    },
-    {
-      "name": "Ramp Up for First Shot",
-      "waypointRelativePos": 1.25,
+      "name": "Bump Angle for right hub start",
+      "waypointRelativePos": 0.11612903225806823,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "RampUpShooterForAutoScore"
+          "name": "IntakeArmBumpAngle"
+        }
+      }
+    },
+    {
+      "name": "Extend for right neutral",
+      "waypointRelativePos": 0.6699751861042116,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
         }
       }
     }
@@ -103,13 +103,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 42.0282331684253
+    "velocity": 3.0,
+    "rotation": 54.104923870951616
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

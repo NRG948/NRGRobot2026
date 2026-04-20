@@ -95,7 +95,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   }
 
   private static final double MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(1.8);
-  private static final double MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(6);
+  private static final double MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE = Math.toRadians(3);
   private static final double SHOOTING_DISTANCE_ANGLE_TOLERANCE_RANGE =
       MAX_SHOOTING_DISTANCE_ANGLE_TOLERANCE - MIN_SHOOTING_DISTANCE_ANGLE_TOLERANCE;
   private static final DataLog LOG = DataLogManager.getLog();
@@ -258,6 +258,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private Translation2d vectorToTarget;
   private double distanceToTarget;
   private double angleToTarget;
+  private int isAlignedCount = 0;
 
   /**
    * Creates a {@link SwerveModule} object and intiailizes its motor controllers.
@@ -636,8 +637,16 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   /** {@return whether we are aligned to hub within tolerance} */
   public boolean isAlignedToHub() {
-    return Math.abs(getAngleToTarget() - getOrientation().getRadians())
-        <= getHubAlignmentTolerance();
+    boolean isAligned =
+        Math.abs(getAngleToTarget() - getOrientation().getRadians()) <= getHubAlignmentTolerance();
+
+    if (isAligned) {
+      isAligned = ++isAlignedCount >= 3;
+    } else {
+      isAlignedCount = 0;
+    }
+
+    return isAligned;
   }
 
   public double getHubAlignmentTolerance() {

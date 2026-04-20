@@ -41,7 +41,9 @@ public final class Constants {
     }
 
     public static final class CANID {
-      public static final int INTAKE_ID = 13;
+      public static final int INTAKE_ID = 10;
+      public static final int INTAKE_FOLLOWER_ID = 11;
+
       public static final int INTAKE_ARM_ID = 12;
       public static final int SHOOTER_INDEXER_ID = 14;
       public static final int HOPPER_INDEXER_ID = 15;
