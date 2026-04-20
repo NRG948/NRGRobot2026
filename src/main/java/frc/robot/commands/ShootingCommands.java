@@ -7,6 +7,8 @@
  
 package frc.robot.commands;
 
+import static frc.robot.subsystems.Shooter.HUB_SHOT_DISTANCE;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Intake;
@@ -99,6 +101,14 @@ public final class ShootingCommands {
     return Commands.run(() -> shooter.setGoalDistance(drivetrain.getDistanceToTarget()), shooter)
         .finallyDo(shooter::disable)
         .withName("RampUpShooter");
+  }
+
+  public static Command rampUpShooterForHub(Subsystems subsystems) {
+    Shooter shooter = subsystems.shooter;
+
+    return Commands.run(() -> shooter.setGoalDistance(HUB_SHOT_DISTANCE), shooter)
+        .finallyDo(shooter::disable)
+        .withName("RampUpShooterForHub");
   }
 
   public static Command rampUpShooterForDistance(Subsystems subsystems, double distance) {

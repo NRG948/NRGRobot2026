@@ -11,6 +11,7 @@ import static frc.robot.commands.DriveCommands.hubAimAndXLock;
 import static frc.robot.commands.IntakeCommands.extendAndIntakeWhenSafe;
 import static frc.robot.commands.IntakeCommands.moveArmToAngle;
 import static frc.robot.commands.ShootingCommands.rampUpShooter;
+import static frc.robot.commands.ShootingCommands.rampUpShooterForHub;
 import static frc.robot.commands.ShootingCommands.shootWhenInRange;
 import static frc.robot.commands.ShootingCommands.shootWhenInRangeAndOnShift;
 import static frc.robot.subsystems.IntakeArm.BUMP_ANGLE;
@@ -148,12 +149,14 @@ public class RobotContainer {
     driverController.start().onTrue(DriveCommands.resetOrientation(subsystems));
 
     manipulatorController
-        .povRight()
-        .whileTrue(avoidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
-
+        .povUp()
+        .whileTrue(avoidConflicts(rampUpShooterForHub(subsystems), this::isDriverUsingShooter));
     manipulatorController.povDown().onTrue(moveArmToAngle(subsystems, HALF_STOW_ANGLE));
 
     manipulatorController.povLeft().whileTrue(IntakeCommands.intake(subsystems));
+    manipulatorController
+        .povRight()
+        .whileTrue(avoidConflicts(rampUpShooter(subsystems), this::isDriverUsingShooter));
 
     manipulatorController
         .rightBumper()
