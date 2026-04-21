@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.665,
+        "x": 0.7,
         "y": 4.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.665,
+        "x": 0.7,
         "y": 5.187756903239038
       },
       "isLocked": false,
@@ -16,26 +16,31 @@
     },
     {
       "anchor": {
-        "x": 0.665,
-        "y": 6.860888888888889
+        "x": 0.7,
+        "y": 8.0
       },
       "prevControl": {
-        "x": 0.665,
-        "y": 6.494672097846244
+        "x": 0.7,
+        "y": 7.633783208957356
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Depot End"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.619917012448134,
+      "rotationDegrees": 130.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.5,
+        "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -67,8 +72,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 130.0
+    "velocity": 0.0,
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
