@@ -44,20 +44,15 @@
       "linkedName": "Close Neutral Start"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.81876332622601,
-      "rotationDegrees": 71.10616507037756
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.637220843672447,
       "maxWaypointRelativePos": 1.208933002481391,
       "constraints": {
-        "maxVelocity": 2.5,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 6.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -80,7 +75,7 @@
     },
     {
       "name": "Extend and intake for close right neutral",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.6967741935483875,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
