@@ -42,6 +42,8 @@ import java.util.Map;
 
 @DashboardDefinition
 public final class Intake extends SubsystemBase implements ActiveSubsystem {
+  private static final double SHOOTING_INTAKE_SPEED = 4.0;
+
   private static final MotorParameters MOTOR =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
@@ -142,6 +144,11 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
   /** Intakes fuel */
   public void intake() {
     setGoalVelocity(INTAKE_VELOCITY.getValue());
+  }
+
+  /** Intakes fuel when shooting */
+  public void intakeWhileShooting() {
+    setGoalVelocity(SHOOTING_INTAKE_SPEED);
   }
 
   /** Outtakes fuel */
