@@ -17,7 +17,7 @@ import frc.robot.util.FieldUtils;
 /** A utility class for Drive related commands. */
 public final class DriveCommands {
 
-  private static final double DRIVE_UNTIL_LEVEL_TIMEOUT = 0.75;
+  private static final double DRIVE_UNTIL_LEVEL_TIMEOUT = 1.00;
 
   /**
    * Resets the orientation of the robot.
