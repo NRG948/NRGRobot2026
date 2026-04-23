@@ -47,18 +47,11 @@ import java.util.Map;
 
 @DashboardDefinition
 public final class Shooter extends SubsystemBase implements ActiveSubsystem {
-  private static final double VELOCITY_PERCENT_TOLERANCE = 0.03;
-  private static final double EFFICIENCY = 0.93;
-
   private static final DataLog LOG = DataLogManager.getLog();
 
-  private static final MotorParameters SHOOTER_MOTOR =
-      RobotPreferences.ROBOT_TYPE.selectOrDefault(
-          Map.of(
-              RobotSelector.CompetitionRobot2026, MotorParameters.KrakenX44,
-              RobotSelector.PracticeRobot2026, MotorParameters.KrakenX44),
-          MotorParameters.KrakenX44);
-
+  private static final MotorParameters SHOOTER_MOTOR = MotorParameters.KrakenX44);
+  private static final double EFFICIENCY = 0.93;
+  private static final double VELOCITY_PERCENT_TOLERANCE = 0.03;
   private static final double GEAR_RATIO = isCompBot() ? 1.5 : 1.0;
   private static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
   private static final double METERS_PER_REV = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
@@ -68,8 +61,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final MotorConfig RIGHT_MOTOR_CONFIG =
       new MotorConfig(COUNTER_CLOCKWISE_POSITIVE, COAST, METERS_PER_REV);
   private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig(40.0, 70.0, true);
-
-  public static final double SHOOTER_FEED_VELOCITY = 30;
 
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 3, width = 2, height = 1)
   private static final double MAX_VELOCITY =
@@ -84,7 +75,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       SHOOTER_VELOCITIES.put(1.24, 12.25);
       SHOOTER_VELOCITIES.put(1.45, 13.0);
       SHOOTER_VELOCITIES.put(1.67, 13.5);
-
       SHOOTER_VELOCITIES.put(2.0, 14.50);
       SHOOTER_VELOCITIES.put(2.33, 15.25);
       SHOOTER_VELOCITIES.put(2.66, 16.45);
@@ -170,7 +160,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   public static final double SHOOTING_RANGE = MAX_SHOOTING_DISTANCE - HUB_SHOT_DISTANCE;
   private static final double SLOW_RAMP_TIME = 0.5;
 
-  /** Creates a new Shooter. */
+  /** Creates a new Shooter subsystem. */
   public Shooter() {
     try {
       leftUpperMotor =
@@ -250,8 +240,7 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     logGoalVelocity.append(goalVelocity);
 
     if (goalVelocity != 0) {
-      // Convert linear velocity goal to rotational velocity in revolutions per second for Motion
-      // Magic.
+      // Convert linear velocity goal to rotational velocity in revolutions/second for Motion Magic
       double goalRPS = goalVelocity / METERS_PER_REV;
       ((TalonFXAdapter) leftUpperMotor)
           .setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
