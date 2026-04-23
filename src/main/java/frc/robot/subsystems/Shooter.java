@@ -32,8 +32,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotPreferences;
-import frc.robot.RobotSelector;
 import frc.robot.parameters.MotorParameters;
 import frc.robot.util.MotorConfig;
 import frc.robot.util.MotorConfigException;
@@ -43,13 +41,12 @@ import frc.robot.util.MotorIdleMode;
 import frc.robot.util.NullMotorAdapter;
 import frc.robot.util.RelativeEncoder;
 import frc.robot.util.TalonFXAdapter;
-import java.util.Map;
 
 @DashboardDefinition
 public final class Shooter extends SubsystemBase implements ActiveSubsystem {
   private static final DataLog LOG = DataLogManager.getLog();
 
-  private static final MotorParameters SHOOTER_MOTOR = MotorParameters.KrakenX44);
+  private static final MotorParameters SHOOTER_MOTOR = MotorParameters.KrakenX44;
   private static final double EFFICIENCY = 0.93;
   private static final double VELOCITY_PERCENT_TOLERANCE = 0.03;
   private static final double GEAR_RATIO = isCompBot() ? 1.5 : 1.0;
