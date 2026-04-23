@@ -92,11 +92,10 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     }
   }
 
-  // These motors can only be controlled by a TalonFX Motor Controller
-  private MotorController leftUpperMotor;
-  private MotorController leftLowerMotor;
-  private MotorController rightUpperMotor;
-  private MotorController rightLowerMotor;
+  private final MotorController leftUpperMotor;
+  private final MotorController leftLowerMotor;
+  private final MotorController rightUpperMotor;
+  private final MotorController rightLowerMotor;
 
   private final RelativeEncoder encoder;
 
@@ -159,29 +158,29 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
   /** Creates a new Shooter subsystem. */
   public Shooter() {
+    MotorController leftUpperMotor;
+    MotorController leftLowerMotor;
+    MotorController rightUpperMotor;
+    MotorController rightLowerMotor;
+
     try {
       leftUpperMotor =
-          (TalonFXAdapter)
-              SHOOTER_MOTOR
-                  .newController("/Shooter/Left Upper Motor", SHOOTER_UPPER_LEFT_ID)
-                  .apply(LEFT_MOTOR_CONFIG)
-                  .apply(CURRENT_CONFIG);
+          SHOOTER_MOTOR
+              .newController("/Shooter/Left Upper Motor", SHOOTER_UPPER_LEFT_ID)
+              .apply(LEFT_MOTOR_CONFIG)
+              .apply(CURRENT_CONFIG);
       leftLowerMotor =
-          (TalonFXAdapter)
-              leftUpperMotor.createFollower(
-                  "/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
+          leftUpperMotor.createFollower("/Shooter/Left Lower Motor", SHOOTER_LOWER_LEFT_ID, false);
       rightUpperMotor =
-          (TalonFXAdapter)
-              SHOOTER_MOTOR
-                  .newController("/Shooter/Right Upper Motor", SHOOTER_UPPER_RIGHT_ID)
-                  .apply(RIGHT_MOTOR_CONFIG)
-                  .apply(CURRENT_CONFIG);
+          SHOOTER_MOTOR
+              .newController("/Shooter/Right Upper Motor", SHOOTER_UPPER_RIGHT_ID)
+              .apply(RIGHT_MOTOR_CONFIG)
+              .apply(CURRENT_CONFIG);
       rightLowerMotor =
-          (TalonFXAdapter)
-              rightUpperMotor.createFollower(
-                  "/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, false);
+          rightUpperMotor.createFollower(
+              "/Shooter/Right Lower Motor", SHOOTER_LOWER_RIGHT_ID, false);
 
-      configureMotionMagic();
+      configureMotionMagic((TalonFXAdapter) leftUpperMotor, (TalonFXAdapter) rightUpperMotor);
     } catch (MotorConfigException e) {
       var nullMotor = new NullMotorAdapter();
 
@@ -191,10 +190,22 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
       rightLowerMotor = nullMotor;
     }
 
+    this.leftUpperMotor = leftUpperMotor;
+    this.leftLowerMotor = leftLowerMotor;
+    this.rightUpperMotor = rightUpperMotor;
+    this.rightLowerMotor = rightLowerMotor;
+
     this.encoder = rightUpperMotor.getEncoder();
   }
 
-  private void configureMotionMagic() throws MotorConfigException {
+  /**
+   * Configures Motion Magic on the shooter motors.
+   *
+   * @throws MotorConfigException if there is an error configuring the motors for Motion Magic
+   */
+  private static void configureMotionMagic(
+      TalonFXAdapter leftUpperTalonFX, TalonFXAdapter rightUpperTalonFX)
+      throws MotorConfigException {
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     double kS = SHOOTER_MOTOR.getKs();
@@ -207,7 +218,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     config.Slot0.kV = kV * METERS_PER_REV;
     config.Slot0.kA = 0.0;
 
-    // TODO: Tune acceleration and jerk values for faster response.
     double acceleration = SHOOTER_MOTOR.getFreeSpeedRPM() / 60.0 / SLOW_RAMP_TIME;
     config.MotionMagic.MotionMagicAcceleration = acceleration;
     config.MotionMagic.MotionMagicJerk = acceleration * 2;
@@ -216,9 +226,6 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
 
     config.Voltage.PeakForwardVoltage = MAX_BATTERY_VOLTAGE;
     config.Voltage.PeakReverseVoltage = -MAX_BATTERY_VOLTAGE;
-
-    var leftUpperTalonFX = (TalonFXAdapter) leftUpperMotor;
-    var rightUpperTalonFX = (TalonFXAdapter) rightUpperMotor;
 
     config.MotorOutput = leftUpperTalonFX.getMotorOutputConfig();
     leftUpperTalonFX.applyTalonFXConfiguration(config);
@@ -239,10 +246,14 @@ public final class Shooter extends SubsystemBase implements ActiveSubsystem {
     if (goalVelocity != 0) {
       // Convert linear velocity goal to rotational velocity in revolutions/second for Motion Magic
       double goalRPS = goalVelocity / METERS_PER_REV;
-      ((TalonFXAdapter) leftUpperMotor)
-          .setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
-      ((TalonFXAdapter) rightUpperMotor)
-          .setControl(motionMagicVelocityRequest.withVelocity(goalRPS));
+
+      if (leftUpperMotor instanceof TalonFXAdapter leftUpperTalonFx) {
+        leftUpperTalonFx.setControl(motionMagicVelocityRequest.withVelocity(goalRPS).withSlot(0));
+      }
+
+      if (rightUpperMotor instanceof TalonFXAdapter rightUpperTalonFx) {
+        rightUpperTalonFx.setControl(motionMagicVelocityRequest.withVelocity(goalRPS).withSlot(0));
+      }
     } else {
       leftUpperMotor.stopMotor();
       rightUpperMotor.stopMotor();

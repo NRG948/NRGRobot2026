@@ -199,8 +199,9 @@ public final class IntakeArm extends SubsystemBase implements ActiveSubsystem {
     goalAngle = angle;
     enabled = true;
 
-    ((TalonFXAdapter) motor)
-        .setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
+    if (motor instanceof TalonFXAdapter talonFx) {
+      talonFx.setControl(motionMagicRequest.withPosition(angle / RADIANS_PER_ROTATION).withSlot(0));
+    }
   }
 
   /**
