@@ -119,16 +119,16 @@ public final class IntakeCommands {
 
   public static Command agitateArm(Subsystems subsystems) {
     return Commands.sequence(
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[0]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[1]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[2]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[3]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[4]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[5]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[6]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[7]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[8]),
-            agitateSequence(subsystems, IntakeCommands.AGITATE_ANGLES[9]))
+            agitateSequence(subsystems, AGITATE_ANGLES[0]),
+            agitateSequence(subsystems, AGITATE_ANGLES[1]),
+            agitateSequence(subsystems, AGITATE_ANGLES[2]),
+            agitateSequence(subsystems, AGITATE_ANGLES[3]),
+            agitateSequence(subsystems, AGITATE_ANGLES[4]),
+            agitateSequence(subsystems, AGITATE_ANGLES[5]),
+            agitateSequence(subsystems, AGITATE_ANGLES[6]),
+            agitateSequence(subsystems, AGITATE_ANGLES[7]),
+            agitateSequence(subsystems, AGITATE_ANGLES[8]),
+            agitateSequence(subsystems, AGITATE_ANGLES[9]))
         .repeatedly()
         .finallyDo(() -> subsystems.intakeArm.setGoalAngle(EXTENDED_ANGLE));
   }
