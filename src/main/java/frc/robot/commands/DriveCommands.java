@@ -14,9 +14,10 @@ import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.FieldUtils;
 
-/** A utility class for Drive related commands. */
+/** A factory class for creating robot commands related to driving. */
 public final class DriveCommands {
 
+  private static final double DRIVE_UNTIL_LEVEL_X_SPEED = -0.5;
   private static final double DRIVE_UNTIL_LEVEL_TIMEOUT = 1.00;
 
   /**
@@ -48,24 +49,29 @@ public final class DriveCommands {
         .withName("InterruptAll");
   }
 
-  static final double DRIVE_UNTIL_LEVEL_SPEED = 0.5;
-
-  private DriveCommands() {
-    throw new UnsupportedOperationException("This is a utility class.");
-  }
-
   public static Command driveUntilLevel(Subsystems subsystems) {
-    Swerve drivetrain = subsystems.drivetrain;
-    return driveUntilLevel(drivetrain);
+    return driveUntilLevel(subsystems.drivetrain);
   }
 
+  /**
+   * {@return a command which drives the robot toward our alliance wall until it reaches level
+   * ground}
+   *
+   * <p>This command can be invoked to try to get the robot into shooting position either if the
+   * robot unintentionally stops on the bump or surfs on top of fuel in our alliance zone during
+   * auto.
+   */
   public static Command driveUntilLevel(Swerve drivetrain) {
     return Commands.sequence(
             Commands.print("Driving Until Level"),
-            Commands.run(() -> drivetrain.drive(-DRIVE_UNTIL_LEVEL_SPEED, 0, 0, true), drivetrain))
+            Commands.run(() -> drivetrain.drive(DRIVE_UNTIL_LEVEL_X_SPEED, 0, 0, true), drivetrain))
         .withTimeout(DRIVE_UNTIL_LEVEL_TIMEOUT)
         .unless(drivetrain::isLevel)
         .until(drivetrain::isLevel)
         .withName("DriveUntilLevel");
+  }
+
+  private DriveCommands() {
+    throw new UnsupportedOperationException("This is a utility class.");
   }
 }
