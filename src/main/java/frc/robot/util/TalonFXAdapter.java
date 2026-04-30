@@ -69,7 +69,7 @@ public final class TalonFXAdapter implements MotorController {
     this.statorCurrent = talonFX.getStatorCurrent();
     this.temperature = talonFX.getDeviceTemp();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(50.0, this.supplyCurrent, this.statorCurrent);
+    BaseStatusSignal.setUpdateFrequencyForAll(10.0, this.supplyCurrent, this.statorCurrent);
 
     String name = String.format("%s/TalonFX-%d", logPrefix, talonFX.getDeviceID());
 
