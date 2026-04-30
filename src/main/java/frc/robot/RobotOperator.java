@@ -14,6 +14,7 @@ import com.nrg948.dashboard.annotations.DashboardCommand;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardField;
 import com.nrg948.dashboard.annotations.DashboardMatchTime;
+import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardSingleColorView;
 import com.nrg948.dashboard.annotations.DashboardSplitButtonChooser;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
@@ -25,12 +26,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.AprilTag;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.HubState;
@@ -47,6 +48,8 @@ public final class RobotOperator {
   private final Intake intake;
   private final Optional<AprilTag> frontLeftCamera;
   private final Optional<AprilTag> frontRightCamera;
+  private final CommandXboxController driver;
+  private final CommandXboxController manipulator;
 
   private HubState hubState = HubState.INACTIVE;
   private Timer blinkTimer = new Timer();
@@ -75,12 +78,15 @@ public final class RobotOperator {
   @DashboardAlerts(title = "Alerts", column = 0, row = 3, width = 3, height = 2)
   private final Alert[] alerts = new Alert[] {Autos.getInvalidAutoAlert()};
 
-  public RobotOperator(Subsystems subsystems) {
+  public RobotOperator(
+      Subsystems subsystems, CommandXboxController driver, CommandXboxController manipulator) {
     drivetrain = subsystems.drivetrain;
     intakeArm = subsystems.intakeArm;
     intake = subsystems.intake;
     frontLeftCamera = subsystems.frontLeftCamera;
     frontRightCamera = subsystems.frontRightCamera;
+    this.driver = driver;
+    this.manipulator = manipulator;
   }
 
   @DashboardField(
@@ -88,7 +94,7 @@ public final class RobotOperator {
       row = 0,
       column = 0,
       height = 3,
-      width = 7,
+      width = 5,
       game = GameField.REBUILT)
   private Field2d field = new Field2d();
 
@@ -216,10 +222,10 @@ public final class RobotOperator {
     return hubState;
   }
 
-  @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)
-  public boolean isWithinShootingRange() {
-    return drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE;
-  }
+  // @DashboardBooleanBox(title = "Within Range", column = 7, row = 2, width = 2, height = 1)
+  // public boolean isWithinShootingRange() {
+  //   return drivetrain.getDistanceToTarget() <= Shooter.MAX_SHOOTING_DISTANCE;
+  // }
 
   @DashboardBooleanBox(title = "Aligned to Hub", column = 7, row = 3, width = 1, height = 1)
   public boolean isAlignedToHub() {
@@ -264,6 +270,22 @@ public final class RobotOperator {
         .ignoringDisable(true);
   }
 
+  @DashboardRadialGauge(
+      title = "Current Angle",
+      column = 5,
+      row = 0,
+      width = 2,
+      height = 3,
+      startAngle = -180,
+      endAngle = 180,
+      min = -180,
+      max = 180,
+      numberOfLabels = 0,
+      wrapValue = true)
+  public double getIntakeArmAngle() {
+    return intakeArm.getCurrentAngleDegrees();
+  }
+
   @DashboardTextDisplay(title = "Intake Velocity: ", column = 3, row = 3, width = 2, height = 1)
   public double getIntakeVelocity() {
     return intake.getCurrentVelocity();
@@ -280,5 +302,15 @@ public final class RobotOperator {
 
   public void autonomousInit() {
     setHubState(HubState.ACTIVE);
+  }
+
+  @DashboardBooleanBox(title = "Driver", column = 7, row = 2, height = 1, width = 1)
+  public boolean isDriverConnected() {
+    return driver.isConnected();
+  }
+
+  @DashboardBooleanBox(title = "Manip", column = 8, row = 2, height = 1, width = 1)
+  public boolean isManipulatorConnected() {
+    return manipulator.isConnected();
   }
 }

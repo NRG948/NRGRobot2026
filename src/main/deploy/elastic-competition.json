@@ -56,7 +56,7 @@
         "type" : "Field",
         "x" : 0.0,
         "y" : 0.0,
-        "width" : 896.0,
+        "width" : 640.0,
         "height" : 384.0,
         "properties" : {
           "topic" : "/SmartDashboard/Operator/Field",
@@ -124,21 +124,6 @@
         "properties" : {
           "topic" : "/SmartDashboard/Operator/On Shift",
           "period" : 0.06
-        }
-      }, {
-        "title" : "Within Range",
-        "type" : "Boolean Box",
-        "x" : 896.0,
-        "y" : 256.0,
-        "width" : 256.0,
-        "height" : 128.0,
-        "properties" : {
-          "topic" : "/SmartDashboard/Operator/Within Range",
-          "period" : 0.06,
-          "true_color" : -16711936,
-          "true_icon" : "None",
-          "false_color" : -65536,
-          "false_icon" : "None"
         }
       }, {
         "title" : "Aligned to Hub",
@@ -210,6 +195,25 @@
           "maximize_button_space" : true
         }
       }, {
+        "title" : "Current Angle",
+        "type" : "Radial Gauge",
+        "x" : 640.0,
+        "y" : 0.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Current Angle",
+          "period" : 0.06,
+          "min_value" : -180.0,
+          "max_value" : 180.0,
+          "start_angle" : -180.0,
+          "end_angle" : 180.0,
+          "number_of_labels" : 0,
+          "wrap_value" : true,
+          "show_pointer" : true,
+          "show_ticks" : true
+        }
+      }, {
         "title" : "Intake Velocity: ",
         "type" : "Text Display",
         "x" : 384.0,
@@ -220,6 +224,36 @@
           "topic" : "/SmartDashboard/Operator/Intake Velocity: ",
           "period" : 0.06,
           "show_submit_button" : false
+        }
+      }, {
+        "title" : "Driver",
+        "type" : "Boolean Box",
+        "x" : 896.0,
+        "y" : 256.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Driver",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
+        }
+      }, {
+        "title" : "Manip",
+        "type" : "Boolean Box",
+        "x" : 1024.0,
+        "y" : 256.0,
+        "width" : 128.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Operator/Manip",
+          "period" : 0.06,
+          "true_color" : -16711936,
+          "true_icon" : "None",
+          "false_color" : -65536,
+          "false_icon" : "None"
         }
       } ]
     }

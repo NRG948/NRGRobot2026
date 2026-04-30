@@ -20,9 +20,12 @@ import static frc.robot.subsystems.IntakeArm.HALF_STOW_ANGLE;
 import static frc.robot.subsystems.IntakeArm.STOW_ANGLE;
 
 import com.nrg948.dashboard.annotations.DashboardTab;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -40,7 +43,6 @@ import frc.robot.commands.ShootingCommands;
 import frc.robot.subsystems.Subsystems;
 import frc.robot.subsystems.Swerve;
 import frc.robot.util.MatchUtil;
-import frc.robot.util.MotorIdleMode;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -56,6 +58,13 @@ public class RobotContainer {
 
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+  private static final DataLog LOG = DataLogManager.getLog();
+
+  private final BooleanLogEntry logDriverConnected =
+      new BooleanLogEntry(LOG, "/Operator/Controller/Driver/Connected");
+  private final BooleanLogEntry logManipConnected =
+      new BooleanLogEntry(LOG, "/Operator/Controller/Manipulator/Connected");
 
   @DashboardTab(
       title = "Operator",
@@ -74,10 +83,12 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true);
     Autos.init(subsystems);
 
-    operator = new RobotOperator(subsystems);
+    operator = new RobotOperator(subsystems, driverController, manipulatorController);
 
     subsystems.drivetrain.setDefaultCommand(
         new DriveUsingController(subsystems.drivetrain, driverController));
+    subsystems.intake.setDefaultCommand(Commands.idle(subsystems.intake).withName("Idle"));
+    subsystems.intakeArm.setDefaultCommand(Commands.idle(subsystems.intakeArm).withName("Idle"));
 
     subsystems.statusLEDs.ifPresent(
         statusLEDS -> statusLEDS.setDefaultCommand(new FlameCycle(statusLEDS)));
@@ -86,6 +97,7 @@ public class RobotContainer {
     configureBindings();
 
     RobotContainerDashboardTabs.bind(this);
+    FollowPathCommand.warmupCommand().schedule();
   }
 
   /**
@@ -209,22 +221,21 @@ public class RobotContainer {
 
   public void disableInit() {
     subsystems.disableManipulators();
-    subsystems.setIdleMode(MotorIdleMode.COAST);
-    subsystems.drivetrain.setIdleMode(MotorIdleMode.COAST);
-    CommandScheduler.getInstance().schedule(LEDCommands.autoLEDs(subsystems));
-  }
+    // subsystems.setIdleMode(MotorIdleMode.COAST);
+    // subsystems.drivetrain.setIdleMode(MotorIdleMode.COAST);
+    }
 
   public void teleopInit() {
-    subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
-    subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
+    // subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
+    // subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
 
     operator.teleopInit();
   }
 
   public void autonomousInit() {
     subsystems.drivetrain.captureLevelBaseline();
-    subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
-    subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
+    // subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
+    // subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE); 
 
     operator.autonomousInit();
   }
@@ -232,5 +243,8 @@ public class RobotContainer {
   public void periodic() {
     subsystems.periodic();
     operator.periodic();
+
+    logDriverConnected.update(driverController.isConnected());
+    logManipConnected.update(manipulatorController.isConnected());
   }
 }
