@@ -37,7 +37,9 @@ public final class StatusLED extends LEDSubsystem {
 
   @Override
   public void periodic() {
-    LEDLights light = transitionTimes.get((Integer) (int) MatchUtil.getMatchTimeRemaining());
+    /** Adds one because the fractional seconds gets truncated by the API.  */
+    int timeRemaining = (int) MatchUtil.getMatchTimeRemaining() + 1;
+    LEDLights light = transitionTimes.get((Integer) timeRemaining);
 
     if (light != null && lastLights != light && MatchUtil.isTeleop()) {
       lastLights = light;
