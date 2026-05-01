@@ -223,7 +223,7 @@ public class RobotContainer {
     subsystems.disableManipulators();
     // subsystems.setIdleMode(MotorIdleMode.COAST);
     // subsystems.drivetrain.setIdleMode(MotorIdleMode.COAST);
-    }
+  }
 
   public void teleopInit() {
     // subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
@@ -235,7 +235,7 @@ public class RobotContainer {
   public void autonomousInit() {
     subsystems.drivetrain.captureLevelBaseline();
     // subsystems.drivetrain.setIdleMode(MotorIdleMode.BRAKE);
-    // subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE); 
+    // subsystems.intakeArm.setIdleMode(MotorIdleMode.BRAKE);
 
     operator.autonomousInit();
   }
