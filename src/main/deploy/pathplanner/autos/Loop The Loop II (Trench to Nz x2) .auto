@@ -89,6 +89,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Scoring Point to Close Neutral Start"
+          }
         }
       ]
     }
