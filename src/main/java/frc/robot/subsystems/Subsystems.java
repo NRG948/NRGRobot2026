@@ -27,10 +27,12 @@ import java.util.stream.Collectors;
 
 public final class Subsystems {
 
+  public final QuestNavSubsystem questNav = new QuestNavSubsystem();
+
   @DashboardTab(
       title = "Swerve",
       modes = {"Testing"})
-  public final Swerve drivetrain = new Swerve();
+  public final Swerve drivetrain = new Swerve(questNav);
 
   @DashboardTab(
       title = "Intake",
