@@ -530,6 +530,60 @@
           }
         } ]
       }, {
+        "title" : "Questnav Pose",
+        "type" : "List Layout",
+        "x" : 1024.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 384.0,
+        "properties" : {
+          "label_position" : "TOP"
+        },
+        "children" : [ {
+          "title" : "X",
+          "type" : "Text Display",
+          "x" : 0.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Swerve/Questnav Pose/X",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Y",
+          "type" : "Text Display",
+          "x" : 128.0,
+          "y" : 0.0,
+          "width" : 128.0,
+          "height" : 128.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Swerve/Questnav Pose/Y",
+            "period" : 0.06,
+            "show_submit_button" : false
+          }
+        }, {
+          "title" : "Estimated Angle",
+          "type" : "Radial Gauge",
+          "x" : 384.0,
+          "y" : 0.0,
+          "width" : 256.0,
+          "height" : 256.0,
+          "properties" : {
+            "topic" : "/SmartDashboard/Swerve/Questnav Pose/Estimated Angle",
+            "period" : 0.06,
+            "min_value" : -180.0,
+            "max_value" : 180.0,
+            "start_angle" : -180.0,
+            "end_angle" : 180.0,
+            "number_of_labels" : 0,
+            "wrap_value" : true,
+            "show_pointer" : true,
+            "show_ticks" : true
+          }
+        } ]
+      }, {
         "title" : "Front Left",
         "type" : "List Layout",
         "x" : 0.0,

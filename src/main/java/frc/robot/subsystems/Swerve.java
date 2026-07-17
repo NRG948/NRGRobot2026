@@ -158,6 +158,18 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   @DashboardLayout(title = "Estimated Pose", column = 8, row = 0, width = 2, height = 3)
   private EstimatedPose estimatedPose = new EstimatedPose();
 
+  private QuestNavSubsystem questNav;
+
+  @DashboardLayout(title = "Questnav Pose", column = 8, row = 3, width = 2, height = 3)
+  private EstimatedPose getQuestPose() {
+    Pose2d qPose = questNav.getPose();
+    EstimatedPose estPose = new EstimatedPose();
+    estPose.estimatedPoseX = qPose.getX();
+    estPose.estimatedPoseY = qPose.getY();
+    estPose.estimatedRotation = qPose.getRotation().getDegrees();
+    return estPose;
+  }
+
   @DashboardLayout(
       title = "Front Left",
       column = 0,
@@ -288,8 +300,10 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   }
 
   /** Creates a new Swerve. */
-  public Swerve() {
+  public Swerve(QuestNavSubsystem questNav) {
     initializeSensorState();
+
+    this.questNav = questNav;
 
     drivetrain = new SwerveDrive(PARAMETERS, modules, () -> getOrientation());
     odometry =
