@@ -19,9 +19,7 @@ import frc.robot.subsystems.Subsystems;
 /** A utility class for controlling the intake. */
 public final class IntakeCommands {
 
-  private static final double AGITATE_ARM_TIMEOUT = 0.75;
   private static final double MINIMUM_SAFE_INTAKE_ANGLE = Math.toRadians(10);
-  private static final double AGITATE_WAIT_TIME = 0.20;
 
   /**
    * Returns Command that stows the intake.
@@ -109,26 +107,26 @@ public final class IntakeCommands {
             });
   }
 
-  private static Command agitateSequence(Subsystems subsystems, double angleDegrees) {
-    return Commands.sequence(
-        moveArmToAngle(subsystems, Math.toRadians(angleDegrees)).withTimeout(AGITATE_ARM_TIMEOUT),
-        Commands.waitSeconds(AGITATE_WAIT_TIME));
+  private static Command agitateSequence(
+      Subsystems subsystems, double angleDegrees, double waitTime) {
+    return Commands.parallel(
+        setIntakeArmAngleNoIdle(subsystems, Math.toRadians(angleDegrees)),
+        Commands.waitSeconds(waitTime));
   }
-
-  public static final double[] AGITATE_ANGLES = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90};
 
   public static Command agitateArm(Subsystems subsystems) {
     return Commands.sequence(
-            agitateSequence(subsystems, AGITATE_ANGLES[0]),
-            agitateSequence(subsystems, AGITATE_ANGLES[1]),
-            agitateSequence(subsystems, AGITATE_ANGLES[2]),
-            agitateSequence(subsystems, AGITATE_ANGLES[3]),
-            agitateSequence(subsystems, AGITATE_ANGLES[4]),
-            agitateSequence(subsystems, AGITATE_ANGLES[5]),
-            agitateSequence(subsystems, AGITATE_ANGLES[6]),
-            agitateSequence(subsystems, AGITATE_ANGLES[7]),
-            agitateSequence(subsystems, AGITATE_ANGLES[8]),
-            agitateSequence(subsystems, AGITATE_ANGLES[9]))
+            agitateSequence(subsystems, 0, 0.5),
+            agitateSequence(subsystems, 10, 0.25),
+            agitateSequence(subsystems, 20, 0.25),
+            agitateSequence(subsystems, 30, 0.25),
+            agitateSequence(subsystems, 40, 0.25),
+            agitateSequence(subsystems, 50, 0.25),
+            agitateSequence(subsystems, 60, 0.25),
+            agitateSequence(subsystems, 70, 0.25),
+            agitateSequence(subsystems, 80, 0.25),
+            agitateSequence(subsystems, 90, 0.25),
+            agitateSequence(subsystems, 100, 0.25))
         .repeatedly()
         .finallyDo(() -> subsystems.intakeArm.setGoalAngle(EXTENDED_ANGLE));
   }

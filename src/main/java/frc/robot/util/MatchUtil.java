@@ -29,7 +29,7 @@ public final class MatchUtil {
   }
 
   static {
-    transitionTimes.put(139, LEDLights.GREEN);
+    transitionTimes.put(140, LEDLights.GREEN);
     transitionTimes.put(115, LEDLights.BLINKING_YELLOW);
     transitionTimes.put(110, LEDLights.BLINKING_RED);
     transitionTimes.put(105, LEDLights.GREEN);

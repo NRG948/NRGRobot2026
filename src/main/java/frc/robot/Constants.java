@@ -27,7 +27,7 @@ public final class Constants {
 
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
-    public static final double WHEEL_DIAMETER = Units.inchesToMeters(isCompBot() ? 3.8525 : 3.75);
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(isCompBot() ? 3.97 : 3.75);
     public static final int LED_COUNT = 60;
     public static final double PERIODIC_INTERVAL = 0.02;
 
