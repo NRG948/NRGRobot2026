@@ -59,7 +59,6 @@ public final class FieldUtils {
           .getTranslation()
           .plus(new Translation2d(APRIL_TAG_TO_HUB, 0));
 
-
   private static final double BLUE_ALLIANCE_LINE = Units.inchesToMeters(158.6);
   private static final double RED_ALLIANCE_LINE = FIELD_LENGTH - BLUE_ALLIANCE_LINE;
 

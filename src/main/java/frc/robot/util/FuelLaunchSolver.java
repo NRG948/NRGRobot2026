@@ -123,7 +123,7 @@ public class FuelLaunchSolver {
     double staticRobotAngle = drivetrain.getAngleToTarget();
     boolean isValid =
         staticDistanceToHub >= Shooter.HUB_SHOT_DISTANCE
-            && staticDistanceToHub <= Shooter.MAX_SHOT_DISTANCE;
+            && staticDistanceToHub <= Shooter.MAX_SHOOTING_DISTANCE;
 
     staticShootingSolution =
         new ShootingSolution(
@@ -154,7 +154,7 @@ public class FuelLaunchSolver {
 
     double movingShooterSpeed = SHOOTER_VELOCITIES.get(predictedDistanceToHub);
     double movingRobotAngle = Math.atan2(hubY - predictedY, hubX - predictedX);
-    isValid = predictedDistanceToHub <= Shooter.MAX_SHOT_DISTANCE;
+    isValid = predictedDistanceToHub <= Shooter.MAX_SHOOTING_DISTANCE;
 
     movingShootingSolution =
         new ShootingSolution(
