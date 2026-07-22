@@ -144,7 +144,8 @@ public class RobotContainer {
         .whileTrue(
             Commands.parallel(
                     new ShootWhileMoving(subsystems, driverController),
-                    ShootingCommands.feedBallsToShooter(subsystems, () -> true))
+                    ShootingCommands.feedBallsToShooter(
+                        subsystems, () -> subsystems.shooter.atOrNearGoal()))
                 .finallyDo(
                     () -> {
                       subsystems.shooter.disable();
