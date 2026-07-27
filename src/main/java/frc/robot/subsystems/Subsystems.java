@@ -257,8 +257,9 @@ public final class Subsystems {
   public void periodic() {
     frontRightCamera.ifPresent(this::updateEstimatedPose);
     frontLeftCamera.ifPresent(this::updateEstimatedPose);
-    backLeftCamera.ifPresent(this::updateEstimatedPose);
-    backRightCamera.ifPresent(this::updateEstimatedPose);
+    // backLeftCamera.ifPresent(this::updateEstimatedPose);
+    // backRightCamera.ifPresent(this::updateEstimatedPose);
+    // questNav.getPose();
   }
 
   private void updateEstimatedPose(AprilTag camera) {
