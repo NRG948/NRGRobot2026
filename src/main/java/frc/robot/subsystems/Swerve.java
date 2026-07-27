@@ -161,13 +161,17 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private QuestNavSubsystem questNav;
 
   @DashboardLayout(title = "Questnav Pose", column = 8, row = 3, width = 2, height = 3)
-  private EstimatedPose getQuestPose() {
+  private EstimatedPose getQuestEstimatedPose() {
     Pose2d qPose = questNav.getPose();
     EstimatedPose estPose = new EstimatedPose();
     estPose.estimatedPoseX = qPose.getX();
     estPose.estimatedPoseY = qPose.getY();
     estPose.estimatedRotation = qPose.getRotation().getDegrees();
     return estPose;
+  }
+
+  private Pose2d getQuestPose2d() {
+    return questNav.getPose();
   }
 
   @DashboardLayout(
@@ -249,7 +253,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   private final SwerveDriveKinematics kinematics = PARAMETERS.getKinematics();
 
-  private final SwerveDrive drivetrain;
+  private final SwerveDrive swerveDrive;
   private final SwerveDrivePoseEstimator odometry;
 
   // The current sensor state updated by the periodic method.
@@ -261,6 +265,8 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   private StructLogEntry<Pose2d> poseLog =
       StructLogEntry.create(LOG, "/Swerve/Pose", Pose2d.struct);
+  private StructLogEntry<Pose2d> questPoseLog =
+      StructLogEntry.create(LOG, "/Swerve/QuestPose", Pose2d.struct);
   private DoubleLogEntry rawOrientationLog = new DoubleLogEntry(LOG, "/Swerve/rawOrientation");
   private DoubleLogEntry rawOrientationOffsetLog =
       new DoubleLogEntry(LOG, "/Swerve/rawOrientationOffset");
@@ -305,10 +311,10 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
     this.questNav = questNav;
 
-    drivetrain = new SwerveDrive(PARAMETERS, modules, () -> getOrientation());
+    swerveDrive = new SwerveDrive(PARAMETERS, modules, () -> getOrientation());
     odometry =
         new SwerveDrivePoseEstimator(
-            kinematics, getOrientation(), drivetrain.getModulesPositions(), new Pose2d());
+            kinematics, getOrientation(), swerveDrive.getModulesPositions(), new Pose2d());
   }
 
   /** Initializes the sensor state. */
@@ -551,7 +557,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    * @param fieldRelative Whether the x and y values are relative to field.
    */
   public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative) {
-    drivetrain.drive(xSpeed, ySpeed, rSpeed, fieldRelative);
+    swerveDrive.drive(xSpeed, ySpeed, rSpeed, fieldRelative);
   }
 
   /**
@@ -560,7 +566,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    * @param speeds The chassis speeds.
    */
   public void setChassisSpeeds(ChassisSpeeds speeds) {
-    drivetrain.setChassisSpeeds(speeds);
+    swerveDrive.setChassisSpeeds(speeds);
   }
 
   /**
@@ -569,15 +575,15 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    * @return The chassis speed.
    */
   public ChassisSpeeds getChassisSpeeds() {
-    return drivetrain.getChassisSpeeds();
+    return swerveDrive.getChassisSpeeds();
   }
 
   public SwerveModuleState[] getModuleStates() {
-    return drivetrain.getModuleStates();
+    return swerveDrive.getModuleStates();
   }
 
   public SwerveModulePosition[] getModulePositions() {
-    return drivetrain.getModulesPositions();
+    return swerveDrive.getModulesPositions();
   }
 
   /**
@@ -587,7 +593,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    *     front right, back left, back right
    */
   public void setModuleStates(SwerveModuleState[] states) {
-    drivetrain.setModuleStates(states);
+    swerveDrive.setModuleStates(states);
   }
 
   /** Changes the wheel orientation to lock the robot in place. */
@@ -597,7 +603,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
   // Stops motors from the subsystem - may need to remove this (not sure - Om)
   public void stopMotors() {
-    drivetrain.stopMotor();
+    swerveDrive.stopMotor();
   }
 
   /**
@@ -610,7 +616,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     rawOrientationOffset = MathUtil.angleModulus(orientation.getRadians() - rawOrientation);
     rawOrientationOffsetLog.append(Math.toDegrees(rawOrientationOffset));
 
-    odometry.resetPosition(getOrientation(), drivetrain.getModulesPositions(), desiredPosition);
+    odometry.resetPosition(getOrientation(), swerveDrive.getModulesPositions(), desiredPosition);
   }
 
   /** Resets the orientation the robot. */
@@ -706,11 +712,11 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     updateSensorState();
 
     // Update the current module state.
-    drivetrain.periodic();
+    swerveDrive.periodic();
 
     // Update odometry last since this relies on the subsystem sensor and module
     // states.
-    odometry.update(getOrientation(), drivetrain.getModulesPositions());
+    odometry.update(getOrientation(), swerveDrive.getModulesPositions());
 
     // Send the robot and module location to the logger
     Pose2d robotPose = getPosition();
@@ -728,5 +734,8 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     estimatedPose.estimatedPoseX = odometry.getEstimatedPosition().getX();
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
     estimatedPose.estimatedRotation = odometry.getEstimatedPosition().getRotation().getDegrees();
+
+    questPoseLog.append(getQuestPose2d());
+    getQuestEstimatedPose();
   }
 }

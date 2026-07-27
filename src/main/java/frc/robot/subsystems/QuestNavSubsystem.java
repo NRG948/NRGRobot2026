@@ -28,12 +28,16 @@ public class QuestNavSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println("\nquestnav periodic method");
     questNav.commandPeriodic();
+    int i = 0;
 
     for (PoseFrame frame : questNav.getAllUnreadPoseFrames()) {
       if (frame.isTracking()) {
-        Pose3d robotPose = frame.questPose3d().transformBy(QUEST_TO_ROBOT);
+        Pose3d robotPose = frame.questPose3d(); // .transformBy(QUEST_TO_ROBOT);
         pose = robotPose.toPose2d();
+        System.out.printf(
+            "%.2f %.2f %.1f\n", pose.getX(), pose.getY(), pose.getRotation().getDegrees());
         // Feed to your pose estimator:
         // driveSubsystem.addVisionMeasurement(
         //     robotPose.toPose2d(), frame.dataTimestamp(), stdDevs);
