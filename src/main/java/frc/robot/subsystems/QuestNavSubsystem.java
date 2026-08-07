@@ -23,21 +23,18 @@ public class QuestNavSubsystem extends SubsystemBase {
   // Offset from robot center to the Quest headset
   // Example: Quest is 0.3m forward, 0.0m left, 0.5m up from robot center
   private static final Transform3d ROBOT_TO_QUEST =
-      new Transform3d(0.0, 0.0, 0.0, new Rotation3d());
+      new Transform3d( -0.325, -0.055, 0.2225, new Rotation3d(0,0,180));
   private static final Transform3d QUEST_TO_ROBOT = ROBOT_TO_QUEST.inverse();
 
   @Override
   public void periodic() {
-    System.out.println("\nquestnav periodic method");
     questNav.commandPeriodic();
-    int i = 0;
 
     for (PoseFrame frame : questNav.getAllUnreadPoseFrames()) {
       if (frame.isTracking()) {
         Pose3d robotPose = frame.questPose3d(); // .transformBy(QUEST_TO_ROBOT);
         pose = robotPose.toPose2d();
-        System.out.printf(
-            "%.2f %.2f %.1f\n", pose.getX(), pose.getY(), pose.getRotation().getDegrees());
+        
         // Feed to your pose estimator:
         // driveSubsystem.addVisionMeasurement(
         //     robotPose.toPose2d(), frame.dataTimestamp(), stdDevs);
@@ -47,5 +44,9 @@ public class QuestNavSubsystem extends SubsystemBase {
 
   public Pose2d getPose() {
     return pose;
+  }
+
+  public void setIntialPose(Pose3d intialPose) {
+    questNav.setPose(intialPose);
   }
 }
