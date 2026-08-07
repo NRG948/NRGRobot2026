@@ -161,14 +161,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private QuestNavSubsystem questNav;
 
   @DashboardLayout(title = "Questnav Pose", column = 8, row = 3, width = 2, height = 3)
-  private EstimatedPose getQuestEstimatedPose() {
-    Pose2d qPose = questNav.getPose();
-    EstimatedPose estPose = new EstimatedPose();
-    estPose.estimatedPoseX = qPose.getX();
-    estPose.estimatedPoseY = qPose.getY();
-    estPose.estimatedRotation = qPose.getRotation().getDegrees();
-    return estPose;
-  }
+  private EstimatedPose questNavEstimatedPose = new EstimatedPose();
 
   private Pose2d getQuestPose2d() {
     return questNav.getPose();
@@ -735,7 +728,10 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     estimatedPose.estimatedPoseY = odometry.getEstimatedPosition().getY();
     estimatedPose.estimatedRotation = odometry.getEstimatedPosition().getRotation().getDegrees();
 
-    questPoseLog.append(getQuestPose2d());
-    getQuestEstimatedPose();
+    Pose2d qPose = questNav.getPose();
+    questPoseLog.append(qPose);
+    questNavEstimatedPose.estimatedPoseX = qPose.getX();
+    questNavEstimatedPose.estimatedPoseY = qPose.getY();
+    questNavEstimatedPose.estimatedRotation = qPose.getRotation().getDegrees();
   }
 }
