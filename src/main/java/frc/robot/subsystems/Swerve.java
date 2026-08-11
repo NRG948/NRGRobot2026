@@ -249,6 +249,15 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   private final SwerveDrive swerveDrive;
   private final SwerveDrivePoseEstimator odometry;
 
+  @DashboardCommand(
+      title = "Set Questnav Initial Pose",
+      column = 6,
+      row = 3,
+      width = 2,
+      height = 1,
+      fillWidget = true)
+  private final Command setQuestNavToEstPose;
+
   // The current sensor state updated by the periodic method.
   private double rawOrientation; // The raw gyro orientation in radians.
   private double rawOrientationOffset; // The offset to the corrected orientation in radians.
@@ -308,6 +317,13 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     odometry =
         new SwerveDrivePoseEstimator(
             kinematics, getOrientation(), swerveDrive.getModulesPositions(), new Pose2d());
+
+    setQuestNavToEstPose =
+        Commands.run(
+                () -> {
+                  questNav.setIntialPose(odometry.getEstimatedPosition());
+                })
+            .withName("Set QuestNav Initial Pose");
   }
 
   /** Initializes the sensor state. */

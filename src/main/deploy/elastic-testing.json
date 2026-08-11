@@ -791,6 +791,19 @@
           "maximize_button_space" : true
         }
       }, {
+        "title" : "Set Questnav Initial Pose",
+        "type" : "Command",
+        "x" : 768.0,
+        "y" : 384.0,
+        "width" : 256.0,
+        "height" : 128.0,
+        "properties" : {
+          "topic" : "/SmartDashboard/Swerve/Set Questnav Initial Pose",
+          "period" : 0.06,
+          "show_type" : true,
+          "maximize_button_space" : true
+        }
+      }, {
         "title" : "Pitch",
         "type" : "Number Bar",
         "x" : 512.0,
