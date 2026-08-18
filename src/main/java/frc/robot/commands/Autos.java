@@ -17,6 +17,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -25,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
+import frc.robot.lib.BLine.FollowPath;
+import frc.robot.lib.BLine.Path;
 import frc.robot.parameters.AutoSide;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
@@ -56,6 +59,7 @@ public final class Autos {
 
   private static final Alert invalidAutoAlert =
       new Alert("Invalid auto combination. No auto will run.", AlertType.kError);
+  private static FollowPath.Builder bLinePathBuilder;
 
   /**
    * Initializes the autonomous command selection and configuration. This should be called in {@link
@@ -79,6 +83,18 @@ public final class Autos {
         MatchUtil::isRedAlliance,
         drivetrain);
 
+    bLinePathBuilder =
+        new FollowPath.Builder(
+                drivetrain,
+                drivetrain::getPosition,
+                drivetrain::getChassisSpeeds,
+                drivetrain::setChassisSpeeds,
+                new PIDController(2.0, 0.0, 0.0),
+                new PIDController(1.0, 0.0, 0.0),
+                new PIDController(0.2, 0.0, 0.0))
+            .withDefaultShouldFlip()
+            .withTRatioBasedTranslationHandoffs(true);
+
     autoChooser = Autonomous.getChooser(subsystems);
     autoChooser.onChange(Autos::preloadAuto);
     sideChooser.onChange(Autos::preloadAuto);
@@ -93,6 +109,13 @@ public final class Autos {
   @AutonomousCommandMethod(name = "None", isDefault = true)
   public static Command none(Subsystems subsystems) {
     return Commands.none().withName("None");
+  }
+
+  @AutonomousCommandMethod(name = "B-Line Path")
+  public static Command bLinePath(Subsystems subsystems) {
+    return bLinePathBuilder
+        .withPoseReset(subsystems.drivetrain::resetPosition)
+        .build(new Path("first-path"));
   }
 
   /**
