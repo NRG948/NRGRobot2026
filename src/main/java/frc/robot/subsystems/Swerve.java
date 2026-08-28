@@ -318,10 +318,16 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
         new SwerveDrivePoseEstimator(
             kinematics, getOrientation(), swerveDrive.getModulesPositions(), new Pose2d());
 
+    // Assuming robot is directly in front of hub, facing towards it.
+    Pose2d robotToInitialPose = new Pose2d(3.6, FieldUtils.FIELD_WIDTH / 2, new Rotation2d());
+
+    questNav.setIntialPose(robotToInitialPose);
+
     setQuestNavToEstPose =
         Commands.run(
                 () -> {
-                  questNav.setIntialPose(odometry.getEstimatedPosition());
+                  questNav.setIntialPose(robotToInitialPose);
+                  // questNav.setIntialPose(odometry.getEstimatedPosition());
                 })
             .withName("Set QuestNav Initial Pose");
   }

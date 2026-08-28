@@ -23,7 +23,7 @@ public class QuestNavSubsystem extends SubsystemBase {
   // Offset from robot center to the Quest headset
   // Example: Quest is 0.3m forward, 0.0m left, 0.5m up from robot center
   private static final Transform3d ROBOT_TO_QUEST =
-      new Transform3d(-0.355, -0.025, 0.405, new Rotation3d(0, 0, Math.toRadians(180)));
+      new Transform3d(-0.355, -0.025, 0.405, new Rotation3d(0, 0, Math.toRadians(-180)));
   private static final Transform3d QUEST_TO_ROBOT = ROBOT_TO_QUEST.inverse();
 
   @Override
@@ -32,7 +32,7 @@ public class QuestNavSubsystem extends SubsystemBase {
 
     for (PoseFrame frame : questNav.getAllUnreadPoseFrames()) {
       if (frame.isTracking()) {
-        Pose3d robotPose = frame.questPose3d(); // .transformBy(QUEST_TO_ROBOT);
+        Pose3d robotPose = frame.questPose3d().transformBy(QUEST_TO_ROBOT);
         pose = robotPose.toPose2d();
 
         // Feed to your pose estimator:
@@ -46,12 +46,11 @@ public class QuestNavSubsystem extends SubsystemBase {
     return pose;
   }
 
-  public void setIntialPose(Pose3d intialPose) {
-    questNav.setPose(intialPose);
+  public void setIntialPose(Pose3d robotInitialPose) {
+    questNav.setPose(robotInitialPose.transformBy(ROBOT_TO_QUEST));
   }
 
-  public void setIntialPose(Pose2d initialPose) {
-    Pose3d initialPose3d = new Pose3d(initialPose);
-    questNav.setPose(initialPose3d);
+  public void setIntialPose(Pose2d robotInitialPose) {
+    setIntialPose(new Pose3d(robotInitialPose));
   }
 }

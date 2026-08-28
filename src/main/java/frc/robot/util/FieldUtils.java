@@ -19,7 +19,7 @@ public final class FieldUtils {
   private static AprilTagFieldLayout FIELD_LAYOUT =
       RobotPreferences.FIELD_LAYOUT_PREFERENCE.getValue().loadAprilTagFieldLayout();
 
-  private static final double FIELD_WIDTH = Units.inchesToMeters(317.69);
+  public static final double FIELD_WIDTH = Units.inchesToMeters(317.69);
   private static final double FIELD_LENGTH = Units.inchesToMeters(651.22);
   private static final double ALLIANCE_LENGTH = Units.inchesToMeters(182.11);
 
