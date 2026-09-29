@@ -7,6 +7,7 @@
  
 package frc.robot.drive;
 
+import com.nrg948.actuator.MotorController;
 import com.nrg948.dashboard.annotations.DashboardDefinition;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
@@ -24,7 +25,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Robot;
 import frc.robot.parameters.SwerveDriveParameters;
-import frc.robot.util.MotorController;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
