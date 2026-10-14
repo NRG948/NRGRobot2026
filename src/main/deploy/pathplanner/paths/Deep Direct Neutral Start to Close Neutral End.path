@@ -1,0 +1,87 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.941077777777777,
+        "y": 3.3139111111111106
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.360088888888889,
+        "y": 4.103211111111111
+      },
+      "isLocked": false,
+      "linkedName": "Close Neutral Start"
+    },
+    {
+      "anchor": {
+        "x": 8.153066666666666,
+        "y": 3.3139111111111106
+      },
+      "prevControl": {
+        "x": 8.008001694939066,
+        "y": 4.23166909551021
+      },
+      "nextControl": {
+        "x": 8.630544444444444,
+        "y": 0.2931333333333326
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.145711111111111,
+        "y": 2.1738111111111107
+      },
+      "prevControl": {
+        "x": 6.291877777777778,
+        "y": 0.9070333333333338
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Close Neutral End"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0605809128630692,
+      "rotationDegrees": -108.6180147427796
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake for Direct Neutral",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ExtendAndIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 3.0,
+    "rotation": 125.02794231266894
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 3.0,
+    "rotation": 23.55226367289463
+  },
+  "useDefaultConstraints": true
+}

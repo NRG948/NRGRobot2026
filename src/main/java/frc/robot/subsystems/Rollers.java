@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import static com.nrg948.actuator.MotorDirection.CLOCKWISE_POSITIVE;
-import static com.nrg948.actuator.MotorIdleMode.BRAKE;
+import static com.nrg948.actuator.MotorIdleMode.COAST;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
 import static frc.robot.RobotPreferences.FEED_VELOCITY;
 import static frc.robot.RobotPreferences.UNFEED_VELOCITY;
@@ -109,7 +109,7 @@ public final class Rollers extends SubsystemBase implements ActiveSubsystem {
     maxVelocity = MOTOR.getFreeSpeedRPM() * metersPerRevolution / 60 * EFFICIENCY;
     KV = (MAX_BATTERY_VOLTAGE - KS) / maxVelocity;
     feedforward = new SimpleMotorFeedforward(KS, KV);
-    var motorConfig = new MotorConfig(CLOCKWISE_POSITIVE, BRAKE, metersPerRevolution);
+    var motorConfig = new MotorConfig(CLOCKWISE_POSITIVE, COAST, metersPerRevolution);
     motor = MOTOR.newController("/" + name + "/Motor", motorId, motorConfig, currentConfig);
     encoder = motor.getEncoder();
     pidController = new PIDControllerPreference(name, "PID Controller", 1, 0, 0);

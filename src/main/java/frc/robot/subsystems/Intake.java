@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import static com.nrg948.actuator.MotorDirection.CLOCKWISE_POSITIVE;
-import static com.nrg948.actuator.MotorIdleMode.BRAKE;
+import static com.nrg948.actuator.MotorIdleMode.COAST;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_FOLLOWER_ID;
 import static frc.robot.Constants.RobotConstants.CANID.INTAKE_ID;
 import static frc.robot.Constants.RobotConstants.MAX_BATTERY_VOLTAGE;
@@ -56,7 +56,7 @@ public final class Intake extends SubsystemBase implements ActiveSubsystem {
   private static final double METERS_PER_REVOLUTION = (WHEEL_DIAMETER * Math.PI) / GEAR_RATIO;
 
   private static final MotorConfig MOTOR_CONFIG =
-      new MotorConfig(CLOCKWISE_POSITIVE, BRAKE, METERS_PER_REVOLUTION);
+      new MotorConfig(CLOCKWISE_POSITIVE, COAST, METERS_PER_REVOLUTION);
   private static final MotorCurrentConfig CURRENT_CONFIG = new MotorCurrentConfig(40, 90, true);
 
   @DashboardTextDisplay(title = "Max Velocity (m/s)", column = 0, row = 4, width = 2, height = 1)
