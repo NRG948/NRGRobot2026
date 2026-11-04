@@ -126,8 +126,12 @@ public final class ShootingCommands {
             Commands.idle(indexer).until(readyToShoot),
             Commands.runOnce(indexer::feed, indexer),
             Commands.runOnce(hopper::feed, hopper),
-            Commands.runOnce(intake::intakeWhileShooting, intake),
-            IntakeCommands.agitateArm(subsystems),
+            Commands.parallel(
+                    Commands.sequence(
+                        Commands.runOnce(intake::intakeWhileShooting, intake),
+                        Commands.idle(intake).withTimeout(1).finallyDo(intake::disable)),
+                    IntakeCommands.agitateArm(subsystems))
+                .repeatedly(),
             Commands.idle(intake, indexer))
         .withName("FeedBallsToShooter");
   }
