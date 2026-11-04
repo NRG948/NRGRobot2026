@@ -127,7 +127,6 @@ public final class IntakeCommands {
             agitateSequence(subsystems, 80, 0.25),
             agitateSequence(subsystems, 90, 0.25),
             agitateSequence(subsystems, 100, 0.25))
-        .repeatedly()
         .finallyDo(() -> subsystems.intakeArm.setGoalAngle(EXTENDED_ANGLE));
   }
 }
