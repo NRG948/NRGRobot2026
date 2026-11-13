@@ -98,6 +98,7 @@ dependencies {
 
     implementation "com.nrg948:nrgcommon:${NRGCommonVersion}"
     implementation "com.nrg948:nrgcommon-ctre:${NRGCommonVersion}"
+    implementation "com.nrg948:nrgcommon-swerve:${NRGCommonVersion}"
 
     annotationProcessor "com.nrg948:nrgcommon-processor:${NRGCommonVersion}"
 }

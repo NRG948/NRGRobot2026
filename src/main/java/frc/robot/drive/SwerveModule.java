@@ -24,7 +24,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Robot;
-import frc.robot.parameters.SwerveDriveParameters;
+import frc.robot.parameters.RobotParameters;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -87,8 +87,8 @@ public final class SwerveModule {
   /**
    * Constructs the swerve module.
    *
-   * @param parameters A {@link SwerveDriveParameters} object providing information on the physical
-   *     swerve drive characteristics.
+   * @param parameters A {@link RobotParameters} object providing information on the physical swerve
+   *     drive characteristics.
    * @param driveMotor The drive motor controller.
    * @param position Supplies the position in meters.
    * @param velocity Supplies velocity in meters per second.
@@ -98,7 +98,7 @@ public final class SwerveModule {
    * @param name The name of the module.
    */
   public SwerveModule(
-      SwerveDriveParameters parameters,
+      RobotParameters parameters,
       MotorController driveMotor,
       DoubleSupplier position,
       DoubleSupplier velocity,
