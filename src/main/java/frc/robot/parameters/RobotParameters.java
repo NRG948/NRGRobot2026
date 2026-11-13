@@ -33,7 +33,7 @@ import frc.robot.util.Gyro;
 import frc.robot.util.Pigeon2Gyro;
 
 /** An enum representing the properties for the swerve drive base of a specific robot instance. */
-public enum SwerveDriveParameters {
+public enum RobotParameters {
   /**
    * Parameters for the 2026 Practice Base robot.
    *
@@ -163,7 +163,7 @@ public enum SwerveDriveParameters {
    * @param steeringFeedforward The steering feedforward constants.
    * @param pigeonID The CAN ID for the Pigeon 2 gyro if present.
    */
-  private SwerveDriveParameters(
+  private RobotParameters(
       double robotMass,
       double wheelDistanceX,
       double wheelDistanceY,
@@ -263,11 +263,11 @@ public enum SwerveDriveParameters {
    * @param driveFeedforward The drive feedforward constants.
    * @param pigeonID The CAN ID for the Pigeon 2 gyro if present.
    */
-  private SwerveDriveParameters(
+  private RobotParameters(
       double robotMass,
       double wheelDistanceX,
       double wheelDistanceY,
-      SwerveModuleParameters swerveModule,
+      SwerveModuleType swerveModule,
       Motors driveMotor,
       Motors steeringMotor,
       int[] motorIds,
@@ -331,7 +331,7 @@ public enum SwerveDriveParameters {
    *     encoders in the order front left, front right, back left, back right.
    * @param pigeonID The CAN ID for the Pigeon 2 gyro if present.
    */
-  private SwerveDriveParameters(
+  private RobotParameters(
       double robotMass,
       double wheelDistanceX,
       double wheelDistanceY,

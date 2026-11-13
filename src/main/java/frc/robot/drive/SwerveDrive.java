@@ -16,7 +16,7 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
-import frc.robot.parameters.SwerveDriveParameters;
+import frc.robot.parameters.RobotParameters;
 import frc.robot.util.MatchUtil;
 import java.util.function.Supplier;
 
@@ -46,8 +46,8 @@ public class SwerveDrive extends RobotDriveBase {
   /**
    * constructs the swerve drive
    *
-   * @param parameters A {@link SwerveDriveParameters} object providing information on the physical
-   *     swerve drive characteristics.
+   * @param parameters A {@link RobotParameters} object providing information on the physical swerve
+   *     drive characteristics.
    * @param modules An array of four {@link SwerveModule} objects in the order: front left, front
    *     right, back left, back right.
    * @param kinematics A {@link SwerveDriveKinematics} object used to convert chassis velocity into
@@ -55,7 +55,7 @@ public class SwerveDrive extends RobotDriveBase {
    * @param orientationSupplier Supplies the robot orientation relative to the field.
    */
   public SwerveDrive(
-      SwerveDriveParameters parameters,
+      RobotParameters parameters,
       SwerveModule[] modules,
       Supplier<Rotation2d> orientationSupplier) {
     this.modules = modules;

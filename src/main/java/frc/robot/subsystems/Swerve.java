@@ -57,8 +57,8 @@ import frc.robot.RobotSelector;
 import frc.robot.commands.DriveCommands;
 import frc.robot.drive.SwerveDrive;
 import frc.robot.drive.SwerveModule;
+import frc.robot.parameters.RobotParameters;
 import frc.robot.parameters.SwerveAngleEncoder;
-import frc.robot.parameters.SwerveDriveParameters;
 import frc.robot.parameters.SwerveMotors;
 import frc.robot.util.FieldUtils;
 import frc.robot.util.Gyro;
@@ -112,12 +112,12 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
         SWERVE_MODULE_STATE_45
       };
 
-  public static final SwerveDriveParameters PARAMETERS =
+  public static final RobotParameters PARAMETERS =
       RobotPreferences.ROBOT_TYPE.selectOrDefault(
           Map.of(
-              RobotSelector.PracticeRobot2026, SwerveDriveParameters.PracticeBase2026,
-              RobotSelector.CompetitionRobot2026, SwerveDriveParameters.CompetitionBase2026),
-          SwerveDriveParameters.CompetitionBase2026);
+              RobotSelector.PracticeRobot2026, RobotParameters.PracticeBase2026,
+              RobotSelector.CompetitionRobot2026, RobotParameters.CompetitionBase2026),
+          RobotParameters.CompetitionBase2026);
 
   public static final double ROTATIONAL_KP = 1.0;
   public static final double DRIVE_KP = 1.0;
@@ -324,7 +324,7 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     questNav.setIntialPose(robotToInitialPose);
 
     setQuestNavToEstPose =
-        Commands.run(
+        Commands.runOnce(
                 () -> {
                   questNav.setIntialPose(robotToInitialPose);
                   // questNav.setIntialPose(odometry.getEstimatedPosition());
