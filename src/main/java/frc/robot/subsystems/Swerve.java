@@ -7,6 +7,8 @@
  
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.RobotConstants.WHEEL_DIAMETER;
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.nrg948.actuator.MotorController;
@@ -19,10 +21,13 @@ import com.nrg948.dashboard.annotations.DashboardNumberBar;
 import com.nrg948.dashboard.annotations.DashboardRadialGauge;
 import com.nrg948.dashboard.annotations.DashboardTextDisplay;
 import com.nrg948.dashboard.model.LabelPosition;
+import com.nrg948.drivetrain.SwerveDrive;
+import com.nrg948.drivetrain.SwerveDriveParameters;
+import com.nrg948.drivetrain.SwerveModule;
+import com.nrg948.drivetrain.SwerveModuleParameters;
 import com.nrg948.sensor.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -55,8 +60,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences;
 import frc.robot.RobotSelector;
 import frc.robot.commands.DriveCommands;
-import frc.robot.drive.SwerveDrive;
-import frc.robot.drive.SwerveModule;
 import frc.robot.parameters.RobotParameters;
 import frc.robot.parameters.SwerveAngleEncoder;
 import frc.robot.parameters.SwerveMotors;
@@ -296,8 +299,16 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     StatusSignal<Angle> wheelOrientation = wheelAngle.getAbsolutePosition();
     StatusSignal<AngularVelocity> angularVelocity = wheelAngle.getVelocity();
 
+    var moduleParams =
+        new SwerveModuleParameters(
+            WHEEL_DIAMETER,
+            PARAMETERS.getDriveFeedforward(),
+            new PIDController(0, 0, 0),
+            PARAMETERS.getSteeringFeedforward(),
+            new ProfiledPIDController(3.5, 0, 0, PARAMETERS.getSteeringConstraints()));
+
     return new SwerveModule(
-        PARAMETERS,
+        moduleParams,
         driveMotor,
         driveEncoder::getPosition,
         driveEncoder::getVelocity,
@@ -313,7 +324,13 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
 
     this.questNav = questNav;
 
-    swerveDrive = new SwerveDrive(PARAMETERS, modules, () -> getOrientation());
+    var driveParameters =
+        new SwerveDriveParameters(
+            PARAMETERS.getKinematics(),
+            PARAMETERS.getMaxDriveSpeed(),
+            PARAMETERS.getMaxRotationalSpeed());
+
+    swerveDrive = new SwerveDrive(driveParameters, modules, () -> getOrientation());
     odometry =
         new SwerveDrivePoseEstimator(
             kinematics, getOrientation(), swerveDrive.getModulesPositions(), new Pose2d());
@@ -474,24 +491,6 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
     return targetOrientationSupplier.get();
   }
 
-  /**
-   * Returns the maximum drive speed in m/s of a swerve module.
-   *
-   * @return The maximum drive speed.
-   */
-  public static double getMaxSpeed() {
-    return PARAMETERS.getMaxDriveSpeed();
-  }
-
-  /**
-   * Returns the maximum drive acceleration in m/s^2 of a swerve module.
-   *
-   * @return The maximum drive acceleration.
-   */
-  public static double getMaxAcceleration() {
-    return PARAMETERS.getMaxDriveAcceleration();
-  }
-
   /** Gets acceleration in g with an range of +/- 8 g's */
   public double getAcceleration() {
     return acceleration;
@@ -518,15 +517,6 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
   }
 
   /**
-   * Returns the drive constraints.
-   *
-   * @return The drive constraints.
-   */
-  public TrapezoidProfile.Constraints getDriveConstraints() {
-    return new TrapezoidProfile.Constraints(getMaxSpeed(), getMaxAcceleration());
-  }
-
-  /**
    * Returns a {@link TrapezoidProfile.Constraints} object used to enforce velocity and acceleration
    * constraints on the {@link ProfiledPIDController} used to reach the goal robot orientation.
    *
@@ -544,23 +534,6 @@ public final class Swerve extends SubsystemBase implements ActiveSubsystem {
    */
   public static double getWheelBaseRadius() {
     return PARAMETERS.getWheelBaseRadius();
-  }
-
-  /**
-   * Creates a HolonomicDriveController for the subsystem.
-   *
-   * @return A HolonomicDriveController.
-   */
-  public HolonomicDriveController createDriveController() {
-    ProfiledPIDController thetaController =
-        new ProfiledPIDController(ROTATIONAL_KP, 0.0, 0.0, getRotationalConstraints());
-
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    return new HolonomicDriveController(
-        new PIDController(DRIVE_KP, 0.0, 0.0),
-        new PIDController(DRIVE_KP, 0.0, 0.0),
-        thetaController);
   }
 
   /**

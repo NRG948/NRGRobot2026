@@ -9,7 +9,8 @@ package frc.robot;
 
 import static frc.robot.RobotPreferences.isCompBot;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Distance;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -27,7 +28,7 @@ public final class Constants {
 
   public static class RobotConstants {
     public static final double MAX_BATTERY_VOLTAGE = 12.0;
-    public static final double WHEEL_DIAMETER = Units.inchesToMeters(isCompBot() ? 3.97 : 3.75);
+    public static final Distance WHEEL_DIAMETER = Units.Inches.of(isCompBot() ? 3.97 : 3.75);
     public static final int LED_COUNT = 60;
     public static final double PERIODIC_INTERVAL = 0.02;
 

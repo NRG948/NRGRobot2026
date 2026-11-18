@@ -11,7 +11,9 @@ import static com.nrg948.actuator.MotorDirection.COUNTER_CLOCKWISE_POSITIVE;
 import static com.nrg948.actuator.MotorIdleMode.BRAKE;
 import static com.nrg948.actuator.Motors.KrakenX44;
 import static com.nrg948.actuator.Motors.KrakenX60;
-import static frc.robot.parameters.SwerveModuleParameters.MK4I_L2;
+import static com.nrg948.drivetrain.SwerveModuleType.MK4I_L2;
+import static edu.wpi.first.math.util.Units.lbsToKilograms;
+import static frc.robot.Constants.RobotConstants.WHEEL_DIAMETER;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
@@ -21,14 +23,21 @@ import com.nrg948.actuator.MotorController;
 import com.nrg948.actuator.MotorCurrentConfig;
 import com.nrg948.actuator.MotorDirection;
 import com.nrg948.actuator.Motors;
+import com.nrg948.drivetrain.SwerveModuleType;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.util.Gyro;
 import frc.robot.util.Pigeon2Gyro;
 
@@ -40,7 +49,7 @@ public enum RobotParameters {
    * <p>
    */
   PracticeBase2026(
-      Units.lbsToKilograms(60.7), // TODO Update current PB weight
+      lbsToKilograms(60.7), // TODO Update current PB weight
       0.603,
       0.501,
       MK4I_L2,
@@ -57,7 +66,7 @@ public enum RobotParameters {
    * <p>
    */
   CompetitionBase2026(
-      Units.lbsToKilograms(142),
+      lbsToKilograms(142),
       0.603,
       0.501,
       MK4I_L2,
@@ -69,7 +78,7 @@ public enum RobotParameters {
       21),
   /** Parameters for the 2026 Alpha Base robot. */
   AlphaBase2026(
-      Units.lbsToKilograms(60.7),
+      lbsToKilograms(60.7),
       0.578,
       0.528,
       MK4I_L2,
@@ -96,7 +105,7 @@ public enum RobotParameters {
   private final double robotMass;
   private final double wheelDistanceX;
   private final double wheelDistanceY;
-  private final SwerveModuleParameters moduleParams;
+  private final SwerveModuleType moduleType;
   private final Motors driveMotor;
   private final Motors steeringMotor;
   private final int[] motorIds;
@@ -104,18 +113,28 @@ public enum RobotParameters {
   private final double[] angleOffset;
   private final int pigeonID;
 
-  private final double maxDriveSpeed;
-  private final double maxDriveAcceleration;
+  private final LinearVelocity maxDriveSpeed;
+  private final LinearAcceleration maxDriveAcceleration;
 
   private final FeedforwardConstants driveFeedforward;
 
-  private final double maxSteeringSpeed;
-  private final double maxSteeringAcceleration;
+  public SimpleMotorFeedforward getDriveFeedforward() {
+    return new SimpleMotorFeedforward(
+        this.driveFeedforward.kS, this.driveFeedforward.kV, this.driveFeedforward.kA);
+  }
+
+  public SimpleMotorFeedforward getSteeringFeedforward() {
+    return new SimpleMotorFeedforward(
+        this.steeringFeedforward.kS, this.steeringFeedforward.kV, this.steeringFeedforward.kA);
+  }
+
+  private final AngularVelocity maxSteeringSpeed;
+  private final AngularAcceleration maxSteeringAcceleration;
 
   private final FeedforwardConstants steeringFeedforward;
 
-  private final double maxRotationalSpeed;
-  private final double maxRotationalAcceleration;
+  private final AngularVelocity maxRotationalSpeed;
+  private final AngularAcceleration maxRotationalAcceleration;
 
   private final Translation2d[] wheelPositions;
   private final SwerveDriveKinematics kinematics;
@@ -149,7 +168,7 @@ public enum RobotParameters {
    * @param robotMass The mass of the robot in Kg including bumpers and battery.
    * @param wheelDistanceX The distance between the wheels along the X axis in meters.
    * @param wheelDistanceY The distance between the wheels along the Y axis in meters.
-   * @param moduleParams The swerve module used by the robot.
+   * @param moduleType The swerve module used by the robot.
    * @param driveMotor The motor used by swerve module drive on the robot.
    * @param steeringMotor The motor used by the swerve module steering on the robot.
    * @param motorIds An array containing the CAN IDs of the swerve module drive motors in the order
@@ -167,7 +186,7 @@ public enum RobotParameters {
       double robotMass,
       double wheelDistanceX,
       double wheelDistanceY,
-      SwerveModuleParameters moduleParams,
+      SwerveModuleType moduleType,
       Motors driveMotor,
       Motors steeringMotor,
       int[] motorIds,
@@ -179,7 +198,7 @@ public enum RobotParameters {
     this.robotMass = robotMass;
     this.wheelDistanceX = wheelDistanceX;
     this.wheelDistanceY = wheelDistanceY;
-    this.moduleParams = moduleParams;
+    this.moduleType = moduleType;
     this.driveMotor = driveMotor;
     this.steeringMotor = steeringMotor;
     this.motorIds = motorIds;
@@ -191,22 +210,30 @@ public enum RobotParameters {
 
     double scaleFactor = Constants.SCALE_FACTOR;
 
-    this.maxDriveSpeed = scaleFactor * this.moduleParams.calculateMaxDriveSpeed(this.driveMotor);
+    this.maxDriveSpeed =
+        this.moduleType.calculateMaxDriveSpeed(this.driveMotor, WHEEL_DIAMETER).times(scaleFactor);
     this.maxDriveAcceleration =
-        scaleFactor
-            * this.moduleParams.calculateMaxDriveAcceleration(this.driveMotor, this.robotMass);
+        this.moduleType
+            .calculateMaxDriveAcceleration(this.driveMotor, WHEEL_DIAMETER, this.robotMass)
+            .times(scaleFactor);
 
     this.maxSteeringSpeed =
-        scaleFactor * this.moduleParams.calculateMaxSteeringSpeed(this.steeringMotor);
+        this.moduleType.calculateMaxSteeringSpeed(this.steeringMotor).times(scaleFactor);
     this.maxSteeringAcceleration =
-        scaleFactor
-            * this.moduleParams.calculateMaxSteeringAcceleration(
-                this.steeringMotor, this.robotMass);
+        this.moduleType
+            .calculateMaxSteeringAcceleration(this.steeringMotor, this.robotMass)
+            .times(scaleFactor);
 
-    final double wheelTrackRadius = Math.hypot(this.wheelDistanceX, this.wheelDistanceY);
+    final Distance wheelTrackRadius =
+        Units.Meters.of(Math.hypot(this.wheelDistanceX, this.wheelDistanceY));
 
-    this.maxRotationalSpeed = this.maxDriveSpeed / wheelTrackRadius;
-    this.maxRotationalAcceleration = this.maxDriveAcceleration / wheelTrackRadius;
+    this.maxRotationalSpeed =
+        Units.RadiansPerSecond.of(
+            this.maxDriveSpeed.in(Units.MetersPerSecond) / wheelTrackRadius.in(Units.Meters));
+    this.maxRotationalAcceleration =
+        Units.RadiansPerSecondPerSecond.of(
+            this.maxDriveAcceleration.in(Units.MetersPerSecondPerSecond)
+                / wheelTrackRadius.in(Units.Meters));
 
     this.wheelPositions =
         new Translation2d[] {
@@ -217,11 +244,17 @@ public enum RobotParameters {
         };
 
     this.kinematics = new SwerveDriveKinematics(wheelPositions);
-    this.kinematicsConstraint = new SwerveDriveKinematicsConstraint(kinematics, this.maxDriveSpeed);
+    this.kinematicsConstraint =
+        new SwerveDriveKinematicsConstraint(
+            kinematics, this.maxDriveSpeed.in(Units.MetersPerSecond));
     this.steeringConstraints =
-        new TrapezoidProfile.Constraints(this.maxSteeringSpeed, this.maxSteeringAcceleration);
+        new TrapezoidProfile.Constraints(
+            this.maxSteeringSpeed.in(Units.RadiansPerSecond),
+            this.maxSteeringAcceleration.in(Units.RadiansPerSecondPerSecond));
     this.robotRotationalConstraints =
-        new TrapezoidProfile.Constraints(this.maxRotationalSpeed, this.maxRotationalAcceleration);
+        new TrapezoidProfile.Constraints(
+            this.maxRotationalSpeed.in(Units.RadiansPerSecond),
+            this.maxRotationalAcceleration.in(Units.RadiansPerSecondPerSecond));
   }
 
   /**
@@ -288,8 +321,11 @@ public enum RobotParameters {
         driveFeedForward,
         new CalculatedFeedforwardConstants(
             steeringMotor.getKs(),
-            () -> swerveModule.calculateMaxSteeringSpeed(steeringMotor),
-            () -> swerveModule.calculateMaxSteeringAcceleration(steeringMotor, robotMass)),
+            () -> swerveModule.calculateMaxSteeringSpeed(steeringMotor).in(Units.RadiansPerSecond),
+            () ->
+                swerveModule
+                    .calculateMaxSteeringAcceleration(steeringMotor, robotMass)
+                    .in(Units.RadiansPerSecondPerSecond)),
         pigeonID);
   }
 
@@ -335,7 +371,7 @@ public enum RobotParameters {
       double robotMass,
       double wheelDistanceX,
       double wheelDistanceY,
-      SwerveModuleParameters swerveModule,
+      SwerveModuleType swerveModule,
       Motors driveMotor,
       Motors steeringMotor,
       int[] motorIds,
@@ -354,12 +390,21 @@ public enum RobotParameters {
         angleOffset,
         new CalculatedFeedforwardConstants(
             driveMotor.getKs(),
-            () -> swerveModule.calculateMaxDriveSpeed(driveMotor),
-            () -> swerveModule.calculateMaxDriveAcceleration(driveMotor, robotMass)),
+            () ->
+                swerveModule
+                    .calculateMaxDriveSpeed(driveMotor, WHEEL_DIAMETER)
+                    .in(Units.MetersPerSecond),
+            () ->
+                swerveModule
+                    .calculateMaxDriveAcceleration(driveMotor, WHEEL_DIAMETER, robotMass)
+                    .in(Units.MetersPerSecondPerSecond)),
         new CalculatedFeedforwardConstants(
             steeringMotor.getKs(),
-            () -> swerveModule.calculateMaxSteeringSpeed(steeringMotor),
-            () -> swerveModule.calculateMaxSteeringAcceleration(steeringMotor, robotMass)),
+            () -> swerveModule.calculateMaxSteeringSpeed(steeringMotor).in(Units.RadiansPerSecond),
+            () ->
+                swerveModule
+                    .calculateMaxSteeringAcceleration(steeringMotor, robotMass)
+                    .in(Units.DegreesPerSecondPerSecond)),
         pigeonID);
   }
 
@@ -377,7 +422,7 @@ public enum RobotParameters {
    *
    * @return The maximum rotation speed of the robot in rad/s.
    */
-  public double getMaxRotationalSpeed() {
+  public AngularVelocity getMaxRotationalSpeed() {
     return this.maxRotationalSpeed;
   }
 
@@ -386,7 +431,7 @@ public enum RobotParameters {
    *
    * @return The maximum rotation acceleration of the robot in rad/s^s.
    */
-  public double getMaxRotationalAcceleration() {
+  public AngularAcceleration getMaxRotationalAcceleration() {
     return this.maxRotationalAcceleration;
   }
 
@@ -447,7 +492,7 @@ public enum RobotParameters {
    * @return The wheel diameter in meters.
    */
   public double getWheelDiameter() {
-    return this.moduleParams.getWheelDiameter();
+    return WHEEL_DIAMETER.in(Units.Meters);
   }
 
   /**
@@ -456,7 +501,7 @@ public enum RobotParameters {
    * @return The drive gear ratio.
    */
   public double getDriveGearRatio() {
-    return this.moduleParams.getDriveGearRatio();
+    return this.moduleType.getDriveGearRatio();
   }
 
   /**
@@ -465,7 +510,7 @@ public enum RobotParameters {
    * @return The steering gear ratio.
    */
   public double getSteeringGearRatio() {
-    return this.moduleParams.getSteeringGearRatio();
+    return this.moduleType.getSteeringGearRatio();
   }
 
   /**
@@ -473,8 +518,8 @@ public enum RobotParameters {
    *
    * @return The swerve module used by the robot.
    */
-  public SwerveModuleParameters getModuleParameters() {
-    return this.moduleParams;
+  public SwerveModuleType getModuleType() {
+    return this.moduleType;
   }
 
   /**
@@ -568,7 +613,7 @@ public enum RobotParameters {
    *
    * @return The maximum drive speed.
    */
-  public double getMaxDriveSpeed() {
+  public LinearVelocity getMaxDriveSpeed() {
     return this.maxDriveSpeed;
   }
 
@@ -577,7 +622,7 @@ public enum RobotParameters {
    *
    * @return The maximum drive acceleration.
    */
-  public double getMaxDriveAcceleration() {
+  public LinearAcceleration getMaxDriveAcceleration() {
     return this.maxDriveAcceleration;
   }
 
@@ -641,7 +686,7 @@ public enum RobotParameters {
    *
    * @return The maximum steering speed.
    */
-  public double getMaxSteeringSpeed() {
+  public AngularVelocity getMaxSteeringSpeed() {
     return this.maxSteeringSpeed;
   }
 
@@ -650,7 +695,7 @@ public enum RobotParameters {
    *
    * @return The maximum steering acceleration.
    */
-  public double getMaxSteeringAcceleration() {
+  public AngularAcceleration getMaxSteeringAcceleration() {
     return this.maxSteeringAcceleration;
   }
 
@@ -706,7 +751,7 @@ public enum RobotParameters {
    *     rotate the wheel in the counter-clockwise direction.
    */
   public MotorDirection getSteeringDirection() {
-    return moduleParams.getSteeringDirection();
+    return moduleType.getSteeringDirection();
   }
 
   /** Returns the correct gyro implementation for the robot. */
@@ -726,7 +771,7 @@ public enum RobotParameters {
     ModuleConfig moduleconfig =
         new ModuleConfig(
             getWheelDiameter() / 2,
-            getMaxDriveSpeed(),
+            getMaxDriveSpeed().in(Units.MetersPerSecond),
             1.0,
             driveMotor.getDCMotor(),
             getDriveGearRatio(),
